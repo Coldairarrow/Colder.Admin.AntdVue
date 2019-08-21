@@ -77,6 +77,13 @@ export const asyncRouterMap = [
         meta: { title: '列表页', icon: 'table', permission: [ 'table' ] },
         children: [
           {
+            path: '/list/TableTest',
+            name: 'TableTest',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/list/TableTest'),
+            meta: { title: '测试表格', keepAlive: true }
+          },
+          {
             path: '/list/table-list/:pageNo([1-9]\\d*)?',
             name: 'TableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu

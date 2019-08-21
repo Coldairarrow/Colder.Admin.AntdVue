@@ -9259,6 +9259,11 @@ requires-port@^1.0.0:
   resolved "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
+reqwest@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npm.taobao.org/reqwest/download/reqwest-2.0.5.tgz#00fb15ac4918c419ca82b43f24c78882e66039a1"
+  integrity sha1-APsVrEkYxBnKgrQ/JMeIguZgOaE=
+
 reselect@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
