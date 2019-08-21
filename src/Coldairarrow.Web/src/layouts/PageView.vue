@@ -1,7 +1,7 @@
 <template>
-  <div :style="!$route.meta.hiddenHeaderContent ? 'margin: -24px -24px 0px;' : null">
+  <div :style="!$route.meta.hiddenHeaderContent ? null : null">
     <!-- pageHeader , route meta :true on hide -->
-    <page-header v-if="!$route.meta.hiddenHeaderContent" :title="pageTitle" :logo="logo" :avatar="avatar">
+    <!-- <page-header v-if="!$route.meta.hiddenHeaderContent" :title="pageTitle" :logo="logo" :avatar="avatar">
       <slot slot="action" name="action"></slot>
       <slot slot="content" name="headerContent"></slot>
       <div slot="content" v-if="!this.$slots.headerContent && description">
@@ -30,13 +30,12 @@
           />
         </div>
         <div class="page-menu-tabs" v-if="tabs && tabs.items">
-          <!-- @change="callback" :activeKey="activeKey" -->
           <a-tabs :tabBarStyle="{margin: 0}" :activeKey="tabs.active()" @change="tabs.callback">
             <a-tab-pane v-for="item in tabs.items" :tab="item.title" :key="item.key"></a-tab-pane>
           </a-tabs>
         </div>
       </div>
-    </page-header>
+    </page-header> -->
     <div class="content">
       <div class="page-header-index-wide">
         <slot>
