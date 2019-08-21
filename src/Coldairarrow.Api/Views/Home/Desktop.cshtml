@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="@Url.Scrpit("~/Scripts/vendor/layui/css/layui.css")" />
+    <link rel="stylesheet" href="@Url.Scrpit("~/css/fx/desktop.css")" />
+</head>
+
+<body>
+    <div class="admin-main">
+        <blockquote class="layui-elem-quote">
+            <p>本框架为.NET Core2.2+AdminLTE版</p>
+            <p>本框架旨在极大的提高开发效率</p>
+            <p>
+                使用技术栈：<br />
+                后端：采用.NET Core平台，ASP.NET Core2.2，C#语言（使用反射等高级技术），Entity FrameworkCore（数据库ORM框架）。<br />
+                使用数据仓储模式，抽象化数据库操作(CRUD等)、支持事务处理以及分布式事务处理（跨库）<br />
+                支持数据库读写分离、分库分表及事务(仅支持单表操作,不支持多表)
+                全面采用Autofac作为IOC容器,面向接口编程,全面解耦<br />
+                禁用系统Session,使用自定义Session，提高系统性能<br />
+                集成多种工具类库以及操作拓展<br />
+                数据库：SqlServer（框架使用简单工厂，工厂方法，抽象工厂，可轻松更换数据库）,Redis作为分布式缓存<br />
+                前端：HTML5,JS,JQuery,Bootstrap（主要前端框架）,AdminLTE（后台模板），其中集成多种JS插件，力求方便项目开发。
+                <br />
+                <br />
+                具体技术实施：<br />
+                项目采用前后端完全分离模式，并采用严格分层模式，极大的增加聚合度，降低耦合度，<br />
+                提高代码的健壮性，可维护性。<br />
+                前后端通过数据接口操作数据，统一使用JSON作为数据格式，并使用默认接口签名算法保证接口的安全性。
+                <br />
+                <br />
+                功能架构部分详解：<br />
+                快速开发：此功能为框架的核心，通过选择数据库中的表，就能自动生成对应的实体层、业务逻辑层、控制器、视图，以及对应的配置，即无需编写代码即可生成基本的CRUD操作。<br />
+                接口密钥管理：管理接口的密钥，若开启接口签名的规则，则前端需要通过给接口签名才能够正常访问后台接口。<br />
+                权限管理：提供健全的权限管理功能，支持给系统用户、系统角色和对外接口AppId分配权限
+                <br />
+                <br />
+                相关链接:<br />
+                个人GitHub,欢迎点星支持:<a href="https://github.com/Coldairarrow" target="_blank">https://github.com/Coldairarrow</a><br />
+                个人博客:<a href="https://www.cnblogs.com/coldairarrow/" target="_blank">https://www.cnblogs.com/coldairarrow/</a><br />
+                Bootstrap:<a href="http://www.bootcss.com/" target="_blank">http://www.bootcss.com/</a><br />
+                AdminLTE:<a href="https://github.com/almasaeed2010/AdminLTE" target="_blank">https://github.com/almasaeed2010/AdminLTE</a><br />
+                QQ技术交流群1:373144077（已满）<br />
+                QQ技术交流群2:579202910
+            </p>
+            <br />
+        </blockquote>
+        <fieldset class="layui-elem-field">
+            <legend>更新日志</legend>
+            <div class="layui-field-box">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2019-06-5</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            Sharding+IOC完成
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2019-03-10</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            .NET Core+AdminLTE版完成
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2019-03-05</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            框架移植整合到AdminLTE
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2018-01-08</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            框架移植整合到Easyui
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-16</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            添加数据库分布式事务支持
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-15</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            数据库事务优化
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-13</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            数据库操作优化
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-12</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            实体生成，添加对PostgreSql的支持
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-08</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            数据仓储更新优化
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-08</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            初步整体完成~~
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-06</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            1:添加验证插件<br />
+                            2:加载动画
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-11-04</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            禁用自带Session，使用自定义Session，提高并发性能
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-31</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            完成用户管理，权限管理
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-23</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            Wcf优化，不再需要添加服务引用，可以直接使用接口创建客户端
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-17</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            代码生成（完成部分）
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-14</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            1:更新完善签名<br />
+                            2:SocketUdp框架初步完成
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-11</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            1:添加密钥管理<br />
+                            2:更新Socket框架
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-07</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            完成实体生成功能
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-05</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            完成数据库连接管理
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-03</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            完成系统功能模块
+                        </p>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>2017-10-02</legend>
+                    <div class="layui-field-box">
+                        <p>
+                            系统功能管理
+                        </p>
+                    </div>
+                </fieldset>
+            </div>
+        </fieldset>
+    </div>
+</body>
+</html>

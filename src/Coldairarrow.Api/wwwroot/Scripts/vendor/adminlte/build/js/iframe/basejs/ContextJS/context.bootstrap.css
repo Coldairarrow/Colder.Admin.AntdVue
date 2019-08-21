@@ -1,0 +1,79 @@
+/**
+ * ContextJS Styles
+ * For use with Twitters Bootstrap CSS
+ */
+
+.dropdown-context .nav-header{
+	cursor:default;
+	}
+.dropdown-context:before, .dropdown-context-up:before, .dropdown-context-left:before {
+	position: absolute;
+	top: -7px;
+	left: 9px;
+	display: inline-block;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid #ccc;
+	border-left: 7px solid transparent;
+	border-bottom-color: rgba(0, 0, 0, 0.2);
+	content: '';
+	}
+.dropdown-context:after, .dropdown-context-up:after, .dropdown-context-left:after {
+	position: absolute;
+	top: -6px;
+	left: 10px;
+	display: inline-block;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid #ffffff;
+	border-left: 6px solid transparent;
+	content: '';
+	}
+.dropdown-context-up:before, .dropdown-context-up:after{
+	top:auto;
+	bottom:-7px;
+	z-index:9999;
+	}
+.dropdown-context-up:before{
+	border-right: 7px solid transparent;
+	border-top: 7px solid #ccc;
+	border-bottom:none;
+	border-left: 7px solid transparent;
+	}
+.dropdown-context-up:after{
+	border-right: 6px solid transparent;
+	border-top: 6px solid #ffffff;
+	border-left: 6px solid transparent;
+	border-bottom:none;
+	}
+.dropdown-context-left:before {
+    left: auto;
+    right: 9px;
+}
+.dropdown-context-left:after {
+    left: auto;
+    right: 9px;
+}
+
+.dropdown-context-sub:before, .dropdown-context-sub:after{
+	display:none;
+	}
+.dropdown-context .dropdown-submenu:hover .dropdown-menu {
+	display: none;
+	}
+
+.dropdown-context .dropdown-submenu:hover > .dropdown-menu {
+ 	display: block;
+	}
+	
+
+.compressed-context a{
+	padding-left: 14px;
+	padding-top: 0;
+	padding-bottom: 0;
+	font-size: 13px;
+	}
+.compressed-context .divider{
+	margin: 5px 1px;
+	}
+.compressed-context .nav-header{
+	padding:1px 13px;
+	}

@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+}
+
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">用户选择</label>
+            <div class="col-sm-2 input-icon-group">
+                <select id="user" name="user" class="selectpicker form-control"  multiple data-style="btn-default btn-sm"></select>                
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="submit" class="hidden">提交</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#user').selectpicker({
+            url: '/Base_SysManage/Base_User/GetDataList_NoPagin',//远程地址
+            value: 'Admin',//初始化值,字符串或字符串数组
+            liveSearch: true,//搜索
+            valueField: 'Id',
+            textField: 'RealName'
+        });
+    });
+</script>

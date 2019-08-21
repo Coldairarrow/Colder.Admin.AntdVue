@@ -1,0 +1,62 @@
+@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+}
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">原密码</label>
+            <div class="col-sm-5">
+                <input id="oldPwd" name="oldPwd" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">新密码</label>
+            <div class="col-sm-5">
+                <input id="newPwd" name="newPwd" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="submit" class="hidden">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        initEvent();
+    });
+
+    //事件绑定
+    function initEvent() {
+        $('#oldPwd').bootstrapPwdBox();
+        $('#newPwd').bootstrapPwdBox();
+
+        //表单校验
+        $('#form').validator().on('submit', function (e) {
+            //校验成功
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var values = $('#form').getValues();
+                loading();
+                $.postJSON(rootUrl + 'Base_SysManage/Base_User/ChangePwd', values, function (resJson) {
+                    loading(false);
+
+                    if (resJson.Success) {
+                        parent.dialogSuccess('修改成功!');
+                        parent.dialogClose('changePwdForm');
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            }
+        })
+    }
+
+    //提交表单
+    function submitForm() {
+        $('#submit').trigger('click');
+    }
+</script>

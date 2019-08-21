@@ -1,0 +1,94 @@
+@using Coldairarrow.Entity.Base_SysManage;
+@using Coldairarrow.Util;
+
+@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+
+    var obj = (Base_DatabaseLink)Model;
+    var objStr = Html.Raw(obj.ToJson());
+}
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">连接名</label>
+            <div class="col-sm-5">
+                <input name="LinkName" value="@obj.LinkName" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">连接字符串</label>
+            <div class="col-sm-10">
+                <input name="ConnectionStr" value="@obj.ConnectionStr" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">数据库类型</label>
+            <div class="col-sm-5">
+                <select id="DbType" name="DbType" class="selectpicker form-control" data-style="btn-default btn-sm" required>
+                    <option value="SqlServer">SqlServer</option>
+                    <option value="MySql">MySql</option>
+                    <option value="Oracle">Oracle</option>
+                    <option value="PostgreSql">PostgreSql</option>
+                </select>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">排序编号</label>
+            <div class="col-sm-5">
+                <input name="SortNum" value="@obj.SortNum" type="text" class="form-control">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="submit" class="hidden">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+    var theEntity = @objStr;
+
+    $(function () {
+        initEvent();
+    });
+
+    //事件绑定
+    function initEvent() {
+        //数据库类型
+        $('#DbType').selectpicker({
+            value: theEntity.DbType
+        });
+
+        //表单校验
+        $('#form').validator().on('submit', function (e) {
+            //校验成功
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var values = $('#form').getValues();
+                
+                $.extend(theEntity, values);
+                loading();
+                $.postJSON('/Base_SysManage/Base_DatabaseLink/SaveData', theEntity, function (resJson) {
+                    loading(false);
+
+                    if (resJson.Success) {
+                        parent.$('#dataTable').bootstrapTable('refresh');
+                        parent.dialogSuccess();
+                        dialogClose();
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            }
+        })
+    }
+
+    //提交表单
+    function submitForm() {
+        $('#submit').trigger('click');
+    }
+</script>
