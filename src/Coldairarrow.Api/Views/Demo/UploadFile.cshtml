@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+}
+
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">测试</label>
+            <div class="col-sm-2 input-icon-group">
+                <div id="WorkerContractImg" style="width:300px;height:260px;overflow:auto"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="button">提交</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        $('#WorkerContractImg').html5Uploader({
+            //imgs: theEntity[aImgId],
+            asyncUpload: true,
+            uploadUrl: '/Base_SysManage/Common/UploadFile',
+            uploadLimit: 0,  //上传数量限制，0为不限
+            sizeLimit: 5,    //大小限制，M
+            type:'file' //file即可上传文件也可上传图片
+        });
+    });
+
+    $('#submit').click(function () {
+        //获取上传后的url
+        var url = $('#WorkerContractImg').html5Uploader('getUploadFiles');
+        console.log(url);
+    });
+</script>
+

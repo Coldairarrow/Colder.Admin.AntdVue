@@ -1,0 +1,69 @@
+@using Coldairarrow.Entity.Base_SysManage;
+@using Coldairarrow.Util;
+
+@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+
+    var obj = (Base_AppSecret)Model;
+    var objStr = Html.Raw(obj.ToJson());
+}
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">应用Id</label>
+            <div class="col-sm-5">
+                <input name="AppId" value="@obj.AppId" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">密钥</label>
+            <div class="col-sm-5">
+                <input name="AppSecret" value="@obj.AppSecret" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="submit" class="hidden">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+        var theEntity = @objStr;
+
+        $(function () {
+            initEvent();
+        });
+
+        //事件绑定
+        function initEvent() {
+            //表单校验
+            $('#form').validator().on('submit', function (e) {
+                //校验成功
+                if (!e.isDefaultPrevented()) {
+                    e.preventDefault();
+
+                    var values = $('#form').getValues();
+                    $.extend(theEntity, values);
+                    loading();
+                    $.postJSON('/Base_SysManage/Base_AppSecret/SaveData', theEntity, function (resJson) {
+                        loading(false);
+
+                        if (resJson.Success) {
+                            parent.$('#dataTable').bootstrapTable('refresh');
+                            parent.dialogSuccess();
+                            dialogClose();
+                        }
+                        else {
+                            dialogError(resJson.Msg);
+                        }
+                    });
+                }
+            })
+        }
+
+        //提交表单
+        function submitForm() {
+            $('#submit').trigger('click');
+        }
+</script>

@@ -1,0 +1,94 @@
+@{
+    Layout = "~/Views/Shared/_Layout_Form.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="@Url.Scrpit("~/Scripts/vendor/font-awesome/css/font-awesome.min.css")">
+<link rel="stylesheet" type="text/css" href="@Url.Scrpit("~/css/fx/permisson-form.css")" />
+
+<div style="padding:15px;padding-right:45px;">
+    <form id="form" class="form-horizontal" role="form">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">生成选项</label>
+            <div class="col-sm-5">
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" class="styled" id="entity" checked value="entity">
+                    <label for="entity">实体</label>
+                </div>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" class="styled" id="business" checked value="business">
+                    <label for="business">业务逻辑</label>
+                </div>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" class="styled" id="controller" checked value="controller">
+                    <label for="controller">控制器</label>
+                </div>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input type="checkbox" class="styled" id="view" checked value="view">
+                    <label for="view">视图</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label">生成区域</label>
+            <div class="col-sm-5">
+                <input name="areaName" type="text" class="form-control" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="submit" type="submit" class="hidden">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+    var linkId = request('linkId');
+    var tables = {};
+
+    $(function () {
+        initEvent();
+    });
+
+    //事件绑定
+    function initEvent() {
+        //表单校验
+        $('#form').validator().on('submit', function (e) {
+            //校验成功
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var values = $('#form').getValues();
+                var areaName = values['areaName'];
+                var buildType = [];
+                $('input:checked').each(function (index, item) {
+                    buildType.push($(item).attr('value'));
+                });
+
+                loading();
+                $.postJSON(rootUrl + 'Base_SysManage/RapidDevelopment/BuildCode', {
+                    linkId: linkId,
+                    areaName: areaName,
+                    tables: tables,
+                    buildType: JSON.stringify(buildType)
+                }, function (resJson) {
+                    loading(false);
+
+                    if (resJson.Success) {
+                        parent.dialogSuccess('生成成功!');
+                        parent.dialogClose('form');
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            }
+        })
+    }
+
+    //提交表单
+    function submitForm() {
+        $('#submit').trigger('click');
+    }
+
+    function setTables(_tables) {
+        tables = _tables;
+    }
+</script>
