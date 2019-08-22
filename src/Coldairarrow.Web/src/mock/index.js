@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   require('./services/article')
 
   Mock.setup({
-    timeout: 800 // setter delay time
+    timeout: 1 // setter delay time
   })
   console.log('mock mounted')
 }

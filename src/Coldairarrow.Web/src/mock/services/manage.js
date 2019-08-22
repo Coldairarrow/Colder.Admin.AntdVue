@@ -245,8 +245,45 @@ const radar = () => {
   ])
 }
 
+const GetTestData = (options) => {
+  const parameters = getQueryParameters(options)
+
+  const result = []
+  const pageNo = parseInt(parameters.pageNo)
+  const pageSize = parseInt(parameters.pageSize)
+  const totalPage = Math.ceil(totalCount / pageSize)
+  const key = (pageNo - 1) * pageSize
+  const next = (pageNo >= totalPage ? (totalCount % pageSize) : pageSize) + 1
+
+  for (let i = 1; i < 100; i++) {
+    const tmpKey = key + i
+    result.push({
+      key: Mock.Random.id(),
+      id: Mock.Random.id(),
+      no: 'No ' + i,
+      description: '这是一段描述',
+      callNo: Mock.mock('@integer(1, 999)'),
+      status: Mock.mock('@integer(0, 3)'),
+      updatedAt: Mock.mock('@datetime'),
+      editable: false,
+      Name: Mock.mock('@integer(1, 999)'),
+      Gender: Mock.mock('@integer(1, 999)'),
+      Email: Mock.mock('@integer(1, 999)')
+    })
+  }
+
+  return builder({
+    pageSize: pageSize,
+    pageNo: pageNo,
+    totalCount: totalCount,
+    totalPage: totalPage,
+    data: result
+  })
+}
+
 Mock.mock(/\/service/, 'get', serverList)
 Mock.mock(/\/list\/search\/projects/, 'get', projects)
 Mock.mock(/\/workplace\/activity/, 'get', activity)
 Mock.mock(/\/workplace\/teams/, 'get', teams)
 Mock.mock(/\/workplace\/radar/, 'get', radar)
+Mock.mock(/\/GetTestData/, 'get', GetTestData)

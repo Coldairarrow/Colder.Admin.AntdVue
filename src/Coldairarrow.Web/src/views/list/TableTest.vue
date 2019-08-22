@@ -1,36 +1,36 @@
 <template>
-  <a-table
-    :columns="columns"
-    :rowKey="record => record.login.uuid"
-    :dataSource="data"
-    :pagination="pagination"
-    :loading="loading"
-    @change="handleTableChange"
-  >
-    <template slot="name" slot-scope="name">
-      {{ name.first }} {{ name.last }}
-    </template>
-  </a-table>
+  <a-card :bordered="false">
+    <a-table
+      :columns="columns"
+      :rowKey="id"
+      :dataSource="data"
+      :pagination="pagination"
+      :loading="loading"
+      @change="handleTableChange"
+    >
+    </a-table>
+  </a-card>
 </template>
+
 <script>
 import reqwest from 'reqwest'
+import { GetTestData } from '@/api/manage'
+
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
+    dataIndex: 'Name',
     sorter: true,
-    width: '20%',
-    scopedSlots: { customRender: 'name' }
+    width: '20%'
   },
   {
     title: 'Gender',
-    dataIndex: 'gender',
-    filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
+    dataIndex: 'Gender',
     width: '20%'
   },
   {
     title: 'Email',
-    dataIndex: 'email'
+    dataIndex: 'Email'
   }
 ]
 
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
-      console.log(pagination)
+      // console.log(pagination)
       const pager = { ...this.pagination }
       pager.current = pagination.current
       this.pagination = pager
@@ -61,25 +61,38 @@ export default {
       })
     },
     fetch(params = {}) {
-      console.log('params:', params)
+      // console.log('params:', params)
       this.loading = true
-      reqwest({
-        url: 'https://randomuser.me/api',
-        method: 'get',
-        data: {
-          results: 10,
-          ...params
-        },
-        type: 'json'
-      }).then(data => {
+      GetTestData(params).then(resjson=>{
+        console.log(resjson)
         const pagination = { ...this.pagination }
         // Read total count from server
         // pagination.total = data.totalCount;
         pagination.total = 200
         this.loading = false
-        this.data = data.results
+        this.data = resjson.result.data
         this.pagination = pagination
       })
+
+      // reqwest({
+      //   url: 'https://randomuser.me/api',
+      //   method: 'get',
+      //   data: {
+      //     results: 10,
+      //     ...params
+      //   },
+      //   type: 'json'
+      // }).then(data => {
+      //   const pagination = { ...this.pagination }
+      //   // Read total count from server
+      //   // pagination.total = data.totalCount;
+      //   pagination.total = 200
+      //   this.loading = false
+      //   this.data = data.results
+      //   this.pagination = pagination
+      // })
+
+
     }
   }
 }
