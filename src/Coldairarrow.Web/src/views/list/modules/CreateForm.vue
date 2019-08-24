@@ -9,12 +9,10 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-form-item
-          label="描述"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-        >
-          <a-input v-decorator="['desc', {rules: [{required: true, min: 5, message: '请输入至少五个字符的规则描述！'}]}]" />
+        <a-form-item label="描述" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input
+            v-decorator="['desc', { rules: [{ required: true, min: 5, message: '请输入至少五个字符的规则描述！' }] }]"
+          />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -23,7 +21,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       labelCol: {
         xs: { span: 24 },
@@ -40,11 +38,13 @@ export default {
     }
   },
   methods: {
-    add () {
+    add() {
       this.visible = true
     },
-    handleSubmit () {
-      const { form: { validateFields } } = this
+    handleSubmit() {
+      const {
+        form: { validateFields }
+      } = this
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
@@ -59,7 +59,7 @@ export default {
         }
       })
     },
-    handleCancel () {
+    handleCancel() {
       this.visible = false
     }
   }
