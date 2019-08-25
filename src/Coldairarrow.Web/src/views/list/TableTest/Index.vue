@@ -17,7 +17,7 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="使用状态">
-              <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
+              <a-select v-model="queryParam.status" required placeholder="请选择" default-value="0">
                 <a-select-option value="0">全部</a-select-option>
                 <a-select-option value="1">关闭</a-select-option>
                 <a-select-option value="2">运行中</a-select-option>
@@ -52,6 +52,7 @@
     </div>
 
     <a-table
+      ref="table"
       :columns="columns"
       :rowKey="row => row.id"
       :dataSource="data"
@@ -62,53 +63,14 @@
     >
     </a-table>
 
-    <a-modal title="操作" style="top: 20px;" :width="800" v-model="visible" @ok="handleOk">
-      <a-form
-        :autoFormCreate="
-          form => {
-            this.form = form
-          }
-        "
-      >
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="唯一识别码"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input placeholder="唯一识别码" v-model="mdl.id" id="no" disabled="disabled" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="角色名称"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input placeholder="起一个名字" v-model="mdl.name" id="role_name" />
-        </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态" hasFeedback validateStatus="warning">
-          <a-select v-model="mdl.status">
-            <a-select-option value="1">正常</a-select-option>
-            <a-select-option value="2">禁用</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述" hasFeedback>
-          <a-textarea :rows="5" v-model="mdl.describe" placeholder="..." id="describe" />
-        </a-form-item>
-        <a-divider />
-      </a-form>
-    </a-modal>
+    <edit-form ref="editForm" :afterSubmit="fetch"></edit-form>
   </a-card>
 </template>
 
 <script>
 import reqwest from 'reqwest'
 import { GetTestData } from '@/api/manage'
+import EditForm from './EditForm'
 
 const columns = [
   { title: 'Name', dataIndex: 'Name', width: '20%' },
@@ -117,6 +79,9 @@ const columns = [
 ]
 
 export default {
+  components: {
+    EditForm
+  },
   mounted() {
     this.fetch()
   },
@@ -157,7 +122,8 @@ export default {
       })
     },
     fetch(params) {
-      console.log('queryParam:', this.queryParam)
+      console.log('获取列表')
+      // console.log('queryParam:', this.queryParam)
       this.loading = true
       GetTestData(params).then(resjson => {
         // console.log(resjson)
@@ -194,12 +160,8 @@ export default {
     hasSelected() {
       return this.selectedRowKeys.length > 0
     },
-    handleOk() {
-      console.log(this.mdl)
-      this.visible = false
-    },
     handleEdit() {
-      this.visible = true
+      this.$refs.editForm.add()
     }
   }
 }
