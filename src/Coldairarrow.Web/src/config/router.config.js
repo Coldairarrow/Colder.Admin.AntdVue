@@ -80,7 +80,7 @@ export const asyncRouterMap = [
             path: '/list/TableTest/Index',
             name: 'TableTest',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/list/TableTest/Index'),
+            component: () => import('@/views/list/TableTest/List'),
             meta: { title: '测试表格', keepAlive: true }
           },
           {

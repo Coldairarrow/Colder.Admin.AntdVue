@@ -94,17 +94,7 @@ export default {
       // 查询参数
       queryParam: {},
       visible: false,
-      selectedRowKeys: [], // Check here to configure the default column,
-      form: null,
-      mdl: {},
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      }
+      selectedRowKeys: [] // Check here to configure the default column,
     }
   },
   methods: {
@@ -122,7 +112,7 @@ export default {
       })
     },
     fetch(params) {
-      console.log('获取列表')
+      // console.log('获取列表')
       // console.log('queryParam:', this.queryParam)
       this.loading = true
       GetTestData(params).then(resjson => {

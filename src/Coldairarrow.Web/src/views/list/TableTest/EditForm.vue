@@ -9,111 +9,23 @@
     :destroyOnClose="true"
   >
     <a-spin :spinning="confirmLoading">
-      <!-- <a-form :form="form">
-        <a-row :gutter="48">
-          <a-col :md="12" :sm="24">
-            <a-form-item label="任务名">
-              <a-input
-                placeholder="请输入任务名称"
-                v-decorator="['name2', { rules: [{ required: true, message: '请输入任务名称', whitespace: true }] }]"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-form-item label="描述" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['desc', { rules: [{ required: true }] }]" />
+      <a-form :form="form">
+        <a-form-item label="用户名" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['UserName', { rules: [{ required: true, message: '请输入用户名' }] }]" />
         </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="唯一识别码">
-          <a-input placeholder="唯一识别码" v-model="mdl.id" />
+        <a-form-item label="密码" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input type="password" v-decorator="['Password', { rules: [{ required: false, message: '' }] }]" />
         </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="角色名称">
-          <a-input placeholder="起一个名字" v-model="mdl.name" />
+        <a-form-item label="姓名" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['RealName', { rules: [{ required: true, message: '请输入姓名' }] }]" />
         </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态" validateStatus="warning">
-          <a-select v-model="mdl.status" defaultValue="1">
-            <a-select-option value="1">正常</a-select-option>
-            <a-select-option value="2">禁用</a-select-option>
+        <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-select v-decorator="['Sex', { rules: [{ required: true }], initialValue: 1, message: '请输入性别' }]">
+            <a-select-option value="1">男</a-select-option>
+            <a-select-option value="0">女</a-select-option>
           </a-select>
         </a-form-item>
-
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述">
-          <a-textarea :rows="5" v-model="mdl.describe" placeholder="..." id="describe" />
-        </a-form-item>
-      </a-form> -->
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline" :form="form">
-          <a-row :gutter="48">
-            <a-col :md="12" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input
-                  placeholder="zxzxz"
-                  v-decorator="['username', { rules: [{ required: false, message: 'Please input your name' }] }]"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select required placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="48">
-            <a-col :md="12" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input placeholder="" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select required placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="48">
-            <a-col :md="12" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input placeholder="" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select required placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="48">
-            <a-col :md="12" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input placeholder="" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select required placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
+      </a-form>
     </a-spin>
   </a-modal>
 </template>
@@ -126,21 +38,20 @@ export default {
       default: null
     }
   },
+  mounted() {
+    this.form.setFieldsValue({
+      UserName:'',
+
+    })
+
+  },
   data() {
     return {
-      mdl: {},
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
+      form: this.$form.createForm(this),
+      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
       visible: false,
-      confirmLoading: false,
-
-      form: this.$form.createForm(this)
+      confirmLoading: false
     }
   },
   methods: {
@@ -157,7 +68,7 @@ export default {
       //   this.confirmLoading = true
       this.form.validateFields((errors, values) => {
         if (!errors) {
-          console.log('values', this.mdl)
+          console.log('数据:', this.form.getFieldsValue())
 
           this.afterSubmit()
           this.visible = false
@@ -165,14 +76,6 @@ export default {
 
         this.confirmLoading = false
       })
-      //   validateFields((errors, values) => {
-      //     if (!errors) {
-      //       console.log('values', this.mdl)
-
-      //       this.visible = false
-      //     }
-      //     this.confirmLoading = false
-      //   })
     },
     handleCancel() {
       this.visible = false
