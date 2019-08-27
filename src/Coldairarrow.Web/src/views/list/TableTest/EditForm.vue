@@ -6,7 +6,7 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
-    :destroyOnClose="true"
+    :destroyOnClose="false"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers'
 export default {
   props: {
     afterSubmit: {
@@ -38,13 +39,7 @@ export default {
       default: null
     }
   },
-  mounted() {
-    this.form.setFieldsValue({
-      UserName:'',
-
-    })
-
-  },
+  created() {},
   data() {
     return {
       form: this.$form.createForm(this),
@@ -60,6 +55,15 @@ export default {
     },
     edit() {
       this.visible = true
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          UserName: '小明',
+          Password: '密码',
+          RealName: '小明',
+          Sex: 1,
+          aaaaa: 55
+        })
+      })
     },
     handleSubmit() {
       //   const {
