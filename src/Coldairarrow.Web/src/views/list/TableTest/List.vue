@@ -151,7 +151,7 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     handleEdit() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.edit()
     }
   }
 }
