@@ -1,8 +1,8 @@
 <template>
   <a-card :bordered="false">
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="handleEdit()">新建</a-button>
-      <a-button type="primary" icon="minus" :disabled="!hasSelected()" :loading="loading">
+      <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
+      <a-button type="primary" icon="minus" @click="handleDelete()" :disabled="!hasSelected()" :loading="loading">
         删除
       </a-button>
     </div>
@@ -60,7 +60,15 @@
       :loading="loading"
       @change="handleTableChange"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+      :bordered="true"
     >
+      <span slot="action" slot-scope="text, record">
+        <template>
+          <a @click="handleEdit(record)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="handleDelete(record)">删除</a>
+        </template>
+      </span>
     </a-table>
 
     <edit-form ref="editForm" :afterSubmit="fetch"></edit-form>
@@ -75,7 +83,8 @@ import EditForm from './EditForm'
 const columns = [
   { title: 'Name', dataIndex: 'Name', width: '20%' },
   { title: 'Gender', dataIndex: 'Gender', width: '20%' },
-  { title: 'Email', dataIndex: 'Email' }
+  { title: 'Email', dataIndex: 'Email' },
+  { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
 export default {
@@ -150,8 +159,14 @@ export default {
     hasSelected() {
       return this.selectedRowKeys.length > 0
     },
+    hanldleAdd() {
+      this.$refs.editForm.add()
+    },
     handleEdit() {
       this.$refs.editForm.edit()
+    },
+    handleDelete() {
+      console.log('删除数据')
     }
   }
 }

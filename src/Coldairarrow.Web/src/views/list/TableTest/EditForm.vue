@@ -7,6 +7,7 @@
     @ok="handleSubmit"
     @cancel="handleCancel"
     :destroyOnClose="false"
+    @afterClose="handleClose"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -31,7 +32,6 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
 export default {
   props: {
     afterSubmit: {
@@ -39,30 +39,49 @@ export default {
       default: null
     }
   },
-  created() {},
   data() {
     return {
       form: this.$form.createForm(this),
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
       visible: false,
-      confirmLoading: false
+      confirmLoading: false,
+      formFields: {},
+      entity: {}
     }
   },
   methods: {
     add() {
       this.visible = true
+
+      this.$nextTick(() => {
+        this.form.resetFields()
+      })
     },
     edit() {
       this.visible = true
+
       this.$nextTick(() => {
-        this.form.setFieldsValue({
+        this.formFields = this.form.getFieldsValue()
+
+        var data = {
           UserName: '小明',
           Password: '密码',
           RealName: '小明',
           Sex: 1,
-          aaaaa: 55
+          aaaaa: 55,
+          bbbbbbbb: 'aaaaaaaaa',
+          xxxxxxxxxxxxxxxx: 'sadsadsa'
+        }
+        var setData = {}
+        Object.keys(this.formFields).forEach(item => {
+          setData[item] = data[item]
         })
+        this.form.setFieldsValue(setData)
+
+        // var obj = Object.assign({ xxxx: 'aaaaaaaaa' }, data)
+        // console.log(obj)
+        // this.form.setFieldsValue(obj)
       })
     },
     handleSubmit() {
@@ -83,6 +102,9 @@ export default {
     },
     handleCancel() {
       this.visible = false
+    },
+    handleClose() {
+      this.form.resetFields()
     }
   }
 }
