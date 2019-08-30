@@ -292,10 +292,6 @@ namespace Coldairarrow.Business.Base_SysManage
             });
         }
 
-        /// <summary>
-        /// 更新用户权限缓存
-        /// </summary>
-        /// <param name="userId"><用户Id/param>
         public void UpdateUserPermissionCache(string userId)
         {
             string cacheKey = BuildCacheKey(userId);

@@ -1,0 +1,293 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Coldairarrow.Entity</name>
+    </assembly>
+    <members>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_AppSecret">
+            <summary>
+            应用密钥
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_AppSecret.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_AppSecret.AppId">
+            <summary>
+            应用Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_AppSecret.AppSecret">
+            <summary>
+            应用密钥
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_AppSecret.AppName">
+            <summary>
+            应用名
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink">
+            <summary>
+            数据库连接
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink.LinkName">
+            <summary>
+            连接名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink.ConnectionStr">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink.DbType">
+            <summary>
+            数据库类型
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_DatabaseLink.SortNum">
+            <summary>
+            排序编号
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_Department">
+            <summary>
+            部门表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_Department.Id">
+            <summary>
+            自然主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_Department.Name">
+            <summary>
+            部门名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_Department.ParentId">
+            <summary>
+            上级部门Id
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_PermissionAppId">
+            <summary>
+            AppId权限表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionAppId.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionAppId.AppId">
+            <summary>
+            AppId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionAppId.PermissionValue">
+            <summary>
+            权限值
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_PermissionRole">
+            <summary>
+            角色权限表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionRole.Id">
+            <summary>
+            逻辑主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionRole.RoleId">
+            <summary>
+            角色主键Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionRole.PermissionValue">
+            <summary>
+            权限值
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_PermissionUser">
+            <summary>
+            用户权限表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionUser.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionUser.UserId">
+            <summary>
+            用户主键Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_PermissionUser.PermissionValue">
+            <summary>
+            权限
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_SysLog">
+            <summary>
+            系统日志表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.LogContent">
+            <summary>
+            日志内容
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.OpUserName">
+            <summary>
+            操作员用户名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.OpTime">
+            <summary>
+            日志记录时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysLog.Data">
+            <summary>
+            数据备份（转为JSON字符串）
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_SysRole">
+            <summary>
+            系统角色
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysRole.Id">
+            <summary>
+            角色Id主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_SysRole.RoleName">
+            <summary>
+            角色名
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_UnitTest">
+            <summary>
+            单元测试表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UnitTest.Id">
+            <summary>
+            代理主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UnitTest.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UnitTest.UserName">
+            <summary>
+            UserName
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UnitTest.Age">
+            <summary>
+            Age
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_User">
+            <summary>
+            系统，用户表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.Id">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.RealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.Sex">
+            <summary>
+            性别(1为男，0为女)
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.Birthday">
+            <summary>
+            出生日期
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_User.DepartmentId">
+            <summary>
+            所属部门Id
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.Base_UserRoleMap">
+            <summary>
+            Base_UserRoleMap
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UserRoleMap.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UserRoleMap.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_SysManage.Base_UserRoleMap.RoleId">
+            <summary>
+            RoleId
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.EnumType">
+            <summary>
+            枚举类型
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_SysManage.EnumType.RoleType">
+            <summary>
+            系统角色类型
+            </summary>
+        </member>
+    </members>
+</doc>
