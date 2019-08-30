@@ -82,10 +82,6 @@ namespace Coldairarrow.Business.Base_SysManage
         /// </summary>
         void ClearUserPermissionCache();
 
-        /// <summary>
-        /// 更新用户权限缓存
-        /// </summary>
-        /// <param name="userId"><用户Id/param>
         void UpdateUserPermissionCache(string userId);
 
         #endregion

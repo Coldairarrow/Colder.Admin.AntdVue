@@ -441,10 +441,6 @@ namespace Coldairarrow.Business
             return Service.ExecuteSql(sql);
         }
 
-        /// <summary>
-        /// 通过参数执行Sql语句
-        /// </summary>
-        /// <param name="sql">Sql语句</param>
         public int ExecuteSql(string sql, List<DbParameter> parameters)
         {
             return Service.ExecuteSql(sql, parameters);

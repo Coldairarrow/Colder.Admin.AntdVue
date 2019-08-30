@@ -45,10 +45,6 @@ namespace Coldairarrow.Business.Base_SysManage
             return Success();
         }
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="theData">删除的数据</param>
         public AjaxResult DeleteData(List<string> ids)
         {
             Delete(ids);
