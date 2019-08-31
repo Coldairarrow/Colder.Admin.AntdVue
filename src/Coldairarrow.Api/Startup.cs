@@ -43,7 +43,7 @@ namespace Coldairarrow.ApiTest
                 c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Business.xml"));
 
                 //控制器层
-                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.ApiTest.xml"), true);
+                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Api.xml"), true);
             });
         }
 
