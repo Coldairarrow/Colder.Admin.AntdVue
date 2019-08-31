@@ -85,9 +85,6 @@ namespace Coldairarrow.Util
             Enabled = true;
         }
 
-        /// <summary> 使用using代替lock操作的对象,可指定写入和读取锁定模式
-        /// <para>构造函数</para>
-        /// <param name="data">为Data属性设置初始值</param>
         public UsingLock(T data)
         {
             Enabled = true;

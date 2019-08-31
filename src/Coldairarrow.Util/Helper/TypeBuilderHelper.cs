@@ -16,9 +16,6 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 创建类型
         /// </summary>
-        /// <param name="typeFullName">类型完全名,包括命名空间</param>
-        /// <param name="assemblyName">类型程序集名</param>
-        /// <param name="properties">类型属性配置</param>
         /// <returns></returns>
         public static Type BuildType(TypeConfig typeConfig)
         {

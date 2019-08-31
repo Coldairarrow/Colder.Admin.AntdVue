@@ -113,7 +113,6 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 将数据库类型转换为对应的数据库类型字符串
         /// </summary>
-        /// <param name="dbTypeStr">数据库类型字符串</param>
         /// <returns></returns>
         public static string DbTypeToDbTypeStr(DatabaseType dbType)
         {

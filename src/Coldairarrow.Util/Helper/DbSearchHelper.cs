@@ -41,7 +41,6 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 获取数据库统计数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="dataSource">数据源</param>
         /// <param name="groupColumn">分组的列</param>
         /// <param name="searchEntris">查询的配置项</param>

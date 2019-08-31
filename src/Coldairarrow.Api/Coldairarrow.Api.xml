@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Coldairarrow.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Coldairarrow.ApiTest.Controllers.ValuesController">
+            <summary>
+            获取数据
+            </summary>
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ControllerBase" />
+        </member>
+        <member name="M:Coldairarrow.ApiTest.Controllers.ValuesController.Get(System.String,System.String)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="userName">用户名</param>
+            <param name="pwd">密码</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

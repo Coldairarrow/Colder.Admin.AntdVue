@@ -1,12 +1,4 @@
-﻿/** Copyright 2010-2012 Twitter, Inc.*/
-
-/**
- * An object that generates IDs.
- * This is broken into a separate class in case
- * we ever want to support multiple worker threads
- * per process
- */
-
+﻿
 using System;
 
 namespace Coldairarrow.Util.Snowflake
@@ -31,23 +23,23 @@ namespace Coldairarrow.Util.Snowflake
 
         private long _sequence = 0L;
         private long _lastTimestamp = -1L;
-	
-	
-        public IdWorker(long workerId, long datacenterId, long sequence = 0L) 
+
+
+        public IdWorker(long workerId, long datacenterId, long sequence = 0L)
         {
             WorkerId = workerId;
             DatacenterId = datacenterId;
             _sequence = sequence;
-		
+
             // sanity check for workerId
-            if (workerId > MaxWorkerId || workerId < 0) 
+            if (workerId > MaxWorkerId || workerId < 0)
             {
-                throw new ArgumentException( String.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId) );
+                throw new ArgumentException(String.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
             }
 
             if (datacenterId > MaxDatacenterId || datacenterId < 0)
             {
-                throw new ArgumentException( String.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
+                throw new ArgumentException(String.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
             }
 
             //log.info(
@@ -55,9 +47,9 @@ namespace Coldairarrow.Util.Snowflake
             //                  TimestampLeftShift, DatacenterIdBits, WorkerIdBits, SequenceBits, workerId)
             //    );	
         }
-	
-        public long WorkerId {get; protected set;}
-        public long DatacenterId {get; protected set;}
+
+        public long WorkerId { get; protected set; }
+        public long DatacenterId { get; protected set; }
 
         public long Sequence
         {
@@ -68,8 +60,8 @@ namespace Coldairarrow.Util.Snowflake
         // def get_timestamp() = System.currentTimeMillis
 
         readonly object _lock = new Object();
-	
-        public virtual long NextId() 
+
+        public virtual long NextId()
         {
             lock (_lock)
             {
@@ -108,7 +100,7 @@ namespace Coldairarrow.Util.Snowflake
         protected virtual long TilNextMillis(long lastTimestamp)
         {
             var timestamp = TimeGen();
-            while (timestamp <= lastTimestamp) 
+            while (timestamp <= lastTimestamp)
             {
                 timestamp = TimeGen();
             }

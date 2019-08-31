@@ -154,6 +154,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 初始化bloom滤波器并设置hash散列的最佳数目
         /// </summary>
+        /// <param name="bloomName"></param>
         /// <param name="bitSize">布隆过滤器的大小(m)默认为10E消耗100M内存</param>
         /// <param name="setSize">集合的大小 (n)默认为1000W</param>
         public BloomFilterWithShareMemory(string bloomName,int bitSize = 1000000000, int setSize = 10000000)
