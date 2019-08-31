@@ -31,7 +31,7 @@
         /// <summary>
         /// 获取指定的数据库帮助类
         /// </summary>
-        /// <param name="dbType">数据库类型字符串</param>
+        /// <param name="dbTypeStr"></param>
         /// <param name="conStr">连接字符串</param>
         /// <returns></returns>
         public static DbHelper GetDbHelper(string dbTypeStr, string conStr)

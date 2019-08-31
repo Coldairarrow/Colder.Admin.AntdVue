@@ -1,9 +1,9 @@
 ﻿{
   "iisSettings": {
-    "windowsAuthentication": false, 
+    "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50000",
+      "applicationUrl": "http://localhost:40000",
       "sslPort": 0
     }
   },
@@ -11,14 +11,16 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Coldairarrow.Web": {
+    "Coldairarrow.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:50000",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:40000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

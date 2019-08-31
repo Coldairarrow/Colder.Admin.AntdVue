@@ -14,7 +14,6 @@ namespace Coldairarrow.Util
         /// </summary>
         /// <param name="key">主键</param>
         /// <param name="value">值</param>
-        /// <typeparam name="T">数据类型</typeparam>
         void SetCache(string key, object value);
 
         /// <summary>
@@ -24,7 +23,6 @@ namespace Coldairarrow.Util
         /// <param name="key">主键</param>
         /// <param name="value">值</param>
         /// <param name="timeout">过期时间间隔</param>
-        /// <typeparam name="T">数据类型</typeparam>
         void SetCache(string key, object value, TimeSpan timeout);
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Coldairarrow.Util
         /// <param name="value">值</param>
         /// <param name="timeout">过期时间间隔</param>
         /// <param name="expireType">过期类型</param>
-        /// <typeparam name="T">数据类型</typeparam>
         void SetCache(string key, object value, TimeSpan timeout, ExpireType expireType);
 
         /// <summary>

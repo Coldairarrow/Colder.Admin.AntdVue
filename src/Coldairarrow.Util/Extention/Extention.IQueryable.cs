@@ -12,7 +12,7 @@ using System.Reflection;
 namespace Coldairarrow.Util
 {
     /// <summary>
-    /// IQueryable<T>的拓展操作
+    /// IQueryable"T"的拓展操作
     /// 作者：Coldairarrow
     /// </summary>
     public static partial class Extention
@@ -119,7 +119,7 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
-        /// 拓展IQueryable<T>方法操作
+        /// 拓展IQueryable"T"方法操作
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
         /// <param name="source">数据源</param>

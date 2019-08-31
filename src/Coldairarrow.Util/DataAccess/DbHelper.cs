@@ -179,7 +179,7 @@ namespace Coldairarrow.Util
         /// 执行无返回值的Sql语句
         /// </summary>
         /// <param name="sql">Sql语句</param>
-        /// <param name="spList">查询参数</param>
+        /// <param name="paramters"></param>
         public int ExecuteSql(string sql, List<DbParameter> paramters)
         {
             int count = 0;

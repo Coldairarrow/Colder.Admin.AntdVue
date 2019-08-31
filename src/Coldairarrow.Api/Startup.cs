@@ -1,23 +1,12 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Autofac.Extras.DynamicProxy;
-using AutoMapper;
-using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Entity.Base_SysManage;
-using Coldairarrow.Util;
-using Microsoft.AspNetCore.Builder;
+ï»¿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Reflection;
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
-namespace Coldairarrow.Web
+namespace Coldairarrow.ApiTest
 {
     public class Startup
     {
@@ -28,121 +17,61 @@ namespace Coldairarrow.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerGen(c =>
             {
-                options.Filters.Add<GlobalExceptionFilter>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-            .AddControllersAsServices();
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton(Configuration);
-            services.AddLogging();
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1.1.0",
+                    Title = "QMFrameWork WebAPI",
+                    Description = "å¯æ¢¦æ¡†æž¶",
+                    TermsOfService = "None",
+                    Contact = new Contact { Name = "QMFrameWork", Email = "792559417@qq.com", Url = "https://blog.csdn.net/weixin_42550800" }
+                });
+                // ä¸º Swagger JSON and UIè®¾ç½®xmlæ–‡æ¡£æ³¨é‡Šè·¯å¾„
+                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//èŽ·å–åº”ç”¨ç¨‹åºæ‰€åœ¨ç›®å½•ï¼ˆç»å¯¹ï¼Œä¸å—å·¥ä½œç›®å½•å½±å“ï¼Œå»ºè®®é‡‡ç”¨æ­¤æ–¹æ³•èŽ·å–è·¯å¾„ï¼‰
 
-            //Ê¹ÓÃAutofacÌæ»»×Ô´øIOC
-            var builder = InitAutofac();
-            builder.Populate(services);
-            var container = builder.Build();
+                //åŸºç¡€å±‚
+                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Util.xml"));
 
-            AutofacHelper.Container = container;
+                //å®žä½“å±‚
+                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Entity.xml"));
 
-            return new AutofacServiceProvider(container);
+                //ä¸šåŠ¡é€»è¾‘å±‚
+                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Business.xml"));
+
+                //æŽ§åˆ¶å™¨å±‚
+                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.ApiTest.xml"), true);
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //Request.BodyÖØÓÃ
-            app.Use(next => context =>
+            if (env.IsDevelopment())
             {
-                context.Request.EnableRewind();
-
-                return next(context);
-            })
-            //¿çÓò
-            .UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
-            )
-            .UseDeveloperExceptionPage()
-            .UseStaticFiles()
-            .UseMvc(routes =>
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseMvc(routes =>
             {
-                //Ä¬ÈÏÂ·ÓÉ
+                //é»˜è®¤è·¯ç”±
                 routes.MapRoute(
                     name: "Default",
-                    template: "{controller=Home}/{action=Index}/{id?}"
-                //defaults: new { controller = "Home", action = "Index" }
+                    template: "Api/{controller=Home}/{action=Index}/{id?}",
+                    defaults:"/swagger"
                 );
 
-                //ÇøÓò
+                //åŒºåŸŸ
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
             });
-
-            InitAutoMapper();
-        }
-
-        private ContainerBuilder InitAutofac()
-        {
-            var builder = new ContainerBuilder();
-
-            var baseType = typeof(IDependency);
-            var baseTypeCircle = typeof(ICircleDependency);
-
-            //ColdairarrowÏà¹Ø³ÌÐò¼¯
-            var assemblys = Assembly.GetEntryAssembly().GetReferencedAssemblies()
-                .Select(Assembly.Load)
-                .Cast<Assembly>()
-                .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
-
-            //×Ô¶¯×¢ÈëIDependency½Ó¿Ú,Ö§³ÖAOP,ÉúÃüÖÜÆÚÎªInstancePerDependency
-            builder.RegisterAssemblyTypes(assemblys.ToArray())
-                .Where(x => baseType.IsAssignableFrom(x) && x != baseType)
-                .AsImplementedInterfaces()
-                .PropertiesAutowired()
-                .InstancePerDependency()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(Interceptor));
-
-            //×Ô¶¯×¢ÈëICircleDependency½Ó¿Ú,Ñ­»·ÒÀÀµ×¢Èë,²»Ö§³ÖAOP,ÉúÃüÖÜÆÚÎªInstancePerLifetimeScope
-            builder.RegisterAssemblyTypes(assemblys.ToArray())
-                .Where(x => baseTypeCircle.IsAssignableFrom(x) && x != baseTypeCircle)
-                .AsImplementedInterfaces()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
-                .InstancePerLifetimeScope();
-
-            //×¢²áController
-            builder.RegisterAssemblyTypes(typeof(Startup).GetTypeInfo().Assembly)
-                .Where(t =>typeof(Controller).IsAssignableFrom(t) &&t.Name.EndsWith("Controller", StringComparison.Ordinal))
-                .PropertiesAutowired();
-
-            //AOP
-            builder.RegisterType<Interceptor>();
-
-            //ÇëÇó½áÊø×Ô¶¯ÊÍ·Å
-            builder.RegisterType<DisposableContainer>()
-                .As<IDisposableContainer>()
-                .InstancePerLifetimeScope();
-
-            return builder;
-        }
-
-        /// <summary>
-        /// ³õÊ¼»¯AutoMapper
-        /// </summary>
-        private void InitAutoMapper()
-        {
-            Mapper.Initialize(cfg =>
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                cfg.CreateMap<Base_User, Base_UserDTO>();
-                cfg.CreateMap<Base_SysRole, Base_SysRoleDTO>();
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
             });
         }
     }

@@ -1,163 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <ServerGarbageCollection>false</ServerGarbageCollection>
-    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Coldairarrow.Web</AssemblyName>
-    <RootNamespace>Coldairarrow.Web</RootNamespace>
-    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Coldairarrow.Api</RootNamespace>
+    <AssemblyName>Coldairarrow.Api</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\文档\0软件项目\GitHub\Colder.Fx.Core.AdtdVue\src\Coldairarrow.Api\Coldairarrow.Api.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <CodeAnalysisRuleSet />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0</DefineConstants>
-    <Optimize>false</Optimize>
-    <PlatformTarget></PlatformTarget>
-    <CodeAnalysisRuleSet />
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Areas\Base_SysManage\Views\Base_AppSecret\Form.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_AppSecret\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_AppSecret\PermissionForm.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Form.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_DatabaseLink\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_SysLog\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_SysRole\Form.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_SysRole\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_SysRole\PermissionForm.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_User\ChangePwdForm.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_User\Form.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_User\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\City\Index.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\Common\ShowBigImg.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\RapidDevelopment\Form.cshtml" />
-    <None Include="Areas\Base_SysManage\Views\RapidDevelopment\Index.cshtml" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\emotion\emotion.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\formula\formula.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\image\image.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\link\link.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\map\map.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\dialogs\video\video.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\lang\en\en.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\lang\zh-cn\zh-cn.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\jquery.min.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneral-webfont.svg" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbol-webfont.svg" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralbolita-webfont.svg" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\font\stixgeneral-bundle\stixgeneralitalic-webfont.svg" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\font\Symbola.svg" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\mathquill.js" />
-    <None Include="wwwroot\Scripts\vendor\umeditor\third-party\mathquill\mathquill.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Npgsql" Version="4.0.7" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.19.30" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj" />
-    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj" />
     <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj" />
-    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Areas\Base_SysManage\Views\Base_AppSecret\Form.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_AppSecret\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_AppSecret\PermissionForm.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_DatabaseLink\Form.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_DatabaseLink\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_SysRole\Form.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_SysRole\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_SysRole\PermissionForm.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_User\ChangePwdForm.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_User\Form.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_User\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\Base_User\PermissionForm.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\RapidDevelopment\Form.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Base_SysManage\Views\RapidDevelopment\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\Desktop.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\Login.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\Statis.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Test\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="wwwroot\Download\_1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\Upload\File\_.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\Upload\Img\_.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="startdocker.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
