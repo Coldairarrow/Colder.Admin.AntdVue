@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Base_SysManage;
+﻿using Coldairarrow.Business.Base_Manage;
 
 namespace Coldairarrow.Business.Cache
 {
