@@ -1,5 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using NLog;
 using System;

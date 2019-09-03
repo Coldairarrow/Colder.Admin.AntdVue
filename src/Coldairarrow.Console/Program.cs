@@ -1,5 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Entity.Base_Manage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -54,14 +54,6 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            var db = DbFactory.GetRepository();
-            db.HandleSqlLog = Console.WriteLine;
-            var userIds = from a in db.GetIQueryable<Base_SysRole>()
-                          join b in db.GetIQueryable<Base_UserRoleMap>() on a.Id equals b.RoleId
-                          where a.RoleName == "超级管理员"
-                          select b.UserId;
-            var users = db.GetIQueryable<Base_User>().Where(x => userIds.Contains(x.Id)).ToList();
-
             Console.WriteLine("完成");
             Console.ReadLine();
         }

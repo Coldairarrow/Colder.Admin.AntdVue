@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Coldairarrow.Business.Base_SysManage;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Entity.Base_Manage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coldairarrow.ApiTest.Controllers

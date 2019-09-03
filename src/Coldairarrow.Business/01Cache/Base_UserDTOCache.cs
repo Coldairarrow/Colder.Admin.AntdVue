@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Base_SysManage;
+﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using System.Linq;
 
