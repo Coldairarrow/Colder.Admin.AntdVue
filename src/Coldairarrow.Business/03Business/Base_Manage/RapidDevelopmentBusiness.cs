@@ -96,7 +96,7 @@ namespace Coldairarrow.Business.Base_Manage
         private void BuildEntity(List<TableInfo> tableInfo, string areaName, string tableName)
         {
             string rootPath = _contentRootPath;
-            string entityPath = rootPath.Replace("Coldairarrow.Web", "Coldairarrow.Entity") + areaName;
+            string entityPath = rootPath.Replace("Coldairarrow.Api", "Coldairarrow.Entity") + areaName;
             string filePath = $@"{entityPath}\{tableName}.cs";
             string nameSpace = $@"Coldairarrow.Entity.{areaName}";
 
@@ -121,7 +121,7 @@ namespace Coldairarrow.Business.{areaName}
         AjaxResult DeleteData(List<string> ids);
     }}
 }}";
-            string rootPath = _contentRootPath.Replace("Coldairarrow.Web", "Coldairarrow.Business"); ;
+            string rootPath = _contentRootPath.Replace("Coldairarrow.Api", "Coldairarrow.Business"); ;
             string filePath = Path.Combine(rootPath, "IBusiness", areaName, $"{className}.cs");
 
             FileHelper.WriteTxt(code, filePath, FileMode.Create);
@@ -189,7 +189,7 @@ namespace Coldairarrow.Business.{areaName}
         #endregion
     }}
 }}";
-            string rootPath = _contentRootPath.Replace("Coldairarrow.Web", "Coldairarrow.Business"); ;
+            string rootPath = _contentRootPath.Replace("Coldairarrow.Api", "Coldairarrow.Business"); ;
             string filePath = Path.Combine(rootPath, "Business", areaName, $"{className}.cs");
 
             FileHelper.WriteTxt(code, filePath, FileMode.Create);
@@ -205,7 +205,7 @@ using Coldairarrow.Entity.{areaName};
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coldairarrow.Web.Areas.{areaName}.Controllers
+namespace Coldairarrow.Api.Areas.{areaName}.Controllers
 {{
     [Area(""{areaName}"")]
     public class {entityName}Controller : BaseMvcController
