@@ -247,7 +247,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entity">实体对象</param>
         public void Update(T entity)
         {
@@ -257,7 +256,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 更新多条数据
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="entities">数据列表</param>
         public void Update(List<T> entities)
         {
@@ -316,7 +314,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 获取实体
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         public T GetEntity(params object[] keyValue)
@@ -327,7 +324,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 获取表的所有数据，当数据量很大时不要使用！
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <returns></returns>
         public List<T> GetList()
         {
@@ -337,7 +333,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 获取实体对应的表，延迟加载，主要用于支持Linq查询操作
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <returns></returns>
         public virtual IQueryable<T> GetIQueryable()
         {
@@ -407,7 +402,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 通过sql返回List
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="sqlStr">sql语句</param>
         /// <returns></returns>
         public List<U> GetListBySql<U>(string sqlStr) where U : class, new()
@@ -418,7 +412,6 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 通过sql返回list
         /// </summary>
-        /// <typeparam name="T">实体类</typeparam>
         /// <param name="sqlStr">sql语句</param>
         /// <param name="param">参数</param>
         /// <returns></returns>
@@ -459,7 +452,6 @@ namespace Coldairarrow.Business
             {
                 Success = true,
                 Msg = "请求成功！",
-                Data = null
             };
 
             return res;
@@ -468,31 +460,14 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 返回成功
         /// </summary>
-        /// <param name="msg">消息</param>
+        /// <param name="data">返回数据</param>
         /// <returns></returns>
-        public AjaxResult Success(string msg)
+        public AjaxResult<U> Success<U>(U data)
         {
-            AjaxResult res = new AjaxResult
+            AjaxResult<U> res = new AjaxResult<U>
             {
                 Success = true,
-                Msg = msg,
-                Data = null
-            };
-
-            return res;
-        }
-
-        /// <summary>
-        /// 返回成功
-        /// </summary>
-        /// <param name="data">返回的数据</param>
-        /// <returns></returns>
-        public AjaxResult Success(object data)
-        {
-            AjaxResult res = new AjaxResult
-            {
-                Success = true,
-                Msg = "请求成功！",
+                Msg = "操作成功",
                 Data = data
             };
 
@@ -502,12 +477,12 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 返回成功
         /// </summary>
-        /// <param name="msg">返回的消息</param>
-        /// <param name="data">返回的数据</param>
+        /// <param name="data">返回数据</param>
+        /// <param name="msg">返回消息</param>
         /// <returns></returns>
-        public AjaxResult Success(string msg, object data)
+        public AjaxResult<U> Success<U>(U data, string msg)
         {
-            AjaxResult res = new AjaxResult
+            AjaxResult<U> res = new AjaxResult<U>
             {
                 Success = true,
                 Msg = msg,
@@ -527,7 +502,6 @@ namespace Coldairarrow.Business
             {
                 Success = false,
                 Msg = "请求失败！",
-                Data = null
             };
 
             return res;
@@ -544,51 +518,9 @@ namespace Coldairarrow.Business
             {
                 Success = false,
                 Msg = msg,
-                Data = null
             };
 
             return res;
-        }
-
-        /// <summary>
-        /// 构建前端Select远程搜索数据
-        /// </summary>
-        /// <param name="selectedValueJson">已选择的项，JSON数组</param>
-        /// <param name="q">查询关键字</param>
-        /// <param name="textFiled">文本字段</param>
-        /// <param name="valueField">值字段</param>
-        /// <returns></returns>
-        public List<T> BuildSelectResult(string selectedValueJson, string q, string textFiled, string valueField)
-        {
-            Pagination pagination = new Pagination
-            {
-                PageRows = 10
-            };
-
-            List<T> selectedList = new List<T>();
-            List<T> newQList = new List<T>();
-            var iq = new BaseBusiness<T>().GetIQueryable();
-            string where = " 1=1 ";
-            List<string> ids = selectedValueJson?.ToList<string>() ?? new List<string>();
-            if (ids.Count > 0)
-            {
-                selectedList = GetNewQ().Where($"@0.Contains({valueField})", ids).ToList();
-
-                where += $" && !@0.Contains({valueField})";
-            }
-
-            if (!q.IsNullOrEmpty())
-            {
-                where += $" && it.{textFiled}.Contains(@1)";
-            }
-            newQList = GetNewQ().Where(where, ids, q).GetPagination(pagination).ToList();
-
-            return selectedList.Concat(newQList).ToList();
-
-            IQueryable<T> GetNewQ()
-            {
-                return GetIQueryable();
-            }
         }
 
         #endregion

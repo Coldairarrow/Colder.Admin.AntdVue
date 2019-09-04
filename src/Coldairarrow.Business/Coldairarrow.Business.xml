@@ -460,14 +460,12 @@
             <summary>
             更新一条数据
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <param name="entity">实体对象</param>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Update(System.Collections.Generic.List{`0})">
             <summary>
             更新多条数据
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <param name="entities">数据列表</param>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateAny(`0,System.Collections.Generic.List{System.String})">
@@ -488,7 +486,6 @@
             <summary>
             指定条件更新
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <param name="whereExpre">筛选表达式</param>
             <param name="set">更改属性回调</param>
         </member>
@@ -508,7 +505,6 @@
             <summary>
             获取实体
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <param name="keyValue">主键</param>
             <returns></returns>
         </member>
@@ -516,14 +512,12 @@
             <summary>
             获取表的所有数据，当数据量很大时不要使用！
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetIQueryable">
             <summary>
             获取实体对应的表，延迟加载，主要用于支持Linq查询操作
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetPagination``1(System.Linq.IQueryable{``0},Coldairarrow.Util.Pagination)">
@@ -568,7 +562,6 @@
             <summary>
             通过sql返回List
             </summary>
-            <typeparam name="T">实体类型</typeparam>
             <param name="sqlStr">sql语句</param>
             <returns></returns>
         </member>
@@ -576,7 +569,6 @@
             <summary>
             通过sql返回list
             </summary>
-            <typeparam name="T">实体类</typeparam>
             <param name="sqlStr">sql语句</param>
             <param name="param">参数</param>
             <returns></returns>
@@ -593,26 +585,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Success(System.String)">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.Success``1(``0)">
             <summary>
             返回成功
             </summary>
-            <param name="msg">消息</param>
+            <param name="data">返回数据</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Success(System.Object)">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.Success``1(``0,System.String)">
             <summary>
             返回成功
             </summary>
-            <param name="data">返回的数据</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Success(System.String,System.Object)">
-            <summary>
-            返回成功
-            </summary>
-            <param name="msg">返回的消息</param>
-            <param name="data">返回的数据</param>
+            <param name="data">返回数据</param>
+            <param name="msg">返回消息</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Error">
@@ -626,16 +611,6 @@
             返回错误
             </summary>
             <param name="msg">错误提示</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.BuildSelectResult(System.String,System.String,System.String,System.String)">
-            <summary>
-            构建前端Select远程搜索数据
-            </summary>
-            <param name="selectedValueJson">已选择的项，JSON数组</param>
-            <param name="q">查询关键字</param>
-            <param name="textFiled">文本字段</param>
-            <param name="valueField">值字段</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Dispose">
