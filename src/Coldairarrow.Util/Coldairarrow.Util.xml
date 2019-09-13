@@ -341,16 +341,6 @@
             <param name="index">索引序号</param>
             <param name="t">实体类型</param>
         </member>
-        <member name="T:Coldairarrow.Util.Snowflake.IdWorker">
-            <summary>
-            https://github.com/ccollie/snowflake-net
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.SnowflakeId">
-            <summary>
-            雪花Id,全局唯一,性能高,取代GUID
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Util.TaskQeury">
             <summary>
             任务队列
@@ -2494,17 +2484,6 @@
             <summary>
             使用Json,即application/json
             </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.IdHelper">
-            <summary>
-            GUID帮助类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.IdHelper.GetId">
-            <summary>
-            生成主键,统一使用雪花Id
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.ImgHelper">
             <summary>

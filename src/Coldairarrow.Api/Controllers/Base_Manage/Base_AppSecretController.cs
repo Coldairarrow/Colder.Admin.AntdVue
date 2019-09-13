@@ -2,6 +2,7 @@ using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
@@ -49,12 +50,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public ActionResult SaveData(Base_AppSecret theData)
+        public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
         {
             AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.Id = IdHelper.GetId();
+                theData.CreateTime = DateTime.Now;
+                theData.CreatorId = Operator.UserId;
+                theData.CreatorRealName = Operator.Property.RealName;
 
                 res = _appSecretBus.AddData(theData);
             }
@@ -71,7 +75,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public ActionResult DeleteData(string ids)
+        public ActionResult<AjaxResult> DeleteData(string ids)
         {
             var res = _appSecretBus.DeleteData(ids.ToList<string>());
 

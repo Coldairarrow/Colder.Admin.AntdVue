@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Util;
 
 namespace Coldairarrow.Api
 {
@@ -9,6 +10,6 @@ namespace Coldairarrow.Api
     //[CheckSign]
     public class BaseApiController : BaseController
     {
-
+        public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
     }
 }
