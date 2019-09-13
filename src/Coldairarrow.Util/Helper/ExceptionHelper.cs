@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -59,7 +60,19 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetExceptionAllMsg(Exception ex)
         {
-            return GetExceptionAllMsg(ex, 1);
+            string msg = GetExceptionAllMsg(ex, 1);
+            try
+            {
+                msg += $@"
+url:{HttpContextCore.Current.Request.GetDisplayUrl()}
+body:{HttpContextCore.Current.Request.Body.ReadToString()}
+";
+            }
+            catch
+            {
+
+            }
+            return msg;
         }
     }
 }

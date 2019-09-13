@@ -26,4 +26,6 @@
     <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

@@ -112,6 +112,7 @@ namespace Coldairarrow.Api
             });
 
             InitAutoMapper();
+            InitId();
         }
 
         private ContainerBuilder InitAutofac()
@@ -159,9 +160,6 @@ namespace Coldairarrow.Api
             return builder;
         }
 
-        /// <summary>
-        /// 初始化AutoMapper
-        /// </summary>
         private void InitAutoMapper()
         {
             Mapper.Initialize(cfg =>
@@ -170,5 +168,14 @@ namespace Coldairarrow.Api
             });
         }
 
+        private void InitId()
+        {
+            new IdHelperBootstrapper()
+                //设置WorkerId
+                .SetWorkderId(ConfigHelper.GetValue("WorkerId").ToLong())
+                //使用Zookeeper
+                //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
+                .Boot();
+        }
     }
 }
