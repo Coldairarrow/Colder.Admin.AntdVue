@@ -11,18 +11,18 @@ export const asyncRouterMap = [
     redirect: '/dashboard/workplace',
     children: [
       {
-        path: '/base_manage',
-        name: 'base_manage',
-        redirect: '/base_manage/base_appsecret/List',
+        path: '/Base_Manage',
+        name: 'Base_Manage',
+        redirect: '/Base_Manage/Base_AppSecret/List',
         component: PageView,
-        meta: { title: '系统', keepAlive: true, icon: bxAnaalyse, permission: [''] },
+        meta: { title: '系统', keepAlive: true, icon: 'setting' },
         children: [
           {
-            path: '/base_manage/base_appsecret/List',
-            name: 'base_appsecret',
-            component: () => import('@/views/base_manage/base_appsecret/List'),
-            meta: { title: '系统密钥', keepAlive: false, permission: [''] }
-          },
+            path: '/Base_Manage/Base_AppSecret/List',
+            name: 'Base_AppSecret',
+            component: () => import('@/views/Base_Manage/Base_AppSecret/List'),
+            meta: { title: '系统密钥', keepAlive: false }
+          }
         ]
       },
       // dashboard
@@ -90,13 +90,6 @@ export const asyncRouterMap = [
         redirect: '/list/table-list',
         meta: { title: '列表页', icon: 'table', permission: ['table'] },
         children: [
-          {
-            path: '/base_manage/base_appsecret/List',
-            name: 'base_appsecret',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/base_manage/base_appsecret/List'),
-            meta: { title: '密钥管理', keepAlive: true }
-          },
           {
             path: '/list/TableTest/Index',
             name: 'TableTest',
