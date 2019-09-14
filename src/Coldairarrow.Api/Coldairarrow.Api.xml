@@ -152,10 +152,5 @@
             </summary>
             <param name="ids">id数组,JSON数组</param>
         </member>
-        <member name="M:Coldairarrow.Api.Startup.InitAutoMapper">
-            <summary>
-            初始化AutoMapper
-            </summary>
-        </member>
     </members>
 </doc>
