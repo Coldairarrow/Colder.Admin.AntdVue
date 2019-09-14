@@ -52,7 +52,7 @@ import reqwest from 'reqwest'
 import EditForm from './EditForm'
 
 const columns = [
-  { title: 'AppId', dataIndex: 'AppId', width: '20%' },
+  { title: '应用Id', dataIndex: 'AppId', width: '20%' },
   { title: '密钥', dataIndex: 'AppSecret', width: '20%' },
   { title: '应用名', dataIndex: 'AppName' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       data: [],
-      pagination: {},
+      pagination: { current: 1, pageSize: 10 },
       loading: false,
       columns,
       // 查询参数
@@ -79,6 +79,10 @@ export default {
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
+      console.log('分页参数:', pagination)
+      console.log('筛选:', filters)
+      console.log('排序:', sorter)
+
       // console.log(pagination)
       const pager = { ...this.pagination }
       pager.current = pagination.current
@@ -92,8 +96,9 @@ export default {
       })
     },
     getDataList(params) {
+      console.log('参数:', params)
       this.loading = true
-
+      console.log('分页参数:', this.pagination)
       reqwest({
         url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetDataList',
         method: 'post',
