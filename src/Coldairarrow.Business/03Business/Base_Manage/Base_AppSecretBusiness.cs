@@ -66,7 +66,6 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
-        /// 
         [DataDeleteLog(LogType.接口密钥管理, "AppId", "应用Id")]
         public AjaxResult DeleteData(List<string> ids)
         {

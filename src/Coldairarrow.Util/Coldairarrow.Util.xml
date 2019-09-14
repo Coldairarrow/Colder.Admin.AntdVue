@@ -3037,6 +3037,11 @@
             返回数据
             </summary>
         </member>
+        <member name="P:Coldairarrow.Util.AjaxResult`1.Total">
+            <summary>
+            总数据量（仅分页时有效）
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.DatabaseType">
             <summary>
             数据库类型

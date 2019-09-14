@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Coldairarrow.Util
 {
@@ -225,6 +226,15 @@ namespace Coldairarrow.Util
         public object BuildTableResult_BootstrapTable(object dataList)
         {
             return BuildTableResult_DataGrid(dataList);
+        }
+
+        #endregion
+
+        #region AntdVue方案
+
+        public AjaxResult<List<T>> BuildTableResult_AntdVue<T>(List<T> dataList)
+        {
+            return new AjaxResult<List<T>> { Data = dataList, Success = true, Total = _recordCount, Msg = "操作成功!" };
         }
 
         #endregion

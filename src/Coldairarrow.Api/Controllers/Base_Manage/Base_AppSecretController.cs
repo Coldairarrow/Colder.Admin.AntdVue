@@ -38,7 +38,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             var dataList = _appSecretBus.GetDataList(pagination, keyword);
 
-            return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
+            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
         }
 
         #endregion
@@ -50,6 +50,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
+        //[HttpOptions]
         public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
         {
             AjaxResult res;

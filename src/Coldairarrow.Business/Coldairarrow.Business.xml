@@ -49,9 +49,6 @@
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.DeleteData(System.Collections.Generic.List{System.String})">
-            
-        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.Base_DatabaseLinkBusiness.GetTheData(System.String)">
             <summary>
             获取指定的单条数据

@@ -78,15 +78,6 @@ namespace Coldairarrow.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc(routes =>
-            {
-                //默认路由
-                routes.MapRoute(
-                    name: "Default",
-                    template: "Api/{controller=Home}/{action=Index}/{id?}",
-                    defaults: "/swagger"
-                );
-            });
             //Request.Body重用
             app.Use(next => context =>
             {
@@ -110,7 +101,15 @@ namespace Coldairarrow.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0.0");
             });
-
+            app.UseMvc(routes =>
+            {
+                //默认路由
+                routes.MapRoute(
+                    name: "Default",
+                    template: "Api/{controller=Home}/{action=Index}/{id?}",
+                    defaults: "/swagger"
+                );
+            });
             InitAutoMapper();
             InitId();
         }
