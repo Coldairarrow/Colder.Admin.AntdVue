@@ -140,6 +140,13 @@
             <param name="keyword">关键字</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_AppSecretController.GetTheData(System.String)">
+            <summary>
+            获取详情
+            </summary>
+            <param name="id">id主键</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_AppSecretController.SaveData(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             保存

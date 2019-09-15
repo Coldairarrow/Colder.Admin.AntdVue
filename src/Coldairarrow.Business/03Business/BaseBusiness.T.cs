@@ -367,13 +367,13 @@ namespace Coldairarrow.Business
         {
             Pagination pagination = new Pagination
             {
-                page = pageIndex,
-                rows = pageRows,
-                sord = orderType,
-                sidx = orderColumn
+                PageIndex = pageIndex,
+                PageRows = pageRows,
+                SortType = orderType,
+                SortField = orderColumn
             };
-            count = pagination.records = query.Count();
-            pages = pagination.total;
+            count = pagination.Total = query.Count();
+            pages = pagination.PageCount;
 
             return query.GetPagination(pagination).ToList();
         }
