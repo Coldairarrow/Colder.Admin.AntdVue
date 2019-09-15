@@ -3163,36 +3163,6 @@
             数据表格分页
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.Pagination._pageIndex">
-            <summary>
-            当前页码
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination._pageRows">
-            <summary>
-            每页行数
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination._sortField">
-            <summary>
-            排序列
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination._sortType">
-            <summary>
-            排序类型
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination._recordCount">
-            <summary>
-            总记录数
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination._pageCount">
-            <summary>
-            总页数
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Util.Pagination.PageIndex">
             <summary>
             当前页码
@@ -3213,7 +3183,7 @@
             排序类型
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.Pagination.RecordCount">
+        <member name="P:Coldairarrow.Util.Pagination.Total">
             <summary>
             总记录数
             </summary>
@@ -3222,67 +3192,6 @@
             <summary>
             总页数
             </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.page">
-            <summary>
-            当前页
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.rows">
-            <summary>
-            每页行数
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.sidx">
-            <summary>
-            排序列
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.sord">
-            <summary>
-            排序类型
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.records">
-            <summary>
-            总记录数
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.total">
-            <summary>
-            总页数
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.Pagination.BuildTableResult_JqGrid(System.Object)">
-            <summary>
-            构建jqGrid返回的数据
-            </summary>
-            <param name="dataList">返回的数据列表</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Pagination.BuildTableResult_Layui(System.Object)">
-            <summary>
-            构建Layui 返回的表格数据
-            </summary>
-            <param name="dataList">返回的数据列表</param>
-            <returns></returns>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.sort">
-            <summary>
-            排序列
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.Pagination.order">
-            <summary>
-            排序类型
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.Pagination.BuildTableResult_DataGrid(System.Object)">
-            <summary>
-            构建DataGrid返回的数据
-            </summary>
-            <param name="dataList">返回的数据列表</param>
-            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.TableInfo">
             <summary>

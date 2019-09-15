@@ -11,20 +11,14 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-form-item label="用户名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['UserName', { rules: [{ required: true, message: '请输入用户名' }] }]" />
+        <a-form-item label="应用Id" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['AppId', { rules: [{ required: true, message: '请输入应用Id' }] }]" />
         </a-form-item>
-        <a-form-item label="密码" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input type="password" v-decorator="['Password', { rules: [{ required: false, message: '' }] }]" />
+        <a-form-item label="密钥" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['AppSecret', { rules: [{ required: true, message: '请输入密钥' }] }]" />
         </a-form-item>
-        <a-form-item label="姓名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['RealName', { rules: [{ required: true, message: '请输入姓名' }] }]" />
-        </a-form-item>
-        <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="['Sex', { rules: [{ required: true }], initialValue: 1, message: '请输入性别' }]">
-            <a-select-option value="1">男</a-select-option>
-            <a-select-option value="0">女</a-select-option>
-          </a-select>
+        <a-form-item label="应用名" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['AppName', { rules: [{ required: true, message: '请输入应用名' }] }]" />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -32,6 +26,7 @@
 </template>
 
 <script>
+import reqwest from 'reqwest'
 export default {
   props: {
     afterSubmit: {
@@ -52,49 +47,58 @@ export default {
   },
   methods: {
     add() {
+      this.entity = {}
       this.visible = true
 
       this.$nextTick(() => {
         this.form.resetFields()
       })
     },
-    edit() {
+    edit(id) {
       this.visible = true
 
       this.$nextTick(() => {
         this.formFields = this.form.getFieldsValue()
 
-        var data = {
-          UserName: '小明',
-          Password: '密码',
-          RealName: '小明',
-          Sex: 1,
-          aaaaa: 55,
-          bbbbbbbb: 'aaaaaaaaa',
-          xxxxxxxxxxxxxxxx: 'sadsadsa'
-        }
-        var setData = {}
-        Object.keys(this.formFields).forEach(item => {
-          setData[item] = data[item]
-        })
-        this.form.setFieldsValue(setData)
+        this.loading = true
+        reqwest({
+          url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetTheData',
+          method: 'post',
+          data: { id: id },
+          type: 'json'
+        }).then(resJson => {
+          this.loading = false
 
-        // var obj = Object.assign({ xxxx: 'aaaaaaaaa' }, data)
-        // console.log(obj)
-        // this.form.setFieldsValue(obj)
+          this.entity = resJson.Data
+          var setData = {}
+          Object.keys(this.formFields).forEach(item => {
+            setData[item] = this.entity[item]
+          })
+          this.form.setFieldsValue(setData)
+        })
       })
     },
     handleSubmit() {
-      //   const {
-      //     form: { validateFields }
-      //   } = this
-      //   this.confirmLoading = true
       this.form.validateFields((errors, values) => {
+        //校验成功
         if (!errors) {
-          console.log('数据:', this.form.getFieldsValue())
-
-          this.afterSubmit()
-          this.visible = false
+          this.entity = Object.assign(this.entity, this.form.getFieldsValue())
+          this.loading = true
+          reqwest({
+            url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/SaveData',
+            method: 'post',
+            data: this.entity,
+            type: 'json'
+          }).then(resJson => {
+            this.loading = false
+            if (resJson.Success) {
+              this.$message.success('操作成功!')
+              this.afterSubmit()
+              this.visible = false
+            } else {
+              this.$message.error(resJson.Msg)
+            }
+          })
         }
 
         this.confirmLoading = false
@@ -105,6 +109,7 @@ export default {
     },
     handleClose() {
       this.form.resetFields()
+      this.entity = {}
     }
   }
 }

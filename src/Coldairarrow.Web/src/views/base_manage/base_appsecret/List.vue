@@ -2,7 +2,13 @@
   <a-card :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
-      <a-button type="primary" icon="minus" @click="handleDelete()" :disabled="!hasSelected()" :loading="loading">
+      <a-button
+        type="primary"
+        icon="minus"
+        @click="handleDelete(selectedRowKeys)"
+        :disabled="!hasSelected()"
+        :loading="loading"
+      >
         删除
       </a-button>
     </div>
@@ -36,9 +42,9 @@
     >
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="handleEdit([record.Id])">编辑</a>
           <a-divider type="vertical" />
-          <a @click="handleDelete(record)">删除</a>
+          <a @click="handleDelete([record.Id])">删除</a>
         </template>
       </span>
     </a-table>
@@ -52,7 +58,7 @@ import reqwest from 'reqwest'
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '应用Id', dataIndex: 'AppId', width: '20%' },
+  { title: '应用Id', dataIndex: 'AppId', width: '20%', sorter: true },
   { title: '密钥', dataIndex: 'AppSecret', width: '20%' },
   { title: '应用名', dataIndex: 'AppName' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
@@ -69,52 +75,41 @@ export default {
     return {
       data: [],
       pagination: { current: 1, pageSize: 10 },
+      filters: {},
+      sorter: { field: 'Id', order: 'asc' },
       loading: false,
       columns,
-      // 查询参数
       queryParam: {},
       visible: false,
-      selectedRowKeys: [] // Check here to configure the default column,
+      selectedRowKeys: []
     }
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
-      console.log('分页参数:', pagination)
-      console.log('筛选:', filters)
-      console.log('排序:', sorter)
-
-      // console.log(pagination)
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      this.pagination = pager
-      this.getDataList({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
-      })
+      this.pagination = { ...pagination }
+      this.filters = { ...filters }
+      this.sorter = { ...sorter }
+      this.getDataList()
     },
-    getDataList(params) {
-      console.log('参数:', params)
+    getDataList() {
       this.loading = true
-      console.log('分页参数:', this.pagination)
       reqwest({
         url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetDataList',
         method: 'post',
         data: {
-          results: 10,
-          ...params
+          PageIndex: this.pagination.current,
+          PageRows: this.pagination.pageSize,
+          SortField: this.sorter.field || 'Id',
+          SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
+          ...this.queryParam,
+          ...this.filters
         },
         type: 'json'
       }).then(resJson => {
         this.loading = false
-
-        const pagination = { ...this.pagination }
-        // Read total count from server
-        // pagination.total = data.totalCount;
-        pagination.total = resJson.Total
         this.data = resJson.Data
+        const pagination = { ...this.pagination }
+        pagination.total = resJson.Total
         this.pagination = pagination
       })
     },
@@ -127,11 +122,36 @@ export default {
     hanldleAdd() {
       this.$refs.editForm.add()
     },
-    handleEdit() {
-      this.$refs.editForm.edit()
+    handleEdit(id) {
+      this.$refs.editForm.edit(id)
     },
-    handleDelete() {
-      console.log('删除数据')
+    handleDelete(ids) {
+      var thisObj = this
+      this.$confirm({
+        title: '确认删除吗?',
+        onOk() {
+          thisObj.submitDelete(ids)
+        }
+      })
+    },
+    submitDelete(ids) {
+      this.loading = true
+      reqwest({
+        url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/DeleteData',
+        method: 'post',
+        data: { ids: JSON.stringify(ids) },
+        type: 'json'
+      }).then(resJson => {
+        this.loading = false
+
+        if (resJson.Success) {
+          this.$message.success('操作成功!')
+
+          this.getDataList()
+        } else {
+          this.$message.error(resJson.Msg)
+        }
+      })
     }
   }
 }

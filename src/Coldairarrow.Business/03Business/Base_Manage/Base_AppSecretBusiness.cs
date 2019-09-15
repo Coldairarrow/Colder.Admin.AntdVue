@@ -15,13 +15,13 @@ namespace Coldairarrow.Business.Base_Manage
             var where = LinqHelper.True<Base_AppSecret>();
             if (!keyword.IsNullOrEmpty())
             {
-                where = where.And(x => 
+                where = where.And(x =>
                     x.AppId.Contains(keyword)
                     || x.AppSecret.Contains(keyword)
                     || x.AppName.Contains(keyword));
             }
 
-            return q.GetPagination(pagination).ToList();
+            return q.Where(where).GetPagination(pagination).ToList();
         }
 
         /// <summary>

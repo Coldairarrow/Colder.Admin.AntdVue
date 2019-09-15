@@ -80,10 +80,10 @@ namespace Coldairarrow.Business
                     q.Bool(b => b.Filter(filters.ToArray()))
                 )
                 .Sort(o => o.Field(typeof(Base_SysLog).GetProperty(pagination.SortField), sortOrder))
-                .Skip((pagination.page - 1) * pagination.rows)
-                .Take(pagination.rows)
+                .Skip((pagination.PageIndex - 1) * pagination.PageRows)
+                .Take(pagination.PageRows)
             );
-            pagination.RecordCount = (int)result.Total;
+            pagination.Total = (int)result.Total;
 
             return result.Documents.ToList();
         }

@@ -41,6 +41,19 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
         }
 
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="id">id主键</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<Base_AppSecret>> GetTheData(string id)
+        {
+            var theData = _appSecretBus.GetTheData(id) ?? new Base_AppSecret();
+
+            return Success(theData);
+        }
+
         #endregion
 
         #region 提交
@@ -50,7 +63,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        //[HttpOptions]
         public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
         {
             AjaxResult res;

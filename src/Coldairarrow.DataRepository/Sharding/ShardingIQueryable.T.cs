@@ -141,10 +141,10 @@ namespace Coldairarrow.DataRepository
         }
         public List<T> GetPagination(Pagination pagination)
         {
-            pagination.records = Count();
-            _source = _source.OrderBy($"{pagination.sidx} {pagination.sord}");
+            pagination.Total = Count();
+            _source = _source.OrderBy($"{pagination.SortField} {pagination.SortType}");
 
-            return Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows).ToList();
+            return Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows).ToList();
         }
         private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable<T> newSource = null)
         {

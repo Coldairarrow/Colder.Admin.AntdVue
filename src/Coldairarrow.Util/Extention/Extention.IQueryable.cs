@@ -33,10 +33,10 @@ namespace Coldairarrow.Util
         {
             Pagination pagination = new Pagination
             {
-                page = pageIndex,
-                rows = pageRows,
-                sord = orderType,
-                sidx = orderColumn
+                PageIndex = pageIndex,
+                PageRows = pageRows,
+                SortType = orderType,
+                SortField = orderColumn
             };
 
             return source.GetPagination(pagination);
@@ -51,9 +51,9 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static IQueryable<T> GetPagination<T>(this IQueryable<T> source, Pagination pagination)
         {
-            pagination.records = source.Count();
+            pagination.Total = source.Count();
             source = source.OrderBy(pagination.SortField, pagination.SortType);
-            return source.Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows);
+            return source.Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows);
         }
 
         /// <summary>
