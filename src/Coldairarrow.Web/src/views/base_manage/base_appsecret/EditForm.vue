@@ -6,8 +6,6 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
-    :destroyOnClose="false"
-    @afterClose="handleClose"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -49,10 +47,7 @@ export default {
     add() {
       this.entity = {}
       this.visible = true
-
-      this.$nextTick(() => {
-        this.form.resetFields()
-      })
+      this.form.resetFields()
     },
     edit(id) {
       this.visible = true
@@ -60,15 +55,12 @@ export default {
       this.$nextTick(() => {
         this.formFields = this.form.getFieldsValue()
 
-        this.loading = true
         reqwest({
           url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetTheData',
           method: 'post',
           data: { id: id },
           type: 'json'
         }).then(resJson => {
-          this.loading = false
-
           this.entity = resJson.Data
           var setData = {}
           Object.keys(this.formFields).forEach(item => {
@@ -83,14 +75,15 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-          this.loading = true
+
+          this.confirmLoading = true
           reqwest({
             url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/SaveData',
             method: 'post',
             data: this.entity,
             type: 'json'
           }).then(resJson => {
-            this.loading = false
+            this.confirmLoading = false
             if (resJson.Success) {
               this.$message.success('操作成功!')
               this.afterSubmit()
@@ -100,16 +93,10 @@ export default {
             }
           })
         }
-
-        this.confirmLoading = false
       })
     },
     handleCancel() {
       this.visible = false
-    },
-    handleClose() {
-      this.form.resetFields()
-      this.entity = {}
     }
   }
 }

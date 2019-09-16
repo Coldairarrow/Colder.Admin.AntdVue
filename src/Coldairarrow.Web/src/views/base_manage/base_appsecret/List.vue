@@ -130,19 +130,20 @@ export default {
       this.$confirm({
         title: '确认删除吗?',
         onOk() {
-          thisObj.submitDelete(ids)
+          return new Promise((resolve, reject) => {
+            thisObj.submitDelete(ids, resolve, reject)
+          }).catch(() => console.log('Oops errors!'))
         }
       })
     },
-    submitDelete(ids) {
-      this.loading = true
+    submitDelete(ids, resolve, reject) {
       reqwest({
         url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/DeleteData',
         method: 'post',
         data: { ids: JSON.stringify(ids) },
         type: 'json'
       }).then(resJson => {
-        this.loading = false
+        resolve()
 
         if (resJson.Success) {
           this.$message.success('操作成功!')
