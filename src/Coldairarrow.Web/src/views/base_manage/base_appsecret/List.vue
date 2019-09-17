@@ -93,25 +93,42 @@ export default {
     },
     getDataList() {
       this.loading = true
-      reqwest({
-        url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetDataList',
-        method: 'post',
-        data: {
+      this.$http
+        .post('/Api/Base_Manage/Base_AppSecret/GetDataList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
           ...this.queryParam,
           ...this.filters
-        },
-        type: 'json'
-      }).then(resJson => {
-        this.loading = false
-        this.data = resJson.Data
-        const pagination = { ...this.pagination }
-        pagination.total = resJson.Total
-        this.pagination = pagination
-      })
+        })
+        .then(resJson => {
+          console.log(resJson)
+          this.loading = false
+          this.data = resJson.Data
+          const pagination = { ...this.pagination }
+          pagination.total = resJson.Total
+          this.pagination = pagination
+        })
+      // reqwest({
+      //   url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetDataList',
+      //   method: 'post',
+      //   data: {
+      //     PageIndex: this.pagination.current,
+      //     PageRows: this.pagination.pageSize,
+      //     SortField: this.sorter.field || 'Id',
+      //     SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
+      //     ...this.queryParam,
+      //     ...this.filters
+      //   },
+      //   type: 'json'
+      // }).then(resJson => {
+      //   this.loading = false
+      //   this.data = resJson.Data
+      //   const pagination = { ...this.pagination }
+      //   pagination.total = resJson.Total
+      //   this.pagination = pagination
+      // })
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

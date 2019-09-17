@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store/'
 import { VueAxios } from './utils/request'
+import AxiosPlugin from '@/utils/plugin/axios-plugin'
 
 // mock
 import './mock'
@@ -18,7 +19,8 @@ import './utils/filter' // global filter
 Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
-Vue.use(VueAxios)
+// Vue.use(VueAxios)
+Vue.use(AxiosPlugin)
 
 new Vue({
   router,
