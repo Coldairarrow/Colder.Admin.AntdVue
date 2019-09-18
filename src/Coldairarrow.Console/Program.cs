@@ -54,6 +54,15 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
+            string payload = "{\"data\":{\"ip\":\"115.215.229.234\",\"lid\":\"39e5a88b33c1da3d82ba55ba9c4f21735ad8\",\"ret_code\":\"300\",\"server_time\":\"1568817367327\",\"ver\":\"1.0\"},\"key_id\":\"7\",\"sign\":\"601f67e6\"}";
+            string secret = Guid.NewGuid().ToString();
+            string token = JWTHelper.GetToken(payload, secret);
+
+            Console.WriteLine(payload);
+            Console.WriteLine(secret);
+            Console.WriteLine(token);
+            Console.WriteLine(JWTHelper.CheckToken(token, secret));
+            Console.WriteLine($"数据:{JWTHelper.GetPayload(token).ToJson()}");
             Console.WriteLine("完成");
             Console.ReadLine();
         }

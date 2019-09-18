@@ -122,6 +122,41 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
+        /// Base64Url编码
+        /// </summary>
+        /// <param name="text">待编码的文本字符串</param>
+        /// <returns>编码的文本字符串</returns>
+        public static string Base64UrlEncode(this string text)
+        {
+            var plainTextBytes = Encoding.UTF8.GetBytes(text);
+            var base64 = Convert.ToBase64String(plainTextBytes).Replace('+', '-').Replace('/', '_').TrimEnd('=');
+
+            return base64;
+        }
+
+        /// <summary>
+        /// Base64Url解码
+        /// </summary>
+        /// <param name="base64UrlStr">使用Base64Url编码后的字符串</param>
+        /// <returns>解码后的内容</returns>
+        public static string Base64UrlDecode(this string base64UrlStr)
+        {
+            base64UrlStr = base64UrlStr.Replace('-', '+').Replace('_', '/');
+            switch (base64UrlStr.Length % 4)
+            {
+                case 2:
+                    base64UrlStr += "==";
+                    break;
+                case 3:
+                    base64UrlStr += "=";
+                    break;
+            }
+            var bytes = Convert.FromBase64String(base64UrlStr);
+
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        /// <summary>
         /// 计算SHA1摘要
         /// 注：默认使用UTF8编码
         /// </summary>
@@ -169,6 +204,25 @@ namespace Coldairarrow.Util
             byte[] sha1Bytes = str.ToSHA1Bytes(encoding);
             string resStr = BitConverter.ToString(sha1Bytes);
             return resStr.Replace("-", "").ToLower();
+        }
+
+        /// <summary>
+        /// SHA256加密
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns></returns>
+        public static string ToSHA256String(this string str)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            byte[] hash = SHA256.Create().ComputeHash(bytes);
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                builder.Append(hash[i].ToString("x2"));
+            }
+
+            return builder.ToString();
         }
 
         /// <summary>
