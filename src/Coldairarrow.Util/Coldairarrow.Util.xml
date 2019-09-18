@@ -1730,6 +1730,20 @@
             <param name="encoding">解密采用的编码方式，注意和加密时采用的方式一致</param>
             <returns>解密后的字符串</returns>
         </member>
+        <member name="M:Coldairarrow.Util.Extention.Base64UrlEncode(System.String)">
+            <summary>
+            Base64Url编码
+            </summary>
+            <param name="text">待编码的文本字符串</param>
+            <returns>编码的文本字符串</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.Base64UrlDecode(System.String)">
+            <summary>
+            Base64Url解码
+            </summary>
+            <param name="base64UrlStr">使用Base64Url编码后的字符串</param>
+            <returns>解码后的内容</returns>
+        </member>
         <member name="M:Coldairarrow.Util.Extention.ToSHA1Bytes(System.String)">
             <summary>
             计算SHA1摘要
@@ -1760,6 +1774,13 @@
             </summary>
             <param name="str">字符串</param>
             <param name="encoding">编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.ToSHA256String(System.String)">
+            <summary>
+            SHA256加密
+            </summary>
+            <param name="str">字符串</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToInt(System.String)">
@@ -2676,6 +2697,29 @@
             <summary>
             获取操作系统已用的端口号
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.JWTHelper.GetToken(System.String,System.String)">
+            <summary>
+            生成Token
+            </summary>
+            <param name="payloadJsonStr">数据JSON字符串</param>
+            <param name="secret">密钥</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.JWTHelper.GetPayload(System.String)">
+            <summary>
+            获取Token中的数据
+            </summary>
+            <param name="token">token</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.JWTHelper.CheckToken(System.String,System.String)">
+            <summary>
+            校验Token
+            </summary>
+            <param name="token">token</param>
+            <param name="secret">密钥</param>
             <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.LinqHelper">
