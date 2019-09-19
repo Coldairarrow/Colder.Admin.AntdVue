@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Business;
 using Coldairarrow.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Coldairarrow.Api
 {
@@ -8,6 +9,7 @@ namespace Coldairarrow.Api
     /// </summary>
     //[ApiController]
     //[CheckSign]
+    [CheckJWT]
     public class BaseApiController : BaseController
     {
         public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }

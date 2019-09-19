@@ -226,6 +226,24 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
+        /// HMACSHA256算法
+        /// </summary>
+        /// <param name="text">内容</param>
+        /// <param name="secret">密钥</param>
+        /// <returns></returns>
+        public static string ToHMACSHA256String(this string text, string secret)
+        {
+            secret = secret ?? "";
+            byte[] keyByte = Encoding.UTF8.GetBytes(secret);
+            byte[] messageBytes = Encoding.UTF8.GetBytes(text);
+            using (var hmacsha256 = new HMACSHA256(keyByte))
+            {
+                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
+                return Convert.ToBase64String(hashmessage).Replace('+', '-').Replace('/', '_').TrimEnd('=');
+            }
+        }
+
+        /// <summary>
         /// string转int
         /// </summary>
         /// <param name="str">字符串</param>

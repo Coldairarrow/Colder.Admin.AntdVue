@@ -21,6 +21,23 @@
             </summary>
             <param name="context"></param>
         </member>
+        <member name="T:Coldairarrow.Api.CheckJWTAttribute">
+            <summary>
+            JWT校验
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.CheckJWTAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.CheckJWTAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="T:Coldairarrow.Api.CheckParamNotEmptyAttribute">
             <summary>
             参数非空校验

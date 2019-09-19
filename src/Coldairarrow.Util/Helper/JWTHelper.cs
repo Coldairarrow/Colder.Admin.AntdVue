@@ -15,7 +15,7 @@ namespace Coldairarrow.Util
         public static string GetToken(string payloadJsonStr, string secret)
         {
             string payloadBase64Url = payloadJsonStr.Base64UrlEncode();
-            string sign = $"{_headerBase64Url}.{payloadBase64Url}{secret}".ToSHA256String();
+            string sign = $"{_headerBase64Url}.{payloadBase64Url}".ToHMACSHA256String(secret);
 
             return $"{_headerBase64Url}.{payloadBase64Url}.{sign}";
         }
@@ -36,11 +36,11 @@ namespace Coldairarrow.Util
         /// <param name="token">token</param>
         /// <param name="secret">密钥</param>
         /// <returns></returns>
-        public static bool CheckToken(string token,string secret)
+        public static bool CheckToken(string token, string secret)
         {
             var items = token.Split('.');
             var oldSign = items[2];
-            string newSign= $"{items[0]}.{items[1]}{secret}".ToSHA256String();
+            string newSign = $"{items[0]}.{items[1]}".ToHMACSHA256String(secret);
 
             return oldSign == newSign;
         }
