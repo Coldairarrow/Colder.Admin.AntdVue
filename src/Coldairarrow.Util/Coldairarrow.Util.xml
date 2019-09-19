@@ -1783,6 +1783,14 @@
             <param name="str">字符串</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.Extention.ToHMACSHA256String(System.String,System.String)">
+            <summary>
+            HMACSHA256算法
+            </summary>
+            <param name="text">内容</param>
+            <param name="secret">密钥</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.Extention.ToInt(System.String)">
             <summary>
             string转int
