@@ -855,13 +855,7 @@
             拓展类
             </summary>
             <summary>
-            拓展类
-            </summary>
-            <summary>
             拓展方法静态类
-            </summary>
-            <summary>
-            拓展类
             </summary>
             <summary>
             IQueryable"T"的拓展操作
@@ -874,14 +868,6 @@
             </summary>
             <param name="context">上下文</param>
             <param name="entityType">实体类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.ContainsFilter``1(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            是否拥有某过滤器
-            </summary>
-            <typeparam name="T">过滤器类型</typeparam>
-            <param name="actionExecutingContext">上下文</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToString(System.Byte[])">
@@ -1286,20 +1272,6 @@
             注：长度为50字符
             </summary>
             <param name="guid">新的GUID</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.IsAjaxRequest(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            判断是否为AJAX请求
-            </summary>
-            <param name="req"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetDisplayUrlNoQuery(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            获取去掉查询参数的Url
-            </summary>
-            <param name="req">请求</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.Copy``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
@@ -2722,6 +2694,14 @@
             <param name="token">token</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.JWTHelper.GetPayload``1(System.String)">
+            <summary>
+            获取Token中的数据
+            </summary>
+            <typeparam name="T">泛型</typeparam>
+            <param name="token">token</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.JWTHelper.CheckToken(System.String,System.String)">
             <summary>
             校验Token
@@ -3340,10 +3320,49 @@
             清除Session的Cookie
             </summary>
         </member>
+        <member name="T:Microsoft.AspNetCore.Mvc.Filters.Extention">
+            <summary>
+            拓展类
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.Filters.Extention.ContainsFilter``1(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            是否拥有某过滤器
+            </summary>
+            <typeparam name="T">过滤器类型</typeparam>
+            <param name="actionExecutingContext">上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.Extention.Scrpit(Microsoft.AspNetCore.Mvc.IUrlHelper,System.String)">
+            <summary>
+            获取最新的s文件或css文件
+            注：解决缓存问题，只有文件修改后才会获取最新版
+            </summary>
+            <param name="helper"></param>
+            <param name="scriptVirtualPath"></param>
+            <returns></returns>
+        </member>
         <member name="T:Microsoft.AspNetCore.Http.Extention">
             <summary>
             拓展类
             </summary>
+            <summary>
+            拓展类
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Http.Extention.IsAjaxRequest(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            判断是否为AJAX请求
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Http.Extention.GetDisplayUrlNoQuery(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取去掉查询参数的Url
+            </summary>
+            <param name="req">请求</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

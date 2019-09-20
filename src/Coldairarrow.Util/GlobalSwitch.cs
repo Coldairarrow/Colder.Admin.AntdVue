@@ -38,7 +38,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 运行模式
         /// </summary>
-        public static RunModel RunModel { get; } = RunModel.LocalTest;
+        public static RunModel RunModel { get; } = RunModel.Publish;
 
         /// <summary>
         /// 网站文件根路径

@@ -6,7 +6,7 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 配置文件帮助类
     /// </summary>
-    public class ConfigHelper
+    public static class ConfigHelper
     {
         static ConfigHelper()
         {
