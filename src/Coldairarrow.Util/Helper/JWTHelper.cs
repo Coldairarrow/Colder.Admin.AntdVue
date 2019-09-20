@@ -5,6 +5,7 @@ namespace Coldairarrow.Util
     public static class JWTHelper
     {
         private static readonly string _headerBase64Url = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}".Base64UrlEncode();
+        public static readonly string JWTSecret = ConfigHelper.GetValue("JWTSecret");
 
         /// <summary>
         /// 生成Token
@@ -28,6 +29,17 @@ namespace Coldairarrow.Util
         public static JObject GetPayload(string token)
         {
             return token.Split('.')[1].Base64UrlDecode().ToJObject();
+        }
+
+        /// <summary>
+        /// 获取Token中的数据
+        /// </summary>
+        /// <typeparam name="T">泛型</typeparam>
+        /// <param name="token">token</param>
+        /// <returns></returns>
+        public static T GetPayload<T>(string token)
+        {
+            return token.Split('.')[1].Base64UrlDecode().ToObject<T>();
         }
 
         /// <summary>

@@ -4,6 +4,61 @@
         <name>Coldairarrow.Api</name>
     </assembly>
     <members>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.JsonContent(System.String)">
+            <summary>
+            返回JSON
+            </summary>
+            <param name="json">json字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Success">
+            <summary>
+            返回成功
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Success(System.String)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Success``1(``0)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="data">返回的数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Error">
+            <summary>
+            返回错误
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Error(System.String)">
+            <summary>
+            返回错误
+            </summary>
+            <param name="msg">错误提示</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.Error(System.String,System.Int32)">
+            <summary>
+            返回错误
+            </summary>
+            <param name="msg">错误提示</param>
+            <param name="errorCode">错误代码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.BaseActionFilter.ReturnRedirect(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,System.String)">
+            <summary>
+            重定向
+            </summary>
+            <param name="context">上下文</param>
+            <param name="redirectUrl">地址</param>
+        </member>
         <member name="T:Coldairarrow.Api.JsonParamterAttribute">
             <summary>
             Json参数支持
@@ -33,6 +88,23 @@
             <param name="context">过滤器上下文</param>
         </member>
         <member name="M:Coldairarrow.Api.CheckJWTAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Coldairarrow.Api.NoCheckJWTAttribute">
+            <summary>
+            忽略JWT校验
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.NoCheckJWTAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.NoCheckJWTAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
             <summary>
             Action执行完毕之后执行
             </summary>
@@ -175,6 +247,19 @@
             删除数据
             </summary>
             <param name="ids">id数组,JSON数组</param>
+        </member>
+        <member name="T:Coldairarrow.Api.Controllers.Base_Manage.HomeController">
+            <summary>
+            首页控制器
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.HomeController.SubmitLogin(System.String,System.String)">
+            <summary>
+            用户登录(获取token)
+            </summary>
+            <param name="userName">账号</param>
+            <param name="password">密码</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import reqwest from 'reqwest'
 import EditForm from './EditForm'
 
 const columns = [
@@ -103,32 +102,12 @@ export default {
           ...this.filters
         })
         .then(resJson => {
-          console.log(resJson)
           this.loading = false
           this.data = resJson.Data
           const pagination = { ...this.pagination }
           pagination.total = resJson.Total
           this.pagination = pagination
         })
-      // reqwest({
-      //   url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetDataList',
-      //   method: 'post',
-      //   data: {
-      //     PageIndex: this.pagination.current,
-      //     PageRows: this.pagination.pageSize,
-      //     SortField: this.sorter.field || 'Id',
-      //     SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
-      //     ...this.queryParam,
-      //     ...this.filters
-      //   },
-      //   type: 'json'
-      // }).then(resJson => {
-      //   this.loading = false
-      //   this.data = resJson.Data
-      //   const pagination = { ...this.pagination }
-      //   pagination.total = resJson.Total
-      //   this.pagination = pagination
-      // })
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
@@ -154,12 +133,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      reqwest({
-        url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/DeleteData',
-        method: 'post',
-        data: { ids: JSON.stringify(ids) },
-        type: 'json'
-      }).then(resJson => {
+      this.$http.post('/Api/Base_Manage/Base_AppSecret/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
         resolve()
 
         if (resJson.Success) {

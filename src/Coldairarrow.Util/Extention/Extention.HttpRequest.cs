@@ -1,8 +1,7 @@
 ﻿using Coldairarrow.Util;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Coldairarrow.Util
+namespace Microsoft.AspNetCore.Http
 {
     /// <summary>
     /// 拓展类

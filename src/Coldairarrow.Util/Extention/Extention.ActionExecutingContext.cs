@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using System.Linq;
+﻿using System.Linq;
 
-namespace Coldairarrow.Util
+namespace Microsoft.AspNetCore.Mvc.Filters
 {
     /// <summary>
     /// 拓展类
