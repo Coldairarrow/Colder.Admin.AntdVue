@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import reqwest from 'reqwest'
 export default {
   props: {
     afterSubmit: {
@@ -55,12 +54,7 @@ export default {
       this.$nextTick(() => {
         this.formFields = this.form.getFieldsValue()
 
-        reqwest({
-          url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/GetTheData',
-          method: 'post',
-          data: { id: id },
-          type: 'json'
-        }).then(resJson => {
+        this.$http.post('/Api/Base_Manage/Base_AppSecret/GetTheData', { id: id }).then(resJson => {
           this.entity = resJson.Data
           var setData = {}
           Object.keys(this.formFields).forEach(item => {
@@ -77,13 +71,9 @@ export default {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
 
           this.confirmLoading = true
-          reqwest({
-            url: 'http://localhost:40000/Api/Base_Manage/Base_AppSecret/SaveData',
-            method: 'post',
-            data: this.entity,
-            type: 'json'
-          }).then(resJson => {
+          this.$http.post('/Api/Base_Manage/Base_AppSecret/SaveData', this.entity).then(resJson => {
             this.confirmLoading = false
+
             if (resJson.Success) {
               this.$message.success('操作成功!')
               this.afterSubmit()
