@@ -5,11 +5,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/'
-import { VueAxios } from './utils/request'
+// import { VueAxios } from './utils/request'
 import AxiosPlugin from '@/utils/plugin/axios-plugin'
 
 // mock
-import './mock'
+// import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/use'

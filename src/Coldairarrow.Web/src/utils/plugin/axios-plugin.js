@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const rootUrl = 'http://localhost:40000'
-const timeout = 10000
+const timeout = 5000
 
 export const Axios = axios.create({
     baseURL: rootUrl,
-    timeout: timeout,
+    timeout: timeout
 })
 
 //POST传参序列化(添加请求拦截器)
@@ -19,13 +19,14 @@ Axios.interceptors.request.use(config => {
     //     config.data = formData
     // }
 
-    // 下面会说在什么时候存储 token
-    // if (localStorage.token) {
-    //     config.headers.Authorization = 'JWT ' + localStorage.token
-    // }
+    //携带token
+    if (localStorage.token) {
+        config.headers.Authorization = 'Bearer ' + localStorage.token
+    }
     return config
 }, error => {
     // alert("错误的传参", 'fail')
+    // console.log('请求异常:', error)
     return Promise.reject(error)
 })
 
@@ -48,7 +49,13 @@ Axios.interceptors.response.use(res => {
     //     return Promise.reject(error.response.data)
     // }
     // // 返回 response 里的错误信息
-    return Promise.reject(error.response.data)
+    let errorMsg = ''
+    if (error.message.includes('timeout')) {
+        errorMsg = '请求超时!'
+    } else {
+        errorMsg = '请求异常!'
+    }
+    return Promise.resolve({ Success: false, Msg: errorMsg })
 })
 
 export default {
