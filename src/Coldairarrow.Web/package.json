@@ -23,6 +23,7 @@
     "md5": "^2.2.1",
     "mockjs2": "^1.0.5",
     "moment": "^2.24.0",
+    "node-uuid": "^1.4.8",
     "nprogress": "^0.2.0",
     "reqwest": "^2.0.5",
     "viser-vue": "^2.3.3",

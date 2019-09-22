@@ -11,7 +11,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     /// ”¶”√√‹‘ø
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
-    [Route("Api/Base_Manage/[controller]/[action]")]
+    [Route("/Base_Manage/[controller]/[action]")]
     public class Base_AppSecretController : BaseApiController
     {
         #region DI

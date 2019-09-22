@@ -8,7 +8,6 @@
           @change="handleTabClick"
         >
           <a-tab-pane key="tab1" tab="账号密码登录">
-            <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误!" />
             <a-form-item>
               <a-input
                 size="large"
@@ -30,6 +29,9 @@
               >
                 <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-checkbox v-decorator="['savePwd', { valuePropName: 'checked' }]">记住密码</a-checkbox>
             </a-form-item>
           </a-tab-pane>
           <!-- <a-tab-pane key="tab2" tab="手机号登录">
@@ -79,20 +81,8 @@
         </a-tab-pane> -->
         </a-tabs>
 
-        <a-form-item>
-          <a-checkbox v-decorator="['rememberMe']">记住密码</a-checkbox>
-        </a-form-item>
-
         <a-form-item style="margin-top:24px">
-          <a-button
-            size="large"
-            type="primary"
-            htmlType="submit"
-            class="login-button"
-            :loading="state.loginBtn"
-            :disabled="state.loginBtn"
-            >确定</a-button
-          >
+          <a-button size="large" type="primary" htmlType="submit" class="login-button">确定</a-button>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -107,18 +97,16 @@ export default {
     return {
       loading: false,
       customActiveKey: 'tab1',
-      loginBtn: false,
-      isLoginError: false,
-      form: this.$form.createForm(this),
-      state: {
-        time: 60,
-        loginBtn: false,
-        loginType: 0,
-        smsSendBtn: false
-      }
+      form: this.$form.createForm(this)
     }
   },
-  created() {},
+  mounted() {
+    var userName = localStorage.getItem('userName')
+    var password = localStorage.getItem('password')
+    if (userName && password) {
+      this.form.setFieldsValue({ userName, password, savePwd: true })
+    }
+  },
   methods: {
     handleTabClick(key) {
       this.customActiveKey = key
@@ -131,23 +119,28 @@ export default {
         //校验成功
         if (!errors) {
           var values = this.form.getFieldsValue()
+          console.log(values)
           this.loading = true
-          this.$http
-            .post('/Api/Base_Manage/Home/SubmitLogin', values)
-            .then(resJson => {
-              this.loading = false
+          this.$http.post('/Base_Manage/Home/SubmitLogin', values).then(resJson => {
+            this.loading = false
 
-              if (resJson.Success) {
-                var token = resJson.Data
-                localStorage.setItem('token', token)
-                this.$router.push({ path: '/' })
+            if (resJson.Success) {
+              var token = resJson.Data
+              localStorage.setItem('token', token)
+
+              //保存密码
+              if (values['savePwd']) {
+                localStorage.setItem('userName', values['userName'])
+                localStorage.setItem('password', values['password'])
               } else {
-                this.$message.error(resJson.Msg)
+                localStorage.removeItem('userName')
+                localStorage.removeItem('password')
               }
-            })
-            .catch(error => {
-              console.log(error)
-            })
+              this.$router.push({ path: '/' })
+            } else {
+              this.$message.error(resJson.Msg)
+            }
+          })
         }
       })
     }

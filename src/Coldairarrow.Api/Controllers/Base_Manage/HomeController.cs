@@ -7,7 +7,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     /// <summary>
     /// 首页控制器
     /// </summary>
-    [Route("Api/Base_Manage/[controller]/[action]")]
+    [Route("/Base_Manage/[controller]/[action]")]
     public class HomeController : BaseApiController
     {
         public HomeController(IHomeBusiness homeBus)

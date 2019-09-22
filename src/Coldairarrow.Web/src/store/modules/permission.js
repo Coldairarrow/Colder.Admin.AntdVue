@@ -1,4 +1,5 @@
 import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
+import { generatorDynamicRouter } from '@/utils/routerUtil'
 
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
@@ -66,10 +67,10 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
+        generatorDynamicRouter(data).then(routers => {
+          commit('SET_ROUTERS', routers)
+          resolve()
+        })
       })
     }
   }

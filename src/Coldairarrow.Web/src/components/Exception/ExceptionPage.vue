@@ -1,8 +1,7 @@
 <template>
   <div class="exception">
     <div class="imgBlock">
-      <div class="imgEle" :style="{backgroundImage: `url(${config[type].img})`}">
-      </div>
+      <div class="imgEle" :style="{ backgroundImage: `url(${config[type].img})` }"></div>
     </div>
     <div class="content">
       <h1>{{ config[type].title }}</h1>
@@ -25,20 +24,20 @@ export default {
       default: '404'
     }
   },
-  data () {
+  data() {
     return {
       config: types
     }
   },
   methods: {
-    handleToHome () {
-      this.$router.push({ name: 'dashboard' })
+    handleToHome() {
+      this.$router.push({ path: '/' })
     }
   }
 }
 </script>
 <style lang="less">
-@import "~ant-design-vue/lib/style/index";
+@import '~ant-design-vue/lib/style/index';
 
 .exception {
   display: flex;
