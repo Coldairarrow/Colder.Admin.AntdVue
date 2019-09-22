@@ -100,7 +100,7 @@ export default {
         return '0'
       }
       if (this.sidebarOpened) {
-        return '256px'
+        return '200px'
       }
       return '80px'
     }
@@ -135,7 +135,7 @@ export default {
     paddingCalc () {
       let left = ''
       if (this.sidebarOpened) {
-        left = this.isDesktop() ? '256px' : '80px'
+        left = this.isDesktop() ? '200px' : '80px'
       } else {
         left = (this.isMobile() && '0') || ((this.fixSidebar && '80px') || '0')
       }

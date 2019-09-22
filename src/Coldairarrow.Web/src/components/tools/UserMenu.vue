@@ -62,19 +62,8 @@ export default {
         content: '真的要注销登录吗 ?',
         onOk() {
           localStorage.removeItem('token')
-          return that
-            .Logout({})
-            .then(() => {
-              window.location.reload()
-            })
-            .catch(err => {
-              that.$message.error({
-                title: '错误',
-                description: err.message
-              })
-            })
-        },
-        onCancel() {}
+          that.$router.push({ path: '/user/login' })
+        }
       })
     }
   }
