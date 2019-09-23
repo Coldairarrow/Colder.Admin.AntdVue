@@ -41,7 +41,7 @@
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Type">
             <summary>
-            类型,菜单=0,权限=1
+            类型,菜单=0,页面=1,权限=2
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Name">
@@ -57,6 +57,11 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Value">
             <summary>
             权限值
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.NeedAction">
+            <summary>
+            是否需要权限(仅页面有效)
             </summary>
         </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_AppSecret">
@@ -477,6 +482,11 @@
         <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.RoleType">
             <summary>
             系统角色类型
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.ActionTypeEnum">
+            <summary>
+            类型,菜单=0,页面=1,权限=2
             </summary>
         </member>
     </members>

@@ -43,7 +43,7 @@ namespace Coldairarrow.Entity.Base_Manage
         public String ParentId { get; set; }
 
         /// <summary>
-        /// 类型,菜单=0,权限=1
+        /// 类型,菜单=0,页面=1,权限=2
         /// </summary>
         public Int32 Type { get; set; }
 
@@ -62,5 +62,9 @@ namespace Coldairarrow.Entity.Base_Manage
         /// </summary>
         public String Value { get; set; }
 
+        /// <summary>
+        /// 是否需要权限(仅页面有效)
+        /// </summary>
+        public bool NeedAction { get; set; }
     }
 }
