@@ -8,20 +8,20 @@ using System.Collections.Generic;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// 应用密钥
+    /// 系统权限
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
-    public class Base_AppSecretController : BaseApiController
+    public class Base_ActionController : BaseApiController
     {
         #region DI
 
-        public Base_AppSecretController(IBase_AppSecretBusiness appSecretBus)
+        public Base_ActionController(IBase_ActionBusiness actionBus)
         {
-            _appSecretBus = appSecretBus;
+            _actionBus = actionBus;
         }
 
-        IBase_AppSecretBusiness _appSecretBus { get; }
+        IBase_ActionBusiness _actionBus { get; }
 
         #endregion
 
@@ -30,15 +30,14 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <summary>
         /// 获取数据列表
         /// </summary>
-        /// <param name="pagination">分页参数</param>
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_AppSecret>>> GetDataList(Pagination pagination, string keyword)
+        public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetDataList(string keyword)
         {
-            var dataList = _appSecretBus.GetDataList(pagination, keyword);
+            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 });
 
-            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
+            return Success(dataList);
         }
 
         /// <summary>
@@ -47,9 +46,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<Base_AppSecret>> GetTheData(string id)
+        public ActionResult<AjaxResult<Base_Action>> GetTheData(string id)
         {
-            var theData = _appSecretBus.GetTheData(id) ?? new Base_AppSecret();
+            var theData = _actionBus.GetTheData(id) ?? new Base_Action();
 
             return Success(theData);
         }
@@ -63,7 +62,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
+        public ActionResult<AjaxResult> SaveData(Base_Action theData)
         {
             AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
@@ -73,11 +72,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
                 theData.CreatorId = Operator.UserId;
                 //theData.CreatorRealName = Operator.Property.RealName;
 
-                res = _appSecretBus.AddData(theData);
+                res = _actionBus.AddData(theData);
             }
             else
             {
-                res = _appSecretBus.UpdateData(theData);
+                res = _actionBus.UpdateData(theData);
             }
 
             return JsonContent(res.ToJson());
@@ -90,7 +89,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult> DeleteData(string ids)
         {
-            var res = _appSecretBus.DeleteData(ids.ToList<string>());
+            var res = _actionBus.DeleteData(ids.ToList<string>());
 
             return JsonContent(res.ToJson());
         }

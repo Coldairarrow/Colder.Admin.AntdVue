@@ -57,7 +57,7 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '应用Id', dataIndex: 'AppId', width: '20%', sorter: true },
+  { title: '菜单名', dataIndex: 'Name', width: '20%', sorter: true },
   { title: '密钥', dataIndex: 'AppSecret', width: '20%' },
   { title: '应用名', dataIndex: 'AppName' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }

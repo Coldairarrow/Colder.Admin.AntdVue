@@ -46,11 +46,6 @@ export const getRouterByUser = () => {
           "title": "密钥管理",
           "name": "Base_AppSecret",
           "path": '/Base_Manage/Base_AppSecret/List'
-        },
-        {
-          "title": "密钥管理1",
-          "name": "Base_AppSecret1",
-          "path": '/Base_Manage/Base_AppSecret1/List'
         }
       ]
     }
