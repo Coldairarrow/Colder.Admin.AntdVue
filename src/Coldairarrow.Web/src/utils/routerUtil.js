@@ -44,8 +44,11 @@ export const getRouterByUser = () => {
       "children": [
         {
           "title": "密钥管理",
-          "name": "Base_AppSecret",
           "path": '/Base_Manage/Base_AppSecret/List'
+        },
+        {
+          "title": "权限管理",
+          "path": '/Base_Manage/Base_Action/List'
         }
       ]
     }

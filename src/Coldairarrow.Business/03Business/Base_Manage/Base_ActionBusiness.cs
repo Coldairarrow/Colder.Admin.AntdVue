@@ -112,7 +112,11 @@ namespace Coldairarrow.Business.Base_Manage
         public bool NeedAction { get; set; }
 
         public string TypeText { get => ((ActionTypeEnum)Type).ToString(); }
-        public string NeedActionText { get => NeedAction ? "ÊÇ" : "ÊÇ"; }
+        public string NeedActionText { get => NeedAction ? "ÊÇ" : "·ñ"; }
         public object children { get => Children; }
+
+        public string title { get => Text; }
+        public string value { get => Id; }
+        public string key { get => Id; }
     }
 }
