@@ -23,7 +23,7 @@
           ></a-tree-select>
         </a-form-item>
         <a-form-item label="类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-radio-group name="Type" :defaultValue="0">
+          <a-radio-group v-decorator="['Type', { rules: [{ required: false }], initialValue: 0 }]">
             <a-radio :value="0">菜单</a-radio>
             <a-radio :value="1">页面</a-radio>
           </a-radio-group>
@@ -32,7 +32,7 @@
           <a-input v-decorator="['Url', { rules: [{ required: true, message: '请输入路径' }] }]" />
         </a-form-item>
         <a-form-item label="是否需权限" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-radio-group name="NeedAction" :defaultValue="false">
+          <a-radio-group v-decorator="['NeedAction', { rules: [{ required: false }], initialValue: false }]">
             <a-radio :value="false">否</a-radio>
             <a-radio :value="true">是</a-radio>
           </a-radio-group>
@@ -59,7 +59,7 @@ export default {
       confirmLoading: false,
       formFields: {},
       entity: {},
-      ParentIdTreeData: {}
+      ParentIdTreeData: []
     }
   },
   methods: {

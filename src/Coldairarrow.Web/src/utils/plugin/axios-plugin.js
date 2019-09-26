@@ -8,7 +8,6 @@ export const Axios = axios.create({
     timeout: timeout
 })
 
-//POST传参序列化(添加请求拦截器)
 // 在发送请求之前做某件事
 Axios.interceptors.request.use(config => {
     // 设置以 form 表单的形式提交参数，如果以 JSON 的形式提交表单，可忽略
@@ -25,30 +24,19 @@ Axios.interceptors.request.use(config => {
     }
     return config
 }, error => {
-    // alert("错误的传参", 'fail')
-    // console.log('请求异常:', error)
     return Promise.reject(error)
 })
 
 //返回状态判断(添加响应拦截器)
 Axios.interceptors.response.use(res => {
-    //对响应数据做些事
-    // if (!res.data.success) {
-    //     alert(res.error_msg)
-    //     return Promise.reject(res)
-    // }
+    //授权失败
+    if (!res.data.Success && res.data.ErrorCode == 401) {
+        localStorage.removeItem('token')
+        location.href = '/'
+    }
+
     return res.data
 }, error => {
-    // if (error.response.status === 401) {
-    //     // 401 说明 token 验证失败
-    //     // 可以直接跳转到登录页面，重新登录获取 token
-    //     location.href = '/login'
-    // } else if (error.response.status === 500) {
-    //     // 服务器错误
-    //     // do something
-    //     return Promise.reject(error.response.data)
-    // }
-    // // 返回 response 里的错误信息
     let errorMsg = ''
     if (error.message.includes('timeout')) {
         errorMsg = '请求超时!'
