@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="16">
-    <a-col :span="16">
+    <a-col :span="18">
       <a-card title="菜单及页面" :bordered="false">
         <div class="table-operator">
           <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
@@ -13,9 +13,10 @@
           >
             删除
           </a-button>
+          <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
         </div>
 
-        <div class="table-page-search-wrapper">
+        <!-- <div class="table-page-search-wrapper">
           <a-form layout="inline">
             <a-row :gutter="48">
               <a-col :md="6" :sm="24">
@@ -29,8 +30,8 @@
               </a-col>
             </a-row>
           </a-form>
-        </div>
-<template
+        </div> -->
+
         <a-table
           v-if="data && data.length"
           ref="table"
@@ -52,12 +53,11 @@
             </template>
           </span>
         </a-table>
-        <template
 
         <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
       </a-card>
     </a-col>
-    <a-col :span="8">
+    <a-col :span="6">
       <a-card title="页面权限" :bordered="false">
         <p>card content</p>
       </a-card>
@@ -144,7 +144,7 @@ export default {
         onOk() {
           return new Promise((resolve, reject) => {
             thisObj.submitDelete(ids, resolve, reject)
-          }).catch(() => console.log('Oops errors!'))
+          })
         }
       })
     },

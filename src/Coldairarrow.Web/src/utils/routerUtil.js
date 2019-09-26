@@ -51,6 +51,17 @@ export const getRouterByUser = () => {
           "path": '/Base_Manage/Base_Action/List'
         }
       ]
+    },
+    {
+      "title": "开发",
+      "icon": "code",
+      "path": '/Develop',
+      "children": [
+        {
+          "title": "图标选择",
+          "path": '/Develop/IconSelectorView'
+        }
+      ]
     }
   ]
   return new Promise((resolve, reject) => {
