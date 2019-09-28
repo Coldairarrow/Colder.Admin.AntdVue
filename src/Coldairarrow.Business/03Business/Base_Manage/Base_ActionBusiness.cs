@@ -12,7 +12,7 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_Action> GetDataList(Pagination pagination, string keyword)
+        public List<Base_Action> GetDataList(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null)
         {
             var q = GetIQueryable();
             var where = LinqHelper.True<Base_Action>();
@@ -20,6 +20,10 @@ namespace Coldairarrow.Business.Base_Manage
             {
                 where = where.And(x => EF.Functions.Like(x.Name, $"%{keyword}%"));
             }
+            if (!parentId.IsNullOrEmpty())
+                where = where.And(x => x.ParentId == parentId);
+            if (types?.Count > 0)
+                where = where.And(x => types.Contains(x.Type));
 
             return q.Where(where).GetPagination(pagination).ToList();
         }

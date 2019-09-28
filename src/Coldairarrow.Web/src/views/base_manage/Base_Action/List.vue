@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="16">
-    <a-col :span="18">
+    <a-col :span="16">
       <a-card title="菜单及页面" :bordered="false">
         <div class="table-operator">
           <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
@@ -50,6 +50,8 @@
               <a @click="handleEdit(record.Id)">编辑</a>
               <a-divider type="vertical" />
               <a @click="handleDelete([record.Id])">删除</a>
+              <a-divider type="vertical" />
+              <a @click="managePermission(record.Id)">权限</a>
             </template>
           </span>
         </a-table>
@@ -57,9 +59,9 @@
         <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
       </a-card>
     </a-col>
-    <a-col :span="6">
+    <a-col :span="8">
       <a-card title="页面权限" :bordered="false">
-        <p>card content</p>
+        <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
       </a-card>
     </a-col>
   </a-row>
@@ -70,9 +72,10 @@
 
 <script>
 import EditForm from './EditForm'
+import PermissionList from './PermissionList'
 
 const columns = [
-  { title: '菜单名', dataIndex: 'Text', width: '20%', sorter: true },
+  { title: '菜单名', dataIndex: 'Text', width: '20%' },
   { title: '类型', dataIndex: 'TypeText', width: '10%' },
   { title: '路径', dataIndex: 'Url', width: '20%' },
   { title: '需要权限', dataIndex: 'NeedActionText', width: '15%' },
@@ -81,7 +84,8 @@ const columns = [
 
 export default {
   components: {
-    EditForm
+    EditForm,
+    PermissionList
   },
   mounted() {
     this.getDataList()
@@ -109,7 +113,7 @@ export default {
     getDataList() {
       this.loading = true
       this.$http
-        .post('/Base_Manage/Base_Action/GetDataList', {
+        .post('/Base_Manage/Base_Action/GetMenuTreeList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
@@ -160,6 +164,10 @@ export default {
           this.$message.error(resJson.Msg)
         }
       })
+    },
+    managePermission(id) {
+      console.log(id)
+      this.$refs.permissionList.getDataList(id)
     }
   }
 }

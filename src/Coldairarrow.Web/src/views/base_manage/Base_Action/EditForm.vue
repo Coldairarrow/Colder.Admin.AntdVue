@@ -112,7 +112,7 @@ export default {
       this.visible = false
     },
     init() {
-      this.$http.post('/Base_Manage/Base_Action/GetDataList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Action/GetMenuTreeList').then(resJson => {
         if (resJson.Success) {
           this.ParentIdTreeData = resJson.Data
         }

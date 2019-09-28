@@ -28,19 +28,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetDataList(string keyword)
-        {
-            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 });
-
-            return Success(dataList);
-        }
-
-        /// <summary>
         /// 获取详情
         /// </summary>
         /// <param name="id">id主键</param>
@@ -51,6 +38,32 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             var theData = _actionBus.GetTheData(id) ?? new Base_Action();
 
             return Success(theData);
+        }
+
+        /// <summary>
+        /// 获取数据列表
+        /// </summary>
+        /// <param name="parentId">父级Id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<List<Base_Action>>> GetPermissionList(string parentId)
+        {
+            var dataList = _actionBus.GetDataList(new Pagination(), null, parentId, new List<int> { 2 });
+
+            return Success(dataList);
+        }
+
+        /// <summary>
+        /// 获取菜单树列表
+        /// </summary>
+        /// <param name="keyword">关键字</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetMenuTreeList(string keyword)
+        {
+            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 });
+
+            return Success(dataList);
         }
 
         #endregion
