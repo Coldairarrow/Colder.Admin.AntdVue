@@ -56,7 +56,8 @@ export default {
     return {
       data: [],
       columns,
-      loading: false
+      loading: false,
+      parentId: {}
     }
   },
   methods: {
@@ -102,14 +103,26 @@ export default {
       const newData = {
         key: uuid.v4(),
         Name: '权限名',
-        Value: '权限值'
+        Value: '权限值',
+        Type: 2,
+        ParentId: this.parentId
       }
       this.data = [...this.data, newData]
     },
     handleSave() {
-      console.log('表格数据', this.data)
+      this.loading = true
+      this.$http
+        .post('/Base_Manage/Base_Action/SavePermission', {
+          parentId: this.parentId,
+          permissionListJson: JSON.stringify(this.data)
+        })
+        .then(resJson => {
+          this.loading = false
+          this.getDataList(this.parentId)
+        })
     },
     getDataList(parentId) {
+      this.parentId = parentId
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Action/GetPermissionList', {

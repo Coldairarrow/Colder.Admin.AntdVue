@@ -122,20 +122,27 @@ namespace Coldairarrow.DataRepository
         {
             return $"@{name}";
         }
-        private (string sql, IReadOnlyDictionary<string, object> paramters) GetWhereSql<T>(IQueryable<T> query) where T : class, new()
+        private (string sql, Dictionary<string, object> paramters) GetWhereSql<T>(IQueryable<T> query) where T : class, new()
         {
+            Dictionary<string, object> paramters = new Dictionary<string, object>();
             var querySql = query.ToSql();
             string theQSql = querySql.sql.Replace("\r\n", "\n").Replace("\n", " ");
             //无筛选
             if (!theQSql.Contains("WHERE"))
-                return (" 1=1 ", new Dictionary<string, object>());
+                return (" 1=1 ", paramters);
 
             string pattern = "^SELECT.*?FROM.*? AS (.*?) WHERE .*?$";
             var match = Regex.Match(theQSql, pattern);
             string asTmp = match.Groups[1]?.ToString();
             string whereSql = querySql.sql.Split(new string[] { "WHERE" }, StringSplitOptions.None)[1].Replace($"{asTmp}.", "");
 
-            return (whereSql, querySql.parameters);
+            querySql.parameters.ForEach(aData =>
+            {
+                if (whereSql.Contains(aData.Key))
+                    paramters.Add(aData.Key, aData.Value);
+            });
+
+            return (whereSql, paramters);
         }
 
         #endregion
