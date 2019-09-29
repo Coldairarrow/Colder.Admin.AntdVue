@@ -12,5 +12,6 @@ namespace Coldairarrow.Business.Base_Manage
         AjaxResult AddData(Base_Action newData);
         AjaxResult UpdateData(Base_Action theData);
         AjaxResult DeleteData(List<string> ids);
+        AjaxResult SavePermission(string parentId, List<Base_Action> permissionList);
     }
 }

@@ -50,8 +50,10 @@
               <a @click="handleEdit(record.Id)">编辑</a>
               <a-divider type="vertical" />
               <a @click="handleDelete([record.Id])">删除</a>
-              <a-divider type="vertical" />
-              <a @click="managePermission(record.Id)">权限</a>
+              <template v-if="record.Type == 1">
+                <a-divider type="vertical" />
+                <a @click="managePermission(record.Id)">权限</a>
+              </template>
             </template>
           </span>
         </a-table>

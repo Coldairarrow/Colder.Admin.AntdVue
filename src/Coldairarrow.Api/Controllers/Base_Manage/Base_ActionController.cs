@@ -107,6 +107,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return JsonContent(res.ToJson());
         }
 
+        /// <summary>
+        /// 保存权限
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="parentId">父级Id</param>
+        /// <param name="permissionListJson">权限列表JSON数组</param>
+        [HttpPost]
+        public ActionResult<AjaxResult> SavePermission(string parentId, string permissionListJson)
+        {
+            var res = _actionBus.SavePermission(parentId, permissionListJson?.ToList<Base_Action>());
+
+            return JsonContent(res.ToJson());
+        }
+
         #endregion
     }
 }

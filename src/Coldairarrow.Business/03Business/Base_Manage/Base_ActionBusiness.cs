@@ -87,6 +87,31 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
+        public AjaxResult SavePermission(string parentId, List<Base_Action> permissionList)
+        {
+            var existsList = permissionList.Where(x => !x.Id.IsNullOrEmpty()).ToList();
+            var insertList = permissionList.Where(x => x.Id.IsNullOrEmpty()).ToList();
+            insertList.ForEach(aData =>
+            {
+                aData.Id = IdHelper.GetId();
+                aData.CreateTime = DateTime.Now;
+                aData.CreatorId = null;
+                aData.CreatorRealName = null;
+            });
+            var existsIds = existsList.Select(x => x.Id).ToList();
+            using (var transaction = BeginTransaction())
+            {
+                Insert(insertList);
+                Update(existsList);
+                Delete_Sql(x => x.ParentId == parentId && (!existsIds.Contains(x.Id)));
+                var res = transaction.EndTransaction();
+                if (res.Success)
+                    return Success();
+                else
+                    throw new Exception("系统异常", res.ex);
+            }
+        }
+
         #endregion
 
         #region 私有成员

@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 using System.Linq;
 
 namespace Coldairarrow.Api
@@ -8,7 +7,7 @@ namespace Coldairarrow.Api
     /// <summary>
     /// Json参数支持
     /// </summary>
-    public class JsonParamterAttribute : Attribute, IActionFilter
+    public class JsonParamterAttribute : BaseActionFilter, IActionFilter
     {
         /// <summary>
         /// Action执行之前执行
@@ -16,6 +15,9 @@ namespace Coldairarrow.Api
         /// <param name="context">过滤器上下文</param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            if (context.ContainsFilter<NoJsonParamterAttribute>())
+                return;
+
             //参数映射：支持application/json
             string contentType = context.HttpContext.Request.ContentType;
             if (!contentType.IsNullOrEmpty() && contentType.Contains("application/json"))
