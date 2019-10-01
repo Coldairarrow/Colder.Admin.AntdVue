@@ -33,7 +33,7 @@ namespace Coldairarrow.Business.Base_Manage
             var where = LinqHelper.True<Base_Action>();
             if (!types.IsNullOrEmpty())
                 where = where.And(x => types.Contains(x.Type));
-            var qList = GetIQueryable().Where(where).ToList();
+            var qList = GetIQueryable().Where(where).OrderBy(x => x.Sort).ToList();
 
             var treeList = qList.Select(x => new Base_ActionDTO
             {
@@ -43,7 +43,9 @@ namespace Coldairarrow.Business.Base_Manage
                 ParentId = x.ParentId,
                 Type = x.Type,
                 Url = x.Url,
-                Value = x.Id
+                Value = x.Id,
+                Icon = x.Icon,
+                Sort = x.Sort
             }).ToList();
 
             return TreeHelper.BuildTree(treeList);
@@ -147,5 +149,15 @@ namespace Coldairarrow.Business.Base_Manage
         public string title { get => Text; }
         public string value { get => Id; }
         public string key { get => Id; }
+
+        /// <summary>
+        /// Õº±Í
+        /// </summary>
+        public string Icon { get; set; }
+
+        /// <summary>
+        /// ≈≈–Ú
+        /// </summary>
+        public int Sort { get; set; }
     }
 }

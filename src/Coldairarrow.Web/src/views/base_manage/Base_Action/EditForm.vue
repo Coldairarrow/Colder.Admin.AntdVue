@@ -37,6 +37,12 @@
             <a-radio :value="true">是</a-radio>
           </a-radio-group>
         </a-form-item>
+        <a-form-item label="图标" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['Icon', { rules: [{ required: false, message: '请输入图标' }] }]" />
+        </a-form-item>
+        <a-form-item label="排序" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['Sort', { rules: [{ required: false, message: '请输入排序' }] }]" />
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>

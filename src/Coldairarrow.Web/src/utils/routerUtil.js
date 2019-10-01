@@ -20,7 +20,6 @@ export const getRouterByUser = () => {
       "title": "仪表盘",
       "name": "dashboard",
       "icon": "dashboard",
-      "path": "/dashboard",
       "children": [
         {
           "title": "分析页",
@@ -40,7 +39,6 @@ export const getRouterByUser = () => {
       "title": "系统管理",
       "name": "Base_Manage",
       "icon": "setting",
-      "path": '/Base_Manage',
       "children": [
         {
           "title": "密钥管理",
@@ -55,11 +53,10 @@ export const getRouterByUser = () => {
     {
       "title": "开发",
       "icon": "code",
-      "path": '/Develop',
       "children": [
         {
           "title": "图标选择",
-          "path": '/Develop/IconSelectorView'
+          "path": '/Base_Manage/IconSelectorView'
         }
       ]
     }
@@ -101,7 +98,6 @@ export const generatorDynamicRouter = () => {
       rootRouter.children = generator(res)
       allRouters.push(notFoundRouter)
       resolve(allRouters)
-      console.log(allRouters)
     }).catch(err => {
       reject(err)
     })
@@ -132,13 +128,21 @@ export const generator = (routerMap, parent) => {
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: { title: item.title, icon: item.icon || undefined }
     }
-    if (item.path) {
+
+    //有子菜单
+    if (hasChildren) {
+      currentRouter.path = `/${uuid.v4()}`
+    } else if (item.path) {//页面
       currentRouter.path = item.path
-      // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
       currentRouter.path = currentRouter.path.replace('//', '/')
-    } else {
-      currentRouter.path = uuid.v4()
     }
+    // if (item.path) {
+    //   currentRouter.path = item.path
+    //   // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
+    //   currentRouter.path = currentRouter.path.replace('//', '/')
+    // } else {
+    //   currentRouter.path = uuid.v4()
+    // }
     // 重定向
     item.redirect && (currentRouter.redirect = item.redirect)
     // 是否有子菜单，并递归处理

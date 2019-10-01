@@ -52,8 +52,14 @@
               <a @click="handleDelete([record.Id])">删除</a>
               <template v-if="record.Type == 1">
                 <a-divider type="vertical" />
-                <a @click="managePermission(record.Id)">权限</a>
+                <a @click="managePermission(record)">权限</a>
               </template>
+            </template>
+          </span>
+          <span slot="paramters" slot-scope="text, record">
+            <template>
+              <b>需要权限:</b>{{ record.NeedActionText }} <br /><b>图标:</b
+              ><a-icon v-if="record.Icon" :type="record.Icon" /> <br /><b>排序:</b>{{ record.Sort }}
             </template>
           </span>
         </a-table>
@@ -62,14 +68,11 @@
       </a-card>
     </a-col>
     <a-col :span="8">
-      <a-card title="页面权限" :bordered="false">
+      <a-card :title="menuName" :bordered="false">
         <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
       </a-card>
     </a-col>
   </a-row>
-  <!-- <a-card :bordered="false">
-    
-  </a-card> -->
 </template>
 
 <script>
@@ -80,7 +83,7 @@ const columns = [
   { title: '菜单名', dataIndex: 'Text', width: '20%' },
   { title: '类型', dataIndex: 'TypeText', width: '10%' },
   { title: '路径', dataIndex: 'Url', width: '20%' },
-  { title: '需要权限', dataIndex: 'NeedActionText', width: '15%' },
+  { title: '参数', dataIndex: '_paramters', width: '15%', scopedSlots: { customRender: 'paramters' } },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -102,7 +105,8 @@ export default {
       columns,
       queryParam: {},
       visible: false,
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      menuName: ''
     }
   },
   methods: {
@@ -167,9 +171,12 @@ export default {
         }
       })
     },
-    managePermission(id) {
-      console.log(id)
-      this.$refs.permissionList.getDataList(id)
+    managePermission(row) {
+      this.menuName = `【${row.Text}】页面权限`
+      this.$nextTick(() => {
+        this.$refs.permissionList.setParentId(row.Id)
+        this.$refs.permissionList.getDataList()
+      })
     }
   }
 }

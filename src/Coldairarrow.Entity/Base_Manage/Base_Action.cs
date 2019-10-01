@@ -66,5 +66,15 @@ namespace Coldairarrow.Entity.Base_Manage
         /// 是否需要权限(仅页面有效)
         /// </summary>
         public bool NeedAction { get; set; }
+
+        /// <summary>
+        /// 图标
+        /// </summary>
+        public string Icon { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int Sort { get; set; }
     }
 }

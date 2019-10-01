@@ -64,6 +64,16 @@
             是否需要权限(仅页面有效)
             </summary>
         </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_AppSecret">
             <summary>
             应用密钥表

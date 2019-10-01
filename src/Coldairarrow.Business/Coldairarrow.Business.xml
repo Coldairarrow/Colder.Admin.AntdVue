@@ -64,6 +64,16 @@
             是否需要权限(仅页面有效)
             </summary>
         </member>
+        <member name="P:Coldairarrow.Business.Base_Manage.Base_ActionDTO.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Business.Base_Manage.Base_ActionDTO.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheData(System.String)">
             <summary>
             获取指定的单条数据
