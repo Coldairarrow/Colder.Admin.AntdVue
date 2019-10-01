@@ -1,11 +1,11 @@
 <template>
-  <a-spin :spinning="loading">
+  <a-spin v-if="this.parentId" :spinning="loading">
     <div class="table-operator">
       <a-button class="editable-add-btn" icon="plus" type="primary" @click="handleAdd">新建</a-button>
       <a-button class="editable-add-btn" icon="check" type="primary" @click="handleSave">保存</a-button>
     </div>
     <a-table :columns="columns" :dataSource="data" bordered>
-      <template v-for="col in ['Name', 'Value']" :slot="col" slot-scope="text, record, index">
+      <template v-for="col in ['Name', 'Value']" :slot="col" slot-scope="text, record">
         <div :key="col">
           <a-input
             v-if="record.editable"
@@ -16,7 +16,7 @@
           <template v-else>{{ text }}</template>
         </div>
       </template>
-      <template slot="operation" slot-scope="text, record, index">
+      <template slot="operation" slot-scope="text, record">
         <div class="editable-row-operations">
           <span v-if="record.editable">
             <a @click="() => save(record.key)">保存</a>
@@ -57,7 +57,7 @@ export default {
       data: [],
       columns,
       loading: false,
-      parentId: {}
+      parentId: null
     }
   },
   methods: {
@@ -118,21 +118,28 @@ export default {
         })
         .then(resJson => {
           this.loading = false
-          this.getDataList(this.parentId)
+          if (resJson.Success) {
+            this.$message.success('权限设置成功')
+            this.getDataList()
+          } else {
+            this.$message.error('操作失败')
+          }
         })
     },
-    getDataList(parentId) {
-      this.parentId = parentId
+    getDataList() {
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Action/GetPermissionList', {
-          parentId
+          parentId: this.parentId
         })
         .then(resJson => {
           this.loading = false
           resJson.Data.forEach(x => (x['key'] = uuid.v4()))
           this.data = resJson.Data
         })
+    },
+    setParentId(parentId) {
+      this.parentId = parentId
     }
   }
 }

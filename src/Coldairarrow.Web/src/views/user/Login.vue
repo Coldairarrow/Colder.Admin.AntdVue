@@ -119,7 +119,6 @@ export default {
         //校验成功
         if (!errors) {
           var values = this.form.getFieldsValue()
-          console.log(values)
           this.loading = true
           this.$http.post('/Base_Manage/Home/SubmitLogin', values).then(resJson => {
             this.loading = false
