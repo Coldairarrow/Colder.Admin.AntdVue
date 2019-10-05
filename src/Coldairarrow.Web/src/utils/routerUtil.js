@@ -41,6 +41,10 @@ export const getRouterByUser = () => {
       "icon": "setting",
       "children": [
         {
+          "title": "角色管理",
+          "path": '/Base_Manage/Base_Role/List'
+        },
+        {
           "title": "密钥管理",
           "path": '/Base_Manage/Base_AppSecret/List'
         },
@@ -136,13 +140,7 @@ export const generator = (routerMap, parent) => {
       currentRouter.path = item.path
       currentRouter.path = currentRouter.path.replace('//', '/')
     }
-    // if (item.path) {
-    //   currentRouter.path = item.path
-    //   // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
-    //   currentRouter.path = currentRouter.path.replace('//', '/')
-    // } else {
-    //   currentRouter.path = uuid.v4()
-    // }
+
     // 重定向
     item.redirect && (currentRouter.redirect = item.redirect)
     // 是否有子菜单，并递归处理

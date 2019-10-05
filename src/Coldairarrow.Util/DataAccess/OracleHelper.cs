@@ -6,7 +6,7 @@ using System.Data.Common;
 namespace Coldairarrow.Util
 {
     /// <summary>
-    /// SqlServer数据库操作帮助类
+    /// Oracle数据库操作帮助类
     /// </summary>
     public class OracleHelper : DbHelper
     {
@@ -27,28 +27,28 @@ namespace Coldairarrow.Util
 
         protected override Dictionary<string, Type> DbTypeDic { get; } = new Dictionary<string, Type>()
         {
-            { "BFILE", typeof(byte[]) },
-            { "BLOB", typeof(byte[]) },
-            { "CHAR", typeof(string) },
-            { "CLOB", typeof(string) },
-            { "DATE", typeof(DateTime) },
-            { "FLOAT", typeof(decimal) },
-            { "INTEGER", typeof(decimal) },
-            { "INTERVAL YEAR TO MONTH", typeof(Int32) },
-            { "INTERVAL DAY TO SECOND", typeof(TimeSpan) },
-            { "LONG", typeof(string) },
-            { "LONG RAW", typeof(string[]) },
-            { "NCHAR", typeof(string) },
-            { "NCLOB", typeof(string) },
-            { "NUMBER", typeof(decimal) },
-            { "NVARCHAR2", typeof(string) },
-            { "RAW", typeof(byte[]) },
-            { "ROWID", typeof(string) },
-            { "TIMESTAMP", typeof(DateTime) },
-            { "TIMESTAMP WITH LOCAL TIME ZONE", typeof(DateTime) },
-            { "TIMESTAMP WITH TIME ZONE", typeof(DateTime) },
-            { "UNSIGNED INTEGER", typeof(decimal) },
-            { "VARCHAR2", typeof(string) }
+            { "bfile", typeof(byte[]) },
+            { "blob", typeof(byte[]) },
+            { "char", typeof(string) },
+            { "clob", typeof(string) },
+            { "date", typeof(DateTime) },
+            { "float", typeof(decimal) },
+            { "integer", typeof(decimal) },
+            { "interval year to month", typeof(int) },
+            { "interval day to second", typeof(TimeSpan) },
+            { "long", typeof(string) },
+            { "long raw", typeof(string[]) },
+            { "nchar", typeof(string) },
+            { "nclob", typeof(string) },
+            { "number", typeof(decimal) },
+            { "nvarchar2", typeof(string) },
+            { "raw", typeof(byte[]) },
+            { "rowid", typeof(string) },
+            { "timestamp", typeof(DateTime) },
+            { "timestamp with local time zone", typeof(DateTime) },
+            { "timestamp with time zone", typeof(DateTime) },
+            { "unsigned integer", typeof(decimal) },
+            { "varchar2", typeof(string) }
         };
 
         #endregion

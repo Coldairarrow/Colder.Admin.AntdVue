@@ -164,6 +164,7 @@ namespace Coldairarrow.Api
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Base_User, Base_UserDTO>();
+                cfg.CreateMap<Base_Role, Base_RoleDTO>();
             });
         }
 

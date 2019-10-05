@@ -91,21 +91,20 @@ namespace Coldairarrow.Business.Base_Manage
 
         public AjaxResult SavePermission(string parentId, List<Base_Action> permissionList)
         {
-            var existsList = permissionList.Where(x => !x.Id.IsNullOrEmpty()).ToList();
-            var insertList = permissionList.Where(x => x.Id.IsNullOrEmpty()).ToList();
-            insertList.ForEach(aData =>
+            permissionList.ForEach(aData =>
             {
                 aData.Id = IdHelper.GetId();
                 aData.CreateTime = DateTime.Now;
                 aData.CreatorId = null;
                 aData.CreatorRealName = null;
+                aData.ParentId = parentId;
             });
-            var existsIds = existsList.Select(x => x.Id).ToList();
             using (var transaction = BeginTransaction())
             {
-                Insert(insertList);
-                Update(existsList);
-                Delete_Sql(x => x.ParentId == parentId && (!existsIds.Contains(x.Id)));
+                //删除原来
+                Delete_Sql(x => x.ParentId == parentId);
+                //新增
+                Insert(permissionList);
                 var res = transaction.EndTransaction();
                 if (res.Success)
                     return Success();
