@@ -66,6 +66,19 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return Success(dataList);
         }
 
+        /// <summary>
+        /// 获取全心爱你树列表
+        /// </summary>
+        /// <param name="keyword">关键字</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetActionTreeList(string keyword)
+        {
+            var dataList = _actionBus.GetTreeDataList(keyword, null);
+
+            return Success(dataList);
+        }
+
         #endregion
 
         #region 提交

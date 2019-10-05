@@ -91,6 +91,11 @@ namespace Coldairarrow.Business
             }
         }
 
+        public void UseRepository(IRepository repository)
+        {
+            _service = repository;
+        }
+
         #endregion
 
         #region 事物提交

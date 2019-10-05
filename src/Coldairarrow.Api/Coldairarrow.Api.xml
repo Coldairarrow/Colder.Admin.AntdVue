@@ -259,6 +259,13 @@
             <param name="keyword">关键字</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_ActionController.GetActionTreeList(System.String)">
+            <summary>
+            获取全心爱你树列表
+            </summary>
+            <param name="keyword">关键字</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_ActionController.SaveData(Coldairarrow.Entity.Base_Manage.Base_Action)">
             <summary>
             保存
@@ -307,6 +314,40 @@
             <param name="theData">保存的数据</param>
         </member>
         <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_AppSecretController.DeleteData(System.String)">
+            <summary>
+            删除数据
+            </summary>
+            <param name="ids">id数组,JSON数组</param>
+        </member>
+        <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController">
+            <summary>
+            应用密钥
+            </summary>
+            <seealso cref="T:Coldairarrow.Api.BaseApiController" />
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController.GetDataList(Coldairarrow.Util.Pagination,System.String)">
+            <summary>
+            获取数据列表
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="keyword">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController.GetTheData(System.String)">
+            <summary>
+            获取详情
+            </summary>
+            <param name="id">id主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController.SaveData(Coldairarrow.Entity.Base_Manage.Base_Role,System.String)">
+            <summary>
+            保存
+            </summary>
+            <param name="theData">保存的数据</param>
+            <param name="actionsJson">权限值JSON</param>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController.DeleteData(System.String)">
             <summary>
             删除数据
             </summary>

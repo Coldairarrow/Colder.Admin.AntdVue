@@ -123,24 +123,6 @@
             <param name="pagination">分页参数</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_SysRoleBusiness.GetTheData(System.String)">
-            <summary>
-            获取指定的单条数据
-            </summary>
-            <param name="id">主键</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_SysRoleBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_Role)">
-            <summary>
-            添加数据
-            </summary>
-            <param name="newData">数据</param>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_SysRoleBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_Role)">
-            <summary>
-            更新数据
-            </summary>
-        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.RapidDevelopmentBusiness.GetAllDbLink">
             <summary>
             获取所有数据库连接

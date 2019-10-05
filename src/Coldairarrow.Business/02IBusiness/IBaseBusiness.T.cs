@@ -205,6 +205,8 @@ namespace Coldairarrow.Business
 
         #region 业务操作
 
+        void UseRepository(IRepository repository);
+
         #endregion
     }
 }

@@ -679,7 +679,7 @@
         </member>
         <member name="T:Coldairarrow.Util.OracleHelper">
             <summary>
-            SqlServer数据库操作帮助类
+            Oracle数据库操作帮助类
             </summary>
         </member>
         <member name="M:Coldairarrow.Util.OracleHelper.#ctor(System.String)">
