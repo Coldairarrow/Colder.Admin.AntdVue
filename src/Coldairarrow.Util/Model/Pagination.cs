@@ -7,6 +7,8 @@ namespace Coldairarrow.Util
     /// </summary>
     public class Pagination
     {
+        private string _sortType { get; set; } = "asc";
+
         #region 默认方案
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 排序类型
         /// </summary>
-        public string SortType { get; set; } = "asc";
+        public string SortType { get => _sortType; set => _sortType = (value ?? string.Empty).Contains("desc") ? "desc" : "asc"; }
 
         /// <summary>
         /// 总记录数

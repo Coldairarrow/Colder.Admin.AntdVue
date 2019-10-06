@@ -110,7 +110,7 @@
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_SysLogBusiness.GetLogList(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogList(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             获取日志列表
             </summary>

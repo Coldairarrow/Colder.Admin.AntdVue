@@ -7,7 +7,7 @@ namespace Coldairarrow.Business
 {
     public interface ILogSearcher
     {
-        List<Base_SysLog> GetLogList(
+        List<Base_Log> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,

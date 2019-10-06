@@ -13,17 +13,18 @@ namespace Coldairarrow.Business
             Layout = LoggerConfig.Layout;
         }
 
-        protected Base_SysLog GetBase_SysLogInfo(LogEventInfo logEventInfo)
+        protected Base_Log GetBase_SysLogInfo(LogEventInfo logEventInfo)
         {
-            Base_SysLog newLog = new Base_SysLog
+            Base_Log newLog = new Base_Log
             {
                 Id = IdHelper.GetId(),
                 Data = logEventInfo.Properties[LoggerConfig.Data] as string,
                 Level = logEventInfo.Level.ToString(),
                 LogContent = logEventInfo.Message,
                 LogType = logEventInfo.Properties[LoggerConfig.LogType] as string,
-                OpTime = logEventInfo.TimeStamp,
-                OpUserName = logEventInfo.Properties[LoggerConfig.OpUserName] as string
+                CreateTime = logEventInfo.TimeStamp,
+                CreatorId = logEventInfo.Properties[LoggerConfig.CreatorId] as string,
+                CreatorRealName = logEventInfo.Properties[LoggerConfig.CreatorRealName] as string
             };
 
             return newLog;

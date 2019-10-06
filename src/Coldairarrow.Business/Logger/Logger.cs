@@ -19,7 +19,7 @@ namespace Coldairarrow.Business
             {
                 AddTarget(new NLog.Targets.ColoredConsoleTarget
                 {
-                    Name= LoggerConfig.LoggerName,
+                    Name = LoggerConfig.LoggerName,
                     Layout = layout
                 });
             }
@@ -69,7 +69,8 @@ namespace Coldairarrow.Business
             NLog.LogEventInfo log = new NLog.LogEventInfo(NLog.LogLevel.FromString(logLevel.ToString()), "sysLogger", msg);
             log.Properties[LoggerConfig.Data] = data;
             log.Properties[LoggerConfig.LogType] = logType.ToString();
-            log.Properties[LoggerConfig.OpUserName] = _operator?.Property?.UserName;
+            log.Properties[LoggerConfig.CreatorRealName] = _operator?.Property?.UserName;
+            log.Properties[LoggerConfig.CreatorId] = _operator?.UserId;
 
             _nLogger.Log(log);
         }

@@ -85,7 +85,15 @@ namespace Coldairarrow.Business.Base_Manage
         [DataDeleteLog(LogType.系统角色管理, "RoleName", "角色")]
         public AjaxResult DeleteData(List<string> ids)
         {
-            Delete(ids);
+            using (var transaction = BeginTransaction())
+            {
+                Delete(ids);
+                Service.Delete_Sql<Base_RoleAction>(x => ids.Contains(x.Id));
+
+                var res = EndTransaction();
+                if (!res.Success)
+                    throw new Exception("系统异常,请重试", res.ex);
+            }
 
             return Success();
         }
@@ -100,7 +108,7 @@ namespace Coldairarrow.Business.Base_Manage
                 .Select(x => new Base_RoleAction
                 {
                     Id = IdHelper.GetId(),
-                    ActionId = IdHelper.GetId(),
+                    ActionId = x,
                     CreateTime = DateTime.Now,
                     RoleId = roleId
                 }).ToList();

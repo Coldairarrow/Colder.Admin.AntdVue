@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_SysLogBusiness : BaseBusiness<Base_SysLog>, IBase_SysLogBusiness, IDependency
+    public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, IDependency
     {
         #region 外部接口
 
@@ -20,7 +20,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// <param name="endTime">结束时间</param>
         /// <param name="pagination">分页参数</param>
         /// <returns></returns>
-        public List<Base_SysLog> GetLogList(
+        public List<Base_Log> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,

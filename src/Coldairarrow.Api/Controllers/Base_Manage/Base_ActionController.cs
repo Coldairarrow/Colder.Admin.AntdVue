@@ -61,7 +61,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetMenuTreeList(string keyword)
         {
-            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 });
+            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 }, true);
 
             return Success(dataList);
         }
@@ -74,7 +74,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetActionTreeList(string keyword)
         {
-            var dataList = _actionBus.GetTreeDataList(keyword, null);
+            var dataList = _actionBus.GetTreeDataList(keyword, null, false);
 
             return Success(dataList);
         }

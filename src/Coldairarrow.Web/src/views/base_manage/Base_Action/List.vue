@@ -78,7 +78,6 @@
 <script>
 import EditForm from './EditForm'
 import PermissionList from './PermissionList'
-
 const columns = [
   { title: '菜单名', dataIndex: 'Text', width: '20%' },
   { title: '类型', dataIndex: 'TypeText', width: '10%' },
@@ -98,7 +97,11 @@ export default {
   data() {
     return {
       data: [],
-      pagination: { current: 1, pageSize: 10 },
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`
+      },
       filters: {},
       sorter: { field: 'Id', order: 'asc' },
       loading: false,

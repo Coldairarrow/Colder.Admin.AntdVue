@@ -7,7 +7,7 @@ namespace Coldairarrow.Util
     {
         /// <summary>
         /// 将枚举类型转为选项列表
-        /// 注：Value为值,Text为显示内容
+        /// 注：value为值,lable为显示内容
         /// </summary>
         /// <param name="enumType">枚举类型</param>
         /// <returns></returns>

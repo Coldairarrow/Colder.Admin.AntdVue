@@ -17,8 +17,8 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
-            <a-form-item label="关键字">
-              <a-input v-model="queryParam.keyword" placeholder="" />
+            <a-form-item label="角色名">
+              <a-input v-model="queryParam.roleName" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -57,7 +57,7 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '角色名', dataIndex: 'RoleName', width: '20%' },
+  { title: '角色名', dataIndex: 'RoleName', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -71,7 +71,11 @@ export default {
   data() {
     return {
       data: [],
-      pagination: { current: 1, pageSize: 10 },
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`
+      },
       filters: {},
       sorter: { field: 'Id', order: 'asc' },
       loading: false,
@@ -95,7 +99,7 @@ export default {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
-          SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
+          SortType: this.sorter.order,
           ...this.queryParam,
           ...this.filters
         })

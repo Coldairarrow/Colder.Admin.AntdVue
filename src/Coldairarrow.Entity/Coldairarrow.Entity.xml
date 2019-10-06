@@ -284,62 +284,52 @@
             权限Id
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.Base_SysLog">
+        <member name="T:Coldairarrow.Entity.Base_Manage.Base_Log">
             <summary>
             系统日志表
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.Id">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Id">
             <summary>
             自然主键
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.CreateTime">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreateTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.CreatorId">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorId">
             <summary>
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.CreatorRealName">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorRealName">
             <summary>
             创建人姓名
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.Deleted">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Deleted">
             <summary>
             否已删除
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.Level">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Level">
             <summary>
             日志级别
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.LogType">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogType">
             <summary>
             日志类型
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.LogContent">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogContent">
             <summary>
             日志内容
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.OpUserName">
-            <summary>
-            操作员用户名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.OpTime">
-            <summary>
-            日志记录时间
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_SysLog.Data">
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Data">
             <summary>
             数据备份（转为JSON字符串）
             </summary>

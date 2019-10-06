@@ -31,12 +31,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// 获取数据列表
         /// </summary>
         /// <param name="pagination">分页参数</param>
-        /// <param name="keyword">关键字</param>
+        /// <param name="roleName">角色名</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string keyword)
+        public ActionResult<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string roleName)
         {
-            var dataList = _roleBus.GetDataList(pagination, keyword);
+            var dataList = _roleBus.GetDataList(pagination, null, roleName);
 
             return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
         }
