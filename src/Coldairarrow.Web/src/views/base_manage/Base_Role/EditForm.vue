@@ -20,7 +20,7 @@
             v-model="checkedKeys"
             :treeData="actionsTreeData"
             :defaultExpandAll="true"
-            v-decorator="['Actions', { rules: [{ required: false }] }]"
+            :checkStrictly="true"
           />
         </a-form-item>
       </a-form>
@@ -76,7 +76,7 @@ export default {
             setData[item] = this.entity[item]
           })
           this.form.setFieldsValue(setData)
-          // this.checkedKeys = this.entity['Actions']
+          this.checkedKeys = this.entity['Actions']
           this.init()
         })
       })
@@ -86,7 +86,7 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-          this.entity['actionsJson'] = JSON.stringify(this.checkedKeys)
+          this.entity['actionsJson'] = JSON.stringify(this.checkedKeys.checked)
           this.confirmLoading = true
           this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
             this.confirmLoading = false

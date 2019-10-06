@@ -28,7 +28,7 @@ namespace Coldairarrow.Business.Base_Manage
             return q.Where(where).GetPagination(pagination).ToList();
         }
 
-        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types)
+        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable)
         {
             var where = LinqHelper.True<Base_Action>();
             if (!types.IsNullOrEmpty())
@@ -45,7 +45,8 @@ namespace Coldairarrow.Business.Base_Manage
                 Url = x.Url,
                 Value = x.Id,
                 Icon = x.Icon,
-                Sort = x.Sort
+                Sort = x.Sort,
+                selectable = selectable
             }).ToList();
 
             return TreeHelper.BuildTree(treeList);
@@ -148,6 +149,7 @@ namespace Coldairarrow.Business.Base_Manage
         public string title { get => Text; }
         public string value { get => Id; }
         public string key { get => Id; }
+        public bool selectable { get; set; }
 
         /// <summary>
         /// Í¼±ê

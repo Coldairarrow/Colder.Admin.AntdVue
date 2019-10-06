@@ -73,7 +73,11 @@ export default {
   data() {
     return {
       data: [],
-      pagination: { current: 1, pageSize: 10 },
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`
+      },
       filters: {},
       sorter: { field: 'Id', order: 'asc' },
       loading: false,

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const rootUrl = 'http://localhost:40000'
-const timeout = 5000
+const timeout = 30000
 
 export const Axios = axios.create({
     baseURL: rootUrl,

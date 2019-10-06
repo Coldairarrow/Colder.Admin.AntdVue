@@ -10,7 +10,7 @@ namespace Coldairarrow.Business
 {
     public class RDBMSTarget : BaseTarget, ILogSearcher
     {
-        public List<Base_SysLog> GetLogList(
+        public List<Base_Log> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,
@@ -21,7 +21,7 @@ namespace Coldairarrow.Business
         {
             using (var db = DbFactory.GetRepository())
             {
-                var whereExp = LinqHelper.True<Base_SysLog>();
+                var whereExp = LinqHelper.True<Base_Log>();
                 if (!logContent.IsNullOrEmpty())
                     whereExp = whereExp.And(x => x.LogContent.Contains(logContent));
                 if (!logType.IsNullOrEmpty())
@@ -29,13 +29,13 @@ namespace Coldairarrow.Business
                 if (!level.IsNullOrEmpty())
                     whereExp = whereExp.And(x => x.Level == level);
                 if (!opUserName.IsNullOrEmpty())
-                    whereExp = whereExp.And(x => x.OpUserName.Contains(opUserName));
+                    whereExp = whereExp.And(x => x.CreatorRealName.Contains(opUserName));
                 if (!startTime.IsNullOrEmpty())
-                    whereExp = whereExp.And(x => x.OpTime >= startTime);
+                    whereExp = whereExp.And(x => x.CreateTime >= startTime);
                 if (!endTime.IsNullOrEmpty())
-                    whereExp = whereExp.And(x => x.OpTime <= endTime);
+                    whereExp = whereExp.And(x => x.CreateTime <= endTime);
 
-                return db.GetIQueryable<Base_SysLog>().Where(whereExp).GetPagination(pagination).ToList();
+                return db.GetIQueryable<Base_Log>().Where(whereExp).GetPagination(pagination).ToList();
             }
         }
 

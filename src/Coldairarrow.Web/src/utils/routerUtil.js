@@ -16,25 +16,25 @@ const notFoundRouter = {
  */
 export const getRouterByUser = () => {
   let menus = [
-    {
-      "title": "仪表盘",
-      "name": "dashboard",
-      "icon": "dashboard",
-      "children": [
-        {
-          "title": "分析页",
-          "name": "analysis",
-          "path": "/dashboard/Analysis",
-          "icon": ""
-        },
-        {
-          "title": "工作台",
-          "name": "workplace",
-          "path": "/dashboard/Workplace",
-          "icon": ""
-        }
-      ]
-    },
+    // {
+    //   "title": "仪表盘",
+    //   "name": "dashboard",
+    //   "icon": "dashboard",
+    //   "children": [
+    //     {
+    //       "title": "分析页",
+    //       "name": "analysis",
+    //       "path": "/dashboard/Analysis",
+    //       "icon": ""
+    //     },
+    //     {
+    //       "title": "工作台",
+    //       "name": "workplace",
+    //       "path": "/dashboard/Workplace",
+    //       "icon": ""
+    //     }
+    //   ]
+    // },
     {
       "title": "系统管理",
       "name": "Base_Manage",
@@ -51,6 +51,10 @@ export const getRouterByUser = () => {
         {
           "title": "权限管理",
           "path": '/Base_Manage/Base_Action/List'
+        },
+        {
+          "title": "系统日志",
+          "path": '/Base_Manage/Base_Log/List'
         }
       ]
     },
@@ -60,7 +64,7 @@ export const getRouterByUser = () => {
       "children": [
         {
           "title": "图标选择",
-          "path": '/Base_Manage/IconSelectorView'
+          "path": '/Develop/IconSelectorView'
         }
       ]
     }

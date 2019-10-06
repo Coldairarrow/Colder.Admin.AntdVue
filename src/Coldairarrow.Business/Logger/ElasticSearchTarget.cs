@@ -15,7 +15,7 @@ namespace Coldairarrow.Business
 
         static ElasticSearchTarget()
         {
-            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_SysLog).Name}".ToLower();
+            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_Log).Name}".ToLower();
 
             var pool = new StaticConnectionPool(GlobalSwitch.ElasticSearchNodes);
             _connectionSettings = new ConnectionSettings(pool).DefaultIndex(index);
@@ -25,7 +25,7 @@ namespace Coldairarrow.Business
             {
                 var descriptor = new CreateIndexDescriptor(index)
                     .Mappings(ms => ms
-                        .Map<Base_SysLog>(m => m.AutoMap())
+                        .Map<Base_Log>(m => m.AutoMap())
                     );
                 var res = _elasticClient.CreateIndex(descriptor);
             }
@@ -50,7 +50,7 @@ namespace Coldairarrow.Business
 
         #region 外部接口
 
-        public List<Base_SysLog> GetLogList(
+        public List<Base_Log> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,
@@ -60,7 +60,7 @@ namespace Coldairarrow.Business
             DateTime? endTime)
         {
             var client = GetElasticClient();
-            var filters = new List<Func<QueryContainerDescriptor<Base_SysLog>, QueryContainer>>();
+            var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
             if (!logContent.IsNullOrEmpty())
                 filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
             if (!logType.IsNullOrEmpty())
@@ -68,18 +68,18 @@ namespace Coldairarrow.Business
             if (!level.IsNullOrEmpty())
                 filters.Add(q => q.Terms(t => t.Field(f => f.Level).Terms(level)));
             if (!opUserName.IsNullOrEmpty())
-                filters.Add(q => q.Wildcard(w => w.Field(f => f.OpUserName).Value($"*{opUserName}*")));
+                filters.Add(q => q.Wildcard(w => w.Field(f => f.CreatorRealName).Value($"*{opUserName}*")));
             if (!startTime.IsNullOrEmpty())
-                filters.Add(q => q.DateRange(d => d.Field(f => f.OpTime).GreaterThan(startTime)));
+                filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).GreaterThan(startTime)));
             if (!endTime.IsNullOrEmpty())
-                filters.Add(q => q.DateRange(d => d.Field(f => f.OpTime).LessThan(endTime)));
+                filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).LessThan(endTime)));
 
             SortOrder sortOrder = pagination.SortType.ToLower() == "asc" ? SortOrder.Ascending : SortOrder.Descending;
-            var result = client.Search<Base_SysLog>(s =>
+            var result = client.Search<Base_Log>(s =>
                 s.Query(q =>
                     q.Bool(b => b.Filter(filters.ToArray()))
                 )
-                .Sort(o => o.Field(typeof(Base_SysLog).GetProperty(pagination.SortField), sortOrder))
+                .Sort(o => o.Field(typeof(Base_Log).GetProperty(pagination.SortField), sortOrder))
                 .Skip((pagination.PageIndex - 1) * pagination.PageRows)
                 .Take(pagination.PageRows)
             );
