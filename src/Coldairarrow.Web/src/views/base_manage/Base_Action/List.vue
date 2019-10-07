@@ -44,6 +44,7 @@
           :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
           :bordered="true"
           :defaultExpandAllRows="true"
+          size="small"
         >
           <span slot="action" slot-scope="text, record">
             <template>

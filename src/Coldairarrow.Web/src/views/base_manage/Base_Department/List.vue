@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card title="菜单及页面" :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
       <a-button
@@ -11,34 +11,37 @@
       >
         删除
       </a-button>
+      <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="关键字">
-              <a-input v-model="queryParam.keyword" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="getDataList">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <!-- <div class="table-page-search-wrapper">
+          <a-form layout="inline">
+            <a-row :gutter="48">
+              <a-col :md="6" :sm="24">
+                <a-form-item label="关键字">
+                  <a-input v-model="queryParam.keyword" placeholder="" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="6" :sm="24">
+                <a-button type="primary" @click="getDataList">查询</a-button>
+                <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
+              </a-col>
+            </a-row>
+          </a-form>
+        </div> -->
 
     <a-table
+      v-if="data && data.length"
       ref="table"
       :columns="columns"
       :rowKey="row => row.Id"
       :dataSource="data"
-      :pagination="pagination"
       :loading="loading"
+      :pagination="false"
       @change="handleTableChange"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
       :bordered="true"
+      :defaultExpandAllRows="true"
       size="small"
     >
       <span slot="action" slot-scope="text, record">
@@ -56,11 +59,8 @@
 
 <script>
 import EditForm from './EditForm'
-
 const columns = [
-  { title: '应用Id', dataIndex: 'AppId', width: '20%' },
-  { title: '密钥', dataIndex: 'AppSecret', width: '20%' },
-  { title: '应用名', dataIndex: 'AppName' },
+  { title: '部门名', dataIndex: 'Text', width: '20%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -98,11 +98,11 @@ export default {
     getDataList() {
       this.loading = true
       this.$http
-        .post('/Base_Manage/Base_AppSecret/GetDataList', {
+        .post('/Base_Manage/Base_Department/GetTreeDataList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
-          SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
+          SortType: this.sorter.order,
           ...this.queryParam,
           ...this.filters
         })
@@ -133,12 +133,12 @@ export default {
         onOk() {
           return new Promise((resolve, reject) => {
             thisObj.submitDelete(ids, resolve, reject)
-          }).catch(() => console.log('Oops errors!'))
+          })
         }
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_AppSecret/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_Department/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
         resolve()
 
         if (resJson.Success) {

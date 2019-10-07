@@ -16,25 +16,6 @@ const notFoundRouter = {
  */
 export const getRouterByUser = () => {
   let menus = [
-    // {
-    //   "title": "仪表盘",
-    //   "name": "dashboard",
-    //   "icon": "dashboard",
-    //   "children": [
-    //     {
-    //       "title": "分析页",
-    //       "name": "analysis",
-    //       "path": "/dashboard/Analysis",
-    //       "icon": ""
-    //     },
-    //     {
-    //       "title": "工作台",
-    //       "name": "workplace",
-    //       "path": "/dashboard/Workplace",
-    //       "icon": ""
-    //     }
-    //   ]
-    // },
     {
       "title": "系统管理",
       "name": "Base_Manage",
@@ -43,6 +24,10 @@ export const getRouterByUser = () => {
         {
           "title": "角色管理",
           "path": '/Base_Manage/Base_Role/List'
+        },
+        {
+          "title": "部门管理",
+          "path": '/Base_Manage/Base_Department/List'
         },
         {
           "title": "密钥管理",

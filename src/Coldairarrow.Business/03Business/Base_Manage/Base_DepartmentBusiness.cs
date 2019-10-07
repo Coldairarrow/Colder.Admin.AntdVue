@@ -9,16 +9,21 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_Department> GetDataList(Pagination pagination, string departmentName = null)
+        public List<Base_DepartmentTreeDTO> GetTreeDataList(string parentId = null)
         {
-            var q = GetIQueryable();
-
-            //筛选
             var where = LinqHelper.True<Base_Department>();
-            if (!departmentName.IsNullOrEmpty())
-                where = where.And(x => x.Name.Contains(departmentName));
+            if (!parentId.IsNullOrEmpty())
+                where = where.And(x => x.ParentId == parentId);
+            var list = GetIQueryable().Where(where).ToList()
+                .Select(x => new Base_DepartmentTreeDTO
+                {
+                    Id = x.Id,
+                    ParentId = x.ParentId,
+                    Text = x.Name,
+                    Value = x.Id
+                }).ToList();
 
-            return q.Where(where).GetPagination(pagination).ToList();
+            return TreeHelper.BuildTree(list);
         }
 
         public List<string> GetChildrenIds(string departmentId)
@@ -78,9 +83,13 @@ namespace Coldairarrow.Business.Base_Manage
         #region 私有成员
 
         #endregion
+    }
 
-        #region 数据模型
-
-        #endregion
+    public class Base_DepartmentTreeDTO : TreeModel
+    {
+        public object children { get => Children; }
+        public string title { get => Text; }
+        public string value { get => Id; }
+        public string key { get => Id; }
     }
 }

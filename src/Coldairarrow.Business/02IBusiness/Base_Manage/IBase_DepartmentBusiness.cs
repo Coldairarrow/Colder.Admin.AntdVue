@@ -6,7 +6,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_DepartmentBusiness
     {
-        List<Base_Department> GetDataList(Pagination pagination, string departmentName = null);
+        List<Base_DepartmentTreeDTO> GetTreeDataList(string parentId = null);
         Base_Department GetTheData(string id);
         List<string> GetChildrenIds(string departmentId);
         AjaxResult AddData(Base_Department newData);
