@@ -39,6 +39,7 @@
       @change="handleTableChange"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
       :bordered="true"
+      size="small"
     >
       <span slot="action" slot-scope="text, record">
         <template>

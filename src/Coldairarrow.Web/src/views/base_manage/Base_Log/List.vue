@@ -64,6 +64,7 @@
       @change="handleTableChange"
       :bordered="true"
       :rowClassName="rowClassName"
+      size="small"
     >
       <span slot="LogContent" slot-scope="value">
         <template v-for="item in (value || '').replace(/\r\n/g, '\n').split('\n')">

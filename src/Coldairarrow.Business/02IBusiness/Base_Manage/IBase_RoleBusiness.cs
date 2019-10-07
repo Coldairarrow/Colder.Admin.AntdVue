@@ -14,6 +14,7 @@ namespace Coldairarrow.Business.Base_Manage
         AjaxResult DeleteData(List<string> ids);
     }
 
+    [MapFrom(typeof(Base_Role))]
     public class Base_RoleDTO : Base_Role
     {
         public RoleType? RoleType { get => RoleName?.ToEnum<RoleType>(); }

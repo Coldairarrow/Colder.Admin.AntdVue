@@ -4,7 +4,7 @@
       <a-button class="editable-add-btn" icon="plus" type="primary" @click="handleAdd">新建</a-button>
       <a-button class="editable-add-btn" icon="check" type="primary" @click="handleSave">保存</a-button>
     </div>
-    <a-table :columns="columns" :dataSource="data" bordered>
+    <a-table :columns="columns" :dataSource="data" bordered size="small">
       <template v-for="col in ['Name', 'Value']" :slot="col" slot-scope="text, record">
         <div :key="col">
           <a-input

@@ -2,8 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
-using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -161,10 +160,28 @@ namespace Coldairarrow.Api
 
         private void InitAutoMapper()
         {
+            //Coldairarrow相关程序集
+            var assemblys = Assembly.GetEntryAssembly().GetReferencedAssemblies()
+                .Select(Assembly.Load)
+                .Cast<Assembly>()
+                .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
+            List<Type> allTypes = new List<Type>();
+            assemblys.ForEach(aAssembly =>
+            {
+                allTypes.AddRange(aAssembly.GetTypes());
+            });
+            List<(Type from, Type target)> maps = new List<(Type from, Type target)>();
+
+            maps.AddRange(allTypes.Where(x => x.GetCustomAttribute<MapToAttribute>() != null)
+                .Select(x => (x, x.GetCustomAttribute<MapToAttribute>().TargetType)));
+            maps.AddRange(allTypes.Where(x => x.GetCustomAttribute<MapFromAttribute>() != null)
+                .Select(x => (x.GetCustomAttribute<MapFromAttribute>().FromType,x)));
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Base_User, Base_UserDTO>();
-                cfg.CreateMap<Base_Role, Base_RoleDTO>();
+                maps.ForEach(aMap =>
+                {
+                    cfg.CreateMap(aMap.from, aMap.target);
+                });
             });
         }
 
