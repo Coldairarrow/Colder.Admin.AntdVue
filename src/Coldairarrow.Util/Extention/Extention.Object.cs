@@ -25,7 +25,8 @@ namespace Coldairarrow.Util
             });
         }
 
-        private static BindingFlags _bindingFlags { get; } = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
+        private static BindingFlags _bindingFlags { get; } 
+            = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
 
         /// <summary>
         /// 将一个object对象序列化，返回一个byte[]         

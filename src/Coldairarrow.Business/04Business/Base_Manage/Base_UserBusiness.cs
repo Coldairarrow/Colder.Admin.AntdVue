@@ -13,24 +13,11 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region DI
 
-        public Base_UserBusiness(IBase_UserDTOCache sysUserCache, IOperator @operator, IDataPermission dataPermission)
+        public Base_UserBusiness(IBase_UserDTOCache sysUserCache)
         {
             _sysUserCache = sysUserCache;
-            _operator = @operator;
-            _dataPermission = dataPermission;
         }
         IBase_UserDTOCache _sysUserCache { get; }
-        IOperator _operator { get; }
-        IDataPermission _dataPermission { get; }
-
-        #endregion
-
-        #region 重写
-
-        public override IQueryable<Base_User> GetIQueryable()
-        {
-            return _dataPermission.GetIQ_Base_User(Service);
-        }
 
         #endregion
 
@@ -87,9 +74,9 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
 
-        public Base_User GetTheData(string id)
+        public Base_UserDTO GetTheData(string id)
         {
-            return GetEntity(id);
+            return GetDataList(new Pagination(), true, id).FirstOrDefault();
         }
 
         public Base_UserDTO GetTheInfo(string userId)
@@ -101,26 +88,44 @@ namespace Coldairarrow.Business.Base_Manage
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
-        public AjaxResult AddData(Base_User newData)
+        public AjaxResult AddData(Base_User newData, List<string> roleIds)
         {
-            Insert(newData);
+            using (var transaction = BeginTransaction())
+            {
+                Insert(newData);
+                SetUserRole(newData.Id, roleIds);
 
-            return Success();
+                var res = EndTransaction();
+                if (res.Success)
+                    return Success();
+                else
+                    throw new Exception("系统异常", res.ex);
+            }
         }
 
         [DataEditLog(LogType.系统用户管理, "RealName", "用户")]
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
-        public AjaxResult UpdateData(Base_User theData)
+        public AjaxResult UpdateData(Base_User theData, List<string> roleIds)
         {
-            if (theData.Id == "Admin" && _operator.UserId != theData.Id)
+            if (theData.Id == "Admin" && Operator?.UserId != theData.Id)
                 return new ErrorResult("禁止更改超级管理员！");
 
-            Update(theData);
-            _sysUserCache.UpdateCache(theData.Id);
+            using (var transaction = BeginTransaction())
+            {
+                Update(theData);
+                SetUserRole(theData.Id, roleIds);
 
-            return Success();
+                var res = EndTransaction();
+                if (res.Success)
+                {
+                    _sysUserCache.UpdateCache(theData.Id);
+                    return Success();
+                }
+                else
+                    throw new Exception("系统异常", res.ex);
+            }
         }
 
         [DataDeleteLog(LogType.系统用户管理, "RealName", "用户")]
@@ -140,6 +145,19 @@ namespace Coldairarrow.Business.Base_Manage
         #endregion
 
         #region 私有成员
+
+        private void SetUserRole(string userId, List<string> roleIds)
+        {
+            var userRoleList = roleIds.Select(x => new Base_UserRole
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                UserId = userId,
+                RoleId = x
+            }).ToList();
+            Service.Delete_Sql<Base_UserRole>(x => x.UserId == userId);
+            Service.Insert(userRoleList);
+        }
 
         #endregion
 

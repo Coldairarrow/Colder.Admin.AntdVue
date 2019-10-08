@@ -20,6 +20,7 @@ namespace Coldairarrow.Business
         #region DI
 
         public ILogger Logger { protected get; set; }
+        public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
 
         #endregion
 
