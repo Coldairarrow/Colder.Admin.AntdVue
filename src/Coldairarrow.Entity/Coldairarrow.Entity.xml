@@ -394,46 +394,6 @@
             所属部门Id
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.Base_UserAction">
-            <summary>
-            用户权限表
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.Id">
-            <summary>
-            主键
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.CreatorId">
-            <summary>
-            创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.Deleted">
-            <summary>
-            否已删除
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserAction.Action">
-            <summary>
-            权限Id
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_UserRole">
             <summary>
             用户角色表
