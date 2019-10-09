@@ -201,9 +201,9 @@ namespace Coldairarrow.Util
             //创建新参数
             var newParameter = Expression.Parameter(typeof(T), "parameter");
 
-            var parameterReplacer = new ParameterReplacer(newParameter);
-            var left = parameterReplacer.Replace(one.Body);
-            var right = parameterReplacer.Replace(another.Body);
+            var parameterReplacer = new ParameterReplaceVisitor(newParameter);
+            var left = parameterReplacer.Visit(one.Body);
+            var right = parameterReplacer.Visit(another.Body);
             var body = Expression.And(left, right);
 
             return Expression.Lambda<Func<T, bool>>(body, newParameter);
@@ -221,9 +221,9 @@ namespace Coldairarrow.Util
             //创建新参数
             var newParameter = Expression.Parameter(typeof(T), "parameter");
 
-            var parameterReplacer = new ParameterReplacer(newParameter);
-            var left = parameterReplacer.Replace(one.Body);
-            var right = parameterReplacer.Replace(another.Body);
+            var parameterReplacer = new ParameterReplaceVisitor(newParameter);
+            var left = parameterReplacer.Visit(one.Body);
+            var right = parameterReplacer.Visit(another.Body);
             var body = Expression.Or(left, right);
 
             return Expression.Lambda<Func<T, bool>>(body, newParameter);
@@ -348,29 +348,22 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 继承ExpressionVisitor类，实现参数替换统一
     /// </summary>
-    class ParameterReplacer : ExpressionVisitor
+    class ParameterReplaceVisitor : ExpressionVisitor
     {
-        public ParameterReplacer(ParameterExpression paramExpr)
+        public ParameterReplaceVisitor(ParameterExpression paramExpr)
         {
-            Parameter = paramExpr;
+            _parameter = paramExpr;
         }
 
         //新的表达式参数
-        private ParameterExpression Parameter { get; set; }
+        private ParameterExpression _parameter { get; set; }
 
-        public Expression Replace(Expression expr)
-        {
-            return this.Visit(expr);
-        }
-
-        /// <summary>
-        /// 覆盖父方法，返回新的参数
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
         protected override Expression VisitParameter(ParameterExpression p)
         {
-            return Parameter;
+            if (p.Type == _parameter.Type)
+                return _parameter;
+            else
+                return p;
         }
     }
 
