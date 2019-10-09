@@ -21,7 +21,7 @@ namespace Coldairarrow.Business
                 if (GlobalSwitch.RunModel == RunModel.LocalTest)
                     return "Admin";
                 else
-                    return SessionHelper.Session["UserId"]?.ToString();
+                    return null;
             }
         }
 

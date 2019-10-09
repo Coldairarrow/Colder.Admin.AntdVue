@@ -76,7 +76,10 @@ namespace Coldairarrow.Business.Base_Manage
 
         public Base_UserDTO GetTheData(string id)
         {
-            return GetDataList(new Pagination(), true, id).FirstOrDefault();
+            if (id.IsNullOrEmpty())
+                return null;
+            else
+                return GetDataList(new Pagination(), true, id).FirstOrDefault();
         }
 
         public Base_UserDTO GetTheInfo(string userId)
@@ -189,5 +192,7 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
         public string DepartmentName { get; set; }
+        public string SexText { get => Sex == 1 ? "ÄÐ" : "Å®"; }
+        public string BirthdayText { get => Birthday?.ToString("yyyy-MM-dd"); }
     }
 }

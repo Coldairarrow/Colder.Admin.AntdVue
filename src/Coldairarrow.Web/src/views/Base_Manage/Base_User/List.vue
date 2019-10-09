@@ -17,8 +17,8 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
-            <a-form-item label="角色名">
-              <a-input v-model="queryParam.roleName" placeholder="" />
+            <a-form-item label="关键字">
+              <a-input v-model="queryParam.keyword" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -58,7 +58,12 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '角色名', dataIndex: 'RoleName', width: '10%' },
+  { title: '用户名', dataIndex: 'UserName', width: '10%' },
+  { title: '姓名', dataIndex: 'RealName', width: '10%' },
+  { title: '性别', dataIndex: 'SexText', width: '5%' },
+  { title: '出生日期', dataIndex: 'BirthdayText', width: '10%' },
+  { title: '所属部门', dataIndex: 'DepartmentName', width: '10%' },
+  { title: '所属角色', dataIndex: 'RoleNames', width: '30%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -96,7 +101,7 @@ export default {
     getDataList() {
       this.loading = true
       this.$http
-        .post('/Base_Manage/Base_Role/GetDataList', {
+        .post('/Base_Manage/Base_User/GetDataList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
@@ -136,7 +141,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_Role/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_User/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
         resolve()
 
         if (resJson.Success) {
