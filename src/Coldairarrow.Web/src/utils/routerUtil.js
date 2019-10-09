@@ -22,6 +22,10 @@ export const getRouterByUser = () => {
       "icon": "setting",
       "children": [
         {
+          "title": "用户管理",
+          "path": '/Base_Manage/Base_User/List'
+        },
+        {
           "title": "角色管理",
           "path": '/Base_Manage/Base_Role/List'
         },
