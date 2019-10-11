@@ -15,6 +15,7 @@
         <a-form-item label="上级部门" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-tree-select
             style="width: 300px"
+            allowClear
             :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
             :treeData="ParentIdTreeData"
             placeholder="请选择上级部门"

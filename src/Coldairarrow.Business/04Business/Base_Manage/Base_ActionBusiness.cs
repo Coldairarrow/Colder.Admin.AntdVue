@@ -137,6 +137,8 @@ namespace Coldairarrow.Business.Base_Manage
         /// </summary>
         public String Url { get; set; }
 
+        public string path { get => Url; }
+
         /// <summary>
         /// 是否需要权限(仅页面有效)
         /// </summary>
@@ -155,6 +157,8 @@ namespace Coldairarrow.Business.Base_Manage
         /// 图标
         /// </summary>
         public string Icon { get; set; }
+
+        public string icon { get => Icon; }
 
         /// <summary>
         /// 排序
