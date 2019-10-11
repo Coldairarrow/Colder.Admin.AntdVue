@@ -15,6 +15,7 @@
         <a-form-item label="上级菜单" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-tree-select
             style="width: 300px"
+            allowClear
             :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
             :treeData="ParentIdTreeData"
             placeholder="请选择上级菜单"
@@ -28,8 +29,8 @@
             <a-radio :value="1">页面</a-radio>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="路径(格式:/xxx/xxx)" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Url', { rules: [{ required: true, message: '请输入路径' }] }]" />
+        <a-form-item label="路径(页面必须配置)" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['Url', { rules: [{ required: false, message: '请输入路径' }] }]" />
         </a-form-item>
         <a-form-item label="是否需权限" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-radio-group v-decorator="['NeedAction', { rules: [{ required: false }], initialValue: false }]">

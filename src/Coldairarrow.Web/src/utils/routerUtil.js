@@ -1,6 +1,6 @@
-import { axios } from '@/utils/request'
+import { Axios } from '@/utils/plugin/axios-plugin'
 // eslint-disable-next-line
-import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
+import { BasicLayout, PageView } from '@/layouts'
 var uuid = require('node-uuid');
 
 const desktopPath = '/Base_Manage/Base_AppSecret/List'
@@ -15,52 +15,60 @@ const notFoundRouter = {
  * @returns {Promise}
  */
 export const getRouterByUser = () => {
-  let menus = [
-    {
-      "title": "系统管理",
-      "name": "Base_Manage",
-      "icon": "setting",
-      "children": [
-        {
-          "title": "用户管理",
-          "path": '/Base_Manage/Base_User/List'
-        },
-        {
-          "title": "角色管理",
-          "path": '/Base_Manage/Base_Role/List'
-        },
-        {
-          "title": "部门管理",
-          "path": '/Base_Manage/Base_Department/List'
-        },
-        {
-          "title": "密钥管理",
-          "path": '/Base_Manage/Base_AppSecret/List'
-        },
-        {
-          "title": "权限管理",
-          "path": '/Base_Manage/Base_Action/List'
-        },
-        {
-          "title": "系统日志",
-          "path": '/Base_Manage/Base_Log/List'
-        }
-      ]
-    },
-    {
-      "title": "开发",
-      "icon": "code",
-      "children": [
-        {
-          "title": "图标选择",
-          "path": '/Develop/IconSelectorView'
-        }
-      ]
-    }
-  ]
+  // return Axios.post('/Base_Manage/Base_Action/GetMenuTreeList')
   return new Promise((resolve, reject) => {
-    resolve(menus)
+    Axios.post('/Base_Manage/Base_Action/GetMenuTreeList', {}).then(resJson => {
+      if (resJson.Success) {
+        resolve(resJson.Data)
+      }
+    })
   })
+
+  // let menus = [
+  //   {
+  //     "title": "系统管理",
+  //     "icon": "setting",
+  //     "children": [
+  //       {
+  //         "title": "用户管理",
+  //         "path": '/Base_Manage/Base_User/List'
+  //       },
+  //       {
+  //         "title": "角色管理",
+  //         "path": '/Base_Manage/Base_Role/List'
+  //       },
+  //       {
+  //         "title": "部门管理",
+  //         "path": '/Base_Manage/Base_Department/List'
+  //       },
+  //       {
+  //         "title": "密钥管理",
+  //         "path": '/Base_Manage/Base_AppSecret/List'
+  //       },
+  //       {
+  //         "title": "权限管理",
+  //         "path": '/Base_Manage/Base_Action/List'
+  //       },
+  //       {
+  //         "title": "系统日志",
+  //         "path": '/Base_Manage/Base_Log/List'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "title": "开发",
+  //     "icon": "code",
+  //     "children": [
+  //       {
+  //         "title": "图标选择",
+  //         "path": '/Develop/IconSelectorView'
+  //       }
+  //     ]
+  //   }
+  // ]
+  // return new Promise((resolve, reject) => {
+  //   resolve(menus)
+  // })
 }
 
 /**
