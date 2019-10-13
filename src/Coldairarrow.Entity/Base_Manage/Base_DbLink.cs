@@ -51,11 +51,5 @@ namespace Coldairarrow.Entity.Base_Manage
         /// 数据库类型
         /// </summary>
         public String DbType { get; set; }
-
-        /// <summary>
-        /// 排序编号
-        /// </summary>
-        public String SortNum { get; set; }
-
     }
 }

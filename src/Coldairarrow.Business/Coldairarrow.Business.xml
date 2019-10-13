@@ -4,11 +4,6 @@
         <name>Coldairarrow.Business</name>
     </assembly>
     <members>
-        <member name="T:Coldairarrow.Business.Base_Manage.IDataPermission">
-            <summary>
-            数据权限控制接口
-            </summary>
-        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.IRapidDevelopmentBusiness.GetAllDbLink">
             <summary>
             获取所有数据库连接
@@ -92,20 +87,20 @@
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DatabaseLinkBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheData(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DatabaseLinkBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             添加数据
             </summary>
             <param name="newData">数据</param>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DatabaseLinkBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             更新数据
             </summary>
@@ -328,23 +323,6 @@
         <member name="P:Coldairarrow.Business.IOperator.UserId">
             <summary>
             当前操作者UserId
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.IOperator.Logged">
-            <summary>
-            是否已登录
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IOperator.Login(System.String)">
-            <summary>
-            登录
-            </summary>
-            <param name="userId">用户逻辑主键Id</param>
-        </member>
-        <member name="M:Coldairarrow.Business.IOperator.Logout">
-            <summary>
-            注销
             </summary>
         </member>
         <member name="M:Coldairarrow.Business.IOperator.IsAdmin">
@@ -649,23 +627,6 @@
         <member name="P:Coldairarrow.Business.Operator.UserId">
             <summary>
             当前操作者UserId
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.Operator.Logged">
-            <summary>
-            是否已登录
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.Operator.Login(System.String)">
-            <summary>
-            登录
-            </summary>
-            <param name="userId">用户逻辑主键Id</param>
-        </member>
-        <member name="M:Coldairarrow.Business.Operator.Logout">
-            <summary>
-            注销
             </summary>
         </member>
         <member name="M:Coldairarrow.Business.Operator.IsAdmin">

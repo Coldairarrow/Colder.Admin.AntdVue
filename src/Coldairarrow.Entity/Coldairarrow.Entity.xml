@@ -164,11 +164,6 @@
             数据库类型
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_DbLink.SortNum">
-            <summary>
-            排序编号
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_Department">
             <summary>
             部门表

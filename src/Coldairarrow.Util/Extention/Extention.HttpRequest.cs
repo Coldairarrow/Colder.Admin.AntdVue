@@ -1,7 +1,9 @@
-﻿using Coldairarrow.Util;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using System;
+using System.Text.RegularExpressions;
 
-namespace Microsoft.AspNetCore.Http
+namespace Coldairarrow.Util
 {
     /// <summary>
     /// 拓展类
@@ -37,6 +39,41 @@ namespace Microsoft.AspNetCore.Http
             var displayUrl = req.GetDisplayUrl();
 
             return queryStr.IsNullOrEmpty() ? displayUrl : displayUrl.Replace(queryStr, "");
+        }
+
+        /// <summary>
+        /// 获取Token
+        /// </summary>
+        /// <param name="req">请求</param>
+        /// <returns></returns>
+        public static string GetToken(this HttpRequest req)
+        {
+            string tokenHeader = req.Headers["Authorization"].ToString();
+            if (tokenHeader.IsNullOrEmpty())
+                throw new Exception("缺少token!");
+
+            string pattern = "^Bearer (.*?)$";
+            if (!Regex.IsMatch(tokenHeader, pattern))
+                throw new Exception("token格式不对!格式为:Bearer {token}");
+
+            string token = Regex.Match(tokenHeader, pattern).Groups[1]?.ToString();
+            if (token.IsNullOrEmpty())
+                throw new Exception("token不能为空!");
+
+            return token;
+        }
+
+        /// <summary>
+        /// 获取Token中的Payload
+        /// </summary>
+        /// <param name="req">请求</param>
+        /// <returns></returns>
+        public static JWTPayload GetJWTPayload(this HttpRequest req)
+        {
+            string token = req.GetToken();
+            var payload = JWTHelper.GetPayload<JWTPayload>(token);
+
+            return payload;
         }
     }
 }

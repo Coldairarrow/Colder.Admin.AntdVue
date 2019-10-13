@@ -319,6 +319,24 @@
             </summary>
             <param name="ids">id数组,JSON数组</param>
         </member>
+        <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_DbLinkController">
+            <summary>
+            应用密钥
+            </summary>
+            <seealso cref="T:Coldairarrow.Api.BaseApiController" />
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_DbLinkController.SaveData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+            <summary>
+            保存
+            </summary>
+            <param name="theData">保存的数据</param>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_DbLinkController.DeleteData(System.String)">
+            <summary>
+            删除数据
+            </summary>
+            <param name="ids">id数组,JSON数组</param>
+        </member>
         <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_LogController">
             <summary>
             应用密钥

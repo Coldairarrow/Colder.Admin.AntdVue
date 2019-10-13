@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public interface IBase_DatabaseLinkBusiness
+    public interface IBase_DbLinkBusiness
     {
         List<Base_DbLink> GetDataList(Pagination pagination);
         Base_DbLink GetTheData(string id);

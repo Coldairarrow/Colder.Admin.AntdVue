@@ -1,6 +1,7 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,6 +157,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// <summary>
         /// Í¼±ê
         /// </summary>
+        [JsonIgnore]
         public string Icon { get; set; }
 
         public string icon { get => Icon; }

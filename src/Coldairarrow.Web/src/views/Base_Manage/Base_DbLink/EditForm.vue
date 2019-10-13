@@ -9,20 +9,19 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <a-form-item label="角色名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['RoleName', { rules: [{ required: true, message: '请输入角色名' }] }]" />
+        <a-form-item label="连接名" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['LinkName', { rules: [{ required: true, message: '必填' }] }]" />
         </a-form-item>
-        <a-form-item label="权限" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-tree
-            showLine
-            v-if="actionsTreeData && actionsTreeData.length"
-            checkable
-            :autoExpandParent="autoExpandParent"
-            v-model="checkedKeys"
-            :treeData="actionsTreeData"
-            :defaultExpandAll="true"
-            :checkStrictly="true"
-          />
+        <a-form-item label="连接字符串" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-textarea autosize v-decorator="['ConnectionStr', { rules: [{ required: true, message: '必填' }] }]" />
+        </a-form-item>
+        <a-form-item label="数据库类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-select v-decorator="['DbType', { rules: [{ required: true }], initialValue: 'SqlServer' }]">
+            <a-select-option key="SqlServer">SqlServer</a-select-option>
+            <a-select-option key="MySql">MySql</a-select-option>
+            <a-select-option key="Oracle">Oracle</a-select-option>
+            <a-select-option key="PostgreSql">PostgreSql</a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -45,24 +44,14 @@ export default {
       visible: false,
       confirmLoading: false,
       formFields: {},
-      entity: {},
-      actionsTreeData: [],
-      autoExpandParent: true,
-      checkedKeys: []
+      entity: {}
     }
   },
   methods: {
-    onCheck(checkedKeys) {
-      this.checkedKeys = checkedKeys
-    },
-    onSelect(selectedKeys, info) {
-      this.selectedKeys = selectedKeys
-    },
     add() {
       this.entity = {}
       this.visible = true
       this.form.resetFields()
-      this.init()
     },
     edit(id) {
       this.visible = true
@@ -70,15 +59,13 @@ export default {
       this.$nextTick(() => {
         this.formFields = this.form.getFieldsValue()
 
-        this.$http.post('/Base_Manage/Base_Role/GetTheData', { id: id }).then(resJson => {
+        this.$http.post('/Base_Manage/Base_DbLink/GetTheData', { id: id }).then(resJson => {
           this.entity = resJson.Data
           var setData = {}
           Object.keys(this.formFields).forEach(item => {
             setData[item] = this.entity[item]
           })
           this.form.setFieldsValue(setData)
-          this.checkedKeys = this.entity['Actions']
-          this.init()
         })
       })
     },
@@ -87,9 +74,9 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-          this.entity['actionsJson'] = JSON.stringify(this.checkedKeys.checked)
+
           this.confirmLoading = true
-          this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
+          this.$http.post('/Base_Manage/Base_DbLink/SaveData', this.entity).then(resJson => {
             this.confirmLoading = false
 
             if (resJson.Success) {
@@ -105,14 +92,6 @@ export default {
     },
     handleCancel() {
       this.visible = false
-      this.checkedKeys = []
-    },
-    init() {
-      this.$http.post('/Base_Manage/Base_Action/GetActionTreeList').then(resJson => {
-        if (resJson.Success) {
-          this.actionsTreeData = resJson.Data
-        }
-      })
     }
   }
 }

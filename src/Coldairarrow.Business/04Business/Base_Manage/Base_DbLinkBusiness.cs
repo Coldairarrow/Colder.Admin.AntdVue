@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_DatabaseLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DatabaseLinkBusiness, IDependency
+    public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, IDependency
     {
         #region 外部接口
 

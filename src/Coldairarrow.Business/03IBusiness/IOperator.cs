@@ -17,23 +17,6 @@ namespace Coldairarrow.Business
         #region 操作方法
 
         /// <summary>
-        /// 是否已登录
-        /// </summary>
-        /// <returns></returns>
-        bool Logged();
-
-        /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="userId">用户逻辑主键Id</param>
-        void Login(string userId);
-
-        /// <summary>
-        /// 注销
-        /// </summary>
-        void Logout();
-
-        /// <summary>
         /// 判断是否为超级管理员
         /// </summary>
         /// <returns></returns>
