@@ -1,7 +1,6 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Text.RegularExpressions;
 
 namespace Coldairarrow.Api
 {
@@ -18,35 +17,30 @@ namespace Coldairarrow.Api
         /// <param name="context">过滤器上下文</param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.ContainsFilter<NoCheckJWTAttribute>() || GlobalSwitch.RunModel == RunModel.LocalTest)
-                return;
-
-            string tokenHeader = context.HttpContext.Request.Headers["Authorization"].ToString();
-            if (tokenHeader.IsNullOrEmpty())
+            try
             {
-                context.Result = Error("缺少token!", _errorCode);
-                return;
+                if (context.ContainsFilter<NoCheckJWTAttribute>() || GlobalSwitch.RunModel == RunModel.LocalTest)
+                    return;
+
+                var req = context.HttpContext.Request;
+
+                string token = req.GetToken();
+                if (!JWTHelper.CheckToken(token, JWTHelper.JWTSecret))
+                {
+                    context.Result = Error("token校验失败!", _errorCode);
+                    return;
+                }
+
+                var payload = JWTHelper.GetPayload<JWTPayload>(token);
+                if (payload.Expire < DateTime.Now)
+                {
+                    context.Result = Error("token过期!", _errorCode);
+                    return;
+                }
             }
-
-            string pattern = "^Bearer (.*?)$";
-            if (!Regex.IsMatch(tokenHeader, pattern))
+            catch (Exception ex)
             {
-                context.Result = Error("token格式不对!格式为:Bearer {token}", _errorCode);
-                return;
-            }
-
-            string token = Regex.Match(tokenHeader, pattern).Groups[1]?.ToString();
-            if (!JWTHelper.CheckToken(token, JWTHelper.JWTSecret))
-            {
-                context.Result = Error("token校验失败!", _errorCode);
-                return;
-            }
-
-            var payload = JWTHelper.GetPayload<JWTPayload>(token);
-            if (payload.Expire < DateTime.Now)
-            {
-                context.Result = Error("token过期!", _errorCode);
-                return;
+                context.Result = Error(ex.Message, _errorCode);
             }
         }
 

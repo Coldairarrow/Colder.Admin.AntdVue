@@ -68,10 +68,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.Id = IdHelper.GetId();
-                theData.CreateTime = DateTime.Now;
-                theData.CreatorId = Operator.UserId;
-                //theData.CreatorRealName = Operator.Property.RealName;
+                theData.InitEntity();
 
                 res = _appSecretBus.AddData(theData);
             }

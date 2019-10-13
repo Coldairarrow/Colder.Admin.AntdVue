@@ -2,8 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
-using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +17,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
@@ -114,7 +111,6 @@ namespace Coldairarrow.Api
             });
             InitAutoMapper();
             InitId();
-            //InitEF();
         }
 
         private ContainerBuilder InitAutofac()
@@ -197,17 +193,6 @@ namespace Coldairarrow.Api
                 //使用Zookeeper
                 //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
                 .Boot();
-        }
-
-        private void InitEF()
-        {
-            Task.Run(() =>
-            {
-                using (var db = DbFactory.GetRepository())
-                {
-                    db.GetIQueryable<Base_User>().GetPagination(new Pagination { PageRows = 1 }).ToList();
-                }
-            });
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Coldairarrow.Business
                 config.AddRuleForAllLevels(target);
             }
         }
-        private IOperator _operator { get; } = AutofacHelper.GetScopeService<IOperator>();
+        private IOperator _operator { get => AutofacHelper.GetScopeService<IOperator>(); }
 
         public void Log(LogLevel logLevel, LogType logType, string msg, string data)
         {

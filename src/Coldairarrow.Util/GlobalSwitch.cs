@@ -22,9 +22,14 @@ namespace Coldairarrow.Util
         #region 参数
 
         /// <summary>
+        /// 超级管理员Id
+        /// </summary>
+        public const string AdminId = "Admin";
+
+        /// <summary>
         /// 项目名
         /// </summary>
-        public static string ProjectName { get; } = "Colder.Fx.Core.AdtdVue";
+        public const string ProjectName = "Colder.Fx.Core.AdtdVue";
 
         /// <summary>
         /// 网站根地址
@@ -38,7 +43,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 运行模式
         /// </summary>
-        public static RunModel RunModel { get; } = RunModel.Publish;
+        public static readonly RunModel RunModel = RunModel.Publish;
 
         /// <summary>
         /// 网站文件根路径
@@ -52,12 +57,12 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认数据库类型
         /// </summary>
-        public static DatabaseType DatabaseType { get; } = DatabaseType.SqlServer;
+        public static readonly DatabaseType DatabaseType = DatabaseType.SqlServer;
 
         /// <summary>
         /// 默认数据库连接名
         /// </summary>
-        public static string DefaultDbConName { get; } = "BaseDb";
+        public static readonly string DefaultDbConName = "BaseDb";
 
         #endregion
 
@@ -66,12 +71,12 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认缓存
         /// </summary>
-        public static CacheType CacheType { get; } = CacheType.SystemCache;
+        public static readonly CacheType CacheType = CacheType.SystemCache;
 
         /// <summary>
         /// Redis配置字符串
         /// </summary>
-        public static string RedisConfig { get; } = null /*"61.153.17.101:6379"*/;
+        public static readonly string RedisConfig = null /*"61.153.17.101:6379"*/;
 
         #endregion
 
@@ -81,19 +86,12 @@ namespace Coldairarrow.Util
         /// 日志记录方式
         /// 注:可用位运算,LoggerType.RDBMS | LoggerType.File表示同时记录到数据库和文件
         /// </summary>
-        public static LoggerType LoggerType { get; set; } = LoggerType.RDBMS;
+        public static readonly LoggerType LoggerType = LoggerType.RDBMS;
 
         /// <summary>
         /// ElasticSearch服务器配置
         /// </summary>
-        public static Uri[] ElasticSearchNodes { get; set; } = new Uri[] { new Uri("http://localhost:9200/") };
-
-        #endregion
-
-        #region 雪花Id配置
-
-        public static long DatacenterId { get => ConfigHelper.GetValue("DatacenterId").ToString().ToLong(); }
-        public static long WorkerId { get => ConfigHelper.GetValue("WorkerId").ToString().ToLong(); }
+        public static readonly Uri[] ElasticSearchNodes = new Uri[] { new Uri("http://localhost:9200/") };
 
         #endregion
     }

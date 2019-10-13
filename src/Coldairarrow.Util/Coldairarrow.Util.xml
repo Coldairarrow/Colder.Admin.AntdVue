@@ -858,6 +858,9 @@
             拓展方法静态类
             </summary>
             <summary>
+            拓展类
+            </summary>
+            <summary>
             IQueryable"T"的拓展操作
             作者：Coldairarrow
             </summary>
@@ -1272,6 +1275,34 @@
             注：长度为50字符
             </summary>
             <param name="guid">新的GUID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.IsAjaxRequest(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            判断是否为AJAX请求
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.GetDisplayUrlNoQuery(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取去掉查询参数的Url
+            </summary>
+            <param name="req">请求</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.GetToken(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取Token
+            </summary>
+            <param name="req">请求</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.GetJWTPayload(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取Token中的Payload
+            </summary>
+            <param name="req">请求</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.Copy``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
@@ -1956,7 +1987,12 @@
             全局控制
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.ProjectName">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.AdminId">
+            <summary>
+            超级管理员Id
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.GlobalSwitch.ProjectName">
             <summary>
             项目名
             </summary>
@@ -1966,7 +2002,7 @@
             网站根地址
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.RunModel">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.RunModel">
             <summary>
             运行模式
             </summary>
@@ -1976,33 +2012,33 @@
             网站文件根路径
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.DatabaseType">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.DatabaseType">
             <summary>
             默认数据库类型
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.DefaultDbConName">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.DefaultDbConName">
             <summary>
             默认数据库连接名
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.CacheType">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.CacheType">
             <summary>
             默认缓存
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.RedisConfig">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.RedisConfig">
             <summary>
             Redis配置字符串
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.LoggerType">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.LoggerType">
             <summary>
             日志记录方式
             注:可用位运算,LoggerType.RDBMS | LoggerType.File表示同时记录到数据库和文件
             </summary>
         </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.ElasticSearchNodes">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.ElasticSearchNodes">
             <summary>
             ElasticSearch服务器配置
             </summary>
@@ -3362,23 +3398,6 @@
             <summary>
             拓展类
             </summary>
-            <summary>
-            拓展类
-            </summary>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Http.Extention.IsAjaxRequest(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            判断是否为AJAX请求
-            </summary>
-            <param name="req"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Http.Extention.GetDisplayUrlNoQuery(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            获取去掉查询参数的Url
-            </summary>
-            <param name="req">请求</param>
-            <returns></returns>
         </member>
     </members>
 </doc>

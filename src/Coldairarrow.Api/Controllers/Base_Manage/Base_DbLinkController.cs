@@ -2,7 +2,6 @@ using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
@@ -12,44 +11,33 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
-    public class Base_RoleController : BaseApiController
+    public class Base_DbLinkController : BaseApiController
     {
         #region DI
 
-        public Base_RoleController(IBase_RoleBusiness roleBus)
+        public Base_DbLinkController(IBase_DbLinkBusiness dbLinkBus)
         {
-            _roleBus = roleBus;
+            _dbLinkBus = dbLinkBus;
         }
 
-        IBase_RoleBusiness _roleBus { get; }
+        IBase_DbLinkBusiness _dbLinkBus { get; }
 
         #endregion
 
         #region 获取
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="pagination">分页参数</param>
-        /// <param name="roleName">角色名</param>
-        /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string roleName)
+        public ActionResult<AjaxResult<List<Base_DbLink>>> GetDataList(Pagination pagination)
         {
-            var dataList = _roleBus.GetDataList(pagination, null, roleName);
+            var dataList = _dbLinkBus.GetDataList(pagination);
 
             return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
         }
 
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="id">id主键</param>
-        /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<Base_RoleDTO>> GetTheData(string id)
+        public ActionResult<AjaxResult<Base_DbLink>> GetTheData(string id)
         {
-            var theData = _roleBus.GetTheData(id) ?? new Base_RoleDTO();
+            var theData = _dbLinkBus.GetTheData(id) ?? new Base_DbLink();
 
             return Success(theData);
         }
@@ -62,21 +50,19 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// 保存
         /// </summary>
         /// <param name="theData">保存的数据</param>
-        /// <param name="actionsJson">权限值JSON</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_Role theData, string actionsJson)
+        public ActionResult<AjaxResult> SaveData(Base_DbLink theData)
         {
             AjaxResult res;
-            var actionList = actionsJson?.ToList<string>();
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _roleBus.AddData(theData, actionList);
+                res = _dbLinkBus.AddData(theData);
             }
             else
             {
-                res = _roleBus.UpdateData(theData, actionList);
+                res = _dbLinkBus.UpdateData(theData);
             }
 
             return JsonContent(res.ToJson());
@@ -89,7 +75,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult> DeleteData(string ids)
         {
-            var res = _roleBus.DeleteData(ids.ToList<string>());
+            var res = _dbLinkBus.DeleteData(ids.ToList<string>());
 
             return JsonContent(res.ToJson());
         }
