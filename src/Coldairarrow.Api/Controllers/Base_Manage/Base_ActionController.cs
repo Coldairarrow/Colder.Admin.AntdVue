@@ -52,6 +52,14 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return Success(dataList);
         }
 
+        [HttpPost]
+        public ActionResult<AjaxResult<List<Base_Action>>> GetAllActionList()
+        {
+            var dataList = _actionBus.GetDataList(new Pagination(), null, null, new List<int> { 0, 1, 2 });
+
+            return Success(dataList);
+        }
+
         /// <summary>
         /// 获取菜单树列表
         /// </summary>

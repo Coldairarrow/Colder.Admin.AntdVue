@@ -17,6 +17,7 @@
             showLine
             v-if="actionsTreeData && actionsTreeData.length"
             checkable
+            @check="onCheck"
             :autoExpandParent="autoExpandParent"
             v-model="checkedKeys"
             :treeData="actionsTreeData"
@@ -47,16 +48,18 @@ export default {
       formFields: {},
       entity: {},
       actionsTreeData: [],
+      allActionList: [],
       autoExpandParent: true,
       checkedKeys: []
     }
   },
   methods: {
-    onCheck(checkedKeys) {
+    onCheck(checkedKeys, e) {
+      //勾选事件,勾选节点时同时勾选所有父节点和子节点
+
+      //取消勾选事件,取消勾选所有子节点
+      console.log('勾选:', e)
       this.checkedKeys = checkedKeys
-    },
-    onSelect(selectedKeys, info) {
-      this.selectedKeys = selectedKeys
     },
     add() {
       this.entity = {}
@@ -111,6 +114,11 @@ export default {
       this.$http.post('/Base_Manage/Base_Action/GetActionTreeList').then(resJson => {
         if (resJson.Success) {
           this.actionsTreeData = resJson.Data
+        }
+      })
+      this.$http.post('/Base_Manage/Base_Action/GetAllActionList').then(resJson => {
+        if (resJson.Success) {
+          this.allActionList = resJson.Data
         }
       })
     }
