@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import TreeHelper from '@/utils/helper/TreeHelper'
 export default {
   props: {
     afterSubmit: {
@@ -50,16 +51,25 @@ export default {
       actionsTreeData: [],
       allActionList: [],
       autoExpandParent: true,
-      checkedKeys: []
+      checkedKeys: { checked: [] }
     }
   },
   methods: {
     onCheck(checkedKeys, e) {
+      // console.log(checkedKeys)
+      // console.log(this.checkedKeys)
       //勾选事件,勾选节点时同时勾选所有父节点和子节点
-
-      //取消勾选事件,取消勾选所有子节点
-      console.log('勾选:', e)
-      this.checkedKeys = checkedKeys
+      var value = e.node.value
+      if (e.checked) {
+        var parentIds = TreeHelper.getParentIds(value, this.allActionList)
+        var children = TreeHelper.getChildrenIds(value, this.allActionList)
+        var addNodes = parentIds.concat(children).filter(item => !this.checkedKeys.checked.includes(item))
+        this.checkedKeys.checked = this.checkedKeys.checked.concat(addNodes)
+      } else {
+        //取消勾选事件,取消勾选所有子节点
+        var children = TreeHelper.getChildrenIds(value, this.allActionList)
+        this.checkedKeys.checked = this.checkedKeys.checked.filter(item => !children.includes(item))
+      }
     },
     add() {
       this.entity = {}
@@ -80,7 +90,7 @@ export default {
             setData[item] = this.entity[item]
           })
           this.form.setFieldsValue(setData)
-          this.checkedKeys = this.entity['Actions']
+          this.checkedKeys.checked = this.entity['Actions']
           this.init()
         })
       })
@@ -90,6 +100,7 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
+
           this.entity['actionsJson'] = JSON.stringify(this.checkedKeys.checked)
           this.confirmLoading = true
           this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
@@ -108,7 +119,7 @@ export default {
     },
     handleCancel() {
       this.visible = false
-      this.checkedKeys = []
+      this.checkedKeys.checked = []
     },
     init() {
       this.$http.post('/Base_Manage/Base_Action/GetActionTreeList').then(resJson => {
