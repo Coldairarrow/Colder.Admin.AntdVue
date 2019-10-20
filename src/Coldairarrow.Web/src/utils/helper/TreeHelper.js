@@ -17,7 +17,7 @@ let TreeHelper = {
         if (children.length > 0) {
             childrenIds.push(...children)
             children.forEach(item => {
-                childrenIds.push(this.getChildrenIds(item, allNodes))
+                childrenIds.push(...this.getChildrenIds(item, allNodes))
             })
         }
         return childrenIds
