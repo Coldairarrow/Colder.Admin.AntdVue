@@ -78,6 +78,7 @@
 
 <script>
 import moment from 'moment'
+
 const columns = [
   { title: '内容', dataIndex: 'LogContent', width: '50%', scopedSlots: { customRender: 'LogContent' } },
   { title: '级别', dataIndex: 'Level', width: '5%' },
@@ -125,6 +126,7 @@ export default {
       })
     },
     getDataList() {
+      console.log(OperatorCache.permissions)
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Log/GetLogList', {
