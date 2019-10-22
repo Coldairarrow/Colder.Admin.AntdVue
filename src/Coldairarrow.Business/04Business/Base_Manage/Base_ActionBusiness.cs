@@ -13,9 +13,9 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_Action> GetDataList(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null)
+        public List<Base_Action> GetDataList(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)
         {
-            var q = GetIQueryable();
+            q = q ?? GetIQueryable();
             var where = LinqHelper.True<Base_Action>();
             if (!keyword.IsNullOrEmpty())
             {
@@ -29,12 +29,12 @@ namespace Coldairarrow.Business.Base_Manage
             return q.Where(where).GetPagination(pagination).ToList();
         }
 
-        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable)
+        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null)
         {
             var where = LinqHelper.True<Base_Action>();
             if (!types.IsNullOrEmpty())
                 where = where.And(x => types.Contains(x.Type));
-            var qList = GetIQueryable().Where(where).OrderBy(x => x.Sort).ToList();
+            var qList = (q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToList();
 
             var treeList = qList.Select(x => new Base_ActionDTO
             {

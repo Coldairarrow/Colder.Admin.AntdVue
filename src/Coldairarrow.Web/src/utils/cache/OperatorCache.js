@@ -1,14 +1,15 @@
+let permissions = []
+
 let OperatorCache = {
     info: {},
-    permissions: [],
     hasPermission(thePermission) {
-        return this.permissions.includes(thePermission)
+        return permissions.includes(thePermission)
     },
     setInfo(theInfo) {
         this.info = theInfo
     },
     setPermission(thePermissions) {
-        this.permissions = thePermissions
+        permissions = thePermissions
     }
 }
 
