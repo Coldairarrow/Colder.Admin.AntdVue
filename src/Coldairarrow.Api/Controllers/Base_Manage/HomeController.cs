@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -10,17 +11,13 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     [Route("/Base_Manage/[controller]/[action]")]
     public class HomeController : BaseApiController
     {
-        public HomeController(IHomeBusiness homeBus)
+        public HomeController(IHomeBusiness homeBus, IPermissionBusiness permissionBus)
         {
             _homeBus = homeBus;
+            _permissionBus = permissionBus;
         }
         IHomeBusiness _homeBus { get; }
-
-        #region 获取数据
-
-        #endregion
-
-        #region 提交数据
+        IPermissionBusiness _permissionBus { get; }
 
         /// <summary>
         /// 用户登录(获取token)
@@ -38,6 +35,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return JsonContent(res.ToJson());
         }
 
-        #endregion
+        [HttpPost]
+        public ActionResult<List<Base_ActionDTO>> GetUserMenuList()
+        {
+            var dataList = _permissionBus.GetUserMenuList(Operator.UserId);
+
+            return Success(dataList);
+        }
     }
 }
