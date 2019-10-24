@@ -6,6 +6,9 @@ let TokenCache = {
     },
     setToken(newToken) {
         localStorage.setItem(tokenKey, newToken)
+    },
+    deleteToken() {
+        localStorage.removeItem(tokenKey)
     }
 }
 

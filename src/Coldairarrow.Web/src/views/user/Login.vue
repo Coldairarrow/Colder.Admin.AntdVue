@@ -90,6 +90,9 @@
 </template>
 
 <script>
+import TokenCache from '@/utils/cache/TokenCache'
+import OperatorCache from '@/utils/cache/OperatorCache'
+
 export default {
   data() {
     return {
@@ -122,8 +125,9 @@ export default {
             this.loading = false
 
             if (resJson.Success) {
-              var token = resJson.Data
-              localStorage.setItem('token', token)
+              TokenCache.setToken(resJson.Data.Token)
+              OperatorCache.setInfo(resJson.Data.UserInfo)
+              OperatorCache.setPermission(resJson.Data.Permissions)
 
               //保存密码
               if (values['savePwd']) {

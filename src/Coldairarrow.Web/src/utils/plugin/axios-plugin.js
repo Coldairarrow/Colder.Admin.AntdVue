@@ -1,4 +1,5 @@
 import axios from 'axios'
+import TokenCache from '@/utils/cache/TokenCache'
 
 const rootUrl = 'http://localhost:40000'
 const timeout = 30000
@@ -19,8 +20,8 @@ Axios.interceptors.request.use(config => {
     // }
 
     //携带token
-    if (localStorage.token) {
-        config.headers.Authorization = 'Bearer ' + localStorage.token
+    if (TokenCache.getToken()) {
+        config.headers.Authorization = 'Bearer ' + TokenCache.getToken()
     }
     return config
 }, error => {
@@ -31,7 +32,7 @@ Axios.interceptors.request.use(config => {
 Axios.interceptors.response.use(res => {
     //授权失败
     if (!res.data.Success && res.data.ErrorCode == 401) {
-        localStorage.removeItem('token')
+        TokenCache.deleteToken()
         location.href = '/'
     }
 

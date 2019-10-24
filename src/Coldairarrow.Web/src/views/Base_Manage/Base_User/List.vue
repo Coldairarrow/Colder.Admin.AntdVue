@@ -56,6 +56,7 @@
 
 <script>
 import EditForm from './EditForm'
+import OperatorCache from '@/utils/cache/OperatorCache'
 
 const columns = [
   { title: '用户名', dataIndex: 'UserName', width: '10%' },
@@ -99,6 +100,8 @@ export default {
       this.getDataList()
     },
     getDataList() {
+      console.log('当前用户信息:', OperatorCache.info)
+
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_User/GetDataList', {
