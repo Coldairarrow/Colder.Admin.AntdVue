@@ -10,7 +10,7 @@
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar class="avatar" size="small" :src="avatar()" />
-          <span>{{ nickname() }}</span>
+          <span>{{ op().UserName }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <a-menu-item key="0">
@@ -31,7 +31,7 @@
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="3">
-            <a href="javascript:;" @click="handleLogout">
+            <a href="javascript:;" @click="handleLogout()">
               <a-icon type="logout" />
               <span>退出登录</span>
             </a>
@@ -45,6 +45,7 @@
 <script>
 import NoticeIcon from '@/components/NoticeIcon'
 import { mapActions, mapGetters } from 'vuex'
+import OperatorCache from '@/utils/cache/OperatorCache'
 
 export default {
   name: 'UserMenu',
@@ -52,6 +53,9 @@ export default {
     NoticeIcon
   },
   methods: {
+    op() {
+      return OperatorCache.info
+    },
     ...mapActions(['Logout']),
     ...mapGetters(['nickname', 'avatar']),
     handleLogout() {
@@ -61,7 +65,7 @@ export default {
         title: '提示',
         content: '真的要注销登录吗 ?',
         onOk() {
-          localStorage.removeItem('token')
+          TokenCache.deleteToken()
           that.$router.push({ path: '/user/login' })
         }
       })
