@@ -8,13 +8,25 @@ let OperatorCache = {
     inited() {
         return inited
     },
-    init() {
-        return new Promise((res, rej) => {
-            Axios.post('/')
-        })
+    init(callBack) {
+        if (inited)
+            callBack()
+        else {
+            Axios.post('/Base_Manage/Home/GetOperatorInfo').then(resJson => {
+                this.info = resJson.Data.UserInfo
+                permissions = resJson.Data.Permissions
+                inited = true
+                callBack()
+            })
+        }
     },
     hasPermission(thePermission) {
         return permissions.includes(thePermission)
+    },
+    clear() {
+        inited = false
+        permissions = []
+        this.info = {}
     }
 }
 

@@ -91,7 +91,6 @@
 
 <script>
 import TokenCache from '@/utils/cache/TokenCache'
-import OperatorCache from '@/utils/cache/OperatorCache'
 
 export default {
   data() {
@@ -125,10 +124,7 @@ export default {
             this.loading = false
 
             if (resJson.Success) {
-              TokenCache.setToken(resJson.Data.Token)
-              OperatorCache.setInfo(resJson.Data.UserInfo)
-              OperatorCache.setPermission(resJson.Data.Permissions)
-
+              TokenCache.setToken(resJson.Data)
               //保存密码
               if (values['savePwd']) {
                 localStorage.setItem('userName', values['userName'])

@@ -46,6 +46,7 @@
 import NoticeIcon from '@/components/NoticeIcon'
 import { mapActions, mapGetters } from 'vuex'
 import OperatorCache from '@/utils/cache/OperatorCache'
+import TokenCache from '@/utils/cache/TokenCache'
 
 export default {
   name: 'UserMenu',
@@ -66,7 +67,9 @@ export default {
         content: '真的要注销登录吗 ?',
         onOk() {
           TokenCache.deleteToken()
-          that.$router.push({ path: '/user/login' })
+          OperatorCache.clear()
+          location.reload()
+          // that.$router.push({ path: '/user/login' })
         }
       })
     }

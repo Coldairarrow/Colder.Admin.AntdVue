@@ -126,7 +126,6 @@ export default {
       })
     },
     getDataList() {
-      console.log(OperatorCache.permissions)
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Log/GetLogList', {
