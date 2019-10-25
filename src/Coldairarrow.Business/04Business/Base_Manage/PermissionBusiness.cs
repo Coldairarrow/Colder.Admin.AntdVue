@@ -21,12 +21,16 @@ namespace Coldairarrow.Business.Base_Manage
             var where = LinqHelper.False<Base_Action>();
             var theUser = _userBus.GetTheData(userId);
 
+            //不需要权限的菜单
+            where = where.Or(x => x.NeedAction == false);
+
             if (userId == GlobalSwitch.AdminId || theUser.RoleType.HasFlag(RoleType.超级管理员))
                 where = where.Or(x => true);
             else
             {
                 var actionIds = from a in Service.GetIQueryable<Base_UserRole>()
                                 join b in Service.GetIQueryable<Base_RoleAction>() on a.RoleId equals b.RoleId
+                                where a.UserId == userId
                                 select b.ActionId;
 
                 where = where.Or(x => actionIds.Contains(x.Id));

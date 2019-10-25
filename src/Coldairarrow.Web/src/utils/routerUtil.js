@@ -3,7 +3,7 @@ import { Axios } from '@/utils/plugin/axios-plugin'
 import { BasicLayout, PageView } from '@/layouts'
 var uuid = require('node-uuid');
 
-const desktopPath = '/Base_Manage/Base_AppSecret/List'
+const desktopPath = '/Base_Manage/Base_User/List'
 
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {

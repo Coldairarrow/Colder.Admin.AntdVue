@@ -7,12 +7,6 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness, IDependency
     {
-        public HomeBusiness(IPermissionBusiness permissionBus)
-        {
-            _permissionBus = permissionBus;
-        }
-        IPermissionBusiness _permissionBus { get; }
-
         public AjaxResult SubmitLogin(string userName, string password)
         {
             if (userName.IsNullOrEmpty() || password.IsNullOrEmpty())
@@ -28,16 +22,8 @@ namespace Coldairarrow.Business.Base_Manage
                     Expire = DateTime.Now.AddDays(1)
                 };
                 string token = JWTHelper.GetToken(jWTPayload.ToJson(), JWTHelper.JWTSecret);
-                var permissions = _permissionBus.GetUserPermissionValues(theUser.Id);
 
-                var res = new
-                {
-                    Token = token,
-                    UserInfo = theUser,
-                    Permissions = permissions
-                };
-
-                return Success(res);
+                return Success(token);
             }
             else
                 return Error("账号或密码不正确！");

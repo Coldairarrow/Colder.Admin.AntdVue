@@ -39,23 +39,21 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public IActionResult GetOperatorInfo()
         {
-            var theData = _userBus.GetTheData(Operator.UserId);
+            var theInfo = _userBus.GetTheData(Operator.UserId);
+            var permissions = _permissionBus.GetUserPermissionValues(Operator.UserId);
+            var resObj = new
+            {
+                UserInfo = theInfo,
+                Permissions = permissions
+            };
 
-            return Success(theData);
+            return Success(resObj);
         }
 
         [HttpPost]
         public IActionResult GetOperatorMenuList()
         {
             var dataList = _permissionBus.GetUserMenuList(Operator.UserId);
-
-            return Success(dataList);
-        }
-
-        [HttpPost]
-        public IActionResult GetOperatorPermissions()
-        {
-            var dataList = _permissionBus.GetUserPermissionValues(Operator.UserId);
 
             return Success(dataList);
         }
