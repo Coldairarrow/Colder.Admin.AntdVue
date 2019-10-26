@@ -1,8 +1,9 @@
 <template>
   <a-card :bordered="false">
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
+      <a-button v-if="hasPerm('Base_User.Add')" type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
       <a-button
+        v-if="hasPerm('Base_User.Delete')"
         type="primary"
         icon="minus"
         @click="handleDelete(selectedRowKeys)"
@@ -43,9 +44,11 @@
     >
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="handleEdit(record.Id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="handleDelete([record.Id])">删除</a>
+          <template v-if="hasPerm('Base_User.Edit')">
+            <a @click="handleEdit(record.Id)">编辑</a>
+            <a-divider type="vertical" />
+          </template>
+          <a v-if="hasPerm('Base_User.Delete')" @click="handleDelete([record.Id])">删除</a>
         </template>
       </span>
     </a-table>
@@ -56,7 +59,6 @@
 
 <script>
 import EditForm from './EditForm'
-import OperatorCache from '@/utils/cache/OperatorCache'
 
 const columns = [
   { title: '用户名', dataIndex: 'UserName', width: '10%' },
@@ -100,8 +102,6 @@ export default {
       this.getDataList()
     },
     getDataList() {
-      console.log('当前用户信息:', OperatorCache.info)
-
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_User/GetDataList', {

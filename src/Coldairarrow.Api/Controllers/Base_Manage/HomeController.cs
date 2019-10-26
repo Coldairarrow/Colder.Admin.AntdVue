@@ -37,6 +37,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
+        [CheckParamNotEmpty("oldPwd", "newPwd")]
+        public IActionResult ChangePwd(string oldPwd, string newPwd)
+        {
+            var res = _homeBus.ChangePwd(oldPwd, newPwd);
+
+            return JsonContent(res.ToJson());
+        }
+
+        [HttpPost]
         public IActionResult GetOperatorInfo()
         {
             var theInfo = _userBus.GetTheData(Operator.UserId);

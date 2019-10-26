@@ -4,6 +4,7 @@ using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -11,11 +12,11 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_RoleDTO> GetDataList(Pagination pagination, string roldId = null, string roleName = null)
+        public List<Base_RoleDTO> GetDataList(Pagination pagination, string roleId = null, string roleName = null)
         {
             var where = LinqHelper.True<Base_Role>();
-            if (!roldId.IsNullOrEmpty())
-                where = where.And(x => x.Id == roldId);
+            if (!roleId.IsNullOrEmpty())
+                where = where.And(x => x.Id == roleId);
             if (!roleName.IsNullOrEmpty())
                 where = where.And(x => x.RoleName.Contains(roleName));
 
@@ -32,13 +33,18 @@ namespace Coldairarrow.Business.Base_Manage
 
             void SetProperty(List<Base_RoleDTO> _list)
             {
+                var allActionIds = Service.GetIQueryable<Base_Action>().Select(x => x.Id).ToList();
+
                 var ids = _list.Select(x => x.Id).ToList();
                 var roleActions = Service.GetIQueryable<Base_RoleAction>()
                     .Where(x => ids.Contains(x.RoleId))
                     .ToList();
                 _list.ForEach(aData =>
                 {
-                    aData.Actions = roleActions.Where(x => x.RoleId == aData.Id).Select(x => x.ActionId).ToList();
+                    if (aData.RoleName == RoleTypeEnum.超级管理员.ToString())
+                        aData.Actions = allActionIds;
+                    else
+                        aData.Actions = roleActions.Where(x => x.RoleId == aData.Id).Select(x => x.ActionId).ToList();
                 });
             }
         }

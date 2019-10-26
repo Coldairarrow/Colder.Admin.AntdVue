@@ -56,20 +56,25 @@ export default {
   },
   methods: {
     onCheck(checkedKeys, e) {
+      // console.log('勾选')
       // console.log(checkedKeys)
       // console.log(this.checkedKeys)
       //勾选事件,勾选节点时同时勾选所有父节点和子节点
       var value = e.node.value
+      var newChecked = []
       if (e.checked) {
         var parentIds = TreeHelper.getParentIds(value, this.allActionList)
         var children = TreeHelper.getChildrenIds(value, this.allActionList)
         var addNodes = parentIds.concat(children).filter(item => !this.checkedKeys.checked.includes(item))
-        this.checkedKeys.checked = this.checkedKeys.checked.concat(addNodes)
+        newChecked = this.checkedKeys.checked.concat(addNodes)
       } else {
         //取消勾选事件,取消勾选所有子节点
         var children = TreeHelper.getChildrenIds(value, this.allActionList)
-        this.checkedKeys.checked = this.checkedKeys.checked.filter(item => !children.includes(item))
+        children.push(value)
+        newChecked = this.checkedKeys.checked.filter(item => !children.includes(item))
       }
+
+      this.checkedKeys = { checked: newChecked }
     },
     add() {
       this.entity = {}
@@ -90,7 +95,8 @@ export default {
             setData[item] = this.entity[item]
           })
           this.form.setFieldsValue(setData)
-          this.checkedKeys.checked = this.entity['Actions']
+          this.checkedKeys = { checked: this.entity['Actions'] }
+
           this.init()
         })
       })

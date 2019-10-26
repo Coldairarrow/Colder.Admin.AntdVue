@@ -434,7 +434,7 @@
             枚举类型
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.RoleType">
+        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.RoleTypeEnum">
             <summary>
             系统角色类型
             </summary>

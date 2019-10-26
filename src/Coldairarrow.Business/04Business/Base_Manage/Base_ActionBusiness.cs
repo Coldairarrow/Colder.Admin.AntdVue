@@ -100,6 +100,7 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.CreatorId = null;
                 aData.CreatorRealName = null;
                 aData.ParentId = parentId;
+                aData.NeedAction = true;
             });
             using (var transaction = BeginTransaction())
             {

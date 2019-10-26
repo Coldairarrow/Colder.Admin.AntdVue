@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_RoleBusiness
     {
-        List<Base_RoleDTO> GetDataList(Pagination pagination, string roldId = null, string roleName = null);
+        List<Base_RoleDTO> GetDataList(Pagination pagination, string roleId = null, string roleName = null);
         Base_RoleDTO GetTheData(string id);
         AjaxResult AddData(Base_Role newData, List<string> actions);
         AjaxResult UpdateData(Base_Role theData, List<string> actions);
@@ -17,7 +17,7 @@ namespace Coldairarrow.Business.Base_Manage
     [MapFrom(typeof(Base_Role))]
     public class Base_RoleDTO : Base_Role
     {
-        public RoleType? RoleType { get => RoleName?.ToEnum<RoleType>(); }
+        public RoleTypeEnum? RoleType { get => RoleName?.ToEnum<RoleTypeEnum>(); }
         public List<string> Actions { get; set; } = new List<string>();
     }
 }
