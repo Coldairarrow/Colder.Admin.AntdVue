@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using AutoMapper;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
 using System.Linq;
@@ -27,6 +28,20 @@ namespace Coldairarrow.Business.Base_Manage
             }
             else
                 return Error("账号或密码不正确！");
+        }
+
+        public AjaxResult ChangePwd(string oldPwd, string newPwd)
+        {
+            var theUser = Operator.Property;
+            if (theUser.Password != oldPwd?.ToMD5String())
+                return Error("原密码错误!");
+            else
+            {
+                theUser.Password = newPwd.ToMD5String();
+                Update(Mapper.Map<Base_User>(theUser));
+
+                return Success();
+            }
         }
     }
 }

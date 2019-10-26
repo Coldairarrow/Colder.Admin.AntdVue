@@ -24,7 +24,7 @@ namespace Coldairarrow.Business.Base_Manage
             //不需要权限的菜单
             where = where.Or(x => x.NeedAction == false);
 
-            if (userId == GlobalSwitch.AdminId || theUser.RoleType.HasFlag(RoleType.超级管理员))
+            if (userId == GlobalSwitch.AdminId || theUser.RoleType.HasFlag(RoleTypeEnum.超级管理员))
                 where = where.Or(x => true);
             else
             {

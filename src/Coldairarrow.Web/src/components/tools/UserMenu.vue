@@ -1,33 +1,24 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
-      <a href="https://pro.loacg.com/docs/getting-started" target="_blank">
+      <!-- <a href="https://pro.loacg.com/docs/getting-started" target="_blank">
         <span class="action">
           <a-icon type="question-circle-o"></a-icon>
         </span>
-      </a>
-      <notice-icon class="action" />
+      </a> -->
+      <!-- <notice-icon class="action" /> -->
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
-          <a-avatar class="avatar" size="small" :src="avatar()" />
+          <a-avatar size="small" icon="user" />
           <span>{{ op().UserName }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-          <a-menu-item key="0">
-            <router-link :to="{ name: 'center' }">
-              <a-icon type="user" />
-              <span>个人中心</span>
-            </router-link>
-          </a-menu-item>
           <a-menu-item key="1">
-            <router-link :to="{ name: 'settings' }">
-              <a-icon type="setting" />
-              <span>账户设置</span>
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="2" disabled>
-            <a-icon type="setting" />
-            <span>测试</span>
+            <a href="javascript:;" @click="handleChangePwd()">
+              <a-icon type="lock" />
+              <span>修改密码</span>
+            </a>
+            <change-pwd-form ref="changePwd"></change-pwd-form>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="3">
@@ -43,22 +34,24 @@
 </template>
 
 <script>
-import NoticeIcon from '@/components/NoticeIcon'
-import { mapActions, mapGetters } from 'vuex'
+// import NoticeIcon from '@/components/NoticeIcon'
+// import { mapActions, mapGetters } from 'vuex'
 import OperatorCache from '@/utils/cache/OperatorCache'
 import TokenCache from '@/utils/cache/TokenCache'
+import ChangePwdForm from './ChangePwdForm'
 
 export default {
   name: 'UserMenu',
   components: {
-    NoticeIcon
+    // NoticeIcon
+    ChangePwdForm
   },
   methods: {
     op() {
       return OperatorCache.info
     },
-    ...mapActions(['Logout']),
-    ...mapGetters(['nickname', 'avatar']),
+    // ...mapActions(['Logout']),
+    // ...mapGetters(['nickname', 'avatar']),
     handleLogout() {
       const that = this
 
@@ -72,6 +65,9 @@ export default {
           // that.$router.push({ path: '/user/login' })
         }
       })
+    },
+    handleChangePwd() {
+      this.$refs.changePwd.open()
     }
   }
 }
