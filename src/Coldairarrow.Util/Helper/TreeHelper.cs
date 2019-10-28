@@ -37,11 +37,13 @@ namespace Coldairarrow.Util
         /// <typeparam name="T">节点类型</typeparam>
         /// <param name="allNodes">所有节点</param>
         /// <param name="parentNode">父节点</param>
+        /// <param name="includeSelf">是否包括自己</param>
         /// <returns></returns>
-        public static List<T> GetChildren<T>(List<T> allNodes, T parentNode) where T : TreeModel
+        public static List<T> GetChildren<T>(List<T> allNodes, T parentNode, bool includeSelf) where T : TreeModel
         {
             List<T> resList = new List<T>();
-            resList.Add(parentNode);
+            if (includeSelf)
+                resList.Add(parentNode);
             _getChildren(allNodes, parentNode, resList);
 
             return resList;

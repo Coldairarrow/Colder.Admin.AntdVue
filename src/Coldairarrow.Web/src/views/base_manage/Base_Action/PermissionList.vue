@@ -1,10 +1,10 @@
 <template>
-  <a-spin v-if="this.parentId" :spinning="loading">
+  <a-spin :spinning="loading">
     <div class="table-operator">
-      <a-button class="editable-add-btn" icon="plus" type="primary" @click="handleAdd">新建</a-button>
-      <a-button class="editable-add-btn" icon="check" type="primary" @click="handleSave">保存</a-button>
+      <a-button class="editable-add-btn" icon="plus" type="default" @click="handleAdd">添加权限</a-button>
+      <!-- <a-button class="editable-add-btn" icon="check" type="primary" @click="handleSave">保存</a-button> -->
     </div>
-    <a-table :columns="columns" :dataSource="data" bordered size="small">
+    <a-table :columns="columns" :dataSource="data" bordered size="small" :pagination="false">
       <template v-for="col in ['Name', 'Value']" :slot="col" slot-scope="text, record">
         <div :key="col">
           <a-input
@@ -37,7 +37,6 @@
   </a-spin>
 </template>
 <script>
-import { type } from 'os'
 var uuid = require('node-uuid')
 
 const columns = [
@@ -46,12 +45,6 @@ const columns = [
   { title: '操作', dataIndex: 'operation', scopedSlots: { customRender: 'operation' } }
 ]
 export default {
-  props: {
-    parentObj: {
-      type: Object,
-      default: null
-    }
-  },
   data() {
     return {
       data: [],
@@ -109,6 +102,9 @@ export default {
       }
       this.data = [...this.data, newData]
     },
+    getPermissionList() {
+      return this.data
+    },
     handleSave() {
       this.loading = true
       this.$http
@@ -138,8 +134,12 @@ export default {
           this.data = resJson.Data
         })
     },
-    setParentId(parentId) {
+    init(parentId) {
       this.parentId = parentId
+      this.data = []
+      if (this.parentId) {
+        this.getDataList()
+      }
     }
   }
 }

@@ -1,22 +1,22 @@
 <template>
-  <a-row :gutter="16">
-    <a-col :span="16">
-      <a-card title="菜单及页面" :bordered="false">
-        <div class="table-operator">
-          <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
-          <a-button
-            type="primary"
-            icon="minus"
-            @click="handleDelete(selectedRowKeys)"
-            :disabled="!hasSelected()"
-            :loading="loading"
-          >
-            删除
-          </a-button>
-          <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
-        </div>
+  <!-- <a-row :gutter="16">
+    <a-col :span="16"> -->
+  <a-card title="菜单及页面" :bordered="false">
+    <div class="table-operator">
+      <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
+      <a-button
+        type="primary"
+        icon="minus"
+        @click="handleDelete(selectedRowKeys)"
+        :disabled="!hasSelected()"
+        :loading="loading"
+      >
+        删除
+      </a-button>
+      <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
+    </div>
 
-        <!-- <div class="table-page-search-wrapper">
+    <!-- <div class="table-page-search-wrapper">
           <a-form layout="inline">
             <a-row :gutter="48">
               <a-col :md="6" :sm="24">
@@ -32,58 +32,66 @@
           </a-form>
         </div> -->
 
-        <a-table
-          v-if="data && data.length"
-          ref="table"
-          :columns="columns"
-          :rowKey="row => row.Id"
-          :dataSource="data"
-          :pagination="pagination"
-          :loading="loading"
-          @change="handleTableChange"
-          :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
-          :bordered="true"
-          :defaultExpandAllRows="true"
-          size="small"
-        >
-          <span slot="action" slot-scope="text, record">
-            <template>
-              <a @click="handleEdit(record.Id)">编辑</a>
-              <a-divider type="vertical" />
-              <a @click="handleDelete([record.Id])">删除</a>
-              <template v-if="record.Type == 1">
-                <a-divider type="vertical" />
-                <a @click="managePermission(record)">权限</a>
-              </template>
-            </template>
-          </span>
-          <span slot="paramters" slot-scope="text, record">
-            <template>
-              <b>需要权限:</b>{{ record.NeedActionText }} <br /><b>图标:</b
-              ><a-icon v-if="record.Icon" :type="record.Icon" /> <br /><b>排序:</b>{{ record.Sort }}
-            </template>
-          </span>
-        </a-table>
+    <a-table
+      v-if="data && data.length"
+      ref="table"
+      :columns="columns"
+      :rowKey="row => row.Id"
+      :dataSource="data"
+      :pagination="false"
+      :loading="loading"
+      @change="handleTableChange"
+      :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+      :bordered="true"
+      :defaultExpandAllRows="true"
+      size="small"
+    >
+      <span slot="action" slot-scope="text, record">
+        <template>
+          <a @click="handleEdit(record.Id)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="handleDelete([record.Id])">删除</a>
+          <!-- <template v-if="record.Type == 1">
+            <a-divider type="vertical" />
+            <a @click="managePermission(record)">权限</a>
+          </template> -->
+        </template>
+      </span>
+      <span slot="icon" slot-scope="text, record">
+        <template>
+          <a-icon v-if="record.icon" :type="record.icon" />
+        </template>
+      </span>
+      <span slot="permissions" slot-scope="text, record">
+        <template v-for="(item, index) in record.PermissionValues">
+          <br v-if="index != 0" :key="index" />
+          {{ item }}
+        </template>
+      </span>
+    </a-table>
 
-        <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
-      </a-card>
-    </a-col>
-    <a-col :span="8">
+    <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
+  </a-card>
+  <!-- </a-col> -->
+  <!-- <a-col :span="8">
       <a-card :title="menuName" :bordered="false">
         <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
       </a-card>
-    </a-col>
-  </a-row>
+    </a-col> -->
+  <!-- </a-row> -->
 </template>
 
 <script>
 import EditForm from './EditForm'
 import PermissionList from './PermissionList'
 const columns = [
-  { title: '菜单名', dataIndex: 'Text', width: '20%' },
-  { title: '类型', dataIndex: 'TypeText', width: '10%' },
-  { title: '路径', dataIndex: 'Url', width: '20%' },
-  { title: '参数', dataIndex: '_paramters', width: '15%', scopedSlots: { customRender: 'paramters' } },
+  { title: '菜单名', dataIndex: 'Text', width: '15%' },
+  { title: '类型', dataIndex: 'TypeText', width: '5%' },
+  { title: '路径', dataIndex: 'Url', width: '25%' },
+  { title: '需要权限', dataIndex: 'NeedActionText', width: '10%' },
+  { title: '页面权限', dataIndex: 'PermissionValuesText', width: '20%', scopedSlots: { customRender: 'permissions' } },
+  { title: '图标', dataIndex: 'icon', width: '5%', scopedSlots: { customRender: 'icon' } },
+  { title: '排序', dataIndex: 'Sort', width: '5%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 

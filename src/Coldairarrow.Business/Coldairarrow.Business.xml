@@ -33,17 +33,6 @@
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_Action)">
-            <summary>
-            添加数据
-            </summary>
-            <param name="newData">数据</param>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_Action)">
-            <summary>
-            更新数据
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Business.Base_Manage.Base_ActionDTO.Type">
             <summary>
             类型,菜单=0,页面=1,权限=2

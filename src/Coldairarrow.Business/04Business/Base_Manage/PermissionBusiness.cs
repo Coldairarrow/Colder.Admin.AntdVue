@@ -43,7 +43,7 @@ namespace Coldairarrow.Business.Base_Manage
         {
             var q = GetIQ(userId);
 
-            return _actionBus.GetTreeDataList(null, new List<int> { 0, 1 }, false, q);
+            return _actionBus.GetTreeDataList(null, new List<int> { 0, 1 }, false, q, true);
         }
 
         public List<string> GetUserPermissionValues(string userId)

@@ -29,7 +29,7 @@ namespace Coldairarrow.Business.Base_Manage
             return q.Where(where).GetPagination(pagination).ToList();
         }
 
-        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null)
+        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null, bool checkEmptyChildren = false)
         {
             var where = LinqHelper.True<Base_Action>();
             if (!types.IsNullOrEmpty())
@@ -50,7 +50,31 @@ namespace Coldairarrow.Business.Base_Manage
                 selectable = selectable
             }).ToList();
 
+            //菜单节点中,若子节点为空则移除父节点
+            if (checkEmptyChildren)
+                treeList = treeList.Where(x => x.Type != 0 || TreeHelper.GetChildren(treeList, x, false).Count > 0).ToList();
+
+            SetProperty(treeList);
+
             return TreeHelper.BuildTree(treeList);
+
+            void SetProperty(List<Base_ActionDTO> _list)
+            {
+                var ids = _list.Select(x => x.Id).ToList();
+                var allPermissions = GetIQueryable()
+                    .Where(x => ids.Contains(x.ParentId) && x.Type == 2)
+                    .ToList();
+
+                _list.ForEach(aData =>
+                {
+                    var permissionValues = allPermissions
+                        .Where(x => x.ParentId == aData.Id)
+                        .Select(x => $"{x.Name}({x.Value})")
+                        .ToList();
+
+                    aData.PermissionValues = permissionValues;
+                });
+            }
         }
 
         /// <summary>
@@ -63,25 +87,38 @@ namespace Coldairarrow.Business.Base_Manage
             return GetEntity(id);
         }
 
-        /// <summary>
-        /// 添加数据
-        /// </summary>
-        /// <param name="newData">数据</param>
-        public AjaxResult AddData(Base_Action newData)
+        public AjaxResult AddData(Base_Action newData, List<Base_Action> permissionList)
         {
-            Insert(newData);
+            using (var transaction = BeginTransaction())
+            {
+                Insert(newData);
+                var resPermission = SavePermission(newData.Id, permissionList);
+                if (!resPermission.Success)
+                    return resPermission;
 
-            return Success();
+                var res = transaction.EndTransaction();
+                if (res.Success)
+                    return Success();
+                else
+                    throw new Exception("系统异常", res.ex);
+            }
         }
 
-        /// <summary>
-        /// 更新数据
-        /// </summary>
-        public AjaxResult UpdateData(Base_Action theData)
+        public AjaxResult UpdateData(Base_Action theData, List<Base_Action> permissionList)
         {
-            Update(theData);
+            using (var transaction = BeginTransaction())
+            {
+                Update(theData);
+                var resPermission = SavePermission(theData.Id, permissionList);
+                if (!resPermission.Success)
+                    return resPermission;
 
-            return Success();
+                var res = transaction.EndTransaction();
+                if (res.Success)
+                    return Success();
+                else
+                    throw new Exception("系统异常", res.ex);
+            }
         }
 
         public AjaxResult DeleteData(List<string> ids)
@@ -102,18 +139,21 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.ParentId = parentId;
                 aData.NeedAction = true;
             });
-            using (var transaction = BeginTransaction())
-            {
-                //删除原来
-                Delete_Sql(x => x.ParentId == parentId);
-                //新增
-                Insert(permissionList);
-                var res = transaction.EndTransaction();
-                if (res.Success)
-                    return Success();
-                else
-                    throw new Exception("系统异常", res.ex);
-            }
+            //删除原来
+            Delete_Sql(x => x.ParentId == parentId);
+            //新增
+            Insert(permissionList);
+
+            //权限值必须唯一
+            var repeatValues = GetIQueryable()
+                .GroupBy(x => x.Value)
+                .Where(x => !string.IsNullOrEmpty(x.Key) && x.Count() > 1)
+                .Select(x => x.Key)
+                .ToList();
+            if (repeatValues.Count > 0)
+                return Error($"以下权限值重复:{string.Join(",", repeatValues)}");
+
+            return Success();
         }
 
         #endregion
@@ -167,5 +207,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// 排序
         /// </summary>
         public int Sort { get; set; }
+
+        public List<string> PermissionValues { get; set; }
     }
 }

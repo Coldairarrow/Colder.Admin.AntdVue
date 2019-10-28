@@ -85,22 +85,16 @@ namespace Coldairarrow.DataRepository
         private void PackWork(IEnumerable<Type> entityTypes, Action work)
         {
             entityTypes.ForEach(x => Db.CheckEntityType(x));
-
-            if (_openedTransaction)
-                _transactionHandler += work;
-            else
-            {
-                work();
-                CommitDb();
+            work();
+            CommitDb();
+            if (!_openedTransaction)
                 Dispose();
-            }
         }
         private void PackWork(Type entityType, Action work)
         {
             PackWork(new List<Type> { entityType }, work);
         }
         protected bool _openedTransaction { get; set; } = false;
-        protected Action _transactionHandler { get; set; }
         private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
         {
             _openedTransaction = true;
@@ -213,7 +207,6 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         public void CommitDb()
         {
-            _transactionHandler?.Invoke();
             Db.SaveChanges();
         }
 
@@ -786,7 +779,6 @@ namespace Coldairarrow.DataRepository
             }
 
             _openedTransaction = false;
-            _transactionHandler = null;
 
             _disposed = true;
         }
