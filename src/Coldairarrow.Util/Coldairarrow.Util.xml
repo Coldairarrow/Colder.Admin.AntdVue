@@ -2966,7 +2966,7 @@
             <param name="allNodes">所有的节点</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.TreeHelper.GetChildren``1(System.Collections.Generic.List{``0},``0)">
+        <member name="M:Coldairarrow.Util.TreeHelper.GetChildren``1(System.Collections.Generic.List{``0},``0,System.Boolean)">
             <summary>
             获取所有子节点
             注：包括自己
@@ -2974,6 +2974,7 @@
             <typeparam name="T">节点类型</typeparam>
             <param name="allNodes">所有节点</param>
             <param name="parentNode">父节点</param>
+            <param name="includeSelf">是否包括自己</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.TreeHelper._GetChildren``1(System.Collections.Generic.List{``0},``0)">

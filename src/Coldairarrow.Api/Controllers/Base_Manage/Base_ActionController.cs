@@ -90,23 +90,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #region 提交
 
-        /// <summary>
-        /// 保存
-        /// </summary>
-        /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_Action theData)
+        public ActionResult<AjaxResult> SaveData(Base_Action theData, string permissionListJson)
         {
             AjaxResult res;
+            var permissionList = permissionListJson?.ToList<Base_Action>();
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _actionBus.AddData(theData);
+                res = _actionBus.AddData(theData, permissionList);
             }
             else
             {
-                res = _actionBus.UpdateData(theData);
+                res = _actionBus.UpdateData(theData, permissionList);
             }
 
             return JsonContent(res.ToJson());
@@ -124,19 +121,19 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             return JsonContent(res.ToJson());
         }
 
-        /// <summary>
-        /// 保存权限
-        /// </summary>
-        /// <returns></returns>
-        /// <param name="parentId">父级Id</param>
-        /// <param name="permissionListJson">权限列表JSON数组</param>
-        [HttpPost]
-        public ActionResult<AjaxResult> SavePermission(string parentId, string permissionListJson)
-        {
-            var res = _actionBus.SavePermission(parentId, permissionListJson?.ToList<Base_Action>());
+        ///// <summary>
+        ///// 保存权限
+        ///// </summary>
+        ///// <returns></returns>
+        ///// <param name="parentId">父级Id</param>
+        ///// <param name="permissionListJson">权限列表JSON数组</param>
+        //[HttpPost]
+        //public ActionResult<AjaxResult> SavePermission(string parentId, string permissionListJson)
+        //{
+        //    var res = _actionBus.SavePermission(parentId, permissionListJson?.ToList<Base_Action>());
 
-            return JsonContent(res.ToJson());
-        }
+        //    return JsonContent(res.ToJson());
+        //}
 
         #endregion
     }

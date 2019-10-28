@@ -37,7 +37,7 @@ namespace Coldairarrow.Business.Base_Manage
             }).ToList();
 
             var children = TreeHelper
-                .GetChildren(allNode, allNode.Where(x => x.Id == departmentId).FirstOrDefault())
+                .GetChildren(allNode, allNode.Where(x => x.Id == departmentId).FirstOrDefault(), true)
                 .Select(x => x.Id)
                 .ToList();
 

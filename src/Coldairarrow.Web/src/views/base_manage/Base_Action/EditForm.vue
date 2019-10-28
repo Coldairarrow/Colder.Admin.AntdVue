@@ -44,18 +44,26 @@
         <a-form-item label="排序" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['Sort', { rules: [{ required: false, message: '请输入排序' }] }]" />
         </a-form-item>
+        <a-card title="页面权限" :bordered="false">
+          <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
+        </a-card>
       </a-form>
     </a-spin>
   </a-modal>
 </template>
 
 <script>
+import PermissionList from './PermissionList'
+
 export default {
   props: {
     afterSubmit: {
       type: Function,
       default: null
     }
+  },
+  components: {
+    PermissionList
   },
   data() {
     return {
@@ -75,6 +83,7 @@ export default {
       this.visible = true
       this.form.resetFields()
       this.init()
+      this.$refs.permissionList.init()
     },
     edit(id) {
       this.visible = true
@@ -91,6 +100,7 @@ export default {
           this.form.setFieldsValue(setData)
 
           this.init()
+          this.$refs.permissionList.init(id)
         })
       })
     },
@@ -101,6 +111,7 @@ export default {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
 
           this.confirmLoading = true
+          this.entity.permissionListJson = JSON.stringify(this.$refs.permissionList.getPermissionList())
           this.$http.post('/Base_Manage/Base_Action/SaveData', this.entity).then(resJson => {
             this.confirmLoading = false
 

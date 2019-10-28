@@ -1,4 +1,3 @@
-using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
@@ -11,16 +10,6 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
     {
-        #region DI
-
-        public Base_UserBusiness(IBase_UserDTOCache sysUserCache)
-        {
-            _sysUserCache = sysUserCache;
-        }
-        IBase_UserDTOCache _sysUserCache { get; }
-
-        #endregion
-
         #region 外部接口
 
         public List<Base_UserDTO> GetDataList(Pagination pagination, bool all, string userId = null, string keyword = null)
@@ -82,11 +71,6 @@ namespace Coldairarrow.Business.Base_Manage
                 return GetDataList(new Pagination(), true, id).FirstOrDefault();
         }
 
-        public Base_UserDTO GetTheInfo(string userId)
-        {
-            return _sysUserCache.GetCache(userId);
-        }
-
         [DataAddLog(LogType.系统用户管理, "RealName", "用户")]
         [DataRepeatValidate(
             new string[] { "UserName" },
@@ -112,7 +96,7 @@ namespace Coldairarrow.Business.Base_Manage
             new string[] { "用户名" })]
         public AjaxResult UpdateData(Base_User theData, List<string> roleIds)
         {
-            if (theData.Id == "Admin" && Operator?.UserId != theData.Id)
+            if (theData.Id == GlobalSwitch.AdminId && Operator?.UserId != theData.Id)
                 return new ErrorResult("禁止更改超级管理员！");
 
             using (var transaction = BeginTransaction())
@@ -122,10 +106,7 @@ namespace Coldairarrow.Business.Base_Manage
 
                 var res = EndTransaction();
                 if (res.Success)
-                {
-                    _sysUserCache.UpdateCache(theData.Id);
                     return Success();
-                }
                 else
                     throw new Exception("系统异常", res.ex);
             }
@@ -134,13 +115,11 @@ namespace Coldairarrow.Business.Base_Manage
         [DataDeleteLog(LogType.系统用户管理, "RealName", "用户")]
         public AjaxResult DeleteData(List<string> ids)
         {
-            var adminUser = GetTheInfo("Admin");
-            if (ids.Contains(adminUser.Id))
-                return new ErrorResult("超级管理员是内置账号,禁止删除！");
+            if (ids.Contains(GlobalSwitch.AdminId))
+                return Error("超级管理员是内置账号,禁止删除！");
             var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
 
             Delete(ids);
-            _sysUserCache.UpdateCache(userIds);
 
             return Success();
         }
