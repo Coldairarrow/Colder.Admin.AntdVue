@@ -9,11 +9,11 @@ using System.Text;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class RapidDevelopmentBusiness : BaseBusiness<Base_DbLink>, IRapidDevelopmentBusiness, IDependency
+    public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, IDependency
     {
         #region DI
 
-        public RapidDevelopmentBusiness(IHostingEnvironment hostingEnvironment)
+        public BuildCodeBusiness(IHostingEnvironment hostingEnvironment)
         {
             _contentRootPath = $"{hostingEnvironment.ContentRootPath}\\";
         }
@@ -51,7 +51,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// <param name="areaName">区域名</param>
         /// <param name="tables">表列表</param>
         /// <param name="buildType">需要生成类型</param>
-        public void BuildCode(string linkId, string areaName, string tables, string buildType)
+        public void Build(string linkId, string areaName, string tables, string buildType)
         {
             //内部成员初始化
             _dbHelper = GetTheDbHelper(linkId);

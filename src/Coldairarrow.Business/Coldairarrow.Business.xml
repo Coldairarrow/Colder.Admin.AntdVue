@@ -4,20 +4,20 @@
         <name>Coldairarrow.Business</name>
     </assembly>
     <members>
-        <member name="M:Coldairarrow.Business.Base_Manage.IRapidDevelopmentBusiness.GetAllDbLink">
+        <member name="M:Coldairarrow.Business.Base_Manage.IBuildCodeBusiness.GetAllDbLink">
             <summary>
             获取所有数据库连接
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.IRapidDevelopmentBusiness.GetDbTableList(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.IBuildCodeBusiness.GetDbTableList(System.String)">
             <summary>
             获取数据库所有表
             </summary>
             <param name="linkId">数据库连接Id</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.IRapidDevelopmentBusiness.BuildCode(System.String,System.String,System.String,System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.IBuildCodeBusiness.Build(System.String,System.String,System.String,System.String)">
             <summary>
             生成代码
             </summary>
@@ -107,20 +107,20 @@
             <param name="pagination">分页参数</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.RapidDevelopmentBusiness.GetAllDbLink">
+        <member name="M:Coldairarrow.Business.Base_Manage.BuildCodeBusiness.GetAllDbLink">
             <summary>
             获取所有数据库连接
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.RapidDevelopmentBusiness.GetDbTableList(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.BuildCodeBusiness.GetDbTableList(System.String)">
             <summary>
             获取数据库所有表
             </summary>
             <param name="linkId">数据库连接Id</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.RapidDevelopmentBusiness.BuildCode(System.String,System.String,System.String,System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.BuildCodeBusiness.Build(System.String,System.String,System.String,System.String)">
             <summary>
             生成代码
             </summary>
