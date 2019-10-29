@@ -1,4 +1,4 @@
-import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
+import { constantRouterMap } from '@/config/router.config'
 import { generatorDynamicRouter } from '@/utils/routerUtil'
 
 /**
@@ -50,6 +50,7 @@ function filterAsyncRouter(routerMap, roles) {
     // }
     // return false
   })
+  
   return accessedRouters
 }
 
