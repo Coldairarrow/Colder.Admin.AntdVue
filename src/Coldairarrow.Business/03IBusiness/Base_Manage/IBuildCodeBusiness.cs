@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public interface IRapidDevelopmentBusiness
+    public interface IBuildCodeBusiness
     {
         /// <summary>
         /// 获取所有数据库连接
@@ -26,6 +26,6 @@ namespace Coldairarrow.Business.Base_Manage
         /// <param name="areaName">区域名</param>
         /// <param name="tables">表列表</param>
         /// <param name="buildType">需要生成类型</param>
-        void BuildCode(string linkId, string areaName, string tables, string buildType);
+        void Build(string linkId, string areaName, string tables, string buildType);
     }
 }
