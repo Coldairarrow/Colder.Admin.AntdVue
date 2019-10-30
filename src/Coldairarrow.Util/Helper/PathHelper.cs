@@ -38,5 +38,14 @@ namespace Coldairarrow.Util
 
             return Path.Combine(rootPath, path);
         }
+
+        /// <summary>
+        /// 获取项目代码根目录
+        /// </summary>
+        /// <returns></returns>
+        public static string GetProjectRootpath()
+        {
+            return AutofacHelper.GetScopeService<IHostingEnvironment>().ContentRootPath;
+        }
     }
 }

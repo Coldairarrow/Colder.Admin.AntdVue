@@ -1,6 +1,6 @@
 <template>
   <!-- <a-row :gutter="16">
-    <a-col :span="16"> -->
+  <a-col :span="16">-->
   <a-card title="菜单及页面" :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
@@ -10,9 +10,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >
-        删除
-      </a-button>
+      >删除</a-button>
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
@@ -30,7 +28,7 @@
               </a-col>
             </a-row>
           </a-form>
-        </div> -->
+    </div>-->
 
     <a-table
       v-if="data && data.length"
@@ -54,7 +52,7 @@
           <!-- <template v-if="record.Type == 1">
             <a-divider type="vertical" />
             <a @click="managePermission(record)">权限</a>
-          </template> -->
+          </template>-->
         </template>
       </span>
       <span slot="icon" slot-scope="text, record">
@@ -77,7 +75,7 @@
       <a-card :title="menuName" :bordered="false">
         <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
       </a-card>
-    </a-col> -->
+  </a-col>-->
   <!-- </a-row> -->
 </template>
 
@@ -129,6 +127,8 @@ export default {
       this.getDataList()
     },
     getDataList() {
+      this.selectedRowKeys = []
+
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Action/GetMenuTreeList', {

@@ -9,9 +9,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >
-        删除
-      </a-button>
+      >删除</a-button>
     </div>
 
     <div class="table-page-search-wrapper">
@@ -19,7 +17,7 @@
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
             <a-form-item label="关键字">
-              <a-input v-model="queryParam.keyword" placeholder="" />
+              <a-input v-model="queryParam.keyword" placeholder />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -102,6 +100,8 @@ export default {
       this.getDataList()
     },
     getDataList() {
+      this.selectedRowKeys = []
+
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_User/GetDataList', {

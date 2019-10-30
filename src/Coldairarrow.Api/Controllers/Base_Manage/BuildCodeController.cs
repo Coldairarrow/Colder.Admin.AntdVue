@@ -29,11 +29,19 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public ActionResult<List<DbTableInfo>> GetDbTableList(string linkId)
+        public ActionResult<AjaxResult<List<DbTableInfo>>> GetDbTableList(string linkId)
         {
             var list = _buildCodeBus.GetDbTableList(linkId);
 
             return JsonContent(new Pagination().BuildTableResult_AntdVue(list).ToJson());
+        }
+
+        [HttpPost]
+        public IActionResult Build(string linkId, string areaName, string tablesJson, string buildTypesJson )
+        {
+            _buildCodeBus.Build(linkId, areaName, tablesJson?.ToList<string>(), buildTypesJson?.ToList<int>());
+
+            return Success();
         }
     }
 }

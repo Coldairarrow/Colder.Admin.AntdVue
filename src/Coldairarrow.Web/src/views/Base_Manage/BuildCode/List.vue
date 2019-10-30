@@ -1,26 +1,14 @@
 <template>
   <a-card :bordered="false">
     <div class="table-operator">
-      <!-- <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
-      <a-button
-        type="primary"
-        icon="minus"
-        @click="handleDelete(selectedRowKeys)"
-        :disabled="!hasSelected()"
-        :loading="loading"
-      >
-        删除
-      </a-button> -->
       <a-button type="primary" icon="redo" @click="init()">刷新</a-button>
       <a-button
         type="primary"
-        icon="minus"
+        icon="plus"
         @click="openForm(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >
-        生成代码
-      </a-button>
+      >生成代码</a-button>
     </div>
 
     <div class="table-page-search-wrapper">
@@ -33,10 +21,6 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <!-- <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="getDataList">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
-          </a-col> -->
         </a-row>
       </a-form>
     </div>
@@ -51,8 +35,7 @@
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
       :bordered="true"
       size="small"
-    >
-    </a-table>
+    ></a-table>
 
     <edit-form ref="editForm"></edit-form>
   </a-card>
@@ -103,6 +86,7 @@ export default {
         })
     },
     getDataList() {
+      this.selectedRowKeys = []
       this.loading = true
       this.$http
         .post('/Base_Manage/BuildCode/GetDbTableList', {
@@ -122,21 +106,8 @@ export default {
     hasSelected() {
       return this.selectedRowKeys.length > 0
     },
-    submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_DbLink/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
-        resolve()
-
-        if (resJson.Success) {
-          this.$message.success('操作成功!')
-
-          this.getDataList()
-        } else {
-          this.$message.error(resJson.Msg)
-        }
-      })
-    },
     openForm() {
-      this.$refs.editForm.openForm(this.selectedRowKeys)
+      this.$refs.editForm.openForm(this.selectedRowKeys, this.linkId)
     }
   }
 }

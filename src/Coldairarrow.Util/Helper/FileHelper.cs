@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Coldairarrow.Util
 {
@@ -93,12 +92,11 @@ namespace Coldairarrow.Util
         /// <param name="fileModel">写入模式</param>
         private static void WriteTxt(string content, string path, Encoding encoding, FileMode? fileModel)
         {
-            CheckDirectory(path);
-
-            if (encoding == null)
-                encoding = Encoding.Default;
-            if (fileModel == null)
-                fileModel = FileMode.Create;
+            encoding = encoding ?? Encoding.UTF8;
+            fileModel = fileModel ?? FileMode.Create;
+            string dir = Path.GetDirectoryName(path);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
             using (FileStream fileStream = new FileStream(path, fileModel.Value))
             {
@@ -107,20 +105,6 @@ namespace Coldairarrow.Util
                     streamWriter.Write(content);
                     streamWriter.Flush();
                 }
-            }
-        }
-
-        /// <summary>
-        /// 检验目录，若目录已存在则不变
-        /// </summary>
-        /// <param name="path">目录位置</param>
-        public static void CheckDirectory(string path)
-        {
-            if (path.Contains("\\"))
-            {
-                var dir = GetPathDirectory(path);
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
             }
         }
 
@@ -134,22 +118,6 @@ namespace Coldairarrow.Util
             string content = $"{DateTime.Now.ToCstTime().ToString("yyyy-MM-dd HH:mm:ss")}:{msg}";
 
             WriteTxt(content, $"{GetCurrentDir()}{content}");
-        }
-
-        /// <summary>
-        /// 获取文件位置中的目录位置（不包括文件名）
-        /// </summary>
-        /// <param name="path">文件位置</param>
-        /// <returns></returns>
-        public static string GetPathDirectory(string path)
-        {
-            if (!path.Contains("\\"))
-                return GetCurrentDir();
-
-            string pattern = @"^(.*)\\.*?$";
-            Match match = Regex.Match(path, pattern);
-
-            return match.Groups[1].ToString();
         }
 
         #endregion

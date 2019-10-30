@@ -9,14 +9,26 @@
         :disabled="!hasSelected()"
         :loading="loading"
       >删除</a-button>
+      <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="角色名">
-              <a-input v-model="queryParam.roleName" placeholder />
+        <a-row :gutter="10">
+          <a-col :md="4" :sm="24">
+            <a-form-item label="查询类别">
+              <a-select allowClear v-model="queryParam.condition">
+                <a-select-option key="Column1">列1</a-select-option>
+                <a-select-option key="Column2">列2</a-select-option>
+                <a-select-option key="Column3">列3</a-select-option>
+                <a-select-option key="Column4">列4</a-select-option>
+                <a-select-option key="Column5">列5</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="24">
+            <a-form-item>
+              <a-input v-model="queryParam.keyword" placeholder="关键字" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -48,7 +60,7 @@
       </span>
     </a-table>
 
-    <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
+    <edit-form ref="editForm" :parentObj="this"></edit-form>
   </a-card>
 </template>
 
@@ -56,7 +68,11 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '角色名', dataIndex: 'RoleName', width: '10%' },
+  { title: '列1', dataIndex: 'Column1', width: '10%' },
+  { title: '列2', dataIndex: 'Column2', width: '10%' },
+  { title: '列3', dataIndex: 'Column3', width: '10%' },
+  { title: '列4', dataIndex: 'Column4', width: '10%' },
+  { title: '列5', dataIndex: 'Column5', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -80,7 +96,6 @@ export default {
       loading: false,
       columns,
       queryParam: {},
-      visible: false,
       selectedRowKeys: []
     }
   },
@@ -93,9 +108,10 @@ export default {
     },
     getDataList() {
       this.selectedRowKeys = []
+
       this.loading = true
       this.$http
-        .post('/Base_Manage/Base_Role/GetDataList', {
+        .post('/Base_Manage/Base_BuildTest/GetDataList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
@@ -118,10 +134,10 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     hanldleAdd() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.openForm()
     },
     handleEdit(id) {
-      this.$refs.editForm.edit(id)
+      this.$refs.editForm.openForm(id)
     },
     handleDelete(ids) {
       var thisObj = this
@@ -129,21 +145,18 @@ export default {
         title: '确认删除吗?',
         onOk() {
           return new Promise((resolve, reject) => {
-            thisObj.submitDelete(ids, resolve, reject)
-          }).catch(() => console.log('Oops errors!'))
-        }
-      })
-    },
-    submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_Role/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
-        resolve()
+            thisObj.$http.post('/Base_Manage/Base_BuildTest/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+              resolve()
 
-        if (resJson.Success) {
-          this.$message.success('操作成功!')
+              if (resJson.Success) {
+                thisObj.$message.success('操作成功!')
 
-          this.getDataList()
-        } else {
-          this.$message.error(resJson.Msg)
+                thisObj.getDataList()
+              } else {
+                thisObj.$message.error(resJson.Msg)
+              }
+            })
+          })
         }
       })
     }

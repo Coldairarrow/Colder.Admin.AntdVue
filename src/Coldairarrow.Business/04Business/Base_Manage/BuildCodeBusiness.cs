@@ -11,14 +11,11 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, IDependency
     {
-        #region DI
-
-        public BuildCodeBusiness(IHostingEnvironment hostingEnvironment)
+        static BuildCodeBusiness()
         {
-            _contentRootPath = $"{hostingEnvironment.ContentRootPath}\\";
+            var projectPath = AutofacHelper.GetService<IHostingEnvironment>().ContentRootPath;
+            _solutionPath = Directory.GetParent(projectPath).ToString();
         }
-
-        #endregion
 
         #region 外部接口
 
@@ -44,15 +41,9 @@ namespace Coldairarrow.Business.Base_Manage
                 return GetTheDbHelper(linkId).GetDbAllTables();
         }
 
-        /// <summary>
-        /// 生成代码
-        /// </summary>
-        /// <param name="linkId">连接Id</param>
-        /// <param name="areaName">区域名</param>
-        /// <param name="tables">表列表</param>
-        /// <param name="buildType">需要生成类型</param>
-        public void Build(string linkId, string areaName, string tables, string buildType)
+        public void Build(string linkId, string areaName, List<string> tables, List<int> buildTypes)
         {
+            _areaName = areaName;
             //内部成员初始化
             _dbHelper = GetTheDbHelper(linkId);
             GetDbTableList(linkId).ForEach(aTable =>
@@ -60,29 +51,29 @@ namespace Coldairarrow.Business.Base_Manage
                 _dbTableInfoDic.Add(aTable.TableName, aTable);
             });
 
-            List<string> tableList = tables.ToList<string>();
-            List<string> buildTypeList = buildType.ToList<string>();
-            tableList.ForEach(aTable =>
+            tables.ForEach(aTable =>
             {
                 var tableFieldInfo = _dbHelper.GetDbTableInfo(aTable);
+
+                //buildTypes,实体层=0,业务层=1,接口层=2,页面层=3
                 //实体层
-                if (buildTypeList.Exists(x => x.ToLower() == "entity"))
+                if (buildTypes.Contains(0))
                 {
-                    BuildEntity(tableFieldInfo, areaName, aTable);
+                    BuildEntity(tableFieldInfo, aTable);
                 }
                 //业务层
-                if (buildTypeList.Exists(x => x.ToLower() == "business"))
+                if (buildTypes.Contains(1))
                 {
                     BuildIBusiness(areaName, aTable);
                     BuildBusiness(areaName, aTable);
                 }
-                //控制器
-                if (buildTypeList.Exists(x => x.ToLower() == "controller"))
+                //接口层
+                if (buildTypes.Contains(2))
                 {
                     BuildController(areaName, aTable);
                 }
-                //视图
-                if (buildTypeList.Exists(x => x.ToLower() == "view"))
+                //页面层
+                if (buildTypes.Contains(3))
                 {
                     BuildView(tableFieldInfo, areaName, aTable);
                 }
@@ -92,13 +83,16 @@ namespace Coldairarrow.Business.Base_Manage
         #endregion
 
         #region 私有成员
-        private string _contentRootPath { get; }
-        private void BuildEntity(List<TableInfo> tableInfo, string areaName, string tableName)
+        private static readonly string _solutionPath;
+        private string _contentRootPath { get; } = PathHelper.GetProjectRootpath();
+        private string _areaName { get; set; }
+        private void BuildEntity(List<TableInfo> tableInfo, string tableName)
         {
-            string rootPath = _contentRootPath;
-            string entityPath = rootPath.Replace("Coldairarrow.Api", "Coldairarrow.Entity") + areaName;
-            string filePath = $@"{entityPath}\{tableName}.cs";
-            string nameSpace = $@"Coldairarrow.Entity.{areaName}";
+            //string rootPath = _contentRootPath;
+            //string entityPath = rootPath.Replace("Coldairarrow.Api", "Coldairarrow.Entity") + _areaName;
+            //string filePath = $@"{entityPath}\{tableName}.cs";
+            string nameSpace = $@"Coldairarrow.Entity.{_areaName}";
+            string filePath = Path.Combine(_solutionPath, "Coldairarrow.Entity", _areaName, $"{tableName}.cs");
 
             _dbHelper.SaveEntityToFile(tableInfo, tableName, _dbTableInfoDic[tableName].Description, filePath, nameSpace);
         }

@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Coldairarrow.Api</RootNamespace>
     <AssemblyName>Coldairarrow.Api</AssemblyName>
+    <UserSecretsId>b10870e2-88c6-493d-b38f-03cf6cc59988</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
