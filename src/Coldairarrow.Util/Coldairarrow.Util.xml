@@ -2369,25 +2369,12 @@
             <param name="encoding">字符编码</param>
             <param name="fileModel">写入模式</param>
         </member>
-        <member name="M:Coldairarrow.Util.FileHelper.CheckDirectory(System.String)">
-            <summary>
-            检验目录，若目录已存在则不变
-            </summary>
-            <param name="path">目录位置</param>
-        </member>
         <member name="M:Coldairarrow.Util.FileHelper.WriteLog(System.String,System.String)">
             <summary>
             输出日志到指定文件
             </summary>
             <param name="msg">日志消息</param>
             <param name="path">日志文件位置（默认为D:\测试\a.log）</param>
-        </member>
-        <member name="M:Coldairarrow.Util.FileHelper.GetPathDirectory(System.String)">
-            <summary>
-            获取文件位置中的目录位置（不包括文件名）
-            </summary>
-            <param name="path">文件位置</param>
-            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.GuidHelper">
             <summary>
@@ -2838,6 +2825,12 @@
             获取绝对路径
             </summary>
             <param name="virtualPath">虚拟路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.PathHelper.GetProjectRootpath">
+            <summary>
+            获取项目代码根目录
+            </summary>
             <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.QRCodeHelper">

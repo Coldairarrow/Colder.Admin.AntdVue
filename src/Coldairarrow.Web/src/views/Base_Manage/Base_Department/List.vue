@@ -96,6 +96,7 @@ export default {
       this.getDataList()
     },
     getDataList() {
+      this.selectedRowKeys = []
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_Department/GetTreeDataList', {

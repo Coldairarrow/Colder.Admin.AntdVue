@@ -12,11 +12,14 @@
         <a-form-item label="生成类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-checkbox-group
             :options="options"
-            v-decorator="['buildType', { rules: [{ required: true, message: '必填' }], initialValue: [0, 1, 2, 3] }]"
+            v-decorator="['buildTypes', { rules: [{ required: true, message: '必填' }], initialValue: [0, 1, 2, 3] }]"
           />
         </a-form-item>
         <a-form-item label="生成区域" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-textarea autosize v-decorator="['area', { rules: [{ required: true, message: '必填' }] }]" />
+          <a-textarea
+            autosize
+            v-decorator="['areaName', { rules: [{ required: true, message: '必填' }] }]"
+          />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -41,12 +44,14 @@ export default {
       confirmLoading: false,
       formFields: {},
       entity: {},
-      tables: []
+      tables: [],
+      linkId: ''
     }
   },
   methods: {
-    openForm(tables) {
+    openForm(tables, linkId) {
       this.tables = tables
+      this.linkId = linkId
       this.init()
     },
     init() {
@@ -59,20 +64,20 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
+          this.entity.tablesJson = JSON.stringify(this.tables)
+          this.entity.linkId = this.linkId
+          this.entity.buildTypesJson = JSON.stringify(this.entity.buildTypes)
+          this.confirmLoading = true
+          this.$http.post('/Base_Manage/BuildCode/Build', this.entity).then(resJson => {
+            this.confirmLoading = false
 
-          console.log(this.entity)
-          // this.confirmLoading = true
-          // this.$http.post('/Base_Manage/Base_DbLink/SaveData', this.entity).then(resJson => {
-          //   this.confirmLoading = false
-
-          //   if (resJson.Success) {
-          //     this.$message.success('操作成功!')
-          //     this.afterSubmit()
-          //     this.visible = false
-          //   } else {
-          //     this.$message.error(resJson.Msg)
-          //   }
-          // })
+            if (resJson.Success) {
+              this.$message.success('操作成功!')
+              this.visible = false
+            } else {
+              this.$message.error(resJson.Msg)
+            }
+          })
         }
       })
     },

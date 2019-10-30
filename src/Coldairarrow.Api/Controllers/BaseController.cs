@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Coldairarrow.Api
@@ -125,6 +126,29 @@ namespace Coldairarrow.Api
             };
 
             return JsonContent(res.ToJson());
+        }
+
+        /// <summary>
+        /// 返回表格数据
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="list">数据列表</param>
+        /// <returns></returns>
+        protected ContentResult DataTable<T>(List<T> list)
+        {
+            return DataTable(list, new Pagination());
+        }
+
+        /// <summary>
+        /// 返回表格数据
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="list">数据列表</param>
+        /// <param name="pagination">分页参数</param>
+        /// <returns></returns>
+        protected ContentResult DataTable<T>(List<T> list, Pagination pagination)
+        {
+            return JsonContent(pagination.BuildTableResult_AntdVue(list).ToJson());
         }
     }
 }

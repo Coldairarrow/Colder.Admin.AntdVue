@@ -119,6 +119,61 @@
             应用名
             </summary>
         </member>
+        <member name="T:Coldairarrow.Entity.Base_Manage.Base_BuildTest">
+            <summary>
+            生成测试表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Id">
+            <summary>
+            自然主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.CreatorId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.CreatorRealName">
+            <summary>
+            创建人姓名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Deleted">
+            <summary>
+            否已删除
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Column1">
+            <summary>
+            列1
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Column2">
+            <summary>
+            列2
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Column3">
+            <summary>
+            列3
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Column4">
+            <summary>
+            列4
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_BuildTest.Column5">
+            <summary>
+            列5
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_DbLink">
             <summary>
             数据库连接表

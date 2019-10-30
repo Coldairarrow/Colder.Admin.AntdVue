@@ -8,9 +8,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >
-        删除
-      </a-button>
+      >删除</a-button>
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
@@ -28,7 +26,7 @@
           </a-col>
         </a-row>
       </a-form>
-    </div> -->
+    </div>-->
 
     <a-table
       ref="table"
@@ -97,6 +95,7 @@ export default {
       this.getDataList()
     },
     getDataList() {
+      this.selectedRowKeys = []
       this.loading = true
       this.$http
         .post('/Base_Manage/Base_DbLink/GetDataList', {
