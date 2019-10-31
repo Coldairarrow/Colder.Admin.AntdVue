@@ -165,7 +165,6 @@ $@"        <a-form-item label=""{aField.Description}"" :labelCol=""labelCol"" :w
 
         #region 私有成员
         private static readonly string _solutionPath;
-        private string _contentRootPath { get; } = PathHelper.GetProjectRootpath();
         private string _areaName { get; set; }
         private void BuildEntity(List<TableInfo> tableInfo, string tableName)
         {
