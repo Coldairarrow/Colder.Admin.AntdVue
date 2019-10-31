@@ -29,7 +29,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 项目名
         /// </summary>
-        public const string ProjectName = "Colder.Fx.Core.AdtdVue";
+        public const string ProjectName = "Colder.Admin.AntdVue";
 
         /// <summary>
         /// 网站根地址
