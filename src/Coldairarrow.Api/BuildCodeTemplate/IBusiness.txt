@@ -1,0 +1,15 @@
+﻿using Coldairarrow.Entity.%areaName%;
+using Coldairarrow.Util;
+using System.Collections.Generic;
+
+namespace Coldairarrow.Business.%areaName%
+{
+    public interface I%entityName%Business
+    {
+        List<%entityName%> GetDataList(Pagination pagination, string condition, string keyword);
+        %entityName% GetTheData(string id);
+        AjaxResult AddData(%entityName% data);
+        AjaxResult UpdateData(%entityName% data);
+        AjaxResult DeleteData(List<string> ids);
+    }
+}

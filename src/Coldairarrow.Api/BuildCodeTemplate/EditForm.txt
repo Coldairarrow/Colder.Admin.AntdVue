@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <a-modal
     :title="title"
     width="40%"
@@ -9,21 +9,7 @@
   >
     <a-spin :spinning="loading">
       <a-form :form="form">
-        <a-form-item label="列1" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Column1', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="列2" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Column2', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="列3" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Column3', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="列4" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Column4', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="列5" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Column5', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
+%formColumns%
       </a-form>
     </a-spin>
   </a-modal>
@@ -60,7 +46,7 @@ export default {
         this.$nextTick(() => {
           this.formFields = this.form.getFieldsValue()
 
-          this.$http.post('/Base_Manage/Base_BuildTest/GetTheData', { id: id }).then(resJson => {
+          this.$http.post('/%areaName%/%entityName%/GetTheData', { id: id }).then(resJson => {
             this.entity = resJson.Data
             var setData = {}
             Object.keys(this.formFields).forEach(item => {
@@ -86,7 +72,7 @@ export default {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
 
           this.loading = true
-          this.$http.post('/Base_Manage/Base_BuildTest/SaveData', this.entity).then(resJson => {
+          this.$http.post('/%areaName%/%entityName%/SaveData', this.entity).then(resJson => {
             this.loading = false
 
             if (resJson.Success) {
