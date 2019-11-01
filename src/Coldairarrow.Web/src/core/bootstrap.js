@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from '@/store/'
 import {
-  ACCESS_TOKEN,
   DEFAULT_COLOR,
   DEFAULT_THEME,
   DEFAULT_LAYOUT_MODE,
@@ -15,7 +14,7 @@ import {
 } from '@/store/mutation-types'
 import config from '@/config/defaultSettings'
 
-export default function Initializer () {
+export default function Initializer() {
   console.log(`API_URL: ${process.env.VUE_APP_API_BASE_URL}`)
 
   store.commit('SET_SIDEBAR_TYPE', Vue.ls.get(SIDEBAR_TYPE, true))
@@ -28,7 +27,4 @@ export default function Initializer () {
   store.commit('TOGGLE_WEAK', Vue.ls.get(DEFAULT_COLOR_WEAK, config.colorWeak))
   store.commit('TOGGLE_COLOR', Vue.ls.get(DEFAULT_COLOR, config.primaryColor))
   store.commit('TOGGLE_MULTI_TAB', Vue.ls.get(DEFAULT_MULTI_TAB, config.multiTab))
-  store.commit('SET_TOKEN', Vue.ls.get(ACCESS_TOKEN))
-
-  // last step
 }

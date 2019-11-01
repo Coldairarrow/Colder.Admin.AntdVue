@@ -1,74 +1,35 @@
+import router from '@/router'
 import { Axios } from '@/utils/plugin/axios-plugin'
-// eslint-disable-next-line
 import { BasicLayout, PageView } from '@/layouts'
-var uuid = require('node-uuid');
+var uuid = require('node-uuid')
 
 const desktopPath = '/Base_Manage/Base_User/List'
+
+let inited = false
+let addRouter = []
+
+export const getAddRouter = () => {
+  return addRouter
+}
 
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
   path: '*', redirect: '/404', hidden: true
 }
 
-/**
- * 获取后端路由信息的 axios API
- * @returns {Promise}
- */
-export const getRouterByUser = () => {
-  // return Axios.post('/Base_Manage/Base_Action/GetMenuTreeList')
-  return new Promise((resolve, reject) => {
-    Axios.post('/Base_Manage/Home/GetOperatorMenuList', {}).then(resJson => {
-      if (resJson.Success) {
-        resolve(resJson.Data)
-      }
-    })
+export const initRouter = (to, from, next) => {
+  return new Promise((res, rej) => {
+    if (inited) {
+      res()
+    } else {
+      generatorDynamicRouter().then(dynamicRouter => {
+        router.addRoutes(dynamicRouter)
+        addRouter = dynamicRouter
+        inited = true
+        next({ ...to, replace: true })
+      })
+    }
   })
-
-  // let menus = [
-  //   {
-  //     "title": "系统管理",
-  //     "icon": "setting",
-  //     "children": [
-  //       {
-  //         "title": "用户管理",
-  //         "path": '/Base_Manage/Base_User/List'
-  //       },
-  //       {
-  //         "title": "角色管理",
-  //         "path": '/Base_Manage/Base_Role/List'
-  //       },
-  //       {
-  //         "title": "部门管理",
-  //         "path": '/Base_Manage/Base_Department/List'
-  //       },
-  //       {
-  //         "title": "密钥管理",
-  //         "path": '/Base_Manage/Base_AppSecret/List'
-  //       },
-  //       {
-  //         "title": "权限管理",
-  //         "path": '/Base_Manage/Base_Action/List'
-  //       },
-  //       {
-  //         "title": "系统日志",
-  //         "path": '/Base_Manage/Base_Log/List'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "title": "开发",
-  //     "icon": "code",
-  //     "children": [
-  //       {
-  //         "title": "图标选择",
-  //         "path": '/Develop/IconSelectorView'
-  //       }
-  //     ]
-  //   }
-  // ]
-  // return new Promise((resolve, reject) => {
-  //   resolve(menus)
-  // })
 }
 
 /**
@@ -79,7 +40,7 @@ export const getRouterByUser = () => {
  * 2. 调用
  * @returns {Promise<any>}
  */
-export const generatorDynamicRouter = () => {
+const generatorDynamicRouter = () => {
   return new Promise((resolve, reject) => {
     // ajax
     getRouterByUser().then(res => {
@@ -110,13 +71,28 @@ export const generatorDynamicRouter = () => {
 }
 
 /**
+ * 获取后端路由信息的 axios API
+ * @returns {Promise}
+ */
+const getRouterByUser = () => {
+  // return Axios.post('/Base_Manage/Base_Action/GetMenuTreeList')
+  return new Promise((resolve, reject) => {
+    Axios.post('/Base_Manage/Home/GetOperatorMenuList', {}).then(resJson => {
+      if (resJson.Success) {
+        resolve(resJson.Data)
+      }
+    })
+  })
+}
+
+/**
  * 格式化 后端 结构信息并递归生成层级路由表
  *
  * @param routerMap
  * @param parent
  * @returns {*}
  */
-export const generator = (routerMap, parent) => {
+const generator = (routerMap, parent) => {
   return routerMap.map(item => {
     let hasChildren = item.children && item.children.length > 0
     let component = {}
