@@ -4,7 +4,7 @@ import config from '@/config/defaultSettings'
 
 // base library
 import Antd from 'ant-design-vue'
-import Viser from 'viser-vue'
+// import Viser from 'viser-vue'
 import VueCropper from 'vue-cropper'
 import 'ant-design-vue/dist/antd.less'
 
@@ -17,7 +17,7 @@ import './directives/action'
 VueClipboard.config.autoSetContainer = true
 
 Vue.use(Antd)
-Vue.use(Viser)
+// Vue.use(Viser)
 
 Vue.use(VueStorage, config.storageOptions)
 Vue.use(VueClipboard)
