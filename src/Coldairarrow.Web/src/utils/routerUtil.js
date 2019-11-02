@@ -1,9 +1,9 @@
 import router from '@/router'
 import { Axios } from '@/utils/plugin/axios-plugin'
 import { BasicLayout, PageView } from '@/layouts'
+import ProcessHelper from '@/utils/helper/ProcessHelper'
+import defaultSettings from '@/config/defaultSettings'
 var uuid = require('node-uuid')
-
-const desktopPath = '/Base_Manage/Base_User/List'
 
 let inited = false
 let addRouter = []
@@ -17,6 +17,31 @@ const notFoundRouter = {
   path: '*', redirect: '/404', hidden: true
 }
 
+// 开发模式额外路由
+const devRouter = [
+  {
+    title: '开发',
+    icon: 'code',
+    children: [
+      {
+        path: '/Base_Manage/Base_DbLink/List',
+        title: '数据库连接'
+      },
+      {
+        path: '/Base_Manage/BuildCode/List',
+        title: '代码生成'
+      },
+      {
+        path: '/Develop/IconSelectorView',
+        title: '图标选择'
+      },
+      {
+        path: '/Develop/UploadImg',
+        title: '图片上传'
+      }
+    ]
+  }
+]
 export const initRouter = (to, from, next) => {
   return new Promise((res, rej) => {
     if (inited) {
@@ -51,7 +76,7 @@ const generatorDynamicRouter = () => {
       let rootRouter = {
         // 路由地址 动态拼接生成如 /dashboard/workplace
         path: '/',
-        redirect: desktopPath,
+        redirect: defaultSettings.desktopPath,
         // 路由名称，建议唯一
         name: uuid.v4(),
         // 该路由对应页面的 组件
@@ -61,8 +86,14 @@ const generatorDynamicRouter = () => {
         children: []
       }
       allRouters.push(rootRouter)
+
+      if (!ProcessHelper.isProduction()) {
+        res.push(...devRouter)
+      }
+
       rootRouter.children = generator(res)
       allRouters.push(notFoundRouter)
+
       resolve(allRouters)
     }).catch(err => {
       reject(err)

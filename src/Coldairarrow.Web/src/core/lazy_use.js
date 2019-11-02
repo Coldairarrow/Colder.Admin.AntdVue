@@ -8,7 +8,7 @@ import '@/core/lazy_lib/components_use'
 
 // ext library
 import VueClipboard from 'vue-clipboard2'
-import PermissionHelper from '@/utils/helper/permission'
+// import PermissionHelper from '@/utils/helper/permission'
 import './directives/action'
 
 VueClipboard.config.autoSetContainer = true
@@ -17,4 +17,4 @@ VueClipboard.config.autoSetContainer = true
 
 Vue.use(VueStorage, config.storageOptions)
 Vue.use(VueClipboard)
-Vue.use(PermissionHelper)
+// Vue.use(PermissionHelper)

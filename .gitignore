@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /src/Coldairarrow.Web/wwwroot/Upload/File
+/src/Coldairarrow.Api/wwwroot/Upload

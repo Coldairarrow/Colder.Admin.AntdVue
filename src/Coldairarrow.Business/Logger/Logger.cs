@@ -71,8 +71,15 @@ namespace Coldairarrow.Business
             NLog.LogEventInfo log = new NLog.LogEventInfo(NLog.LogLevel.FromString(logLevel.ToString()), "sysLogger", msg);
             log.Properties[LoggerConfig.Data] = data;
             log.Properties[LoggerConfig.LogType] = logType.ToString();
-            log.Properties[LoggerConfig.CreatorRealName] = _operator?.Property?.UserName;
-            log.Properties[LoggerConfig.CreatorId] = _operator?.UserId;
+            try
+            {
+                log.Properties[LoggerConfig.CreatorRealName] = _operator?.Property?.UserName;
+                log.Properties[LoggerConfig.CreatorId] = _operator?.UserId;
+            }
+            catch
+            {
+
+            }
 
             _nLogger.Log(log);
         }

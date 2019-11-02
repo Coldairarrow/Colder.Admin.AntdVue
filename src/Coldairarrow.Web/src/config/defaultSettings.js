@@ -29,5 +29,10 @@ export default {
     namespace: 'pro__',
     name: 'ls',
     storage: 'local'
-  }
+  },
+  desktopPath: '/Base_Manage/Base_User/List',//首页路径
+  publishRootUrl: 'http://localhost:40000',//发布后接口根地址
+  localRootUrl: 'http://localhost:40000',//本地调试接口根地址
+  apiTimeout: 10000,//接口超时时间ms
+  devPort: 9000//本地开发启动端口
 }
