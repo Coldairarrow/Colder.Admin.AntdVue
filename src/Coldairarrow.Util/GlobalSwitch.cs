@@ -34,7 +34,26 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 网站根地址
         /// </summary>
-        public static string WebRootUrl { get; set; } = "http://localhost:40000";
+        public static string WebRootUrl
+        {
+            get
+            {
+                if (RunModel == RunModel.Publish)
+                    return PublishRootUrl;
+                else
+                    return localRootUrl;
+            }
+        }
+
+        /// <summary>
+        /// 发布后网站根地址
+        /// </summary>
+        public const string PublishRootUrl = localRootUrl;
+
+        /// <summary>
+        /// 本地调试根地址
+        /// </summary>
+        public const string localRootUrl = "http://localhost:40000";
 
         #endregion
 
@@ -48,7 +67,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 网站文件根路径
         /// </summary>
-        public static string WebRootPath { get => AutofacHelper.GetScopeService<IHostingEnvironment>().WebRootPath; }
+        public static readonly string WebRootPath = AutofacHelper.GetService<IHostingEnvironment>().WebRootPath;
 
         #endregion
 
@@ -62,7 +81,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认数据库连接名
         /// </summary>
-        public static readonly string DefaultDbConName = "BaseDb";
+        public const string DefaultDbConName = "BaseDb";
 
         #endregion
 
@@ -76,7 +95,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// Redis配置字符串
         /// </summary>
-        public static readonly string RedisConfig = null /*"61.153.17.101:6379"*/;
+        public const string RedisConfig = null /*"61.153.17.101:6379"*/;
 
         #endregion
 

@@ -1,12 +1,19 @@
 import axios from 'axios'
 import TokenCache from '@/utils/cache/TokenCache'
+import defaultSettings from '@/config/defaultSettings'
+import ProcessHelper from '@/utils/helper/ProcessHelper'
 
-const rootUrl = 'http://localhost:40000'
-const timeout = 30000
+const rootUrl = () => {
+    if (ProcessHelper.isProduction() || ProcessHelper.isPreview()) {
+        return defaultSettings.publishRootUrl
+    } else {
+        return defaultSettings.localRootUrl
+    }
+}
 
 export const Axios = axios.create({
-    baseURL: rootUrl,
-    timeout: timeout
+    baseURL: rootUrl(),
+    timeout: defaultSettings.apiTimeout
 })
 
 // 在发送请求之前做某件事
@@ -50,5 +57,6 @@ Axios.interceptors.response.use(res => {
 export default {
     install(Vue) {
         Object.defineProperty(Vue.prototype, '$http', { value: Axios })
+        Object.defineProperty(Vue.prototype, '$rootUrl', { value: rootUrl() })
     }
 }

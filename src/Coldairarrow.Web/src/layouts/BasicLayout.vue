@@ -74,7 +74,7 @@ import MultiTab from '@/components/MultiTab'
 import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
-import SettingDrawer from '@/components/SettingDrawer'
+// import SettingDrawer from '@/components/SettingDrawer'
 import { getAddRouter } from '@/utils/routerUtil'
 
 export default {
@@ -86,7 +86,7 @@ export default {
     SideMenu,
     GlobalHeader,
     GlobalFooter,
-    SettingDrawer
+    // SettingDrawer
   },
   data() {
     return {

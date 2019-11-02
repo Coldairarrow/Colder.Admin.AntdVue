@@ -32,10 +32,8 @@ namespace Coldairarrow.Business
                     {
                         return HttpContextCore.Current.Request.GetJWTPayload()?.UserId;
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        Logger.Error(ex);
-
                         return null;
                     }
                 }

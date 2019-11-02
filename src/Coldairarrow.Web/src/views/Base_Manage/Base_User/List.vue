@@ -9,7 +9,8 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >删除</a-button>
+        >删除</a-button
+      >
     </div>
 
     <div class="table-page-search-wrapper">
