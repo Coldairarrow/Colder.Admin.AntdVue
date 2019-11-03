@@ -1,66 +1,26 @@
 <template>
-  <div class="clearfix">
-    <a-upload
-      :action="`${$rootUrl}/Base_Manage/Upload/UploadFileByForm`"
-      listType="picture-card"
-      :fileList="fileList"
-      @preview="handlePreview"
-      @change="handleChange"
-    >
-      <div v-if="fileList.length < 3">
-        <a-icon type="plus" />
-        <div class="ant-upload-text">Upload</div>
-      </div>
-    </a-upload>
-    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-      <img alt="example" style="width: 100%" :src="previewImage" />
-    </a-modal>
-    <a-button @click="getImgs()"></a-button>
-  </div>
+  <a-form :form="form">
+    <a-form-item label="图片上传" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <c-upload></c-upload>
+    </a-form-item>
+  </a-form>
 </template>
+
 <script>
+import CUpload from '@/components/CUpload/CUpload'
+
 export default {
+  components: {
+    CUpload
+  },
   data() {
     return {
-      previewVisible: false,
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-        }
-      ]
+      form: this.$form.createForm(this),
+      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      entity: {}
     }
   },
-  methods: {
-    handleCancel() {
-      this.previewVisible = false
-    },
-    handlePreview(file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
-    },
-    handleChange({ fileList }) {
-      this.fileList = fileList
-    },
-    getImgs() {
-      var imgUrls = this.fileList.map(x => x.url || x.response.url)
-      console.log(imgUrls)
-    }
-  }
+  methods: {}
 }
 </script>
-<style>
-/* you can make up upload button and sample style by using stylesheets */
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
-</style>
