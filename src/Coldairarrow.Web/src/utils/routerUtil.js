@@ -38,6 +38,10 @@ const devRouter = [
       {
         path: '/Develop/UploadImg',
         title: '图片上传'
+      },
+      {
+        path: '/Develop/UploadFile',
+        title: '文件上传'
       }
     ]
   }

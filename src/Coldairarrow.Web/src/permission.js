@@ -5,6 +5,7 @@ import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import TokenCache from '@/utils/cache/TokenCache'
 import OperatorCache from '@/utils/cache/OperatorCache'
 import { initRouter } from '@/utils/routerUtil'
+import defaultSettings from '@/config/defaultSettings'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -22,11 +23,16 @@ router.beforeEach((to, from, next) => {
       } else {
         initRouter(to, from, next).then(() => {
           const redirect = decodeURIComponent(from.query.redirect || to.path)
-          if (to.path === redirect) {
+          //桌面特殊处理
+          if (to.path == defaultSettings.desktopPath) {
             next()
           } else {
-            // 跳转到目的路由
-            next({ path: redirect })
+            if (to.path === redirect) {
+              next()
+            } else {
+              // 跳转到目的路由
+              next({ path: redirect })
+            }
           }
         })
       }
