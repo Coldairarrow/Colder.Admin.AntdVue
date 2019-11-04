@@ -7,9 +7,9 @@
       @preview="handlePreview"
       @change="handleChange"
     >
-      <a-button>
-        <a-icon type="upload" />上传
-      </a-button>
+      <div v-if="fileList.length < maxCount">
+        <a-button> <a-icon type="plus" />选择 </a-button>
+      </div>
     </a-upload>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
       <img alt="example" style="width: 100%" :src="previewImage" />
@@ -79,7 +79,7 @@ export default {
         }
 
         this.fileList = urls.map(x => {
-          return { name: x, uid: uuid.v4(), status: 'done', url: x }
+          return { name: this.getFileName(x), uid: uuid.v4(), status: 'done', url: x }
         })
       }
     },
@@ -87,8 +87,9 @@ export default {
       this.previewVisible = false
     },
     handlePreview(file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
+      var url = file.url || file.response.url
+
+      window.open(url, 'tab')
     },
     handleChange({ fileList }) {
       this.fileList = fileList
@@ -96,6 +97,15 @@ export default {
       var newValue = this.maxCount == 1 ? urls[0] : urls
       //双向绑定
       this.$emit('input', newValue)
+    },
+    getFileName(url) {
+      let reg = /^.*\/(.*?)$/
+      let match = reg.test(url)
+      if (match) {
+        return RegExp.$1
+      } else {
+        return ''
+      }
     }
   }
 }

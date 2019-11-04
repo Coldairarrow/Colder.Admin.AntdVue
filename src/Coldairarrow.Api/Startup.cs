@@ -92,7 +92,11 @@ namespace Coldairarrow.Api
                 .AllowCredentials()
             )
             .UseDeveloperExceptionPage()
-            .UseStaticFiles();
+            .UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true,
+                DefaultContentType = "application/octet-stream"
+            });
 
             //Swagger配置
             app.UseSwagger();
