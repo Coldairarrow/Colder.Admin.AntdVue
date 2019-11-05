@@ -42,6 +42,10 @@ const devRouter = [
       {
         path: '/Develop/UploadFile',
         title: '文件上传'
+      },
+      {
+        path: '/Develop/Editor',
+        title: '富文本'
       }
     ]
   }
