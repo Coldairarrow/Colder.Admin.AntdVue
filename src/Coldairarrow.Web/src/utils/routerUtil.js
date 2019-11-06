@@ -37,15 +37,19 @@ const devRouter = [
       },
       {
         path: '/Develop/UploadImg',
-        title: '图片上传'
+        title: '图片上传Demo'
       },
       {
         path: '/Develop/UploadFile',
-        title: '文件上传'
+        title: '文件上传Demo'
       },
       {
         path: '/Develop/Editor',
-        title: '富文本'
+        title: '富文本Demo'
+      },
+      {
+        path: '/Develop/SelectSearch',
+        title: '下拉搜索Demo'
       }
     ]
   }

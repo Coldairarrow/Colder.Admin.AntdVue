@@ -6,9 +6,6 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
-    /// <summary>
-    /// ”¶”√√‹‘ø
-    /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
     public class Base_UserController : BaseApiController
@@ -40,6 +37,14 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             var theData = _userBus.GetTheData(id) ?? new Base_UserDTO();
 
             return Success(theData);
+        }
+
+        [HttpPost]
+        public ActionResult<AjaxResult<List<SelectOption>>> GetOptionList(string selectedValueJson, string q)
+        {
+            var list = _userBus.GetOptionList(selectedValueJson, q);
+
+            return Success(list);
         }
 
         #endregion
