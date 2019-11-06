@@ -15,6 +15,11 @@
 <script>
 export default {
   props: {
+    url: {
+      //远程获取选项接口地址,接口返回数据结构:[{value:'',text:''}]
+      type: String,
+      default: null
+    },
     allowClear: {
       type: Boolean,
       default: true
@@ -22,12 +27,25 @@ export default {
     showSearch: {
       type: Boolean,
       default: false
+    },
+    options: {
+      //下拉项配置,若无url则必选,结构:[{value:'',text:''}]
+      type: Array,
+      default: []
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      filterOption: false, //本地搜索
-      UserOptionList: []
+      filterOption: false, //本地搜索,非远程搜索
+      options: []
     }
   },
   mounted() {
