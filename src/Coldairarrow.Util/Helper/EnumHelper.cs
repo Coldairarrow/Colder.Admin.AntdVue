@@ -8,20 +8,20 @@ namespace Coldairarrow.Util
     {
         /// <summary>
         /// 将枚举类型转为选项列表
-        /// 注：value为值,lable为显示内容
+        /// 注：value为值,text为显示内容
         /// </summary>
         /// <param name="enumType">枚举类型</param>
         /// <returns></returns>
-        public static List<object> ToOptionList(Type enumType)
+        public static List<SelectOption> ToOptionList(Type enumType)
         {
             var values = Enum.GetValues(enumType);
-            List<object> list = new List<object>();
+            List<SelectOption> list = new List<SelectOption>();
             foreach (var aValue in values)
             {
-                list.Add(new
+                list.Add(new SelectOption
                 {
-                    Value = (int)aValue,
-                    Text = aValue.ToString()
+                    value = ((int)aValue).ToString(),
+                    text = aValue.ToString()
                 });
             }
 

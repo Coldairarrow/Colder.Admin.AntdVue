@@ -24,14 +24,14 @@
           <a-col :md="3" :sm="24">
             <a-form-item label="级别">
               <a-select v-model="queryParam.level" allowClear>
-                <a-select-option v-for="item in LoglevelList" :key="item.Text">{{ item.Text }}</a-select-option>
+                <a-select-option v-for="item in LoglevelList" :key="item.text">{{ item.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
             <a-form-item label="类别">
               <a-select v-model="queryParam.logType" allowClear>
-                <a-select-option v-for="item in LogTypeList" :key="item.Text">{{ item.Text }}</a-select-option>
+                <a-select-option v-for="item in LogTypeList" :key="item.text">{{ item.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
