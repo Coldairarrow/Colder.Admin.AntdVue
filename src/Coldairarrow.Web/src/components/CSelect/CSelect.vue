@@ -1,8 +1,5 @@
 <template>
-  <!-- <a-form :form="form"> -->
-  <!-- <a-form-item label="" :labelCol="labelCol" :wrapperCol="wrapperCol"> -->
   <a-select
-    id="select"
     ref="select"
     :allowClear="allowClear"
     :showSearch="showSearch"
@@ -10,22 +7,19 @@
     @search="handleSearch"
     @change="handleChange"
     :mode="mode"
-    v-decorator="['UserList', { rules: [{ required: true, message: '必选' }] }]"
+    v-model="thisValue"
   >
     <a-select-option v-for="item in thisOptions" :key="item.value">{{ item.text }}</a-select-option>
   </a-select>
-  <!-- </a-form-item>
-  </a-form> -->
 </template>
 
 <script>
-import Select from 'ant-design-vue/es/select'
+let qGlobal = ''
+let timeout = null
 
 export default {
-  extends: Select,
   props: {
     value: null,
-    form: null,
     url: {
       //远程获取选项接口地址,接口返回数据结构:[{value:'',text:''}]
       type: String,
@@ -46,10 +40,6 @@ export default {
       type: Array,
       default: () => []
     },
-    required: {
-      type: Boolean,
-      default: false
-    },
     multiple: {
       type: Boolean,
       default: false
@@ -60,7 +50,9 @@ export default {
     if (this.searchMode) {
       this.showSearch = true
       if (this.searchMode == 'local') {
-        this.filterOption = true
+        this.filterOption = (input, option) => {
+          return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       } else {
         this.filterOption = false
       }
@@ -68,32 +60,22 @@ export default {
     if (!this.url && this.options.length > 0) {
       this.thisOptions = this.options
     }
-    // this.form.getFieldDecorator('select', { rules: [{ required: true, message: '必选' }] })
+    this.thisValue = this.value
     this.reload()
-    // var initValue = { UserList: ['Admin'] }
-    // this.$nextTick(() => {
-    //   this.form.setFieldsValue(initValue)
-    //   this.reloadUser(null, ['Admin'])
-    // })
   },
   data() {
     return {
-      // form: this.$form.createForm(this),
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
       filterOption: false, //本地搜索,非远程搜索
       thisOptions: [],
       mode: '',
       showSearch: false,
-      isInnerchange: false
+      isInnerchange: false,
+      thisValue: ''
     }
   },
   watch: {
     value(value) {
-      if (!this.isInnerchange) {
-        this.$refs.select.$refs.vcSelect.fireChange(value)
-      }
-      this.isInnerchange = false
+      this.thisValue = value
     }
   },
   methods: {
@@ -101,26 +83,29 @@ export default {
       if (!this.url) {
         return
       }
-      let selected = []
-      if (this.multiple) {
-        selected = this.$refs.select.value
-      }
-      this.$http
-        .post(this.url, {
-          q: q || '',
-          selectedValueJson: JSON.stringify(selected || [])
-        })
-        .then(resJson => {
-          if (resJson.Success) {
-            this.thisOptions = resJson.Data
-          }
-        })
+      qGlobal = q
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        let selected = []
+        if (this.multiple) {
+          selected = this.$refs.select.value
+        }
+        this.$http
+          .post(this.url, {
+            q: q || '',
+            selectedValueJson: JSON.stringify(selected || [])
+          })
+          .then(resJson => {
+            if (resJson.Success && q == qGlobal) {
+              this.thisOptions = resJson.Data
+            }
+          })
+      }, 300)
     },
     handleSearch(value) {
       this.reload(value)
     },
     handleChange(value) {
-      this.isInnerchange = true
       this.$emit('input', value)
     }
   }
