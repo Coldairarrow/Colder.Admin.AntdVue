@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>Coldairarrow.Console</AssemblyName>
     <RootNamespace>Coldairarrow.Console1</RootNamespace>
   </PropertyGroup>

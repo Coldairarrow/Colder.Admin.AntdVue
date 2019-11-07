@@ -329,10 +329,9 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 转为SQL语句，包括参数
         /// </summary>
-        /// <typeparam name="TEntity">实体类型</typeparam>
         /// <param name="query">查询原源</param>
         /// <returns></returns>
-        public static (string sql, IReadOnlyDictionary<string, object> parameters) ToSql<TEntity>(this IQueryable<TEntity> query) where TEntity : class
+        public static (string sql, IReadOnlyDictionary<string, object> parameters) ToSql(this IQueryable query)
         {
             return IQueryableToSql.ToSql(query);
         }
@@ -756,7 +755,7 @@ namespace Coldairarrow.Util
             private static readonly FieldInfo DataBaseField = QueryCompilerTypeInfo.DeclaredFields.Single(x => x.Name == "_database");
             private static readonly PropertyInfo DatabaseDependenciesField = typeof(Database).GetTypeInfo().DeclaredProperties.Single(x => x.Name == "Dependencies");
 
-            public static (string sql, IReadOnlyDictionary<string, object> parameters) ToSql<TEntity>(IQueryable<TEntity> query) where TEntity : class
+            public static (string sql, IReadOnlyDictionary<string, object> parameters) ToSql(IQueryable query)
             {
                 var queryCompiler = (QueryCompiler)QueryCompilerField.GetValue(query.Provider);
                 var queryContextFactory = (IQueryContextFactory)queryContextFactoryField.GetValue(queryCompiler);
@@ -770,7 +769,11 @@ namespace Coldairarrow.Util
                 var queryCompilationContext = databaseDependencies.QueryCompilationContextFactory.Create(false);
                 var modelVisitor = (RelationalQueryModelVisitor)queryCompilationContext.CreateQueryModelVisitor();
 
-                modelVisitor.CreateQueryExecutor<TEntity>(queryModel);
+                modelVisitor.GetType()
+                    .GetMethod("CreateQueryExecutor")
+                    .MakeGenericMethod(query.ElementType)
+                    .Invoke(modelVisitor, new object[] { queryModel });
+
                 var command = modelVisitor.Queries.First().CreateDefaultQuerySqlGenerator()
                     .GenerateSql(queryContext.ParameterValues);
 

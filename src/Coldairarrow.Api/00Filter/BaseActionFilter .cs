@@ -1,12 +1,14 @@
-﻿using Coldairarrow.Util;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 
 namespace Coldairarrow.Api
 {
     public class BaseActionFilter : Attribute
     {
+        public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
+
         /// <summary>
         /// 返回JSON
         /// </summary>
@@ -112,16 +114,6 @@ namespace Coldairarrow.Api
             };
 
             return JsonContent(res.ToJson());
-        }
-
-        /// <summary>
-        /// 重定向
-        /// </summary>
-        /// <param name="context">上下文</param>
-        /// <param name="redirectUrl">地址</param>
-        public void ReturnRedirect(ActionExecutingContext context, string redirectUrl)
-        {
-            context.Result = new RedirectResult(redirectUrl);
         }
     }
 }

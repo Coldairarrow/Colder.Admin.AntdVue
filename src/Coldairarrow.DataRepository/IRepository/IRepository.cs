@@ -18,7 +18,7 @@ namespace Coldairarrow.DataRepository
         /// <value>
         /// The handle SQL log.
         /// </value>
-        Action<string> HandleSqlLog {set; }
+        Action<string> HandleSqlLog { set; }
 
         /// <summary>
         /// 提交到数据库
@@ -118,6 +118,15 @@ namespace Coldairarrow.DataRepository
         /// <returns>影响条数</returns>
         int Delete_Sql<T>(Expression<Func<T, bool>> where) where T : class, new();
 
+        /// <summary>
+        /// 使用SQL语句按照条件删除数据
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <param name="where">动态where</param>
+        /// <param name="paramters">where参数</param>
+        /// <returns></returns>
+        int Delete_Sql(Type entityType, string where, params object[] paramters);
+
         #endregion
 
         #region 更新数据
@@ -145,6 +154,16 @@ namespace Coldairarrow.DataRepository
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
         int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, object value)[] values) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <param name="where">动态where</param>
+        /// <param name="paramters">where参数</param>
+        /// <param name="values">赋值</param>
+        /// <returns></returns>
+        int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, object value)[] values);
 
         #endregion
 

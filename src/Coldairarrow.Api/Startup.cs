@@ -31,28 +31,25 @@ namespace Coldairarrow.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddControllers(options =>
-                {
-                    options.Filters.Add<GlobalExceptionFilter>();
-                })
-                .AddControllersAsServices();
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton(Configuration);
-            services.AddLogging();
-            //If using Kestrel:
-            services.Configure<KestrelServerOptions>(options =>
+            services.AddControllers(options =>
             {
-                options.AllowSynchronousIO = true;
-            });
+                options.Filters.Add<GlobalExceptionFilter>();
+            })
+            .AddControllersAsServices();
 
-            // If using IIS:
-            services.Configure<IISServerOptions>(options =>
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>()
+            .AddTransient<IActionContextAccessor, ActionContextAccessor>()
+            .AddSingleton(Configuration)
+            .AddLogging()
+            .Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
-            });
-            services.AddSwaggerGen(c =>
+            })
+            .Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            })
+            .AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -80,29 +77,17 @@ namespace Coldairarrow.Api
         {
             // 在这里添加服务注册
             var baseType = typeof(IDependency);
-            var baseTypeCircle = typeof(ICircleDependency);
-
-            //Coldairarrow相关程序集
-            var assemblys = Assembly.GetEntryAssembly().GetReferencedAssemblies()
-                .Select(Assembly.Load)
-                .Cast<Assembly>()
-                .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
 
             //自动注入IDependency接口,支持AOP,生命周期为InstancePerDependency
-            builder.RegisterAssemblyTypes(assemblys.ToArray())
+            var diTypes = GlobalData.FxAllTypes
                 .Where(x => baseType.IsAssignableFrom(x) && x != baseType)
+                .ToArray();
+            builder.RegisterTypes(diTypes)
                 .AsImplementedInterfaces()
                 .PropertiesAutowired()
                 .InstancePerDependency()
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(Interceptor));
-
-            //自动注入ICircleDependency接口,循环依赖注入,不支持AOP,生命周期为InstancePerLifetimeScope
-            builder.RegisterAssemblyTypes(assemblys.ToArray())
-                .Where(x => baseTypeCircle.IsAssignableFrom(x) && x != baseTypeCircle)
-                .AsImplementedInterfaces()
-                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
-                .InstancePerLifetimeScope();
 
             //注册Controller
             builder.RegisterAssemblyTypes(typeof(Startup).GetTypeInfo().Assembly)
@@ -126,9 +111,9 @@ namespace Coldairarrow.Api
                 context.Request.EnableBuffering();
 
                 return next(context);
-            });
+            })
             //跨域,禁用cookie
-            app.UseCors(x =>
+            .UseCors(x =>
             {
                 x.AllowAnyOrigin()
                 .AllowAnyHeader()
@@ -139,17 +124,16 @@ namespace Coldairarrow.Api
             {
                 ServeUnknownFileTypes = true,
                 DefaultContentType = "application/octet-stream"
-            });
-
+            })
             //Swagger配置
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            .UseSwagger()
+            .UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0.0");
                 c.RoutePrefix = string.Empty;
-            });
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
+            })
+            .UseRouting()
+            .UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
@@ -160,21 +144,11 @@ namespace Coldairarrow.Api
 
         private void InitAutoMapper()
         {
-            //Coldairarrow相关程序集
-            var assemblys = Assembly.GetEntryAssembly().GetReferencedAssemblies()
-                .Select(Assembly.Load)
-                .Cast<Assembly>()
-                .Where(x => x.FullName.Contains("Coldairarrow")).ToList();
-            List<Type> allTypes = new List<Type>();
-            assemblys.ForEach(aAssembly =>
-            {
-                allTypes.AddRange(aAssembly.GetTypes());
-            });
             List<(Type from, Type target)> maps = new List<(Type from, Type target)>();
 
-            maps.AddRange(allTypes.Where(x => x.GetCustomAttribute<MapToAttribute>() != null)
+            maps.AddRange(GlobalData.FxAllTypes.Where(x => x.GetCustomAttribute<MapToAttribute>() != null)
                 .Select(x => (x, x.GetCustomAttribute<MapToAttribute>().TargetType)));
-            maps.AddRange(allTypes.Where(x => x.GetCustomAttribute<MapFromAttribute>() != null)
+            maps.AddRange(GlobalData.FxAllTypes.Where(x => x.GetCustomAttribute<MapFromAttribute>() != null)
                 .Select(x => (x.GetCustomAttribute<MapFromAttribute>().FromType, x)));
             Mapper.Initialize(cfg =>
             {

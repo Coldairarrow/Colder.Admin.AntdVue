@@ -81,13 +81,7 @@ namespace Coldairarrow.DataRepository
 
         private static void InitModelType()
         {
-            var assemblies = new Assembly[] { Assembly.Load("Coldairarrow.Entity") };
-            List<Type> allTypes = new List<Type>();
-            assemblies.ForEach(aAssembly =>
-            {
-                allTypes.AddRange(aAssembly.GetTypes());
-            });
-            List<Type> types = allTypes
+            List<Type> types = GlobalData.FxAllTypes
                 .Where(x => x.GetCustomAttribute(typeof(TableAttribute), false) != null)
                 .ToList();
 

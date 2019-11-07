@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
-using System;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business
@@ -24,7 +23,7 @@ namespace Coldairarrow.Business
         {
             get
             {
-                if (GlobalSwitch.RunModel == RunModel.LocalTest)
+                if (GlobalSwitch.RunMode == RunMode.LocalTest)
                     return GlobalSwitch.AdminId;
                 else
                 {
