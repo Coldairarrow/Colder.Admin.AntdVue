@@ -57,7 +57,7 @@ HttpHelper.SafeSignRequest
             ILogger logger= AutofacHelper.GetScopeService<ILogger>();
 
             //若为本地测试，则不需要校验
-            if (GlobalSwitch.RunModel == RunModel.LocalTest)
+            if (GlobalSwitch.RunMode == RunMode.LocalTest)
             {
                 return;
             }

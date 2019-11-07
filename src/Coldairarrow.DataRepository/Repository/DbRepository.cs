@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -116,7 +117,7 @@ namespace Coldairarrow.DataRepository
         {
             return $"@{name}";
         }
-        private (string sql, Dictionary<string, object> paramters) GetWhereSql<T>(IQueryable<T> query) where T : class, new()
+        private (string sql, Dictionary<string, object> paramters) GetWhereSql(IQueryable query)
         {
             Dictionary<string, object> paramters = new Dictionary<string, object>();
             var querySql = query.ToSql();
@@ -446,9 +447,23 @@ namespace Coldairarrow.DataRepository
         /// </returns>
         public int Delete_Sql<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
-            string tableName = typeof(T).Name;
+            var iq = GetIQueryable<T>().Where(where);
+
+            return _Delete_Sql(iq);
+        }
+
+        public int Delete_Sql(Type entityType, string where, params object[] paramters)
+        {
+            var iq = GetIQueryable(entityType).Where(where, paramters);
+
+            return _Delete_Sql(iq);
+        }
+
+        private int _Delete_Sql(IQueryable iq)
+        {
+            string tableName = iq.ElementType.Name;
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(DbType);
-            var whereSql = GetWhereSql(GetIQueryable<T>().Where(where));
+            var whereSql = GetWhereSql(iq);
             var paramters = whereSql.paramters.Select(x =>
             {
                 var newParamter = dbProviderFactory.CreateParameter();
@@ -568,11 +583,25 @@ namespace Coldairarrow.DataRepository
         /// </returns>
         public int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, object value)[] values) where T : class, new()
         {
-            string tableName = typeof(T).Name;
+            var iq = GetIQueryable<T>().Where(where);
+
+            return _UpdateWhere_Sql(iq, values);
+        }
+
+        public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, object value)[] values)
+        {
+            var iq = GetIQueryable(entityType).Where(where, paramters);
+
+            return _UpdateWhere_Sql(iq, values);
+        }
+
+        private int _UpdateWhere_Sql(IQueryable iq, params (string field, object value)[] values)
+        {
+            string tableName = iq.ElementType.Name;
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(DbType);
 
             List<KeyValuePair<string, object>> parameterList = new List<KeyValuePair<string, object>>();
-            var whereSql = GetWhereSql(GetIQueryable<T>().Where(where));
+            var whereSql = GetWhereSql(iq);
 
             parameterList.AddRange(whereSql.paramters.ToArray());
 

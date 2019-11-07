@@ -13,7 +13,7 @@ namespace Coldairarrow.Util
         static GlobalSwitch()
         {
 #if !DEBUG
-            RunModel = RunModel.Publish;
+            RunMode = RunMode.Publish;
 #endif
         }
 
@@ -38,7 +38,7 @@ namespace Coldairarrow.Util
         {
             get
             {
-                if (RunModel == RunModel.Publish)
+                if (RunMode == RunMode.Publish)
                     return PublishRootUrl;
                 else
                     return localRootUrl;
@@ -55,6 +55,11 @@ namespace Coldairarrow.Util
         /// </summary>
         public const string localRootUrl = "http://localhost:40000";
 
+        /// <summary>
+        /// 数据删除模式,默认逻辑删除
+        /// </summary>
+        public static readonly DeleteMode DeleteMode = DeleteMode.Logic;
+
         #endregion
 
         #region 运行
@@ -62,12 +67,12 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 运行模式
         /// </summary>
-        public static readonly RunModel RunModel = RunModel.Publish;
+        public static readonly RunMode RunMode = RunMode.Publish;
 
         /// <summary>
         /// 网站文件根路径
         /// </summary>
-        public static readonly string WebRootPath = AutofacHelper.GetService<IHostingEnvironment>().WebRootPath;
+        public static string WebRootPath { get => AutofacHelper.GetService<IHostingEnvironment>().WebRootPath; }
 
         #endregion
 
@@ -118,7 +123,7 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 运行模式
     /// </summary>
-    public enum RunModel
+    public enum RunMode
     {
         /// <summary>
         /// 本地测试模式，默认Admin账户，不需要登录
@@ -145,5 +150,21 @@ namespace Coldairarrow.Util
         /// Redis缓存
         /// </summary>
         RedisCache
+    }
+
+    /// <summary>
+    /// 删除模式
+    /// </summary>
+    public enum DeleteMode
+    {
+        /// <summary>
+        /// 物理删除,即直接从数据库删除
+        /// </summary>
+        Physic,
+
+        /// <summary>
+        /// 逻辑删除,即仅将Deleted字段置为true
+        /// </summary>
+        Logic
     }
 }

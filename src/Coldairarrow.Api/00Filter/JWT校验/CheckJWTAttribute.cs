@@ -19,7 +19,7 @@ namespace Coldairarrow.Api
         {
             try
             {
-                if (context.ContainsFilter<NoCheckJWTAttribute>() || GlobalSwitch.RunModel == RunModel.LocalTest)
+                if (context.ContainsFilter<NoCheckJWTAttribute>() || GlobalSwitch.RunMode == RunMode.LocalTest)
                     return;
 
                 var req = context.HttpContext.Request;
