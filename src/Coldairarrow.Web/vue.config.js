@@ -77,8 +77,8 @@ const vueConfig = {
 //   vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 // }
 
-// 打包分析
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+//打包分析
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // vueConfig.configureWebpack.plugins.push(new BundleAnalyzerPlugin())
 
 module.exports = vueConfig
