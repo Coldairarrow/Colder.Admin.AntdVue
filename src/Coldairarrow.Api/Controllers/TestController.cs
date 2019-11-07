@@ -1,31 +1,44 @@
-﻿using Coldairarrow.Util;
-using Microsoft.AspNetCore.Hosting;
+﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.DataRepository;
+using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
+using System;
+using System.Linq;
 
 namespace Coldairarrow.Api.Controllers
 {
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
-        static TestController()
-        {
-            var projectPath = PathHelper.GetProjectRootpath();
-            _solutionPath = Directory.GetParent(projectPath).ToString();
-        }
-        private static readonly string _solutionPath;
-
         [HttpGet]
         public IActionResult Test()
         {
-            var obj1 = AutofacHelper.GetService<IHostingEnvironment>();
-            var obj2 = AutofacHelper.GetService<IHostingEnvironment>();
-            bool equal = obj1 == obj2;
+            return HtmlContent("");
+        }
 
-            //var projectPath = AutofacHelper.GetService<IHostingEnvironment>().ContentRootPath;
-            //string solutionPath = Directory.GetParent(projectPath).ToString();
+        /// <summary>
+        /// 压力测试
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult PressTest()
+        {
+            var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
+            var db = DbFactory.GetRepository();
+            Base_UnitTest data = new Base_UnitTest
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = Guid.NewGuid().ToString(),
+                Age = 10,
+                UserName = Guid.NewGuid().ToString()
+            };
+            db.Insert(data);
+            db.Update(data);
+            db.GetIQueryable<Base_UnitTest>().FirstOrDefault();
+            db.Delete(data);
 
-            return HtmlContent(_solutionPath);
+            return Success("");
         }
     }
 }
