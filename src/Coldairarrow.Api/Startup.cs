@@ -6,12 +6,12 @@ using Coldairarrow.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,25 +29,35 @@ namespace Coldairarrow.Api
 
         public IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-            {
-                options.Filters.Add<GlobalExceptionFilter>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-            .AddControllersAsServices();
+            services
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<GlobalExceptionFilter>();
+                })
+                .AddControllersAsServices();
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton(Configuration);
             services.AddLogging();
+            //If using Kestrel:
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
 
+            // If using IIS:
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1.0.0",
-                    Title = "接口文档",
-                    Contact = new Contact { Name = "Coldairarrow", Url = "https://github.com/Coldairarrow" }
+                    Title = "接口文档"
                 });
                 // 为 Swagger JSON and UI设置xml文档注释路径
                 var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//获取应用程序所在目录（绝对，不受工作目录影响，建议采用此方法获取路径）
@@ -64,63 +74,11 @@ namespace Coldairarrow.Api
                 //控制器层
                 c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Api.xml"), true);
             });
-
-            //使用Autofac替换自带IOC
-            var builder = InitAutofac();
-            builder.Populate(services);
-            var container = builder.Build();
-
-            AutofacHelper.Container = container;
-
-            return new AutofacServiceProvider(container);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void ConfigureContainer(ContainerBuilder builder)
         {
-            //Request.Body重用
-            app.Use(next => context =>
-            {
-                context.Request.EnableRewind();
-
-                return next(context);
-            })
-            //跨域
-            .UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
-            )
-            .UseDeveloperExceptionPage()
-            .UseStaticFiles(new StaticFileOptions
-            {
-                ServeUnknownFileTypes = true,
-                DefaultContentType = "application/octet-stream"
-            });
-
-            //Swagger配置
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0.0");
-            });
-            app.UseMvc(routes =>
-            {
-                //默认路由
-                routes.MapRoute(
-                    name: "Default",
-                    template: "Api/{controller=Home}/{action=Index}/{id?}",
-                    defaults: "/swagger"
-                );
-            });
-            InitAutoMapper();
-            InitId();
-        }
-
-        private ContainerBuilder InitAutofac()
-        {
-            var builder = new ContainerBuilder();
-
+            // 在这里添加服务注册
             var baseType = typeof(IDependency);
             var baseTypeCircle = typeof(ICircleDependency);
 
@@ -158,8 +116,46 @@ namespace Coldairarrow.Api
             builder.RegisterType<DisposableContainer>()
                 .As<IDisposableContainer>()
                 .InstancePerLifetimeScope();
+        }
 
-            return builder;
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            //Request.Body重用
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+
+                return next(context);
+            });
+            //跨域,禁用cookie
+            app.UseCors(x =>
+            {
+                x.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            })
+            .UseDeveloperExceptionPage()
+            .UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true,
+                DefaultContentType = "application/octet-stream"
+            });
+
+            //Swagger配置
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0.0");
+                c.RoutePrefix = string.Empty;
+            });
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+            AutofacHelper.Container = app.ApplicationServices.GetAutofacRoot();
+            InitAutoMapper();
+            InitId();
         }
 
         private void InitAutoMapper()

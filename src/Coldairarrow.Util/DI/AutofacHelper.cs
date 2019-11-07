@@ -5,7 +5,7 @@ namespace Coldairarrow.Util
 {
     public class AutofacHelper
     {
-        public static IContainer Container { get; set; }
+        public static ILifetimeScope Container { get; set; }
 
         /// <summary>
         /// 获取全局服务
