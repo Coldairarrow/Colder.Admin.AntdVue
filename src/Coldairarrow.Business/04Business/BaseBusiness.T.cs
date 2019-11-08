@@ -71,6 +71,7 @@ namespace Coldairarrow.Business
 
         /// <summary>
         /// 底层仓储接口,支持跨表操作
+        /// 注：仅支持单线程操作
         /// </summary>
         /// <value>
         /// The service.
@@ -86,12 +87,23 @@ namespace Coldairarrow.Business
                         if (_service == null)
                         {
                             _service = DbFactory.GetRepository(_conString, _dbType);
+                            _service = new BusRepository(_service);
                         }
                     }
                 }
 
                 return _service;
             }
+        }
+
+        /// <summary>
+        /// 获取新的数据仓储
+        /// 注:支持多线程(每个线程需要单独的IRepository)
+        /// </summary>
+        /// <returns></returns>
+        public IRepository GetNewService()
+        {
+            return new BusRepository(DbFactory.GetRepository(_conString, _dbType));
         }
 
         public void UseRepository(IRepository repository)
