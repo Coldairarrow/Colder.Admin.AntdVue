@@ -25,7 +25,8 @@ namespace Coldairarrow.Business
         const string Id = "Id";
         bool NeedLogicDelete(Type entityType)
         {
-            return GlobalSwitch.DeleteMode == DeleteMode.Logic && entityType.GetProperties().Any(x => x.Name == Deleted);
+            return GlobalSwitch.DeleteMode == DeleteMode.Logic 
+                && entityType.GetProperties().Any(x => x.Name == Deleted);
         }
 
         #region 重写

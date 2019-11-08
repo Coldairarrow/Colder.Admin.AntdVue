@@ -7,18 +7,24 @@ import { UserLayout } from '@/layouts'
  */
 export const constantRouterMap = [
   {
-    path: '/user',
+    path: '/Home',
     component: UserLayout,
-    redirect: '/user/login',
+    redirect: '/Home/Login',
     hidden: true,
     children: [
       {
-        path: 'login',
-        name: 'login',
-        component: () => import('@/views/user/Login')
+        path: '/Home/Login',
+        name: 'Login',
+        component: () => import('@/views/Home/Login')
       }
     ]
   },
+  // {
+  //   path: '/Home/Login',
+  //   name: 'Login',
+  //   hidden: true,
+  //   component: () => import('@/views/Home/Login')
+  // },
   {
     path: '/404',
     component: () => import('@/views/exception/404')
