@@ -140,7 +140,7 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.NeedAction = true;
             });
             //删除原来
-            Delete_Sql(x => x.ParentId == parentId);
+            Delete_Sql(x => x.ParentId == parentId && x.Type == 2);
             //新增
             Insert(permissionList);
 

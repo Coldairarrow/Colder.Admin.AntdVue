@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserLayout } from '@/layouts'
+import { UserLayout, PageView } from '@/layouts'
 
 /**
  * 基础路由
@@ -19,12 +19,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  // {
-  //   path: '/Home/Login',
-  //   name: 'Login',
-  //   hidden: true,
-  //   component: () => import('@/views/Home/Login')
-  // },
   {
     path: '/404',
     component: () => import('@/views/exception/404')

@@ -5,11 +5,12 @@
         <div class="header">
           <a href="/">
             <img src="@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">Colder后台</span>
+            <span class="title">{{ getTitle() }}</span>
           </a>
         </div>
         <div class="desc">
-          Colder框架能够极大提高生产力
+          致力于提高开发效率
+          <br />解放生产力
         </div>
       </div>
 
@@ -45,6 +46,11 @@ export default {
   },
   beforeDestroy() {
     document.body.classList.remove('userLayout')
+  },
+  methods: {
+    getTitle() {
+      return process.env.VUE_APP_ProjectName
+    }
   }
 }
 </script>

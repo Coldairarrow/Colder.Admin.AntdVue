@@ -51,10 +51,6 @@ const devRouter = [
         path: '/Develop/SelectSearch',
         title: '下拉搜索Demo'
       }
-      // {
-      //   path: '/Develop/SelectSearch2',
-      //   title: '下拉搜索Demo2'
-      // }
     ]
   }
 ]
