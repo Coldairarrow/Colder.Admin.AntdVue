@@ -1,7 +1,7 @@
 <template>
   <!-- <a-row :gutter="16">
   <a-col :span="16">-->
-  <a-card title="菜单及页面" :bordered="false">
+  <a-card :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
       <a-button
@@ -10,7 +10,8 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >删除</a-button>
+        >删除</a-button
+      >
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 

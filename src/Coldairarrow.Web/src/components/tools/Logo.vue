@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Colder',
+      default: process.env.VUE_APP_ProjectName,
       required: false
     },
     showTitle: {
