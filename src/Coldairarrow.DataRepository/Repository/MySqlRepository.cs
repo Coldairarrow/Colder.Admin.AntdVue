@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Coldairarrow.DataRepository
 {
-    public class MySqlRepository : DbRepository, IRepository
+    internal class MySqlRepository : DbRepository, IRepository
     {
         #region 构造函数
 

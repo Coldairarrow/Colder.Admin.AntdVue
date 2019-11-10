@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
-    public class ShardingRepository : IShardingRepository
+    internal class ShardingRepository : IShardingRepository, IInternalTransaction
     {
         #region 构造函数
 
@@ -46,13 +46,10 @@ namespace Coldairarrow.DataRepository
             if (!_openedTransaction)
             {
                 DistributedTransaction transaction = new DistributedTransaction(dbs);
-                using (transaction.BeginTransaction())
-                {
-                    Run();
-                    var (Success, ex) = transaction.EndTransaction();
-                    if (!Success)
-                        throw ex;
-                }
+
+                var (Success, ex) = transaction.RunTransaction(Run);
+                if (!Success)
+                    throw ex;
             }
             else
             {
@@ -62,30 +59,14 @@ namespace Coldairarrow.DataRepository
 
             void Run()
             {
-                List<Task> tasks = new List<Task>();
                 mapConfigs.ForEach(aConfig =>
                 {
-                    tasks.Add(Task.Run(() =>
-                    {
-                        accessData(aConfig.targetObj, aConfig.targetDb);
-                    }));
+                    accessData(aConfig.targetObj, aConfig.targetDb);
                 });
-                Task.WaitAll(tasks.ToArray());
             }
         }
         private bool _openedTransaction { get; set; } = false;
         private DistributedTransaction _transaction { get; set; }
-        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
-        {
-            _openedTransaction = true;
-            _transaction = new DistributedTransaction();
-            if (isolationLevel == null)
-                _transaction.BeginTransaction();
-            else
-                _transaction.BeginTransaction(isolationLevel.Value);
-
-            return _transaction;
-        }
 
         #endregion
 
@@ -128,17 +109,10 @@ namespace Coldairarrow.DataRepository
 
             if (!_openedTransaction)
             {
-                using (DistributedTransaction transaction = new DistributedTransaction(dbs))
-                {
-                    transaction.BeginTransaction();
-
-                    Run();
-
-                    var (Success, ex) = transaction.EndTransaction();
-
-                    if (!Success)
-                        throw ex;
-                }
+                var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs);
+                var (Success, ex) = transaction.RunTransaction(Run);
+                if (!Success)
+                    throw ex;
             }
             else
             {
@@ -266,63 +240,48 @@ namespace Coldairarrow.DataRepository
 
         #region 事物处理
 
-        /// <summary>
-        /// 开始事物
-        /// </summary>
-        /// <returns></returns>
-        public ITransaction BeginTransaction()
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            _BeginTransaction();
+            bool isOK = true;
+            Exception resEx = null;
+            try
+            {
+                BeginTransaction(isolationLevel);
 
-            return this;
+                action();
+
+                CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                RollbackTransaction();
+                isOK = false;
+                resEx = ex;
+            }
+            finally
+            {
+                Dispose();
+                _openedTransaction = false;
+            }
+
+            return (isOK, resEx);
         }
 
-        /// <summary>
-        /// 开始事物
-        /// 注:自定义事物级别
-        /// </summary>
-        /// <param name="isolationLevel">事物级别</param>
-        /// <returns></returns>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
+        public void BeginTransaction(IsolationLevel isolationLevel)
         {
-            _BeginTransaction(isolationLevel);
-
-            return this;
+            _openedTransaction = true;
+            _transaction = new DistributedTransaction();
+            _transaction.BeginTransaction(isolationLevel);
         }
 
-        /// <summary>
-        /// 提交事物
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public void CommitTransaction()
         {
-            throw new NotImplementedException();
+            _transaction.CommitTransaction();
         }
 
-        /// <summary>
-        /// 回滚事物
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public void RollbackTransaction()
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 结束事物
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public (bool Success, Exception ex) EndTransaction()
-        {
-            _openedTransaction = false;
-
-            return _transaction.EndTransaction();
-        }
-
-        public void CommitDb()
-        {
-            throw new NotImplementedException();
+            _transaction.RollbackTransaction();
         }
 
         #endregion
@@ -357,7 +316,6 @@ namespace Coldairarrow.DataRepository
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         #endregion

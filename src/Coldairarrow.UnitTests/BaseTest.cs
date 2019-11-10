@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Entity.Base_SysManage;
+﻿using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,19 @@ namespace Coldairarrow.UnitTests
             }
 
             Clear();
+        }
+        static BaseTest()
+        {
+            InitId();
+        }
+        private static void InitId()
+        {
+            new IdHelperBootstrapper()
+                //设置WorkerId
+                .SetWorkderId(ConfigHelper.GetValue("WorkerId").ToLong())
+                //使用Zookeeper
+                //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
+                .Boot();
         }
 
         protected Base_UnitTest _newData { get; } = new Base_UnitTest

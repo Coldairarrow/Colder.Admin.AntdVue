@@ -1,5 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -173,7 +173,7 @@ namespace Coldairarrow.UnitTests
             //GetList获取表的所有数据
             new Action(() =>
             {
-                var local = _dataList.OrderBy(x=>x.Id).ToJson();
+                var local = _dataList.OrderBy(x => x.Id).ToJson();
                 var db = _db.GetList<Base_UnitTest>().OrderBy(x => x.Id).ToJson();
                 Assert.AreEqual(local, db);
             })();
@@ -249,24 +249,24 @@ namespace Coldairarrow.UnitTests
         [TestMethod]
         public void TransactionTest()
         {
-            //失败事务
+            //失败事务,默认级别
             new Action(() =>
             {
-                using (var transaction = _db.BeginTransaction())
+                bool succcess = _db.RunTransaction(() =>
                 {
                     _db.Insert(_newData);
                     var newData2 = _newData.DeepClone();
                     _db.Insert(newData2);
-                    bool succcess = _db.EndTransaction().Success;
-                    Assert.AreEqual(succcess, false);
-                }
+                }).Success;
+                Assert.AreEqual(succcess, false);
             })();
 
-            //成功事务
+            ////成功事务,默认级别
             new Action(() =>
             {
-                _db.DeleteAll<Base_UnitTest>();
-                using (var transaction = _db.BeginTransaction())
+                Clear();
+
+                bool succcess = _db.RunTransaction(() =>
                 {
                     var newData = _newData.DeepClone();
                     newData.Id = Guid.NewGuid().ToString();
@@ -274,40 +274,40 @@ namespace Coldairarrow.UnitTests
                     newData.UserName = IdHelper.GetId();
                     _db.Insert(_newData);
                     _db.Insert(newData);
-                    bool succcess = _db.EndTransaction().Success;
-                    int count = _db.GetIShardingQueryable<Base_UnitTest>().Count();
-                    Assert.AreEqual(succcess, true);
-                    Assert.AreEqual(count, 2);
-                }
+                }).Success;
+                int count = _db.GetIShardingQueryable<Base_UnitTest>().Count();
+                Assert.AreEqual(succcess, true);
+                Assert.AreEqual(count, 2);
             })();
 
-            //隔离级别:RepeatableRead
+            //隔离级别: RepeatableRead
             new Action(() =>
             {
                 Clear();
-                var db1 = DbFactory.GetShardingRepository();
-                var db2 = DbFactory.GetShardingRepository();
+                var db1 = DbFactory.GetRepository();
+                var db2 = DbFactory.GetRepository();
                 db1.Insert(_newData);
-                using (db1.BeginTransaction(IsolationLevel.RepeatableRead))
+
+                var updateData = _newData.DeepClone();
+                Task db2Task = new Task(() =>
+                {
+                    updateData.UserName = IdHelper.GetId();
+                    db2.Update(updateData);
+                });
+
+                var res = db1.RunTransaction(() =>
                 {
                     //db1读=>db2写(阻塞)=>db1读=>db1提交
-                    var db1Data_1 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                    var db1Data_1 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
 
-                    var updateData = _newData.DeepClone();
-                    updateData.UserName = IdHelper.GetId();
-                    var task = Task.Run(() =>
-                    {
-                        db2.Update(updateData);
-                    });
+                    db2Task.Start();
 
-                    var db1Data_2 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                    var db1Data_2 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
                     Assert.AreEqual(db1Data_1.ToJson(), db1Data_2.ToJson());
-
-                    db1.EndTransaction();
-                    task.Wait();
-                    var db1Data_3 = db1.GetIShardingQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
-                    Assert.AreEqual(updateData.ToJson(), db1Data_3.ToJson());
-                }
+                });
+                db2Task.Wait();
+                var db1Data_3 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                Assert.AreEqual(updateData.ToJson(), db1Data_3.ToJson());
             })();
         }
     }

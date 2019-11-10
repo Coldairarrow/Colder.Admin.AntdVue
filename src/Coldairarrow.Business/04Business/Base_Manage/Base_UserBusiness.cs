@@ -79,17 +79,15 @@ namespace Coldairarrow.Business.Base_Manage
             new string[] { "用户名" })]
         public AjaxResult AddData(Base_User newData, List<string> roleIds)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Insert(newData);
                 SetUserRole(newData.Id, roleIds);
-
-                var res = EndTransaction();
-                if (res.Success)
-                    return Success();
-                else
-                    throw new Exception("系统异常", res.ex);
-            }
+            });
+            if (res.Success)
+                return Success();
+            else
+                throw new Exception("系统异常", res.ex);
         }
 
         [DataEditLog(LogType.系统用户管理, "RealName", "用户")]
@@ -101,17 +99,15 @@ namespace Coldairarrow.Business.Base_Manage
             if (theData.Id == GlobalSwitch.AdminId && Operator?.UserId != theData.Id)
                 return new ErrorResult("禁止更改超级管理员！");
 
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Update(theData);
                 SetUserRole(theData.Id, roleIds);
-
-                var res = EndTransaction();
-                if (res.Success)
-                    return Success();
-                else
-                    throw new Exception("系统异常", res.ex);
-            }
+            });
+            if (res.Success)
+                return Success();
+            else
+                throw new Exception("系统异常", res.ex);
         }
 
         [DataDeleteLog(LogType.系统用户管理, "RealName", "用户")]

@@ -2,7 +2,7 @@
 
 namespace Coldairarrow.DataRepository
 {
-    public class OracleRepository : DbRepository, IRepository
+    internal class OracleRepository : DbRepository, IRepository
     {
         #region 构造函数
 

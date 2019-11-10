@@ -1,6 +1,6 @@
 ﻿using Coldairarrow.Business;
 using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Coldairarrow.UnitTests
 {
     [TestClass]
-    public class Base_BusinessTests:BaseTest
+    public class Base_BusinessTests : BaseTest
     {
         protected override void Clear()
         {
@@ -274,22 +274,21 @@ namespace Coldairarrow.UnitTests
             //失败事务,默认级别
             new Action(() =>
             {
-                using (var transaction = _baseBus.BeginTransaction())
+                bool succcess = _baseBus.RunTransaction(() =>
                 {
                     _baseBus.Insert(_newData);
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = IdHelper.GetId();
                     _baseBus.Insert(newData2);
-                    bool succcess = _baseBus.EndTransaction().Success;
-                    Assert.AreEqual(succcess, false);
-                }
+                }).Success;
+                Assert.AreEqual(succcess, false);
             })();
 
             //成功事务,默认级别
             new Action(() =>
             {
                 Clear();
-                using (var transaction = _baseBus.BeginTransaction())
+
+                bool succcess = _baseBus.RunTransaction(() =>
                 {
                     var newData = _newData.DeepClone();
                     newData.Id = Guid.NewGuid().ToString();
@@ -297,11 +296,10 @@ namespace Coldairarrow.UnitTests
                     newData.UserName = IdHelper.GetId();
                     _baseBus.Insert(_newData);
                     _baseBus.Insert(newData);
-                    bool succcess = _baseBus.EndTransaction().Success;
-                    int count = _baseBus.GetIQueryable().Count();
-                    Assert.AreEqual(succcess, true);
-                    Assert.AreEqual(count, 2);
-                }
+                }).Success;
+                int count = _baseBus.GetIQueryable().Count();
+                Assert.AreEqual(succcess, true);
+                Assert.AreEqual(count, 2);
             })();
 
             //隔离级别:RepeatableRead
@@ -311,26 +309,27 @@ namespace Coldairarrow.UnitTests
                 var db1 = DbFactory.GetRepository();
                 var db2 = DbFactory.GetRepository();
                 db1.Insert(_newData);
-                using (db1.BeginTransaction(IsolationLevel.RepeatableRead))
+
+                var updateData = _newData.DeepClone();
+                Task db2Task = new Task(() =>
+                {
+                    updateData.UserName = IdHelper.GetId();
+                    db2.Update(updateData);
+                });
+
+                var res = db1.RunTransaction(() =>
                 {
                     //db1读=>db2写(阻塞)=>db1读=>db1提交
                     var db1Data_1 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
 
-                    var updateData = _newData.DeepClone();
-                    updateData.UserName = IdHelper.GetId();
-                    var task = Task.Run(() =>
-                    {
-                        db2.Update(updateData);
-                    });
+                    db2Task.Start();
 
                     var db1Data_2 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
                     Assert.AreEqual(db1Data_1.ToJson(), db1Data_2.ToJson());
-
-                    db1.EndTransaction();
-                    task.Wait();
-                    var db1Data_3 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
-                    Assert.AreEqual(updateData.ToJson(), db1Data_3.ToJson());
-                }
+                });
+                db2Task.Wait();
+                var db1Data_3 = db1.GetIQueryable<Base_UnitTest>().Where(x => x.Id == _newData.Id).FirstOrDefault();
+                Assert.AreEqual(updateData.ToJson(), db1Data_3.ToJson());
             })();
         }
 
@@ -341,10 +340,10 @@ namespace Coldairarrow.UnitTests
         public void DistributedTransactionTest()
         {
             //失败事务
-            BaseBusiness<Base_UnitTest> _bus1 = new BaseBusiness<Base_UnitTest>();
-            BaseBusiness<Base_UnitTest> _bus2 = new BaseBusiness<Base_UnitTest>("BaseDb_Test");
-            _bus1.DeleteAll();
-            _bus2.DeleteAll();
+            IRepository _bus1 = DbFactory.GetRepository();
+            IRepository _bus2 = DbFactory.GetRepository("BaseDb_Test");
+            _bus1.DeleteAll<Base_UnitTest>();
+            _bus2.DeleteAll<Base_UnitTest>();
             Base_UnitTest data1 = new Base_UnitTest
             {
                 Id = Guid.NewGuid().ToString(),
@@ -353,7 +352,7 @@ namespace Coldairarrow.UnitTests
             };
             Base_UnitTest data2 = new Base_UnitTest
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = data1.Id,
                 UserId = "1",
                 UserName = Guid.NewGuid().ToString()
             };
@@ -363,36 +362,41 @@ namespace Coldairarrow.UnitTests
                 UserId = "2",
                 UserName = Guid.NewGuid().ToString()
             };
-            using (var distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service))
+
+            new Action(() =>
             {
-                distributedTransaction.BeginTransaction();
-                _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
-                _bus1.Insert(data1);
-                _bus1.Insert(data2);
-                _bus2.Insert(data1);
-                _bus2.Insert(data3);
-                var succcess = distributedTransaction.EndTransaction();
+                var succcess = DistributedTransactionFactory.GetDistributedTransaction(_bus1, _bus2)
+                    .RunTransaction(() =>
+                    {
+                        _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
+                        _bus1.Insert(data1);
+                        _bus1.Insert(data2);
+                        _bus2.Insert(data1);
+                        _bus2.Insert(data3);
+                    });
                 Assert.AreEqual(succcess.Success, false);
-                Assert.AreEqual(_bus1.GetIQueryable().Count(), 0);
-                Assert.AreEqual(_bus2.GetIQueryable().Count(), 0);
-            }
+                Assert.AreEqual(_bus1.GetIQueryable<Base_UnitTest>().Count(), 0);
+                Assert.AreEqual(_bus2.GetIQueryable<Base_UnitTest>().Count(), 0);
+            })();
 
             //成功事务
-            using (var distributedTransaction = new DistributedTransaction(_bus1.Service, _bus2.Service))
+            new Action(() =>
             {
-                distributedTransaction.BeginTransaction();
-                _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
-                _bus1.Insert(data1);
-                _bus1.Insert(data3);
-                _bus2.Insert(data1);
-                _bus2.Insert(data3);
-                var succcess = distributedTransaction.EndTransaction();
-                int count1 = _bus1.GetIQueryable().Count();
-                int count2 = _bus2.GetIQueryable().Count();
+                var succcess = DistributedTransactionFactory.GetDistributedTransaction(_bus1, _bus2)
+                    .RunTransaction(() =>
+                    {
+                        _bus1.ExecuteSql("insert into Base_UnitTest(Id) values('10') ");
+                        _bus1.Insert(data1);
+                        _bus1.Insert(data3);
+                        _bus2.Insert(data1);
+                        _bus2.Insert(data3);
+                    });
+                int count1 = _bus1.GetIQueryable<Base_UnitTest>().Count();
+                int count2 = _bus2.GetIQueryable<Base_UnitTest>().Count();
                 Assert.AreEqual(succcess.Success, true);
                 Assert.AreEqual(count1, 3);
                 Assert.AreEqual(count2, 2);
-            }
+            })();
         }
 
         #endregion

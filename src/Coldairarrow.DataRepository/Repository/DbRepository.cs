@@ -20,7 +20,7 @@ namespace Coldairarrow.DataRepository
     /// 作者：Coldairarrow
     /// </summary>
     /// <seealso cref="IRepository" />
-    public class DbRepository : IRepository
+    internal class DbRepository : IRepository, IInternalTransaction
     {
         #region 构造函数
 
@@ -91,24 +91,7 @@ namespace Coldairarrow.DataRepository
             if (!_openedTransaction)
                 Dispose();
         }
-        private void PackWork(Type entityType, Action work)
-        {
-            PackWork(new List<Type> { entityType }, work);
-        }
         protected bool _openedTransaction { get; set; } = false;
-        private ITransaction _BeginTransaction(IsolationLevel? isolationLevel = null)
-        {
-            _openedTransaction = true;
-            if (isolationLevel == null)
-                _transaction = Db.Database.BeginTransaction().GetDbTransaction();
-            else
-                _transaction = Db.Database.BeginTransaction(isolationLevel.Value).GetDbTransaction();
-
-            Db.UseTransaction(_transaction);
-
-            return this;
-        }
-        private Action<string> _HandleSqlLog { get; set; }
         protected virtual string FormatFieldName(string name)
         {
             throw new NotImplementedException("请在子类实现!");
@@ -144,35 +127,24 @@ namespace Coldairarrow.DataRepository
 
         #region 事物相关
 
-        /// <summary>
-        /// 开始事物
-        /// </summary>
-        public ITransaction BeginTransaction()
+        public void BeginTransaction(IsolationLevel isolationLevel)
         {
-            return _BeginTransaction();
+            _openedTransaction = true;
+            _transaction = Db.Database.BeginTransaction(isolationLevel).GetDbTransaction();
+
+            Db.UseTransaction(_transaction);
         }
 
-        /// <summary>
-        /// 开始事物
-        /// 注:自定义事物级别
-        /// </summary>
-        /// <param name="isolationLevel">事物级别</param>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            return _BeginTransaction(isolationLevel);
-        }
-
-        /// <summary>
-        /// 结束事物
-        /// </summary>
-        /// <returns></returns>
-        public (bool Success, Exception ex) EndTransaction()
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             bool success = true;
             Exception resEx = null;
             try
             {
-                CommitDb();
+                BeginTransaction(isolationLevel);
+
+                action();
+
                 CommitTransaction();
             }
             catch (Exception ex)
@@ -183,6 +155,7 @@ namespace Coldairarrow.DataRepository
             }
             finally
             {
+                _openedTransaction = false;
                 Dispose();
             }
 
@@ -823,7 +796,6 @@ namespace Coldairarrow.DataRepository
         public void Dispose()
         {
             Dispose(true);
-            //GC.SuppressFinalize(this);
         }
 
         #endregion

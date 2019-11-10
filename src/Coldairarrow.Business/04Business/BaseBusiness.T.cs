@@ -115,47 +115,9 @@ namespace Coldairarrow.Business
 
         #region 事物提交
 
-        /// <summary>
-        /// 开始事物
-        /// </summary>
-        public ITransaction BeginTransaction()
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            return Service.BeginTransaction();
-        }
-
-        /// <summary>
-        /// 开始事物
-        /// 注:自定义事物级别
-        /// </summary>
-        /// <param name="isolationLevel">事物级别</param>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            return Service.BeginTransaction(isolationLevel);
-        }
-
-        /// <summary>
-        /// 结束事物
-        /// </summary>
-        /// <returns></returns>
-        public (bool Success, Exception ex) EndTransaction()
-        {
-            return Service.EndTransaction();
-        }
-
-        /// <summary>
-        /// 提交事物
-        /// </summary>
-        void ITransaction.CommitTransaction()
-        {
-            Service.CommitTransaction();
-        }
-
-        /// <summary>
-        /// 回滚事物
-        /// </summary>
-        void ITransaction.RollbackTransaction()
-        {
-            Service.RollbackTransaction();
+            return Service.RunTransaction(action, isolationLevel);
         }
 
         #endregion

@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
     /// <summary>
     /// 数据库分布式事务,跨库事务
     /// </summary>
-    public class DistributedTransaction : ITransaction, IDisposable
+    internal class DistributedTransaction : IInternalTransaction, IDisposable
     {
         #region 构造函数
 
@@ -39,20 +38,18 @@ namespace Coldairarrow.DataRepository
 
         #region 内部成员
 
-        private IsolationLevel? _isolationLevel { get; set; }
-        private ConcurrentDictionary<string, DbTransaction> _transactionMap { get; } 
+        private IsolationLevel _isolationLevel { get; set; }
+        private ConcurrentDictionary<string, DbTransaction> _transactionMap { get; }
             = new ConcurrentDictionary<string, DbTransaction>();
         private string GetRepositoryId(IRepository repository)
         {
             return $"{repository.DbType.ToString()}{repository.ConnectionString}";
         }
-        private SynchronizedCollection<IRepository> _repositorys { get; set; } 
+        private SynchronizedCollection<IRepository> _repositorys { get; set; }
             = new SynchronizedCollection<IRepository>();
         private object _lock { get; } = new object();
         private void _BeginTransaction(params IRepository[] repositorys)
         {
-            List<Task> tasks = new List<Task>();
-
             repositorys.ForEach(x =>
             {
                 Begin(x);
@@ -68,10 +65,7 @@ namespace Coldairarrow.DataRepository
                         db.UseTransaction(_transactionMap[id]);
                     else
                     {
-                        if (_isolationLevel == null)
-                            db.BeginTransaction();
-                        else
-                            db.BeginTransaction(_isolationLevel.Value);
+                        (db as IInternalTransaction).BeginTransaction(_isolationLevel);
 
                         _transactionMap[id] = db.GetTransaction();
                     }
@@ -101,34 +95,13 @@ namespace Coldairarrow.DataRepository
             _BeginTransaction(needBeginList.ToArray());
         }
 
-        /// <summary>
-        /// 开始事物
-        /// </summary>
-        public ITransaction BeginTransaction()
-        {
-            _BeginTransaction(_repositorys.ToArray());
-
-            return this;
-        }
-
-        /// <summary>
-        /// 开始事物
-        /// 注:自定义事物级别
-        /// </summary>
-        /// <param name="isolationLevel">事物级别</param>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
+        public void BeginTransaction(IsolationLevel isolationLevel)
         {
             _isolationLevel = isolationLevel;
             _BeginTransaction(_repositorys.ToArray());
-
-            return this;
         }
 
-        /// <summary>
-        /// 结束事物
-        /// </summary>
-        /// <returns></returns>
-        public (bool Success, Exception ex) EndTransaction()
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             if (_repositorys.Count == 0)
                 throw new Exception("IRepository数量不能为0");
@@ -137,7 +110,10 @@ namespace Coldairarrow.DataRepository
             Exception resEx = null;
             try
             {
-                CommitDb();
+                BeginTransaction(isolationLevel);
+
+                action();
+
                 CommitTransaction();
             }
             catch (Exception ex)
@@ -152,11 +128,6 @@ namespace Coldairarrow.DataRepository
             }
 
             return (isOK, resEx);
-        }
-
-        public void CommitDb()
-        {
-            _repositorys.ForEach(x => x.CommitDb());
         }
 
         /// <summary>
@@ -205,7 +176,6 @@ namespace Coldairarrow.DataRepository
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         #endregion
