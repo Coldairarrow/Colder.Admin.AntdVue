@@ -89,36 +89,28 @@ namespace Coldairarrow.Business.Base_Manage
 
         public AjaxResult AddData(Base_Action newData, List<Base_Action> permissionList)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Insert(newData);
-                var resPermission = SavePermission(newData.Id, permissionList);
-                if (!resPermission.Success)
-                    return resPermission;
-
-                var res = transaction.EndTransaction();
-                if (res.Success)
-                    return Success();
-                else
-                    throw new Exception("系统异常", res.ex);
-            }
+                SavePermission(newData.Id, permissionList);
+            });
+            if (res.Success)
+                return Success();
+            else
+                throw res.ex;
         }
 
         public AjaxResult UpdateData(Base_Action theData, List<Base_Action> permissionList)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Update(theData);
-                var resPermission = SavePermission(theData.Id, permissionList);
-                if (!resPermission.Success)
-                    return resPermission;
-
-                var res = transaction.EndTransaction();
-                if (res.Success)
-                    return Success();
-                else
-                    throw new Exception("系统异常", res.ex);
-            }
+                SavePermission(theData.Id, permissionList);
+            });
+            if (res.Success)
+                return Success();
+            else
+                throw res.ex;
         }
 
         public AjaxResult DeleteData(List<string> ids)
@@ -128,7 +120,7 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
-        public AjaxResult SavePermission(string parentId, List<Base_Action> permissionList)
+        public void SavePermission(string parentId, List<Base_Action> permissionList)
         {
             permissionList.ForEach(aData =>
             {
@@ -151,9 +143,7 @@ namespace Coldairarrow.Business.Base_Manage
                 .Select(x => x.Key)
                 .ToList();
             if (repeatValues.Count > 0)
-                return Error($"以下权限值重复:{string.Join(",", repeatValues)}");
-
-            return Success();
+                throw new Exception($"以下权限值重复:{string.Join(",", repeatValues)}");
         }
 
         #endregion

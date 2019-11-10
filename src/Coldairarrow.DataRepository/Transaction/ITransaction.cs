@@ -6,31 +6,12 @@ namespace Coldairarrow.DataRepository
     public interface ITransaction : IDisposable
     {
         /// <summary>
-        /// 开始事物
+        /// 执行事务,具体执行操作包括在action中
+        /// 注:支持自定义事务级别,默认为ReadCommitted
         /// </summary>
-        ITransaction BeginTransaction();
-
-        /// <summary>
-        /// 开始事物
-        /// 注:自定义事物级别
-        /// </summary>
-        /// <param name="isolationLevel">事物级别</param>
-        ITransaction BeginTransaction(IsolationLevel isolationLevel);
-
-        /// <summary>
-        /// 提交事物
-        /// </summary>
-        void CommitTransaction();
-
-        /// <summary>
-        /// 回滚事物
-        /// </summary>
-        void RollbackTransaction();
-
-        /// <summary>
-        /// 结束事物
-        /// </summary>
+        /// <param name="action">执行操作</param>
+        /// <param name="isolationLevel">事务级别,默认为ReadCommitted</param>
         /// <returns></returns>
-        (bool Success, Exception ex) EndTransaction();
+        (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Coldairarrow.DataRepository
 {
-    public class PostgreSqlRepository : DbRepository, IRepository
+    internal class PostgreSqlRepository : DbRepository, IRepository
     {
         #region 构造函数
 

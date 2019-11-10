@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Coldairarrow.DataRepository
 {
-    public class SqlServerRepository : DbRepository, IRepository
+    internal class SqlServerRepository : DbRepository, IRepository
     {
         #region 构造函数
 

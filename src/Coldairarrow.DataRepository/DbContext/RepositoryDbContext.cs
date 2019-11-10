@@ -43,7 +43,7 @@ namespace Coldairarrow.DataRepository
                 con = _db?.Database?.GetDbConnection() ?? DbProviderFactoryHelper.GetDbConnection(_conString, _dbType);
 
             var dBCompiledModel = DbModelFactory.GetDbCompiledModel(_conString, _dbType);
-            _db = new BaseDbContext(_dbType,con, dBCompiledModel);
+            _db = new BaseDbContext(_dbType, con, dBCompiledModel);
             _db.Database.UseTransaction(_transaction);
             disposedValue = false;
         }

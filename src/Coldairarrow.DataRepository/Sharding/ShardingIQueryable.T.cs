@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
-    public class ShardingQueryable<T> : IShardingQueryable<T> where T : class, new()
+    internal class ShardingQueryable<T> : IShardingQueryable<T> where T : class, new()
     {
         public ShardingQueryable(IQueryable<T> source, DistributedTransaction transaction = null)
         {

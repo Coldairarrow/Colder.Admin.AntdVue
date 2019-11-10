@@ -58,15 +58,13 @@ namespace Coldairarrow.Business.Base_Manage
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
         public AjaxResult AddData(Base_Role newData, List<string> actions)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Insert(newData);
                 SetRoleAction(newData.Id, actions);
-
-                var res = EndTransaction();
-                if (!res.Success)
-                    throw new Exception("系统异常,请重试", res.ex);
-            }
+            });
+            if (!res.Success)
+                throw new Exception("系统异常,请重试", res.ex);
 
             return Success();
         }
@@ -75,15 +73,13 @@ namespace Coldairarrow.Business.Base_Manage
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
         public AjaxResult UpdateData(Base_Role theData, List<string> actions)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Update(theData);
                 SetRoleAction(theData.Id, actions);
-
-                var res = EndTransaction();
-                if (!res.Success)
-                    throw new Exception("系统异常,请重试", res.ex);
-            }
+            });
+            if (!res.Success)
+                throw new Exception("系统异常,请重试", res.ex);
 
             return Success();
         }
@@ -91,15 +87,13 @@ namespace Coldairarrow.Business.Base_Manage
         [DataDeleteLog(LogType.系统角色管理, "RoleName", "角色")]
         public AjaxResult DeleteData(List<string> ids)
         {
-            using (var transaction = BeginTransaction())
+            var res = RunTransaction(() =>
             {
                 Delete(ids);
                 Service.Delete_Sql<Base_RoleAction>(x => ids.Contains(x.Id));
-
-                var res = EndTransaction();
-                if (!res.Success)
-                    throw new Exception("系统异常,请重试", res.ex);
-            }
+            });
+            if (!res.Success)
+                throw new Exception("系统异常,请重试", res.ex);
 
             return Success();
         }

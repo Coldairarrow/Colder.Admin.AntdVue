@@ -1,5 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_SysManage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,7 +39,8 @@ namespace Coldairarrow.UnitTests
             Type targetType = MapTable(typeof(Base_UnitTest), "Base_UnitTest_0");
             //失败事务,Base_UnitTest成功,Base_UnitTest_0失败
             Clear();
-            using (var transaction = _db.BeginTransaction())
+
+            var (Success, ex) = _db.RunTransaction(() =>
             {
                 //Base_UnitTest成功
                 new Action(() =>
@@ -62,23 +63,17 @@ namespace Coldairarrow.UnitTests
                     _db.Insert(_newData.ChangeType(targetType));
 
                     var newData2 = _newData.DeepClone();
-                    newData2.Id = IdHelper.GetId();
-
-                    //UserId唯一导致异常
-                    //newData2.UserId = IdHelper.GetId();
+                    //Id重复异常
                     _db.Insert(newData2.ChangeType(targetType));
                 })();
-
-                var (Success, ex) = _db.EndTransaction();
-                Assert.AreEqual(Success, false);
-                Assert.AreEqual(true, ex is DbUpdateException);
-                Assert.AreEqual(_db.GetIQueryable<Base_UnitTest>().Count(), 0);
-                Assert.AreEqual(_db.GetIQueryable(targetType).Count(), 0);
-            }
+            });
+            Assert.AreEqual(Success, false);
+            Assert.AreEqual(_db.GetIQueryable<Base_UnitTest>().Count(), 0);
+            Assert.AreEqual(_db.GetIQueryable(targetType).Count(), 0);
 
             //成功事务,Base_UnitTest成功,Base_UnitTest_0成功
             Clear();
-            using (var transaction = _db.BeginTransaction())
+            (Success, ex) = _db.RunTransaction(() =>
             {
                 //Base_UnitTest成功
                 new Action(() =>
@@ -105,12 +100,10 @@ namespace Coldairarrow.UnitTests
                     newData2.UserId = IdHelper.GetId();
                     _db.Insert(newData2.ChangeType(targetType));
                 })();
-
-                bool succcess = _db.EndTransaction().Success;
-                Assert.AreEqual(succcess, true);
-                Assert.AreEqual(_db.GetIQueryable<Base_UnitTest>().Count(), 3);
-                Assert.AreEqual(_db.GetIQueryable(targetType).Count(), 3);
-            }
+            });
+            Assert.AreEqual(Success, true);
+            Assert.AreEqual(_db.GetIQueryable<Base_UnitTest>().Count(), 3);
+            Assert.AreEqual(_db.GetIQueryable(targetType).Count(), 3);
 
             void Clear()
             {

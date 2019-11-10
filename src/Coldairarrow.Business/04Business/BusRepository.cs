@@ -96,7 +96,9 @@ namespace Coldairarrow.Business
 
         public void Delete<T>(List<T> entities) where T : class, new()
         {
-            Delete(entities as List<object>);
+            var objList = entities.Select(x => x as object).ToList();
+
+            Delete(objList);
         }
 
         public void Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
@@ -145,16 +147,6 @@ namespace Coldairarrow.Business
 
         private IRepository _db { get; }
 
-        public ITransaction BeginTransaction()
-        {
-            return _db.BeginTransaction();
-        }
-
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            return _db.BeginTransaction(isolationLevel);
-        }
-
         public void BulkInsert<T>(List<T> entities) where T : class, new()
         {
             _db.BulkInsert(entities);
@@ -165,19 +157,9 @@ namespace Coldairarrow.Business
             _db.CommitDb();
         }
 
-        public void CommitTransaction()
-        {
-            _db.CommitTransaction();
-        }
-
         public void Dispose()
         {
             _db.Dispose();
-        }
-
-        public (bool Success, Exception ex) EndTransaction()
-        {
-            return _db.EndTransaction();
         }
 
         public int ExecuteSql(string sql)
@@ -223,11 +205,6 @@ namespace Coldairarrow.Business
         public void Insert<T>(List<T> entities) where T : class, new()
         {
             _db.Insert(entities);
-        }
-
-        public void RollbackTransaction()
-        {
-            _db.RollbackTransaction();
         }
 
         public void Update(List<object> entities)
@@ -288,6 +265,11 @@ namespace Coldairarrow.Business
         public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, object value)[] values)
         {
             return _db.UpdateWhere_Sql(entityType, where, paramters, values);
+        }
+
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            return _db.RunTransaction(action, isolationLevel);
         }
 
         #endregion
