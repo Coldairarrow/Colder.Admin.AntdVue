@@ -53,7 +53,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 本地调试根地址
         /// </summary>
-        public const string localRootUrl = "http://localhost:40000";
+        public const string localRootUrl = "http://localhost:5000";
 
         /// <summary>
         /// 数据删除模式,默认逻辑删除
