@@ -25,7 +25,7 @@ export default {
       form: this.$form.createForm(this),
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
-      entity: { Img: '/assets/logo.b36f7a7f.svg' }
+      entity: { Img: require('@/assets/logo.png') }
     }
   },
   methods: {
@@ -33,7 +33,7 @@ export default {
       console.log(this.entity)
     },
     setImg() {
-      this.entity = { Img: '/assets/logo.b36f7a7f.svg' }
+      this.entity = { Img: require('@/assets/logo.png') }
     }
   }
 }

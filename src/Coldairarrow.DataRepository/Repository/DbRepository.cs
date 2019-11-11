@@ -109,9 +109,22 @@ namespace Coldairarrow.DataRepository
             if (!theQSql.Contains("WHERE"))
                 return (" 1=1 ", paramters);
 
-            string pattern = "^SELECT.*?FROM.*? AS (.*?) WHERE .*?$";
-            var match = Regex.Match(theQSql, pattern);
-            string asTmp = match.Groups[1]?.ToString();
+            string pattern1 = "^SELECT.*?FROM.*? AS (.*?) WHERE .*?$";
+            string pattern2 = "^SELECT.*?FROM .*? (.*?) WHERE .*?$";
+            string asTmp = string.Empty;
+            if (Regex.IsMatch(theQSql, pattern1))
+            {
+                var match = Regex.Match(theQSql, pattern1);
+                asTmp = match.Groups[1]?.ToString();
+            }
+            else if (Regex.IsMatch(theQSql, pattern2))
+            {
+                var match = Regex.Match(theQSql, pattern2);
+                asTmp = match.Groups[1]?.ToString();
+            }
+            if (asTmp.IsNullOrEmpty())
+                throw new Exception("SQL解析失败!");
+
             string whereSql = querySql.sql.Split(new string[] { "WHERE" }, StringSplitOptions.None)[1].Replace($"{asTmp}.", "");
 
             querySql.parameters.ForEach(aData =>
