@@ -112,13 +112,7 @@ namespace Coldairarrow.Api
 
                 return next(context);
             })
-            //跨域,禁用cookie
-            .UseCors(x =>
-            {
-                x.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-            })
+            .UseMiddleware<CorsMiddleware>()//跨域
             .UseDeveloperExceptionPage()
             .UseStaticFiles(new StaticFileOptions
             {
