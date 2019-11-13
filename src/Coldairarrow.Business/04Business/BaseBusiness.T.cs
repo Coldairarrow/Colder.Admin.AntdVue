@@ -106,6 +106,18 @@ namespace Coldairarrow.Business
             return new BusRepository(DbFactory.GetRepository(_conString, _dbType));
         }
 
+        /// <summary>
+        /// 获取新的数据仓储
+        /// 注:支持多线程(每个线程需要单独的IRepository)
+        /// </summary>
+        /// <param name="conString">连接字符串</param>
+        /// <param name="dbType">数据库类型</param>
+        /// <returns></returns>
+        public IRepository GetNewService(string conString, DatabaseType dbType)
+        {
+            return new BusRepository(DbFactory.GetRepository(conString, dbType));
+        }
+
         public void UseRepository(IRepository repository)
         {
             _service = repository;
