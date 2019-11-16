@@ -1,8 +1,8 @@
-# Colder.Fx.Core.AdminLTE
-Web后台快速开发框架,.NETCore2.2+AdminLTE版本
+# Colder.Admin.AntdVue  
+Web后台快速开发框架,.NETCore3.0+Ant Design Vue版本  
 
-使用方式：https://github.com/Coldairarrow/Colder.Fx.Core.AdminLTE/wiki
-
-国内镜像：https://gitee.com/Coldairarrow/Colder.Fx.Core.AdminLTE
-
-博客介绍：https://www.cnblogs.com/coldairarrow/p/10507136.html
+**代码(GitHub)：**<https://github.com/Coldairarrow/Colder.Admin.AntdVue>  
+**文档(GitHub)：**<https://github.com/Coldairarrow/Colder.Admin.AntdVue/wiki>  
+**代码(码云镜像)：**<https://gitee.com/Coldairarrow/Colder.Admin.AntdVue>  
+**文档(码云镜像)：**<https://gitee.com/Coldairarrow/Colder.Admin.AntdVue/wikis>  
+**在线预览地址**：<http://coldairarrow.gitee.io/coler.antdvue.preview>  
