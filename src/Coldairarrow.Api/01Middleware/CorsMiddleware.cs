@@ -28,7 +28,7 @@ namespace Coldairarrow.Api
         public async Task Invoke(HttpContext context)
         {
             context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            context.Response.Headers.Add("Access-Control-Allow-Headers", "*");
+            context.Response.Headers.Add("Access-Control-Allow-Headers", context.Request.Headers["Access-Control-Request-Headers"]);
             context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
             //若为OPTIONS跨域请求则直接返回,不进入后续管道
