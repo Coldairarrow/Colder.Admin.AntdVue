@@ -10,13 +10,25 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\文档\0软件项目\GitHub\Colder.Fx.Core.AdtdVue\src\Coldairarrow.Api\Coldairarrow.Api.xml</DocumentationFile>
+    <DocumentationFile>Coldairarrow.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\Upload\_.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\Coldairarrow.Business\Coldairarrow.Business.xml" Link="Coldairarrow.Business.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Coldairarrow.Entity\Coldairarrow.Entity.xml" Link="Coldairarrow.Entity.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Coldairarrow.Util\Coldairarrow.Util.xml" Link="Coldairarrow.Util.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

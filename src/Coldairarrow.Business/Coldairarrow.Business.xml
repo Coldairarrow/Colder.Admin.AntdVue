@@ -317,38 +317,27 @@
         <member name="P:Coldairarrow.Business.BaseBusiness`1.Service">
             <summary>
             底层仓储接口,支持跨表操作
+            注：仅支持单线程操作
             </summary>
             <value>
             The service.
             </value>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.BeginTransaction">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewService">
             <summary>
-            开始事物
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.BeginTransaction(System.Data.IsolationLevel)">
-            <summary>
-            开始事物
-            注:自定义事物级别
-            </summary>
-            <param name="isolationLevel">事物级别</param>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.EndTransaction">
-            <summary>
-            结束事物
+            获取新的数据仓储
+            注:支持多线程(每个线程需要单独的IRepository)
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Coldairarrow#DataRepository#ITransaction#CommitTransaction">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewService(System.String,Coldairarrow.Util.DatabaseType)">
             <summary>
-            提交事物
+            获取新的数据仓储
+            注:支持多线程(每个线程需要单独的IRepository)
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Coldairarrow#DataRepository#ITransaction#RollbackTransaction">
-            <summary>
-            回滚事物
-            </summary>
+            <param name="conString">连接字符串</param>
+            <param name="dbType">数据库类型</param>
+            <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Insert(`0)">
             <summary>
@@ -571,11 +560,37 @@
             <param name="msg">错误提示</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String)">
+            <summary>
+            构建前端Select远程搜索数据
+            </summary>
+            <param name="selectedValueJson">已选择的项，JSON数组</param>
+            <param name="q">查询关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String,System.String,System.String,System.Linq.IQueryable{`0})">
+            <summary>
+            构建前端Select远程搜索数据
+            </summary>
+            <param name="selectedValueJson">已选择的项，JSON数组</param>
+            <param name="q">查询关键字</param>
+            <param name="textFiled">文本字段</param>
+            <param name="valueField">值字段</param>
+            <param name="source">指定数据源</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Dispose">
             <summary>
             执行与释放或重置非托管资源关联的应用程序定义的任务。
             </summary>
             <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Coldairarrow.Business.BusRepository">
+            <summary>
+            业务仓储类,全局控制业务相关操作
+            软删除:查询:获取Deleted=false,删除:更新获取Deleted=true
+            其它:按照具体业务修改
+            </summary>
         </member>
         <member name="T:Coldairarrow.Business.Operator">
             <summary>

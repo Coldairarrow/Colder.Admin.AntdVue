@@ -15,7 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <CodeAnalysisRuleSet />
-    <DocumentationFile>D:\文档\0软件项目\GitHub\Colder.Fx.Core.AdtdVue\src\Coldairarrow.Entity\Coldairarrow.Entity.xml</DocumentationFile>
+    <DocumentationFile>Coldairarrow.Entity.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
