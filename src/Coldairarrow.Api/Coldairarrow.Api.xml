@@ -52,13 +52,6 @@
             <param name="errorCode">错误代码</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.ReturnRedirect(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,System.String)">
-            <summary>
-            重定向
-            </summary>
-            <param name="context">上下文</param>
-            <param name="redirectUrl">地址</param>
-        </member>
         <member name="T:Coldairarrow.Api.JsonParamterAttribute">
             <summary>
             Json参数支持
@@ -166,6 +159,58 @@
             <summary>
             忽略接口签名校验
             </summary>
+        </member>
+        <member name="T:Coldairarrow.Api.ApiPermissionAttribute">
+            <summary>
+            接口权限校验
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.ApiPermissionAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.ApiPermissionAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Coldairarrow.Api.NoApiPermissionAttribute">
+            <summary>
+            忽略接口权限校验
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.NoApiPermissionAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.NoApiPermissionAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Coldairarrow.Api.CorsMiddleware">
+            <summary>
+            跨域中间件
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.CorsMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            管道执行到该中间件时候下一个中间件的RequestDelegate请求委托，如果有其它参数，也同样通过注入的方式获得
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:Coldairarrow.Api.CorsMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            自定义中间件要执行的逻辑
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Api.BaseApiController">
             <summary>
@@ -322,34 +367,6 @@
             </summary>
             <param name="ids">id数组,JSON数组</param>
         </member>
-        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_BuildTestController.GetDataList(Coldairarrow.Util.Pagination,System.String,System.String)">
-            <summary>
-            获取列表
-            </summary>
-            <param name="pagination">分页参数</param>
-            <param name="condition">查询字段</param>
-            <param name="keyword">关键字</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_BuildTestController.GetTheData(System.String)">
-            <summary>
-            获取详情
-            </summary>
-            <param name="id">Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_BuildTestController.SaveData(Coldairarrow.Entity.Base_Manage.Base_BuildTest)">
-            <summary>
-            保存
-            </summary>
-            <param name="data">保存的数据</param>
-        </member>
-        <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_BuildTestController.DeleteData(System.String)">
-            <summary>
-            删除数据
-            </summary>
-            <param name="ids">id数组,JSON数组</param>
-        </member>
         <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_DbLinkController">
             <summary>
             应用密钥
@@ -409,9 +426,6 @@
             <param name="ids">id数组,JSON数组</param>
         </member>
         <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_UserController">
-            <summary>
-            应用密钥
-            </summary>
             <seealso cref="T:Coldairarrow.Api.BaseApiController" />
         </member>
         <member name="T:Coldairarrow.Api.Controllers.Base_Manage.HomeController">
@@ -425,6 +439,12 @@
             </summary>
             <param name="userName">账号</param>
             <param name="password">密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.TestController.PressTest">
+            <summary>
+            压力测试
+            </summary>
             <returns></returns>
         </member>
     </members>
