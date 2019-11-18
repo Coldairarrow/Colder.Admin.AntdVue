@@ -20,18 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\Coldairarrow.Business\Coldairarrow.Business.xml" Link="Coldairarrow.Business.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Coldairarrow.Entity\Coldairarrow.Entity.xml" Link="Coldairarrow.Entity.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Coldairarrow.Util\Coldairarrow.Util.xml" Link="Coldairarrow.Util.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Upload\_.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
