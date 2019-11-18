@@ -16,7 +16,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <CodeAnalysisRuleSet />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>D:\文档\0软件项目\GitHub\Colder.Fx.Core.AdtdVue\src\Coldairarrow.Util\Coldairarrow.Util.xml</DocumentationFile>
+    <DocumentationFile>Coldairarrow.Util.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

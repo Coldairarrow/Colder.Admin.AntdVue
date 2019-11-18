@@ -823,11 +823,6 @@
             <typeparam name="T">接口类型</typeparam>
             <returns></returns>
         </member>
-        <member name="T:Coldairarrow.Util.ICircleDependency">
-            <summary>
-            循环依赖注入标记
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Util.IDependency">
             <summary>
             注入标记
@@ -1501,11 +1496,10 @@
             <param name="source">数据源</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.Extention.ToSql``1(System.Linq.IQueryable{``0})">
+        <member name="M:Coldairarrow.Util.Extention.ToSql(System.Linq.IQueryable)">
             <summary>
             转为SQL语句，包括参数
             </summary>
-            <typeparam name="TEntity">实体类型</typeparam>
             <param name="query">查询原源</param>
             <returns></returns>
         </member>
@@ -1982,6 +1976,11 @@
             继承ExpressionVisitor类，实现参数替换统一
             </summary>
         </member>
+        <member name="F:Coldairarrow.Util.GlobalData.FxAllTypes">
+            <summary>
+            框架所有自定义类
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.GlobalSwitch">
             <summary>
             全局控制
@@ -2002,7 +2001,22 @@
             网站根地址
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.RunModel">
+        <member name="F:Coldairarrow.Util.GlobalSwitch.PublishRootUrl">
+            <summary>
+            发布后网站根地址
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.GlobalSwitch.localRootUrl">
+            <summary>
+            本地调试根地址
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.GlobalSwitch.DeleteMode">
+            <summary>
+            数据删除模式,默认逻辑删除
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.GlobalSwitch.RunMode">
             <summary>
             运行模式
             </summary>
@@ -2043,17 +2057,17 @@
             ElasticSearch服务器配置
             </summary>
         </member>
-        <member name="T:Coldairarrow.Util.RunModel">
+        <member name="T:Coldairarrow.Util.RunMode">
             <summary>
             运行模式
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.RunModel.LocalTest">
+        <member name="F:Coldairarrow.Util.RunMode.LocalTest">
             <summary>
             本地测试模式，默认Admin账户，不需要登录
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.RunModel.Publish">
+        <member name="F:Coldairarrow.Util.RunMode.Publish">
             <summary>
             发布模式
             </summary>
@@ -2071,6 +2085,21 @@
         <member name="F:Coldairarrow.Util.CacheType.RedisCache">
             <summary>
             Redis缓存
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.DeleteMode">
+            <summary>
+            删除模式
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.DeleteMode.Physic">
+            <summary>
+            物理删除,即直接从数据库删除
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.DeleteMode.Logic">
+            <summary>
+            逻辑删除,即仅将Deleted字段置为true
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.AsposeOfficeHelper">
@@ -2257,7 +2286,7 @@
         <member name="M:Coldairarrow.Util.EnumHelper.ToOptionList(System.Type)">
             <summary>
             将枚举类型转为选项列表
-            注：value为值,lable为显示内容
+            注：value为值,text为显示内容
             </summary>
             <param name="enumType">枚举类型</param>
             <returns></returns>
@@ -3271,6 +3300,11 @@
             总页数
             </summary>
         </member>
+        <member name="T:Coldairarrow.Util.SelectOption">
+            <summary>
+            前端SelectOption
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.TableInfo">
             <summary>
             数据库表信息
@@ -3339,31 +3373,6 @@
         <member name="P:Coldairarrow.Util.TreeModel.Children">
             <summary>
             孩子节点
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.SessionHelper">
-            <summary>
-            Session帮助类,自定义Session,解决原Session并发问题
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.SessionHelper.SessionCookieName">
-            <summary>
-            存放Session标志的Cookie名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.SessionHelper.Session">
-            <summary>
-            当前Session
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.SessionHelper._Session">
-            <summary>
-            自定义_Session类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.SessionHelper.RemoveSessionCookie">
-            <summary>
-            清除Session的Cookie
             </summary>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.Filters.Extention">
