@@ -4,6 +4,7 @@ using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Coldairarrow.Console1
@@ -34,9 +35,6 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            var db = DbFactory.GetRepository();
-            var sql = db.GetIQueryable<Base_User>().Where(x => x.CreatorRealName == "aaa").ToSql();
-
             Console.WriteLine("完成");
             Console.ReadLine();
         }

@@ -2641,6 +2641,54 @@
             <param name="imgBase64OrUrl">URL地址或者Base64字符串</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.BuildVerifyCode(System.Int32)">
+            <summary>
+            生成图片验证码
+            </summary>
+            <param name="length">验证码字符数</param>
+            <returns>图片byte[]和code</returns>
+        </member>
+        <member name="F:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.character">
+            <summary>  
+            验证码的字符集，去掉了一些容易混淆的字符  
+            </summary>  
+        </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.CreateValidateCode(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="codeType">验证码类型(0-字母数字混合,1-数字,2-字母)</param>
+            <param name="codeCount">验证码字符个数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.CreateValidateCode(System.Int32)">
+            <summary>     
+            生成验证码     
+            </summary>     
+            <param name="length">指定验证码的长度</param>     
+            <returns></returns>     
+        </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.CreateValidateGraphic(System.String,System.Single,System.Int32)">
+            <summary>     
+            创建验证码的图片     
+            </summary>        
+            <param name="validateCode">验证码</param>  
+            <param name="fontsize"></param>
+            <param name="height"></param>
+        </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.GetImageWidth(System.Int32)">
+            <summary>     
+            得到验证码图片的长度     
+            </summary>     
+            <param name="validateNumLength">验证码的长度</param>     
+            <returns></returns>     
+        </member>
+        <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.VerifyCodeFactory.GetImageHeight">
+            <summary>     
+            得到验证码的高度     
+            </summary>     
+            <returns></returns>     
+        </member>
         <member name="T:Coldairarrow.Util.IocHelper">
             <summary>
             Ioc容器帮助类
