@@ -1,6 +1,7 @@
 using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -32,6 +33,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult<AjaxResult<Base_UserDTO>> GetTheData(string id)
         {
             var theData = _userBus.GetTheData(id) ?? new Base_UserDTO();
