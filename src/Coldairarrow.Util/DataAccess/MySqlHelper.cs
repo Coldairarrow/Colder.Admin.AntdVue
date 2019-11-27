@@ -80,6 +80,14 @@ WHERE TABLE_SCHEMA = @dbName";
         /// <returns></returns>
         public override List<TableInfo> GetDbTableInfo(string tableName)
         {
+            DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
+            string dbName = string.Empty;
+            using (DbConnection conn = dbProviderFactory.CreateConnection())
+            {
+                conn.ConnectionString = _conStr;
+                dbName = conn.Database;
+            }
+
             string sql = @"select DISTINCT
 	a.COLUMN_NAME as Name,
 	a.DATA_TYPE as Type,
@@ -87,9 +95,9 @@ WHERE TABLE_SCHEMA = @dbName";
 	(a.IS_NULLABLE = 'YES') as IsNullable,
 	a.COLUMN_COMMENT as Description
 from information_schema.columns a 
-where table_name=@tableName
+where table_name=@tableName and table_schema=@dbName
 ORDER BY a.ORDINAL_POSITION";
-            return GetListBySql<TableInfo>(sql, new List<DbParameter> { new MySqlParameter("@tableName", tableName) });
+            return GetListBySql<TableInfo>(sql, new List<DbParameter> { new MySqlParameter("@tableName", tableName), new MySqlParameter("@dbName", dbName) });
         }
 
         /// <summary>
