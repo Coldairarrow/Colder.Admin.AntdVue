@@ -561,5 +561,43 @@ namespace Coldairarrow.Util
         {
             return MurmurHash2.Hash(Encoding.UTF8.GetBytes(str));
         }
+
+        /// <summary>
+        /// 是否为弱密码
+        /// 注:密码必须包含数字、字母和其他符号中的两种并且长度大于6
+        /// </summary>
+        /// <param name="pwd">密码</param>
+        /// <returns></returns>
+        public static bool IsWeakPwd(this string pwd)
+        {
+            if (pwd.IsNullOrEmpty())
+                throw new Exception("pwd不能为空");
+
+            string password = pwd;
+
+            //字符统计
+            int iNum = 0, iLtt = 0, iSym = 0;
+            foreach (char c in password)
+            {
+                if (c >= '0' && c <= '9') iNum++;
+                else if (c >= 'a' && c <= 'z') iLtt++;
+                else if (c >= 'A' && c <= 'Z') iLtt++;
+                else iSym++;
+            }
+            //纯数字密码
+            if (iLtt == 0 && iSym == 0)
+                return true;
+            //纯符号密码
+            if (iNum == 0 && iLtt == 0)
+                return true;
+            //纯字母密码
+            if (iNum == 0 && iSym == 0)
+                return true;
+            //长度不大于6的密码
+            if (password.Length <= 6)
+                return true;
+
+            return false;
+        }
     }
 }
