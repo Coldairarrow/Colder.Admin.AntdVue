@@ -1379,13 +1379,14 @@
             <param name="pages">总页数</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.Extention.GetPagination``1(System.Linq.IQueryable{``0},Coldairarrow.Util.Pagination)">
+        <member name="M:Coldairarrow.Util.Extention.GetPagination``1(System.Linq.IQueryable{``0},Coldairarrow.Util.Pagination,System.ValueTuple{System.String,System.String}[])">
             <summary>
             获取分页后的数据
             </summary>
             <typeparam name="T">实体类型</typeparam>
             <param name="source">数据源IQueryable</param>
             <param name="pagination">分页参数</param>
+            <param name="thenOrderBy">再排序</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.OrderBy``1(System.Linq.IQueryable{``0},System.String,System.String)">
@@ -1969,6 +1970,14 @@
             转为MurmurHash
             </summary>
             <param name="str">字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.IsWeakPwd(System.String)">
+            <summary>
+            是否为弱密码
+            注:密码必须包含数字、小写字母、大写字母和其他符号中的两种并且长度大于8
+            </summary>
+            <param name="pwd">密码</param>
             <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.ParameterReplaceVisitor">
