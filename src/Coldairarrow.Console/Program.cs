@@ -4,8 +4,10 @@ using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Coldairarrow.Console1
 {
@@ -35,6 +37,12 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
+            //int number = Process.GetCurrentProcess().Threads.Cast<ProcessThread>().Where(x => x.ThreadState == ThreadState.Running).Count();
+            //Console.WriteLine($"当前线程数:{number}");
+            //int thread1 = 0;
+            //int thread2 = 0;
+            //ThreadPool.ThreadCount;
+            //ThreadPool.GetMaxThreads(out thread1, out thread2);
             Console.WriteLine("完成");
             Console.ReadLine();
         }

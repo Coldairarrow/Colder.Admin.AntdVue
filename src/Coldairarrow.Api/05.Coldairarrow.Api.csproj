@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
@@ -11,7 +13,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Coldairarrow.Api.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>1701;1702;1591;4014</NoWarn>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
@@ -28,6 +30,9 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="FreeSql" Version="0.12.5" />
+    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="0.12.5" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" Version="0.12.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
@@ -37,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="A_Run.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="BuildCodeTemplate\Business.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
