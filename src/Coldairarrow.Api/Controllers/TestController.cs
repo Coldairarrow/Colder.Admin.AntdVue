@@ -12,6 +12,15 @@ namespace Coldairarrow.Api.Controllers
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
+        private Base_Log GetNewLog()
+        {
+            return new Base_Log
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now
+            };
+        }
+
         [HttpGet]
         public IActionResult Test()
         {
@@ -43,14 +52,14 @@ namespace Coldairarrow.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult WriteLogTest_EF()
+        public async Task<IActionResult> WriteLogTest_EF()
         {
-            var db = DbFactory.GetRepository();
-            db.Insert(new Base_Log
+            using (var db = new DefaultDbContext())
             {
-                Id = IdHelper.GetId(),
-                CreateTime = DateTime.Now
-            });
+                
+                db.Base_Logs.Add(GetNewLog());
+                await db.SaveChangesAsync();
+            }
 
             return Success();
         }
@@ -58,30 +67,9 @@ namespace Coldairarrow.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> WriteLogTest_FreeSql()
         {
-            string key = Guid.NewGuid().ToString();
+            await FreeSqlHelper.FreeSql.Insert<Base_Log>().AppendData(GetNewLog()).ExecuteAffrowsAsync();
 
-            Task task = null;
-            task = Task.Run(async () =>
-            {
-                try
-                {
-                    await FreeSqlHelper.FreeSql.Insert<Base_Log>().AppendData(new Base_Log
-                    {
-                        Id = IdHelper.GetId()
-                    }).ExecuteAffrowsAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                finally
-                {
-                    CacheHelper.SystemCache.RemoveCache(key);
-                }
-            });
-            CacheHelper.SystemCache.SetCache(key, task);
-
-            return await Task.FromResult(Success());
+            return Success();
         }
     }
 }
