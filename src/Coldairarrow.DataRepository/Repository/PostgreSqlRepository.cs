@@ -36,7 +36,6 @@ namespace Coldairarrow.DataRepository
 
         #endregion
 
-
         #region 插入数据
 
         /// <summary>

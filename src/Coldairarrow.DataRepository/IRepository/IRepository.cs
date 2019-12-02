@@ -55,14 +55,14 @@ namespace Coldairarrow.DataRepository
         /// 添加多条记录
         /// </summary>
         /// <param name="entities">对象集合</param>
-        void Insert(List<object> entities);
+        int Insert(List<object> entities);
 
         /// <summary>
         /// 使用Bulk批量导入,速度快
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="entities">实体集合</param>
-        void BulkInsert<T>(List<T> entities) where T : class, new();
+        int BulkInsert<T>(List<T> entities) where T : class, new();
 
         #endregion
 
@@ -72,41 +72,41 @@ namespace Coldairarrow.DataRepository
         /// 删除所有记录
         /// </summary>
         /// <param name="type">实体类型</param>
-        void DeleteAll(Type type);
+        int DeleteAll(Type type);
 
         /// <summary>
         /// 删除单条记录
         /// </summary>
         /// <param name="type">实体类型</param>
         /// <param name="key">主键</param>
-        void Delete(Type type, string key);
+        int Delete(Type type, string key);
 
         /// <summary>
         /// 删除多条记录
         /// </summary>
         /// <param name="type">实体类型</param>
         /// <param name="keys">多条记录主键集合</param>
-        void Delete(Type type, List<string> keys);
+        int Delete(Type type, List<string> keys);
 
         /// <summary>
         /// 删除多条记录
         /// </summary>
         /// <param name="entities">实体对象集合</param>
-        void Delete(List<object> entities);
+        int Delete(List<object> entities);
 
         /// <summary>
         /// 删除单条记录
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="key">主键</param>
-        void Delete<T>(string key) where T : class, new();
+        int Delete<T>(string key) where T : class, new();
 
         /// <summary>
         /// 删除多条记录
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="keys">多条记录主键集合</param>
-        void Delete<T>(List<string> keys) where T : class, new();
+        int Delete<T>(List<string> keys) where T : class, new();
 
         /// <summary>
         /// 使用SQL语句按照条件删除数据
@@ -135,14 +135,14 @@ namespace Coldairarrow.DataRepository
         /// 更新多条记录
         /// </summary>
         /// <param name="entities">实体对象集合</param>
-        void Update(List<object> entities);
+        int Update(List<object> entities);
 
         /// <summary>
         /// 更新多条记录的某些属性
         /// </summary>
         /// <param name="entities">实体对象集合</param>
         /// <param name="properties">属性</param>
-        void UpdateAny(List<object> entities, List<string> properties);
+        int UpdateAny(List<object> entities, List<string> properties);
 
         /// <summary>
         /// 使用SQL语句按照条件更新
@@ -247,7 +247,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         /// <param name="sql">SQL语句</param>
         /// <param name="parameters">SQL参数</param>
-        int ExecuteSql(string sql, List<DbParameter> parameters);
+        int ExecuteSql(string sql, params (string paramterName, object paramterValue)[] paramters);
 
         #endregion
     }
