@@ -7,7 +7,7 @@ using System.Data.Common;
 
 namespace Coldairarrow.DataRepository
 {
-    public class BaseDbContext : DbContext
+    internal class BaseDbContext : DbContext
     {
         public BaseDbContext(DatabaseType dbType, DbConnection existingConnection, IModel model)
         {
