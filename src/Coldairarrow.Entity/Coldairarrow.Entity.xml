@@ -469,5 +469,410 @@
             类型,菜单=0,页面=1,权限=2
             </summary>
         </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_Activity">
+            <summary>
+            活动记录表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.CustomerId">
+            <summary>
+            微信用户Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.ActivityType">
+            <summary>
+            活动类型，0：冲浪，1：沙滩跑酷，2：助跑自己跑，3:助跑分享，4:助跑别人助力，5：每日游戏签到，6：大抽奖，101~103：扫线下二维码1~3
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.ActivityTime">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.GameScore">
+            <summary>
+            获得游戏分数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.GetStarNum">
+            <summary>
+            获得星星数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.ConsumeStarNum">
+            <summary>
+            消耗星星数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.HelperCustomerId">
+            <summary>
+            助力人Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.VoteOptionId">
+            <summary>
+            投票项Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Activity.Week">
+            <summary>
+            周数
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_Area">
+            <summary>
+            区域表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Area.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Area.Name">
+            <summary>
+            区域名
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_Config">
+            <summary>
+            业务配置表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Config.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Config.OpenReadPackLimit">
+            <summary>
+            开启红包限制
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Config.StartGame">
+            <summary>
+            正式开始游戏
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_Customer">
+            <summary>
+            微信用户表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.OpenId">
+            <summary>
+            微信OpenID
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.NickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.HeadImg">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.IsVIP">
+            <summary>
+            是否为会员
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.ScoreSum">
+            <summary>
+            游戏总分
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.StarSum">
+            <summary>
+            总星星数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.Province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.SJJOpneId">
+            <summary>
+            三江集OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.GaoxinVIPOpenUserId">
+            <summary>
+            会员系统OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.PhoneNum">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.RealName">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.GameStar">
+            <summary>
+            从游戏获取星星数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.NormalChanceSum">
+            <summary>
+            普通抽奖总次数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.NormalChanceUsed">
+            <summary>
+            普通抽奖已使用次数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.HelpRunDistance">
+            <summary>
+            当前助跑距离
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.StarUsed">
+            <summary>
+            已使用星星数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.BBSOpenId">
+            <summary>
+            东论OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.ShuijieOpenId">
+            <summary>
+            水街OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.PanPacificOpenId">
+            <summary>
+            泛太OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.Subscribed">
+            <summary>
+            已关注公众号
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.YangmingOpenId">
+            <summary>
+            阳明OpenId
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.ShuijieMemberNum">
+            <summary>
+            水街MemberNum
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_Customer.AreaId">
+            <summary>
+            区域Id
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_PrizePool">
+            <summary>
+            奖品池表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.PoolType">
+            <summary>
+            奖品池类型，0：普通奖品池，1：大奖品池
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.PrizeName">
+            <summary>
+            奖品名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.PrizeType">
+            <summary>
+            奖品类型，0：谢谢惠顾，1：现金红包，2：实物
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.PrizeInfo">
+            <summary>
+            奖品详情
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Money">
+            <summary>
+            价值
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Stock">
+            <summary>
+            库存
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.WinningWeight">
+            <summary>
+            中奖权重（概率）
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.UsedStock">
+            <summary>
+            已使用数量
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.MaxMoney">
+            <summary>
+            红包最大额度
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.MinMoney">
+            <summary>
+            红包最小额度
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.DayCountSum">
+            <summary>
+            每日限量
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.ShortName">
+            <summary>
+            简短名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Img">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_PrizePool.Rate">
+            <summary>
+            中奖概率
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_VoteOption">
+            <summary>
+            投票选项表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_VoteOption.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_VoteOption.Name">
+            <summary>
+            选项名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_VoteOption.Img">
+            <summary>
+            图片
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_VoteOption.Count">
+            <summary>
+            票数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_VoteOption.Detail">
+            <summary>
+            详情
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_WeekRank">
+            <summary>
+            每周排行榜
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.CustomerId">
+            <summary>
+            微信用户Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.MaxScore">
+            <summary>
+            最大分数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.Prize">
+            <summary>
+            奖品
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.Week">
+            <summary>
+            周数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WeekRank.Time">
+            <summary>
+            记录时间
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.BusManage.Bus_WinningPrize">
+            <summary>
+            获奖记录表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.CustomerId">
+            <summary>
+            微信用户Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.PrizeId">
+            <summary>
+            奖品Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.IsUsed">
+            <summary>
+            是否已使用
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.WinningTime">
+            <summary>
+            中奖时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.BusManage.Bus_WinningPrize.Money">
+            <summary>
+            红包额度
+            </summary>
+        </member>
     </members>
 </doc>
