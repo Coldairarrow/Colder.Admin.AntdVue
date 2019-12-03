@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using System.Linq;
 
 namespace Coldairarrow.Api.Controllers
 {
@@ -103,23 +104,37 @@ namespace Coldairarrow.Api.Controllers
             string prizeId = "1192732318343761920";
             string sql = "UPDATE \"Bus_PrizePool\" SET \"UsedStock\"=\"UsedStock\"+1 WHERE \"Id\"=@prizeId AND \"Stock\"-\"UsedStock\">1";
 
-            var db = new DefaultDbContext();
-            db.Database.ExecuteSqlCommandAsync(sql, new NpgsqlParameter("@prizeId", prizeId)).ContinueWith(next =>
-            {
-                if (next.Exception != null)
-                    Console.WriteLine(next.Exception.Message);
-                db.Dispose();
-                Console.WriteLine("释放成功");
-            });
-
-            //using (var db = await _pool.GetAsync())
+            //var db = new DefaultDbContext();
+            //db.Database.ExecuteSqlCommandAsync(sql, new NpgsqlParameter("@prizeId", prizeId)).ContinueWith(next =>
             //{
-            //    //db.Value.Database.ExecuteSqlCommandAsync
-            //    await db.Value.Database.ExecuteSqlCommandAsync(sql, new NpgsqlParameter("@prizeId", prizeId));
-            //}
+            //    if (next.Exception != null)
+            //        Console.WriteLine(next.Exception.Message);
+            //    db.Dispose();
+            //    Console.WriteLine("释放成功");
+            //});
+
+            using (var db = await _pool.GetAsync())
+            {
+                await db.Value.Database.ExecuteSqlCommandAsync(sql, new NpgsqlParameter("@prizeId", prizeId));
+            }
 
             return Success();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SearchStockTestAsync()
+        {
+            //string prizeId = "1192732318343761920";
+
+            //var db = new DefaultDbContext();
+            //var data = await db.Bus_PrizePools.Where(x => x.Id == prizeId).FirstOrDefaultAsync();
+
+            string id = "global";
+
+            var db = new DefaultDbContext();
+            var data = await db.Bus_Configs.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            return Success();
+        }
     }
 }
