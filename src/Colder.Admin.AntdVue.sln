@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.Coldairarrow.Api", "Cold
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "10.Coldairarrow.UnitTests", "Coldairarrow.UnitTests\10.Coldairarrow.UnitTests.csproj", "{44057E25-34B9-489B-B737-D4B56EB339A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coldairarrow.ApiTest", "Coldairarrow.ApiTest\Coldairarrow.ApiTest.csproj", "{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coldairarrow.ApiTest", "Coldairarrow.ApiTest\Coldairarrow.ApiTest.csproj", "{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
