@@ -11,14 +11,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PostgreSqlRepository()
-            : base(null, DatabaseType.PostgreSql)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="conStr">数据库连接名</param>
         public PostgreSqlRepository(string conStr)
             : base(conStr, DatabaseType.PostgreSql)

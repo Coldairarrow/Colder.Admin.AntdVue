@@ -4,7 +4,7 @@ using System;
 
 namespace Coldairarrow.DataRepository
 {
-    public class EFCoreSqlLogeerProvider : ILoggerProvider
+    internal class EFCoreSqlLogeerProvider : ILoggerProvider
     {
         public static Action<string> HandleSqlLog { get; set; }
 

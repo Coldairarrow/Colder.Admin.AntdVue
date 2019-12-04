@@ -5,10 +5,11 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
-    public interface IRepository : IBaseRepository, ITransaction, IDisposable
+    public interface IRepository : IBaseRepository, ITransaction
     {
         #region 数据库相关
 
@@ -52,12 +53,6 @@ namespace Coldairarrow.DataRepository
         #region 增加数据
 
         /// <summary>
-        /// 添加多条记录
-        /// </summary>
-        /// <param name="entities">对象集合</param>
-        int Insert(List<object> entities);
-
-        /// <summary>
         /// 使用Bulk批量导入,速度快
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
@@ -75,11 +70,24 @@ namespace Coldairarrow.DataRepository
         int DeleteAll(Type type);
 
         /// <summary>
+        /// 删除所有记录
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        Task<int> DeleteAllAsync(Type type);
+
+        /// <summary>
         /// 删除单条记录
         /// </summary>
         /// <param name="type">实体类型</param>
         /// <param name="key">主键</param>
         int Delete(Type type, string key);
+
+        /// <summary>
+        /// 删除单条记录
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        /// <param name="key">主键</param>
+        Task<int> DeleteAsync(Type type, string key);
 
         /// <summary>
         /// 删除多条记录
@@ -91,8 +99,9 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 删除多条记录
         /// </summary>
-        /// <param name="entities">实体对象集合</param>
-        int Delete(List<object> entities);
+        /// <param name="type">实体类型</param>
+        /// <param name="keys">多条记录主键集合</param>
+        Task<int> DeleteAsync(Type type, List<string> keys);
 
         /// <summary>
         /// 删除单条记录
@@ -102,11 +111,25 @@ namespace Coldairarrow.DataRepository
         int Delete<T>(string key) where T : class, new();
 
         /// <summary>
+        /// 删除单条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="key">主键</param>
+        Task<int> DeleteAsync<T>(string key) where T : class, new();
+
+        /// <summary>
         /// 删除多条记录
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="keys">多条记录主键集合</param>
         int Delete<T>(List<string> keys) where T : class, new();
+
+        /// <summary>
+        /// 删除多条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="keys">多条记录主键集合</param>
+        Task<int> DeleteAsync<T>(List<string> keys) where T : class, new();
 
         /// <summary>
         /// 使用SQL语句按照条件删除数据
@@ -120,6 +143,16 @@ namespace Coldairarrow.DataRepository
 
         /// <summary>
         /// 使用SQL语句按照条件删除数据
+        /// 用法:Delete_Sql"Base_User"(x=>x.Id == "Admin")
+        /// 注：生成的SQL类似于DELETE FROM [Base_User] WHERE [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="where">条件</param>
+        /// <returns>影响条数</returns>
+        Task<int> Delete_SqlAsync<T>(Expression<Func<T, bool>> where) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件删除数据
         /// </summary>
         /// <param name="entityType">实体类型</param>
         /// <param name="where">动态where</param>
@@ -127,15 +160,18 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         int Delete_Sql(Type entityType, string where, params object[] paramters);
 
+        /// <summary>
+        /// 使用SQL语句按照条件删除数据
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <param name="where">动态where</param>
+        /// <param name="paramters">where参数</param>
+        /// <returns></returns>
+        Task<int> Delete_SqlAsync(Type entityType, string where, params object[] paramters);
+
         #endregion
 
         #region 更新数据
-
-        /// <summary>
-        /// 更新多条记录
-        /// </summary>
-        /// <param name="entities">实体对象集合</param>
-        int Update(List<object> entities);
 
         /// <summary>
         /// 更新多条记录的某些属性
@@ -143,6 +179,13 @@ namespace Coldairarrow.DataRepository
         /// <param name="entities">实体对象集合</param>
         /// <param name="properties">属性</param>
         int UpdateAny(List<object> entities, List<string> properties);
+
+        /// <summary>
+        /// 更新多条记录的某些属性
+        /// </summary>
+        /// <param name="entities">实体对象集合</param>
+        /// <param name="properties">属性</param>
+        Task<int> UpdateAnyAsync(List<object> entities, List<string> properties);
 
         /// <summary>
         /// 使用SQL语句按照条件更新
@@ -157,13 +200,35 @@ namespace Coldairarrow.DataRepository
 
         /// <summary>
         /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="where">筛选条件</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        Task<int> UpdateWhere_SqlAsync<T>(Expression<Func<T, bool>> where, params (string field, object value)[] values) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="where">筛选条件</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
         /// </summary>
         /// <param name="entityType">实体类型</param>
         /// <param name="where">动态where</param>
         /// <param name="paramters">where参数</param>
         /// <param name="values">赋值</param>
         /// <returns></returns>
-        int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, object value)[] values);
+        Task<int> UpdateWhere_SqlAsync(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values);
 
         #endregion
 
@@ -178,11 +243,26 @@ namespace Coldairarrow.DataRepository
         T GetEntity<T>(params object[] keyValue) where T : class, new();
 
         /// <summary>
+        /// 获取单条记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new();
+
+        /// <summary>
         /// 获取列表
         /// </summary>
         /// <param name="type">实体类型</param>
         /// <returns></returns>
         List<object> GetList(Type type);
+
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <param name="type">实体类型</param>
+        /// <returns></returns>
+        Task<List<object>> GetListAsync(Type type);
 
         /// <summary>
         /// 获取IQueryable
@@ -204,8 +284,9 @@ namespace Coldairarrow.DataRepository
         /// 通过SQL获取DataTable
         /// </summary>
         /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">SQL参数</param>
         /// <returns></returns>
-        DataTable GetDataTableWithSql(string sql);
+        DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters);
 
         /// <summary>
         /// 通过SQL获取DataTable
@@ -213,15 +294,7 @@ namespace Coldairarrow.DataRepository
         /// <param name="sql">SQL语句</param>
         /// <param name="parameters">SQL参数</param>
         /// <returns></returns>
-        DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters);
-
-        /// <summary>
-        /// 通过SQL获取List
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="sqlStr">SQL语句</param>
-        /// <returns></returns>
-        List<T> GetListBySql<T>(string sqlStr) where T : class, new();
+        Task<DataTable> GetDataTableWithSqlAsync(string sql, params (string paramterName, object value)[] parameters);
 
         /// <summary>
         /// 通过SQL获取List
@@ -230,7 +303,16 @@ namespace Coldairarrow.DataRepository
         /// <param name="sqlStr">SQL语句</param>
         /// <param name="parameters">SQL参数</param>
         /// <returns></returns>
-        List<T> GetListBySql<T>(string sqlStr, List<DbParameter> parameters) where T : class, new();
+        List<T> GetListBySql<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new();
+
+        /// <summary>
+        /// 通过SQL获取List
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="sqlStr">SQL语句</param>
+        /// <param name="parameters">SQL参数</param>
+        /// <returns></returns>
+        Task<List<T>> GetListBySqlAsync<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new();
 
         #endregion
 
@@ -240,14 +322,15 @@ namespace Coldairarrow.DataRepository
         /// 执行SQL语句
         /// </summary>
         /// <param name="sql">SQL语句</param>
-        int ExecuteSql(string sql);
+        /// <param name="parameters">SQL参数</param>
+        int ExecuteSql(string sql, params (string paramterName, object paramterValue)[] paramters);
 
         /// <summary>
         /// 执行SQL语句
         /// </summary>
         /// <param name="sql">SQL语句</param>
         /// <param name="parameters">SQL参数</param>
-        int ExecuteSql(string sql, params (string paramterName, object paramterValue)[] paramters);
+        Task<int> ExecuteSqlAsync(string sql, params (string paramterName, object paramterValue)[] paramters);
 
         #endregion
     }

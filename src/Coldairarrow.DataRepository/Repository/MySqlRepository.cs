@@ -17,14 +17,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        public MySqlRepository()
-            : base(null, DatabaseType.MySql)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="conStr">数据库连接名</param>
         public MySqlRepository(string conStr)
             : base(conStr, DatabaseType.MySql)
@@ -52,7 +44,7 @@ namespace Coldairarrow.DataRepository
         public override void BulkInsert<T>(List<T> entities)
         {
             DataTable dt = entities.ToDataTable();
-            using (MySqlConnection conn=new MySqlConnection())
+            using (MySqlConnection conn = new MySqlConnection())
             {
                 conn.ConnectionString = ConnectionString;
                 if (conn.State != ConnectionState.Open)
