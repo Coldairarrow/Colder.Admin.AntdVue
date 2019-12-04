@@ -26,16 +26,6 @@ namespace Coldairarrow.DataRepository
 
         #region 外部接口
 
-        public static void AddObserver(IRepositoryDbContext observer)
-        {
-            _observers.Add(observer);
-        }
-
-        public static void RemoveObserver(IRepositoryDbContext observer)
-        {
-            _observers.Remove(observer);
-        }
-
         /// <summary>
         /// 获取DbCompiledModel
         /// </summary>

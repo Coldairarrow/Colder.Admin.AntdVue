@@ -14,14 +14,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SqlServerRepository()
-            : base(null, DatabaseType.SqlServer)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="conStr">数据库连接名</param>
         public SqlServerRepository(string conStr)
             : base(conStr, DatabaseType.SqlServer)

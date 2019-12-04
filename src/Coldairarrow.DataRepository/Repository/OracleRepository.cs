@@ -9,14 +9,6 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 构造函数
         /// </summary>
-        public OracleRepository()
-            : base(null, DatabaseType.Oracle)
-        {
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="conStr">数据库连接名</param>
         public OracleRepository(string conStr)
             : base(conStr, DatabaseType.Oracle)

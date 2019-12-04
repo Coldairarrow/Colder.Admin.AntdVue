@@ -22,7 +22,7 @@ namespace Coldairarrow.Util
         public DbHelper(DatabaseType dbType, string conStr)
         {
             _dbType = dbType;
-            _conStr = DbProviderFactoryHelper.GetConStr(conStr);
+            _conStr = DbProviderFactoryHelper.GetFullConString(conStr);
         }
 
         #endregion
