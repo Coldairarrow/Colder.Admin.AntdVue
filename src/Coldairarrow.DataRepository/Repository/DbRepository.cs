@@ -497,13 +497,29 @@ namespace Coldairarrow.DataRepository
 
             return obj;
         }
+        public async Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
+        {
+            var obj = await _db.Set<T>().FindAsync(keyValue);
+            if (!obj.IsNullOrEmpty())
+                _db.Entry(obj).State = EntityState.Detached;
+
+            return obj;
+        }
         public List<T> GetList<T>() where T : class, new()
         {
             return GetIQueryable<T>().ToList();
         }
+        public async Task<List<T>> GetListAsync<T>() where T : class, new()
+        {
+            return await GetIQueryable<T>().ToListAsync();
+        }
         public List<object> GetList(Type type)
         {
             return GetIQueryable(type).CastToList<object>();
+        }
+        public async Task<List<object>> GetListAsync(Type type)
+        {
+            return await GetIQueryable<T>().ToListAsync();
         }
         public IQueryable<T> GetIQueryable<T>() where T : class, new()
         {
@@ -511,7 +527,7 @@ namespace Coldairarrow.DataRepository
         }
         public IQueryable GetIQueryable(Type type)
         {
-            return Db.GetIQueryable(type);
+            return _db.GetIQueryable(type);
         }
         public DataTable GetDataTableWithSql(string sql)
         {
@@ -555,15 +571,6 @@ namespace Coldairarrow.DataRepository
         {
             return Db.Set<T>().FromSql(sqlStr, parameters.ToArray()).ToList();
         }
-        public async Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<object>> GetListAsync(Type type)
-        {
-            throw new NotImplementedException();
-        }
 
         public async DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters)
         {
@@ -585,10 +592,6 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
-        public async Task<List<T>> GetListAsync<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 
