@@ -224,44 +224,17 @@ namespace Coldairarrow.DataRepository
 
         #region 数据库相关
 
-        /// <summary>
-        /// 连接字符串
-        /// </summary>
         public string ConnectionString { get; }
-
-        /// <summary>
-        /// 数据库类型
-        /// </summary>
         public DatabaseType DbType { get; }
-
-        /// <summary>
-        /// 提交事物
-        /// </summary>
         public void CommitTransaction()
         {
             _transaction?.Commit();
         }
-
-        /// <summary>
-        /// 回滚事物
-        /// </summary>
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
         }
-
-        /// <summary>
-        /// SQL日志处理方法
-        /// </summary>
-        /// <value>
-        /// The handle SQL log.
-        /// </value>
         public Action<string> HandleSqlLog { set => EFCoreSqlLogeerProvider.HandleSqlLog = value; }
-
-        /// <summary>
-        /// 使用已存在的事物
-        /// </summary>
-        /// <param name="transaction">事物对象</param>
         public void UseTransaction(DbTransaction transaction)
         {
             //if (_transaction != null)
@@ -271,11 +244,6 @@ namespace Coldairarrow.DataRepository
             //_transaction = transaction;
             //Db.UseTransaction(transaction);
         }
-
-        /// <summary>
-        /// 获取事物对象
-        /// </summary>
-        /// <returns></returns>
         public DbTransaction GetTransaction()
         {
             return _transaction;
@@ -305,7 +273,7 @@ namespace Coldairarrow.DataRepository
 
             return await _db.SaveChangesAsync();
         }
-        public abstract int BulkInsert<T>(List<T> entities) where T : class, new();
+        public abstract void BulkInsert<T>(List<T> entities) where T : class, new();
 
         #endregion
 
@@ -345,7 +313,7 @@ namespace Coldairarrow.DataRepository
         {
             _db.RemoveRange(entities);
 
-            return await _db.SaveChanges();
+            return await _db.SaveChangesAsync();
         }
         public int Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
@@ -519,7 +487,7 @@ namespace Coldairarrow.DataRepository
         }
         public async Task<List<object>> GetListAsync(Type type)
         {
-            return await GetIQueryable<T>().ToListAsync();
+            return await GetIQueryable(type).Cast<object>().ToListAsync();
         }
         public IQueryable<T> GetIQueryable<T>() where T : class, new()
         {
@@ -529,11 +497,7 @@ namespace Coldairarrow.DataRepository
         {
             return _db.GetIQueryable(type);
         }
-        public DataTable GetDataTableWithSql(string sql)
-        {
-            return GetDataTableWithSql(sql, null);
-        }
-        public DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
+        public DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters)
         {
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(DbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
@@ -550,48 +514,53 @@ namespace Coldairarrow.DataRepository
                     cmd.CommandText = sql;
                     cmd.CommandTimeout = 5 * 60;
 
-                    if (parameters != null && parameters?.Count > 0)
-                        cmd.Parameters.AddRange(parameters.ToArray());
+                    if (parameters != null && parameters.Count() > 0)
+                        cmd.Parameters.AddRange(CreateDbParamters(parameters.ToList()).ToArray());
 
-                    DbDataAdapter adapter = dbProviderFactory.CreateDataAdapter();
-                    adapter.SelectCommand = cmd;
-                    DataSet table = new DataSet();
-                    adapter.Fill(table);
-                    cmd.Parameters.Clear();
+                    DataTable table = new DataTable();
+                    var reader = cmd.ExecuteReader();
+                    table.Load(reader);
 
-                    return table.Tables[0];
+                    return table;
                 }
             }
         }
-        public List<T> GetListBySql<T>(string sqlStr) where T : class, new()
-        {
-            return GetListBySql<T>(sqlStr, new List<DbParameter>());
-        }
-        public List<T> GetListBySql<T>(string sqlStr, List<DbParameter> parameters) where T : class, new()
-        {
-            return Db.Set<T>().FromSql(sqlStr, parameters.ToArray()).ToList();
-        }
-
-        public async DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<DataTable> GetDataTableWithSqlAsync(string sql, params (string paramterName, object value)[] parameters)
         {
-            throw new NotImplementedException();
-        }
+            DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(DbType);
+            using (DbConnection conn = dbProviderFactory.CreateConnection())
+            {
+                conn.ConnectionString = ConnectionString;
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
 
-        public async List<T> GetListBySql<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new()
+                using (DbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.CommandTimeout = 5 * 60;
+
+                    if (parameters != null && parameters.Count() > 0)
+                        cmd.Parameters.AddRange(CreateDbParamters(parameters.ToList()).ToArray());
+
+                    DataTable table = new DataTable();
+                    var reader = await cmd.ExecuteReaderAsync();
+                    table.Load(reader);
+
+                    return table;
+                }
+            }
+        }
+        public List<T> GetListBySql<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new()
         {
-            throw new NotImplementedException();
+            return _db.Set<T>().FromSql(sqlStr, CreateDbParamters(parameters.ToList()).ToArray()).AsNoTracking().ToList();
         }
-
         public async Task<List<T>> GetListBySqlAsync<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new()
         {
-            throw new NotImplementedException();
+            return await _db.Set<T>().FromSql(sqlStr, CreateDbParamters(parameters.ToList()).ToArray()).AsNoTracking().ToListAsync();
         }
-
 
         #endregion
 
@@ -609,6 +578,7 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region Dispose
+
         private bool _disposed { get; set; }
         public virtual void Dispose()
         {

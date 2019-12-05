@@ -1,4 +1,6 @@
 ﻿using Coldairarrow.Util;
+using System;
+using System.Collections.Generic;
 
 namespace Coldairarrow.DataRepository
 {
@@ -6,10 +8,6 @@ namespace Coldairarrow.DataRepository
     {
         #region 构造函数
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="conStr">数据库连接名</param>
         public OracleRepository(string conStr)
             : base(conStr, DatabaseType.Oracle)
         {
@@ -32,6 +30,11 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region 插入数据
+
+        public override void BulkInsert<T>(List<T> entities)
+        {
+            throw new Exception("暂不支持");
+        }
 
         #endregion
 
