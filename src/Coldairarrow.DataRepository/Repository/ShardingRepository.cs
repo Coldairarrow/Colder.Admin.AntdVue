@@ -318,6 +318,121 @@ namespace Coldairarrow.DataRepository
             Dispose(true);
         }
 
+        int IBaseRepository.Insert<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> InsertAsync<T>(T entity) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Insert<T>(List<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.DeleteAll<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAllAsync<T>() where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Delete<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync<T>(T entity) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Delete<T>(List<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Delete<T>(Expression<Func<T, bool>> condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync<T>(Expression<Func<T, bool>> condition) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Update<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAsync<T>(T entity) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.Update<T>(List<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAsync<T>(List<T> entities) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.UpdateAny<T>(T entity, List<string> properties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAnyAsync<T>(T entity, List<string> properties) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.UpdateAny<T>(List<T> entities, List<string> properties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IBaseRepository.UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> UpdateWhereAsync<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<T>> GetListAsync<T>() where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

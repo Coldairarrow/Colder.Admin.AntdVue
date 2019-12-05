@@ -98,11 +98,6 @@ namespace Coldairarrow.DataRepository
 
         #region 删除数据
 
-        public override void DeleteAll<T>()
-        {
-            Delete(GetList<T>());
-        }
-
         #endregion
     }
 }

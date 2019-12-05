@@ -52,7 +52,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="entities">实体集合</param>
-        int BulkInsert<T>(List<T> entities) where T : class, new();
+        void BulkInsert<T>(List<T> entities) where T : class, new();
 
         #endregion
 
