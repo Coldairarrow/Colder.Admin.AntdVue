@@ -168,6 +168,14 @@ namespace Coldairarrow.DataRepository
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="whereExpre">筛选条件</param>
         /// <param name="set">更新操作</param>
+        int UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new();
+
+        /// <summary>
+        /// 按照条件更新记录
+        /// </summary>
+        /// <typeparam name="T">实体泛型</typeparam>
+        /// <param name="whereExpre">筛选条件</param>
+        /// <param name="set">更新操作</param>
         Task<int> UpdateWhereAsync<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new();
 
         #endregion
