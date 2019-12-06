@@ -1,15 +1,15 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using Coldairarrow.DataRepository;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers
 {
     [Route("/[controller]/[action]")]
-    public class TestController : BaseController
+    public class TestController : ControllerBase
     {
         private Base_Log GetNewLog()
         {
@@ -23,12 +23,12 @@ namespace Coldairarrow.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> SearchTest_1()
         {
-            using (DefaultDbContext db = new DefaultDbContext())
+            using (var db = DbFactory.GetRepository(DefaultDbContext.ConString))
             {
-                var data = await db.Base_Logs.FirstOrDefaultAsync();
+                var data = await db.GetIQueryable<Base_Log>().FirstOrDefaultAsync();
             }
 
-            return HtmlContent("1");
+            return Content("1");
         }
 
         [HttpGet]
@@ -36,19 +36,18 @@ namespace Coldairarrow.Api.Controllers
         {
             var data = await FreeSqlHelper.FreeSql.Select<Base_Log>().FirstAsync();
 
-            return HtmlContent("1");
+            return Content("1");
         }
 
         [HttpGet]
         public async Task<IActionResult> WriteTest_1()
         {
-            using (DefaultDbContext db = new DefaultDbContext())
+            using (var db = DbFactory.GetRepository(DefaultDbContext.ConString))
             {
-                await db.Base_Logs.AddAsync(GetNewLog());
-                await db.SaveChangesAsync();
+                await db.InsertAsync(GetNewLog());
             }
 
-            return HtmlContent("1");
+            return Content("1");
         }
 
         [HttpGet]
@@ -56,7 +55,7 @@ namespace Coldairarrow.Api.Controllers
         {
             await FreeSqlHelper.FreeSql.Insert<Base_Log>().AppendData(GetNewLog()).ExecuteAffrowsAsync();
 
-            return HtmlContent("1");
+            return Content("1");
         }
     }
 }

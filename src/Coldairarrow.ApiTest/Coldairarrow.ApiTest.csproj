@@ -20,6 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj" />
+    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj" />
     <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj" />
   </ItemGroup>
 

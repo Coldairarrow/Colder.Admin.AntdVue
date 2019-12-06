@@ -36,12 +36,20 @@ namespace Coldairarrow.DataRepository
         {
             string modelInfoId = GetCompiledModelIdentity(conStr, dbType);
             if (_dbCompiledModel.ContainsKey(modelInfoId))
-                return _dbCompiledModel[modelInfoId].Model;
+                return _dbCompiledModel[modelInfoId];
             else
             {
-                var theModelInfo = BuildDbCompiledModelInfo(conStr, dbType);
-                _dbCompiledModel[modelInfoId] = theModelInfo;
-                return theModelInfo.Model;
+                lock (_buildCompiledModelLock)
+                {
+                    if (_dbCompiledModel.ContainsKey(modelInfoId))
+                        return _dbCompiledModel[modelInfoId];
+                    else
+                    {
+                        var theModel = BuildDbCompiledModel(dbType);
+                        _dbCompiledModel[modelInfoId] = theModel;
+                        return theModel;
+                    }
+                }
             }
         }
 
@@ -60,61 +68,38 @@ namespace Coldairarrow.DataRepository
                 _modelTypeMap[aType.Name] = aType;
             });
         }
-        private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } = new ConcurrentDictionary<string, Type>();
-        private static ConcurrentDictionary<string, DbCompiledModelInfo> _dbCompiledModel { get; } = new ConcurrentDictionary<string, DbCompiledModelInfo>();
-        private static DbCompiledModelInfo BuildDbCompiledModelInfo(string nameOrConStr, DatabaseType dbType)
+        private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } =
+            new ConcurrentDictionary<string, Type>();
+        private static ConcurrentDictionary<string, IModel> _dbCompiledModel { get; }
+            = new ConcurrentDictionary<string, IModel>();
+        private static IModel BuildDbCompiledModel(DatabaseType dbType)
         {
-            lock (_buildCompiledModelLock)
+            ConventionSet conventionSet = null;
+            switch (dbType)
             {
-                ConventionSet conventionSet = null;
-                switch (dbType)
-                {
-                    case DatabaseType.SqlServer: conventionSet = SqlServerConventionSetBuilder.Build(); break;
-                    case DatabaseType.MySql: conventionSet = MySqlConventionSetBuilder.Build(); break;
-                    case DatabaseType.PostgreSql: conventionSet = NpgsqlConventionSetBuilder.Build(); break;
-                    case DatabaseType.Oracle: conventionSet = OracleConventionSetBuilder.Build(); break;
-                    default: throw new Exception("暂不支持该数据库!");
-                }
-                ModelBuilder modelBuilder = new ModelBuilder(conventionSet);
-                _modelTypeMap.Values.ForEach(x =>
-                {
-                    modelBuilder.Model.AddEntityType(x);
-                });
-
-                DbCompiledModelInfo newInfo = new DbCompiledModelInfo
-                {
-                    ConStr = nameOrConStr,
-                    DatabaseType = dbType,
-                    Model = modelBuilder.FinalizeModel()
-                };
-                return newInfo;
+                case DatabaseType.SqlServer: conventionSet = SqlServerConventionSetBuilder.Build(); break;
+                case DatabaseType.MySql: conventionSet = MySqlConventionSetBuilder.Build(); break;
+                case DatabaseType.PostgreSql: conventionSet = NpgsqlConventionSetBuilder.Build(); break;
+                case DatabaseType.Oracle: conventionSet = OracleConventionSetBuilder.Build(); break;
+                default: throw new Exception("暂不支持该数据库!");
             }
+            ModelBuilder modelBuilder = new ModelBuilder(conventionSet);
+            _modelTypeMap.Values.ForEach(x =>
+            {
+                modelBuilder.Model.AddEntityType(x);
+            });
+
+            return modelBuilder.FinalizeModel();
         }
         private static string GetCompiledModelIdentity(string conStr, DatabaseType dbType)
         {
             return $"{dbType.ToString()}{conStr}";
         }
         private static object _buildCompiledModelLock { get; } = new object();
-        private static void RefreshModel()
-        {
-            _dbCompiledModel.Values.ForEach(aModelInfo =>
-            {
-                aModelInfo.Model = BuildDbCompiledModelInfo(aModelInfo.ConStr, aModelInfo.DatabaseType).Model;
-            });
-
-            _observers.ForEach(x => x.RefreshDb());
-        }
 
         #endregion
 
         #region 数据结构
-
-        class DbCompiledModelInfo
-        {
-            public IModel Model { get; set; }
-            public string ConStr { get; set; }
-            public DatabaseType DatabaseType { get; set; }
-        }
 
         #endregion
     }

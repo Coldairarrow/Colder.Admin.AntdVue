@@ -3,7 +3,6 @@ using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
@@ -286,19 +285,9 @@ namespace Coldairarrow.Business
             Service.UpdateWhere(whereExpre, set);
         }
 
-        /// <summary>
-        /// 使用SQL语句按照条件更新
-        /// 用法:UpdateWhere_Sql"Base_User"(x=&gt;x.Id == "Admin",("Name","小明"))
-        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
-        /// </summary>
-        /// <param name="where">筛选条件</param>
-        /// <param name="values">字段值设置</param>
-        /// <returns>
-        /// 影响条数
-        /// </returns>
-        public int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field, object value)[] values)
+        public int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
         {
-            return Service.UpdateWhere_Sql(where, values);
+            return _service.UpdateWhere_Sql(where, values);
         }
 
         #endregion
@@ -372,65 +361,9 @@ namespace Coldairarrow.Business
             return query.GetPagination(pagination).ToList();
         }
 
-        /// <summary>
-        /// 通过Sql查询返回DataTable
-        /// </summary>
-        /// <param name="sql">sql语句</param>
-        /// <returns></returns>
-        public DataTable GetDataTableWithSql(string sql)
-        {
-            return Service.GetDataTableWithSql(sql);
-        }
-
-        /// <summary>
-        /// 通过Sql参数查询返回DataTable
-        /// </summary>
-        /// <param name="sql">Sql语句</param>
-        /// <param name="parameters">查询参数</param>
-        /// <returns></returns>
-        public DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
-        {
-            return Service.GetDataTableWithSql(sql, parameters);
-        }
-
-        /// <summary>
-        /// 通过sql返回List
-        /// </summary>
-        /// <param name="sqlStr">sql语句</param>
-        /// <returns></returns>
-        public List<U> GetListBySql<U>(string sqlStr) where U : class, new()
-        {
-            return Service.GetListBySql<U>(sqlStr);
-        }
-
-        /// <summary>
-        /// 通过sql返回list
-        /// </summary>
-        /// <param name="sqlStr">sql语句</param>
-        /// <param name="param">参数</param>
-        /// <returns></returns>
-        public List<U> GetListBySql<U>(string sqlStr, List<DbParameter> param) where U : class, new()
-        {
-            return Service.GetListBySql<U>(sqlStr, param);
-        }
-
         #endregion
 
         #region 执行Sql语句
-
-        /// <summary>
-        /// 执行Sql语句
-        /// </summary>
-        /// <param name="sql">Sql语句</param>
-        public int ExecuteSql(string sql)
-        {
-            return Service.ExecuteSql(sql);
-        }
-
-        public int ExecuteSql(string sql, List<DbParameter> parameters)
-        {
-            return Service.ExecuteSql(sql, parameters);
-        }
 
         #endregion
 
@@ -582,10 +515,6 @@ namespace Coldairarrow.Business
 
         #region Dispose
 
-        /// <summary>
-        /// 执行与释放或重置非托管资源关联的应用程序定义的任务。
-        /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
         public virtual void Dispose()
         {
             _service?.Dispose();

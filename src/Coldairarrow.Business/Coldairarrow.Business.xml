@@ -198,7 +198,7 @@
             <param name="whereExpre">筛选条件</param>
             <param name="set">更新操作</param>
         </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateWhere_Sql(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,System.Object}[])">
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateWhere_Sql(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,Coldairarrow.Util.UpdateType,System.Object}[])">
             <summary>
             使用SQL语句按照条件更新
             用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
@@ -227,51 +227,6 @@
             获取IQueryable
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetDataTableWithSql(System.String)">
-            <summary>
-            通过SQL获取DataTable
-            </summary>
-            <param name="sql">SQL</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetDataTableWithSql(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
-            <summary>
-            通过SQL获取DataTable
-            </summary>
-            <param name="sql">SQL</param>
-            <param name="parameters">参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetListBySql``1(System.String)">
-            <summary>
-            通过SQL获取List
-            </summary>
-            <typeparam name="U">泛型</typeparam>
-            <param name="sqlStr">SQL</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetListBySql``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
-            <summary>
-            通过SQL获取List
-            </summary>
-            <typeparam name="U">泛型</typeparam>
-            <param name="sqlStr">SQL</param>
-            <param name="param">参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.ExecuteSql(System.String)">
-            <summary>
-            执行SQL语句
-            </summary>
-            <param name="sql">SQL</param>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.ExecuteSql(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
-            <summary>
-            执行SQL语句
-            </summary>
-            <param name="sql">SQL</param>
-            <param name="spList">参数</param>
         </member>
         <member name="T:Coldairarrow.Business.IOperator">
             <summary>
@@ -436,18 +391,6 @@
             <param name="whereExpre">筛选表达式</param>
             <param name="set">更改属性回调</param>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateWhere_Sql(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,System.Object}[])">
-            <summary>
-            使用SQL语句按照条件更新
-            用法:UpdateWhere_Sql"Base_User"(x=&gt;x.Id == "Admin",("Name","小明"))
-            注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
-            </summary>
-            <param name="where">筛选条件</param>
-            <param name="values">字段值设置</param>
-            <returns>
-            影响条数
-            </returns>
-        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetEntity(System.Object[])">
             <summary>
             获取实体
@@ -489,42 +432,6 @@
             <param name="count">总记录数</param>
             <param name="pages">总页数</param>
             <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetDataTableWithSql(System.String)">
-            <summary>
-            通过Sql查询返回DataTable
-            </summary>
-            <param name="sql">sql语句</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetDataTableWithSql(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
-            <summary>
-            通过Sql参数查询返回DataTable
-            </summary>
-            <param name="sql">Sql语句</param>
-            <param name="parameters">查询参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetListBySql``1(System.String)">
-            <summary>
-            通过sql返回List
-            </summary>
-            <param name="sqlStr">sql语句</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetListBySql``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
-            <summary>
-            通过sql返回list
-            </summary>
-            <param name="sqlStr">sql语句</param>
-            <param name="param">参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.ExecuteSql(System.String)">
-            <summary>
-            执行Sql语句
-            </summary>
-            <param name="sql">Sql语句</param>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Success">
             <summary>
@@ -578,12 +485,6 @@
             <param name="valueField">值字段</param>
             <param name="source">指定数据源</param>
             <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.Dispose">
-            <summary>
-            执行与释放或重置非托管资源关联的应用程序定义的任务。
-            </summary>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:Coldairarrow.Business.BusRepository">
             <summary>

@@ -341,18 +341,18 @@
             <param name="index">索引序号</param>
             <param name="t">实体类型</param>
         </member>
-        <member name="T:Coldairarrow.Util.TaskQeury">
+        <member name="T:Coldairarrow.Util.TaskQueue">
             <summary>
             任务队列
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.TaskQeury.#ctor">
+        <member name="M:Coldairarrow.Util.TaskQueue.#ctor">
             <summary>
             默认队列
             注：默认间隔时间1ms
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.TaskQeury.#ctor(System.TimeSpan)">
+        <member name="M:Coldairarrow.Util.TaskQueue.#ctor(System.TimeSpan)">
             <summary>
             间隔任务队列
             注：每个任务之间间隔一段时间
@@ -626,7 +626,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetConStr(System.String)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetFullConString(System.String)">
             <summary>
             通过连接名或连接字符串获取连接字符串
             </summary>
@@ -3430,6 +3430,37 @@
         <member name="P:Coldairarrow.Util.TreeModel.Children">
             <summary>
             孩子节点
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.UpdateType">
+            <summary>
+            更新模式
+            注:[Field]=[Field] {UpdateType} value
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.UpdateType.Equal">
+            <summary>
+            等,即赋值,[Field]= value
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.UpdateType.Add">
+            <summary>
+            自增,[Field]=[Field] + value
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.UpdateType.Minus">
+            <summary>
+            自减,[Field]=[Field] - value
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.UpdateType.Multiply">
+            <summary>
+            自乘,[Field]=[Field] * value
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.UpdateType.Divide">
+            <summary>
+            自除,[Field]=[Field] / value
             </summary>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.Filters.Extention">

@@ -67,7 +67,7 @@ namespace Coldairarrow.DataRepository
                     {
                         (db as IInternalTransaction).BeginTransaction(_isolationLevel);
 
-                        _transactionMap[id] = db.GetTransaction();
+                        //_transactionMap[id] = db.GetTransaction();
                     }
                 }
             }

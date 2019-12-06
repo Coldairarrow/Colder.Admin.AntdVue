@@ -34,7 +34,7 @@ namespace Coldairarrow.DataRepository
         {
             ConnectionString = conString;
             DbType = dbType;
-            _db = DbFactory.GetDbContext1(conString, dbType);
+            _db = DbFactory.GetDbContext(conString, dbType);
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace Coldairarrow.DataRepository
         #region 私有成员
 
         protected BaseDbContext _db { get; }
-        protected DbTransaction _transaction { get; set; }
+        protected IDbContextTransaction _transaction { get; set; }
         protected static PropertyInfo GetKeyProperty(Type type)
         {
             return GetKeyPropertys(type).FirstOrDefault();
@@ -190,7 +190,7 @@ namespace Coldairarrow.DataRepository
         public void BeginTransaction(IsolationLevel isolationLevel)
         {
             _openedTransaction = true;
-            _transaction = _db.Database.BeginTransaction().GetDbTransaction();
+            _transaction = _db.Database.BeginTransaction(isolationLevel);
         }
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
@@ -215,6 +215,7 @@ namespace Coldairarrow.DataRepository
             {
                 _openedTransaction = false;
                 _transaction.Dispose();
+                _db.Detach();
             }
 
             return (success, resEx);
@@ -244,10 +245,10 @@ namespace Coldairarrow.DataRepository
             //_transaction = transaction;
             //Db.UseTransaction(transaction);
         }
-        public DbTransaction GetTransaction()
-        {
-            return _transaction;
-        }
+        //public DbTransaction GetTransaction()
+        //{
+        //    return _transaction;
+        //}
 
         #endregion
 
@@ -255,7 +256,7 @@ namespace Coldairarrow.DataRepository
 
         public int Insert<T>(T entity) where T : class, new()
         {
-            return Insert(new List<object> { entity });
+            return Insert(new List<T> { entity });
         }
         public async Task<int> InsertAsync<T>(T entity) where T : class, new()
         {
@@ -264,7 +265,6 @@ namespace Coldairarrow.DataRepository
         public int Insert<T>(List<T> entities) where T : class, new()
         {
             _db.AddRange(entities);
-
             return _db.SaveChanges();
         }
         public async Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
@@ -306,7 +306,6 @@ namespace Coldairarrow.DataRepository
         public int Delete<T>(List<T> entities) where T : class, new()
         {
             _db.RemoveRange(entities);
-
             return _db.SaveChanges();
         }
         public async Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
@@ -401,7 +400,6 @@ namespace Coldairarrow.DataRepository
         public int Update<T>(List<T> entities) where T : class, new()
         {
             _db.UpdateRange(entities);
-
             return _db.SaveChanges();
         }
         public async Task<int> UpdateAsync<T>(List<T> entities) where T : class, new()
@@ -420,7 +418,15 @@ namespace Coldairarrow.DataRepository
         }
         public int UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
         {
-            return UpdateAny(entities, properties);
+            entities.ForEach(aEntity =>
+            {
+                properties.ForEach(aProperty =>
+                {
+                    _db.Entry(aEntity).Property(aProperty).IsModified = true;
+                });
+            });
+
+            return _db.SaveChanges();
         }
         public async Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
         {
@@ -441,6 +447,20 @@ namespace Coldairarrow.DataRepository
         public int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
         {
             var iq = GetIQueryable<T>().Where(where);
+            var sql = GetUpdateWhereSql(iq, values);
+
+            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+        }
+        public async Task<int> UpdateWhere_SqlAsync<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
+        {
+            var iq = GetIQueryable<T>().Where(where);
+            var sql = GetUpdateWhereSql(iq, values);
+
+            return await ExecuteSqlAsync(sql.sql, sql.paramters.ToArray());
+        }
+        public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
+        {
+            var iq = GetIQueryable(entityType).Where(where, paramters);
             var sql = GetUpdateWhereSql(iq, values);
 
             return ExecuteSql(sql.sql, sql.paramters.ToArray());
