@@ -35,22 +35,22 @@ namespace Coldairarrow.DataRepository
         public static IModel GetDbCompiledModel(string conStr, DatabaseType dbType)
         {
             string modelInfoId = GetCompiledModelIdentity(conStr, dbType);
-            if (_dbCompiledModel.ContainsKey(modelInfoId))
-                return _dbCompiledModel[modelInfoId];
-            else
+            bool success = _dbCompiledModel.TryGetValue(modelInfoId, out IModel resModel);
+            if (!success)
             {
-                lock (_buildCompiledModelLock)
+                var theLock = _lockDic.GetOrAdd(modelInfoId, new object());
+                lock (theLock)
                 {
-                    if (_dbCompiledModel.ContainsKey(modelInfoId))
-                        return _dbCompiledModel[modelInfoId];
-                    else
+                    success = _dbCompiledModel.TryGetValue(modelInfoId, out resModel);
+                    if (!success)
                     {
-                        var theModel = BuildDbCompiledModel(dbType);
-                        _dbCompiledModel[modelInfoId] = theModel;
-                        return theModel;
+                        resModel = BuildDbCompiledModel(dbType);
+                        _dbCompiledModel[modelInfoId] = resModel;
                     }
                 }
             }
+
+            return resModel;
         }
 
         #endregion
@@ -96,6 +96,8 @@ namespace Coldairarrow.DataRepository
             return $"{dbType.ToString()}{conStr}";
         }
         private static object _buildCompiledModelLock { get; } = new object();
+        private static UsingLock<object> _modelLock { get; } = new UsingLock<object>();
+        private static readonly ConcurrentDictionary<string, object> _lockDic = new ConcurrentDictionary<string, object>();
 
         #endregion
 
