@@ -16,11 +16,12 @@ namespace Coldairarrow.DataRepository
         /// <summary>
         /// 根据配置文件获取数据库类型，并返回对应的工厂接口
         /// </summary>
-        /// <param name="conString">链接字符串</param>
-        /// <param name="dbType">数据库类型</param>
+        /// <param name="conString">链接字符串,默认为GlobalSwitch.DefaultDbConName</param>
+        /// <param name="dbType">数据库类型,默认为GlobalSwitch.DatabaseType</param>
         /// <returns></returns>
-        public static IRepository GetRepository(string conString = GlobalSwitch.DefaultDbConName, DatabaseType? dbType = null)
+        public static IRepository GetRepository(string conString = null, DatabaseType? dbType = null)
         {
+            conString = conString.IsNullOrEmpty() ? GlobalSwitch.DefaultDbConName : conString;
             conString = DbProviderFactoryHelper.GetFullConString(conString);
             dbType = dbType.IsNullOrEmpty() ? GlobalSwitch.DatabaseType : dbType;
             Type dbRepositoryType = Type.GetType("Coldairarrow.DataRepository." + DbProviderFactoryHelper.DbTypeToDbTypeStr(dbType.Value) + "Repository");
@@ -40,26 +41,12 @@ namespace Coldairarrow.DataRepository
         }
 
         /// <summary>
-        /// 根据参数获取数据库的DbContext
-        /// </summary>
-        /// <param name="conString">初始化参数，可为连接字符串或者DbContext</param>
-        /// <param name="dbType">数据库类型</param>
-        /// <returns></returns>
-        public static IRepositoryDbContext GetDbContext(string conString, DatabaseType dbType)
-        {
-            IRepositoryDbContext dbContext = new RepositoryDbContext(conString, dbType);
-            dbContext.Database.SetCommandTimeout(5 * 60);
-
-            return dbContext;
-        }
-
-        /// <summary>
         /// 获取
         /// </summary>
         /// <param name="conString"></param>
         /// <param name="dbType"></param>
         /// <returns></returns>
-        internal static BaseDbContext GetDbContext1([NotNull] string conString, DatabaseType dbType)
+        internal static BaseDbContext GetDbContext([NotNull] string conString, DatabaseType dbType)
         {
             if (conString.IsNullOrEmpty())
                 throw new Exception("conString能为空");

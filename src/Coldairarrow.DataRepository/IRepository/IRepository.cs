@@ -41,7 +41,7 @@ namespace Coldairarrow.DataRepository
         /// 获取事物对象
         /// </summary>
         /// <returns></returns>
-        DbTransaction GetTransaction();
+        //DbTransaction GetTransaction();
 
         #endregion
 
@@ -178,6 +178,28 @@ namespace Coldairarrow.DataRepository
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
         int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="where">筛选条件</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        Task<int> UpdateWhere_SqlAsync<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new();
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="where">筛选条件</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values);
 
         /// <summary>
         /// 使用SQL语句按照条件更新

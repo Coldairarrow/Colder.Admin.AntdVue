@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.DataRepository;
+using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -126,7 +127,7 @@ namespace Coldairarrow.Business
         /// <param name="where">筛选条件</param>
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
-        int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field, object value)[] values);
+        int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field,UpdateType updateType, object value)[] values);
 
         #endregion
 
@@ -152,54 +153,9 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         IQueryable<T> GetIQueryable();
 
-        /// <summary>
-        /// 通过SQL获取DataTable
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        /// <returns></returns>
-        DataTable GetDataTableWithSql(string sql);
-
-        /// <summary>
-        /// 通过SQL获取DataTable
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        /// <param name="parameters">参数</param>
-        /// <returns></returns>
-        DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters);
-
-        /// <summary>
-        /// 通过SQL获取List
-        /// </summary>
-        /// <typeparam name="U">泛型</typeparam>
-        /// <param name="sqlStr">SQL</param>
-        /// <returns></returns>
-        List<U> GetListBySql<U>(string sqlStr) where U : class, new();
-
-        /// <summary>
-        /// 通过SQL获取List
-        /// </summary>
-        /// <typeparam name="U">泛型</typeparam>
-        /// <param name="sqlStr">SQL</param>
-        /// <param name="param">参数</param>
-        /// <returns></returns>
-        List<U> GetListBySql<U>(string sqlStr, List<DbParameter> param) where U : class, new();
-
         #endregion
 
         #region 执行Sql语句
-
-        /// <summary>
-        /// 执行SQL语句
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        int ExecuteSql(string sql);
-
-        /// <summary>
-        /// 执行SQL语句
-        /// </summary>
-        /// <param name="sql">SQL</param>
-        /// <param name="spList">参数</param>
-        int ExecuteSql(string sql, List<DbParameter> spList);
 
         #endregion
 

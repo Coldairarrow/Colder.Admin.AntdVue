@@ -10,7 +10,7 @@ namespace Coldairarrow.Api
         //public const string ConString = "SERVER=61.153.17.10;PORT=5432;DATABASE=db_gxprize_201912;USER ID=u_gxprize_201912;PASSWORD=Cm1nLqOt4t3q-9r4VVWiDdWe;Pooling=true;MaxPoolSize=40;";
         public DefaultDbContext()
         {
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            //ChangeTracker.AutoDetectChangesEnabled = false;
         }
         public DbSet<Base_Log> Base_Logs { get; set; }
         public DbSet<Bus_PrizePool> Bus_PrizePools { get; set; }

@@ -81,7 +81,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 默认数据库类型
         /// </summary>
-        public static readonly DatabaseType DatabaseType = DatabaseType.SqlServer;
+        public static readonly DatabaseType DatabaseType = DatabaseType.PostgreSql;
 
         /// <summary>
         /// 默认数据库连接名

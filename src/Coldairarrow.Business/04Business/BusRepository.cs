@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
@@ -25,9 +26,15 @@ namespace Coldairarrow.Business
         const string Id = "Id";
         bool NeedLogicDelete(Type entityType)
         {
-            return GlobalSwitch.DeleteMode == DeleteMode.Logic 
+            return GlobalSwitch.DeleteMode == DeleteMode.Logic
                 && entityType.GetProperties().Any(x => x.Name == Deleted);
         }
+        private IRepository _db { get; }
+        public Action<string> HandleSqlLog { set => _db.HandleSqlLog = value; }
+
+        public string ConnectionString => _db.ConnectionString;
+
+        public DatabaseType DbType => _db.DbType;
 
         #region 重写
 
@@ -57,72 +64,67 @@ namespace Coldairarrow.Business
             return GetIQueryable<T>().ToList();
         }
 
-        public void Delete(Type type, string key)
+        public int Delete(Type type, string key)
         {
-            Delete(type, new List<string> { key });
+            return Delete(type, new List<string> { key });
         }
 
-        public void Delete(Type type, List<string> keys)
+        public int Delete(Type type, List<string> keys)
         {
             if (NeedLogicDelete(type))
-                UpdateWhere_Sql(type, $"@0.Contains({Id})", new object[] { keys }, (Deleted, true));
+                return UpdateWhere_Sql(type, $"@0.Contains({Id})", new object[] { keys }, (Deleted, UpdateType.Equal, true));
             else
-                _db.Delete(type, keys);
+                return _db.Delete(type, keys);
         }
 
-        public void Delete(List<object> entities)
+        public int Delete<T>(string key) where T : class, new()
+        {
+            return Delete<T>(new List<string> { key });
+        }
+
+        public int Delete<T>(List<string> keys) where T : class, new()
+        {
+            return Delete(typeof(T), keys);
+        }
+
+        public int Delete<T>(T entity) where T : class, new()
+        {
+            return Delete(new List<T> { entity });
+        }
+
+        public int Delete<T>(List<T> entities) where T : class, new()
         {
             if (entities?.Count > 0)
             {
                 var keys = entities.Select(x => x.GetPropertyValue(Id) as string).ToList();
-                Delete(entities[0].GetType(), keys);
+                return Delete(typeof(T), keys);
             }
+            else
+                return 0;
         }
 
-        public void Delete<T>(string key) where T : class, new()
+        public int Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
-            Delete<T>(new List<string> { key });
+            return Delete_Sql(condition);
         }
 
-        public void Delete<T>(List<string> keys) where T : class, new()
-        {
-            Delete(typeof(T), keys);
-        }
-
-        public void Delete<T>(T entity) where T : class, new()
-        {
-            Delete(new List<T> { entity });
-        }
-
-        public void Delete<T>(List<T> entities) where T : class, new()
-        {
-            var objList = entities.Select(x => x as object).ToList();
-
-            Delete(objList);
-        }
-
-        public void Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
-        {
-            Delete_Sql(condition);
-        }
-
-        public void DeleteAll(Type type)
+        public int DeleteAll(Type type)
         {
             if (NeedLogicDelete(type))
-                UpdateWhere_Sql(type, "true", null, (Deleted, true));
+                return UpdateWhere_Sql(type, "true", null, (Deleted, UpdateType.Equal, true));
             else
-                _db.DeleteAll(type);
+                return _db.DeleteAll(type);
         }
 
-        public void DeleteAll<T>() where T : class, new()
+        public int DeleteAll<T>() where T : class, new()
         {
-            DeleteAll(typeof(T));
+            return DeleteAll(typeof(T));
         }
 
         public int Delete_Sql<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
             if (NeedLogicDelete(typeof(T)))
-                return UpdateWhere_Sql(where, (Deleted, true));
+                return UpdateWhere_Sql(where, (Deleted, UpdateType.Equal, true));
             else
                 return _db.Delete_Sql(where);
         }
@@ -130,7 +132,7 @@ namespace Coldairarrow.Business
         public int Delete_Sql(Type entityType, string where, params object[] paramters)
         {
             if (NeedLogicDelete(entityType))
-                return UpdateWhere_Sql(entityType, where, paramters, (Deleted, true));
+                return UpdateWhere_Sql(entityType, where, paramters, (Deleted, UpdateType.Equal, true));
             else
                 return _db.Delete_Sql(entityType, where, paramters);
         }
@@ -138,48 +140,74 @@ namespace Coldairarrow.Business
         #endregion
 
         #region 忽略
+        public void UseTransaction(DbTransaction transaction)
+        {
+            _db.UseTransaction(transaction);
+        }
 
-        public Action<string> HandleSqlLog { set => _db.HandleSqlLog = value; }
-
-        public string ConnectionString => _db.ConnectionString;
-
-        public DatabaseType DbType => _db.DbType;
-
-        private IRepository _db { get; }
+        //public DbTransaction GetTransaction()
+        //{
+        //    return _db.GetTransaction();
+        //}
 
         public void BulkInsert<T>(List<T> entities) where T : class, new()
         {
             _db.BulkInsert(entities);
         }
 
-        public void CommitDb()
+        public Task<int> DeleteAllAsync(Type type)
         {
-            _db.CommitDb();
+            return _db.DeleteAllAsync(type);
         }
 
-        public void Dispose()
+        public Task<int> DeleteAsync(Type type, string key)
         {
-            _db.Dispose();
+            return _db.DeleteAsync(type, key);
         }
 
-        public int ExecuteSql(string sql)
+        public Task<int> DeleteAsync(Type type, List<string> keys)
         {
-            return _db.ExecuteSql(sql);
+            return _db.DeleteAsync(type, keys);
         }
 
-        public int ExecuteSql(string sql, List<DbParameter> parameters)
+        public Task<int> DeleteAsync<T>(string key) where T : class, new()
         {
-            return _db.ExecuteSql(sql, parameters);
+            return _db.DeleteAsync<T>(key);
         }
 
-        public DataTable GetDataTableWithSql(string sql)
+        public Task<int> DeleteAsync<T>(List<string> keys) where T : class, new()
         {
-            return _db.GetDataTableWithSql(sql);
+            return _db.DeleteAsync<T>(keys);
         }
 
-        public DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters)
+        public Task<int> Delete_SqlAsync<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
-            return _db.GetDataTableWithSql(sql, parameters);
+            return _db.Delete_SqlAsync(where);
+        }
+
+        public Task<int> Delete_SqlAsync(Type entityType, string where, params object[] paramters)
+        {
+            return _db.Delete_SqlAsync(entityType, where, paramters);
+        }
+
+        public int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
+        {
+            return _db.UpdateWhere_Sql(where, values);
+        }
+
+        public Task<int> UpdateWhere_SqlAsync<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
+        {
+            return _db.UpdateWhere_SqlAsync(where, values);
+        }
+
+        public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
+        {
+            return _db.UpdateWhere_Sql(entityType, where, paramters, values);
+        }
+
+        public Task<int> UpdateWhere_SqlAsync(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
+        {
+            return _db.UpdateWhere_SqlAsync(entityType, where, paramters, values);
         }
 
         public T GetEntity<T>(params object[] keyValue) where T : class, new()
@@ -187,89 +215,149 @@ namespace Coldairarrow.Business
             return _db.GetEntity<T>(keyValue);
         }
 
-        public DbTransaction GetTransaction()
+        public Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
         {
-            return _db.GetTransaction();
+            return _db.GetEntityAsync<T>(keyValue);
         }
 
-        public void Insert(List<object> entities)
+        public Task<List<object>> GetListAsync(Type type)
         {
-            _db.Insert(entities);
+            return _db.GetListAsync(type);
         }
 
-        public void Insert<T>(T entity) where T : class, new()
+        public DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters)
         {
-            _db.Insert(entity);
+            return _db.GetDataTableWithSql(sql, parameters);
         }
 
-        public void Insert<T>(List<T> entities) where T : class, new()
+        public Task<DataTable> GetDataTableWithSqlAsync(string sql, params (string paramterName, object value)[] parameters)
         {
-            _db.Insert(entities);
+            return _db.GetDataTableWithSqlAsync(sql, parameters);
         }
 
-        public void Update(List<object> entities)
-        {
-            _db.Update(entities);
-        }
-
-        public void Update<T>(T entity) where T : class, new()
-        {
-            _db.Update(entity);
-        }
-
-        public void Update<T>(List<T> entities) where T : class, new()
-        {
-            _db.Update(entities);
-        }
-
-        public void UpdateAny(List<object> entities, List<string> properties)
-        {
-            _db.UpdateAny(entities, properties);
-        }
-
-        public void UpdateAny<T>(T entity, List<string> properties) where T : class, new()
-        {
-            _db.UpdateAny(entity, properties);
-        }
-
-        public void UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
-        {
-            _db.UpdateAny(entities, properties);
-        }
-
-        public void UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
-        {
-            _db.UpdateWhere(whereExpre, set);
-        }
-
-        public int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, object value)[] values) where T : class, new()
-        {
-            return _db.UpdateWhere_Sql(where, values);
-        }
-
-        public void UseTransaction(DbTransaction transaction)
-        {
-            _db.UseTransaction(transaction);
-        }
-
-        public List<T> GetListBySql<T>(string sqlStr) where T : class, new()
-        {
-            return _db.GetListBySql<T>(sqlStr);
-        }
-
-        public List<T> GetListBySql<T>(string sqlStr, List<DbParameter> parameters) where T : class, new()
+        public List<T> GetListBySql<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new()
         {
             return _db.GetListBySql<T>(sqlStr, parameters);
         }
 
-        public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, object value)[] values)
+        public Task<List<T>> GetListBySqlAsync<T>(string sqlStr, params (string paramterName, object value)[] parameters) where T : class, new()
         {
-            return _db.UpdateWhere_Sql(entityType, where, paramters, values);
+            return _db.GetListBySqlAsync<T>(sqlStr, parameters);
+        }
+
+        public int ExecuteSql(string sql, params (string paramterName, object paramterValue)[] paramters)
+        {
+            return _db.ExecuteSql(sql, paramters);
+        }
+
+        public Task<int> ExecuteSqlAsync(string sql, params (string paramterName, object paramterValue)[] paramters)
+        {
+            return _db.ExecuteSqlAsync(sql, paramters);
+        }
+
+        public int Insert<T>(T entity) where T : class, new()
+        {
+            return _db.Insert(entity);
+        }
+
+        public Task<int> InsertAsync<T>(T entity) where T : class, new()
+        {
+            return _db.InsertAsync(entity);
+        }
+
+        public int Insert<T>(List<T> entities) where T : class, new()
+        {
+            return _db.Insert(entities);
+        }
+
+        public Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
+        {
+            return _db.InsertAsync(entities);
+        }
+
+        public Task<int> DeleteAllAsync<T>() where T : class, new()
+        {
+            return _db.DeleteAllAsync<T>();
+        }
+
+        public Task<int> DeleteAsync<T>(T entity) where T : class, new()
+        {
+            return _db.DeleteAsync(entity);
+        }
+
+        public Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
+        {
+            return _db.DeleteAsync(entities);
+        }
+
+        public Task<int> DeleteAsync<T>(Expression<Func<T, bool>> condition) where T : class, new()
+        {
+            return _db.DeleteAsync(condition);
+        }
+
+        public int Update<T>(T entity) where T : class, new()
+        {
+            return _db.Update(entity);
+        }
+
+        public Task<int> UpdateAsync<T>(T entity) where T : class, new()
+        {
+            return _db.UpdateAsync(entity);
+        }
+
+        public int Update<T>(List<T> entities) where T : class, new()
+        {
+            return _db.Update(entities);
+        }
+
+        public Task<int> UpdateAsync<T>(List<T> entities) where T : class, new()
+        {
+            return _db.UpdateAsync(entities);
+        }
+
+        public int UpdateAny<T>(T entity, List<string> properties) where T : class, new()
+        {
+            return _db.UpdateAny(entity, properties);
+        }
+
+        public Task<int> UpdateAnyAsync<T>(T entity, List<string> properties) where T : class, new()
+        {
+            return _db.UpdateAnyAsync(entity, properties);
+        }
+
+        public int UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
+        {
+            return _db.UpdateAny(entities, properties);
+        }
+
+        public Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
+        {
+            return _db.UpdateAnyAsync(entities, properties);
+        }
+
+        public int UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
+        {
+            return _db.UpdateWhere(whereExpre, set);
+        }
+
+        public Task<int> UpdateWhereAsync<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
+        {
+            return _db.UpdateWhereAsync(whereExpre, set);
+        }
+
+        public Task<List<T>> GetListAsync<T>() where T : class, new()
+        {
+            return _db.GetListAsync<T>();
         }
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             return _db.RunTransaction(action, isolationLevel);
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
         }
 
         #endregion
