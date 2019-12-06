@@ -85,8 +85,7 @@ namespace Coldairarrow.Business
                     {
                         if (_service == null)
                         {
-                            _service = DbFactory.GetRepository(_conString, _dbType);
-                            _service = new BusRepository(_service);
+                            _service = new BusRepository(DbFactory.GetRepository(_conString, _dbType));
                         }
                     }
                 }
