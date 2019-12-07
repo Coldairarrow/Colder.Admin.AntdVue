@@ -1,9 +1,7 @@
 ﻿using Coldairarrow.Util;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 
 namespace Coldairarrow.DataRepository
@@ -39,66 +37,34 @@ namespace Coldairarrow.DataRepository
         #region 内部成员
 
         private IsolationLevel _isolationLevel { get; set; }
-        private ConcurrentDictionary<string, DbTransaction> _transactionMap { get; }
-            = new ConcurrentDictionary<string, DbTransaction>();
-        private string GetRepositoryId(IRepository repository)
-        {
-            return $"{repository.DbType.ToString()}{repository.ConnectionString}";
-        }
         private SynchronizedCollection<IRepository> _repositorys { get; set; }
             = new SynchronizedCollection<IRepository>();
-        private object _lock { get; } = new object();
-        private void _BeginTransaction(params IRepository[] repositorys)
-        {
-            repositorys.ForEach(x =>
-            {
-                Begin(x);
-            });
-
-            void Begin(IRepository db)
-            {
-                lock (_lock)
-                {
-                    //同一个数据库共享同一个事物
-                    string id = GetRepositoryId(db);
-                    if (_transactionMap.ContainsKey(id))
-                        db.UseTransaction(_transactionMap[id]);
-                    else
-                    {
-                        (db as IInternalTransaction).BeginTransaction(_isolationLevel);
-
-                        //_transactionMap[id] = db.GetTransaction();
-                    }
-                }
-            }
-        }
 
         #endregion
 
         #region 外部接口
 
+        public bool OpenTransaction { get; set; }
+
         public void AddRepository(params IRepository[] repositories)
         {
-            List<IRepository> needBeginList = new List<IRepository>();
-            if (repositories.Length > 0)
+            repositories.ForEach(aRepositroy =>
             {
-                repositories.ForEach(aRepository =>
+                if (!_repositorys.Contains(aRepositroy))
                 {
-                    if (!_repositorys.Contains(aRepository))
-                    {
-                        _repositorys.Add(aRepository);
-                        needBeginList.Add(aRepository);
-                    }
-                });
-            }
+                    if (OpenTransaction)
+                        (aRepositroy as IInternalTransaction).BeginTransaction(_isolationLevel);
 
-            _BeginTransaction(needBeginList.ToArray());
+                    _repositorys.Add(aRepositroy);
+                }
+            });
         }
 
         public void BeginTransaction(IsolationLevel isolationLevel)
         {
+            OpenTransaction = true;
             _isolationLevel = isolationLevel;
-            _BeginTransaction(_repositorys.ToArray());
+            _repositorys.ForEach(aRepository => (aRepository as IInternalTransaction).BeginTransaction(isolationLevel));
         }
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
@@ -124,58 +90,42 @@ namespace Coldairarrow.DataRepository
             }
             finally
             {
-                Dispose();
+                DisposeTransaction();
             }
 
             return (isOK, resEx);
         }
 
-        /// <summary>
-        /// 提交事物
-        /// </summary>
         public void CommitTransaction()
         {
-            _transactionMap.Values.ForEach(x => x.Commit());
+            _repositorys.ForEach(x => (x as IInternalTransaction).CommitTransaction());
         }
 
-        /// <summary>
-        /// 回滚事物
-        /// </summary>
         public void RollbackTransaction()
         {
-            _transactionMap.Values.ForEach(x => x.Rollback());
+            _repositorys.ForEach(x => (x as IInternalTransaction).RollbackTransaction());
+        }
+
+        public void DisposeTransaction()
+        {
+            OpenTransaction = false;
+            _repositorys.ForEach(x => (x as IInternalTransaction).DisposeTransaction());
         }
 
         #endregion
 
         #region Dispose
 
-        public bool Disposed { get; set; } = false;
-
-        protected virtual void Dispose(bool disposing)
+        private bool _disposed { get; set; } = false;
+        public virtual void Dispose()
         {
-            if (Disposed)
+            if (_disposed)
                 return;
 
-            if (disposing)
-            {
-                _repositorys.ForEach(x => x.Dispose());
-            }
-
-            Disposed = true;
-        }
-
-        ~DistributedTransaction()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// 执行与释放或重置非托管资源关联的应用程序定义的任务。
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
+            _disposed = true;
+            _repositorys.ForEach(x => x.Dispose());
+            _repositorys = null;
+            _disposed = true;
         }
 
         #endregion

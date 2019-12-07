@@ -16,11 +16,6 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
-    /// <summary>
-    /// 描述：数据库仓储基类类
-    /// 作者：Coldairarrow
-    /// </summary>
-    /// <seealso cref="IRepository" />
     internal abstract class DbRepository : IRepository, IInternalTransaction
     {
         #region 构造函数
@@ -213,9 +208,7 @@ namespace Coldairarrow.DataRepository
             }
             finally
             {
-                _openedTransaction = false;
-                _transaction.Dispose();
-                _db.Detach();
+                DisposeTransaction();
             }
 
             return (success, resEx);
@@ -235,20 +228,13 @@ namespace Coldairarrow.DataRepository
         {
             _transaction?.Rollback();
         }
-        public Action<string> HandleSqlLog { set => EFCoreSqlLogeerProvider.HandleSqlLog = value; }
-        public void UseTransaction(DbTransaction transaction)
+        public void DisposeTransaction()
         {
-            //if (_transaction != null)
-            //    _transaction.Dispose();
-
-            //_openedTransaction = true;
-            //_transaction = transaction;
-            //Db.UseTransaction(transaction);
+            _db.Detach();
+            _transaction?.Dispose();
+            _openedTransaction = false;
         }
-        //public DbTransaction GetTransaction()
-        //{
-        //    return _transaction;
-        //}
+        public Action<string> HandleSqlLog { set => EFCoreSqlLogeerProvider.HandleSqlLog = value; }
 
         #endregion
 
