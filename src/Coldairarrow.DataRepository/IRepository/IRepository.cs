@@ -31,18 +31,6 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         DatabaseType DbType { get; }
 
-        /// <summary>
-        /// 使用已存在的事物
-        /// </summary>
-        /// <param name="transaction">事物对象</param>
-        void UseTransaction(DbTransaction transaction);
-
-        /// <summary>
-        /// 获取事物对象
-        /// </summary>
-        /// <returns></returns>
-        //DbTransaction GetTransaction();
-
         #endregion
 
         #region 增加数据

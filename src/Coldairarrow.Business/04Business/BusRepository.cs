@@ -3,7 +3,6 @@ using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
@@ -140,15 +139,6 @@ namespace Coldairarrow.Business
         #endregion
 
         #region 忽略
-        public void UseTransaction(DbTransaction transaction)
-        {
-            _db.UseTransaction(transaction);
-        }
-
-        //public DbTransaction GetTransaction()
-        //{
-        //    return _db.GetTransaction();
-        //}
 
         public void BulkInsert<T>(List<T> entities) where T : class, new()
         {

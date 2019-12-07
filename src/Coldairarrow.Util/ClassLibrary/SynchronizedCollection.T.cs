@@ -2,7 +2,7 @@
 
 namespace System.Collections.Generic
 {
-    public class SynchronizedCollection<T> : IEnumerable<T>,IDisposable
+    public class SynchronizedCollection<T> : IEnumerable<T>, IDisposable
     {
         #region 外部接口
 

@@ -18,7 +18,7 @@ namespace Coldairarrow.DataRepository
             _transaction = transaction;
         }
         private DistributedTransaction _transaction { get; }
-        private bool _openTransaction { get => _transaction?.Disposed == false; }
+        private bool _openTransaction { get => _transaction?.OpenTransaction == true; }
         private Type _absTableType { get; }
         private string _absTableName { get; }
         private IQueryable<T> _source { get; set; }

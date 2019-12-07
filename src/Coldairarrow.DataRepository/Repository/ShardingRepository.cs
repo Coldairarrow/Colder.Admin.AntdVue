@@ -433,6 +433,11 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
+        public void DisposeTransaction()
+        {
+            ((IInternalTransaction)_transaction).DisposeTransaction();
+        }
+
         #endregion
     }
 }
