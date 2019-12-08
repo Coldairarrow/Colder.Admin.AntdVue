@@ -123,9 +123,9 @@ namespace Coldairarrow.DataRepository
                 return;
 
             _disposed = true;
-            _repositorys.ForEach(x => x.Dispose());
+            DisposeTransaction();
+            _repositorys?.Dispose();
             _repositorys = null;
-            _disposed = true;
         }
 
         #endregion

@@ -22,47 +22,72 @@ namespace Coldairarrow.DataRepository
         #region 私有成员
 
         private IRepository _db { get; }
-        private Type MapTable(Type absTable, string targetTableName)
+        private Type MapTable(string targetTableName)
         {
-            return ShardingHelper.MapTable(absTable, targetTableName);
+            return DbModelFactory.GetEntityType(targetTableName);
         }
         private List<(object targetObj, IRepository targetDb)> GetMapConfigs<T>(List<T> entities)
         {
+            var configs = entities.Select(x => ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, x)).ToList();
+            Dictionary<string, IRepository> targetDbs = new Dictionary<string, IRepository>();
+            configs.GroupBy(x => GetDbId(x.conString, x.dbType)).Select(x => x.Key).ForEach(aDb =>
+            {
+                var theConfig = configs.Where(x => GetDbId(x.conString, x.dbType) == aDb).FirstOrDefault();
+                targetDbs[aDb] = DbFactory.GetRepository(theConfig.conString, theConfig.dbType);
+            });
             List<(object targetObj, IRepository targetDb)> resList = new List<(object targetObj, IRepository targetDb)>();
             entities.ForEach(aEntity =>
             {
                 (string tableName, string conString, DatabaseType dbType) = ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, aEntity);
-
-                resList.Add((aEntity.ChangeType(MapTable(typeof(T), tableName)), DbFactory.GetRepository(conString, dbType)));
+                var targetDb = targetDbs[GetDbId(conString, dbType)];
+                var targetObj = aEntity.ChangeType(MapTable(tableName));
+                resList.Add((targetObj, targetDb));
             });
 
             return resList;
+
+            string GetDbId(string conString, DatabaseType dbType)
+            {
+                return $"{conString}{dbType.ToString()}";
+            }
         }
-        private void WriteTable<T>(List<T> entities, Action<object, IRepository> accessData)
+        private int WriteTable<T>(List<T> entities, Func<object, IRepository, int> accessData)
         {
             var mapConfigs = GetMapConfigs(entities);
 
-            var dbs = mapConfigs.Select(x => x.targetDb).ToArray();
+            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
             if (!_openedTransaction)
             {
-                DistributedTransaction transaction = new DistributedTransaction(dbs);
-
-                var (Success, ex) = transaction.RunTransaction(Run);
-                if (!Success)
-                    throw ex;
+                using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
+                {
+                    int count = 0;
+                    var (Success, ex) = transaction.RunTransaction(() =>
+                    {
+                        count = Run();
+                    });
+                    if (!Success)
+                        throw ex;
+                    else
+                        return count;
+                }
             }
             else
             {
                 _transaction.AddRepository(dbs);
-                Run();
+                return Run();
             }
 
-            void Run()
+            int Run()
             {
+                int count = 0;
+
                 mapConfigs.ForEach(aConfig =>
                 {
-                    accessData(aConfig.targetObj, aConfig.targetDb);
+                    count += accessData(aConfig.targetObj, aConfig.targetDb);
                 });
+
+                dbs.ForEach(x => x.Dispose());
+                return count;
             }
         }
         private bool _openedTransaction { get; set; } = false;
@@ -71,166 +96,98 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region 外部接口
-
-        /// <summary>
-        /// 添加单条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entity">实体对象</param>
-        public void Insert<T>(T entity) where T : class, new()
+        public int Insert<T>(T entity) where T : class, new()
         {
-            Insert(new List<T> { entity });
+            return Insert(new List<T> { entity });
         }
-
-        /// <summary>
-        /// 添加多条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entities">实体对象集合</param>
-        public void Insert<T>(List<T> entities) where T : class, new()
+        public int Insert<T>(List<T> entities) where T : class, new()
         {
-            WriteTable(entities, (targetObj, targetDb) => targetDb.Insert(targetObj));
+            return WriteTable(entities, (targetObj, targetDb) => targetDb.Insert(targetObj));
         }
-
-        /// <summary>
-        /// 删除所有记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        public void DeleteAll<T>() where T : class, new()
+        public int DeleteAll<T>() where T : class, new()
         {
             var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
             var allDbs = configs.Select(x => new
             {
                 Db = DbFactory.GetRepository(x.conString, x.dbType),
-                TargetType = MapTable(typeof(T), x.tableName)
+                TargetType = MapTable(x.tableName)
             }).ToList();
 
             var dbs = allDbs.Select(x => x.Db).ToArray();
 
             if (!_openedTransaction)
             {
-                var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs);
-                var (Success, ex) = transaction.RunTransaction(Run);
-                if (!Success)
-                    throw ex;
+                int count = 0;
+                using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
+                {
+                    var (Success, ex) = transaction.RunTransaction(() =>
+                    {
+                        count = Run();
+                    });
+                    if (!Success)
+                        throw ex;
+                    else
+                        return count;
+                }
             }
             else
             {
                 _transaction.AddRepository(dbs);
-                Run();
+                return Run();
             }
 
-            void Run()
+            int Run()
             {
+                int count = 0;
+
                 allDbs.ForEach(x =>
                 {
-                    x.Db.DeleteAll(x.TargetType);
+                    count += x.Db.DeleteAll(x.TargetType);
                 });
+
+                return count;
             }
         }
-
-        /// <summary>
-        /// 删除单条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entity">实体对象</param>
-        public void Delete<T>(T entity) where T : class, new()
+        public int Delete<T>(T entity) where T : class, new()
         {
-            Delete(new List<T> { entity });
+            return Delete(new List<T> { entity });
         }
-
-        /// <summary>
-        /// 删除多条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entities">实体对象集合</param>
-        public void Delete<T>(List<T> entities) where T : class, new()
+        public int Delete<T>(List<T> entities) where T : class, new()
         {
-            WriteTable(entities, (targetObj, targetDb) => targetDb.Delete(targetObj));
+            return WriteTable(entities, (targetObj, targetDb) => targetDb.Delete(targetObj));
         }
-
-        /// <summary>
-        /// 按条件删除记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="condition">筛选条件</param>
-        public void Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
+        public int Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
             var deleteList = GetIShardingQueryable<T>().Where(condition).ToList();
 
-            Delete(deleteList);
+            return Delete(deleteList);
         }
-
-        /// <summary>
-        /// 更新单条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entity">实体对象</param>
-        public void Update<T>(T entity) where T : class, new()
+        public int Update<T>(T entity) where T : class, new()
         {
-            Update(new List<T> { entity });
+            return Update(new List<T> { entity });
         }
-
-        /// <summary>
-        /// 更新多条记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entities">实体对象集合</param>
-        public void Update<T>(List<T> entities) where T : class, new()
+        public int Update<T>(List<T> entities) where T : class, new()
         {
-            WriteTable(entities, (targetObj, targetDb) => targetDb.Update(targetObj));
+            return WriteTable(entities, (targetObj, targetDb) => targetDb.Update(targetObj));
         }
-
-        /// <summary>
-        /// 更新单条记录的某些属性
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entity">实体对象</param>
-        /// <param name="properties">属性</param>
-        public void UpdateAny<T>(T entity, List<string> properties) where T : class, new()
+        public int UpdateAny<T>(T entity, List<string> properties) where T : class, new()
         {
-            UpdateAny(new List<T> { entity }, properties);
+            return UpdateAny(new List<T> { entity }, properties);
         }
-
-        /// <summary>
-        /// 更新多条记录的某些属性
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="entities">实体对象集合</param>
-        /// <param name="properties">属性</param>
-        public void UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
+        public int UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
         {
-            WriteTable(entities, (targetObj, targetDb) => targetDb.UpdateAny(targetObj, properties));
+            return WriteTable(entities, (targetObj, targetDb) => targetDb.UpdateAny(targetObj, properties));
         }
-
-        /// <summary>
-        /// 按照条件更新记录
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <param name="whereExpre">筛选条件</param>
-        /// <param name="set">更新操作</param>
-        public void UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
+        public int UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
         {
             var list = GetIShardingQueryable<T>().Where(whereExpre).ToList();
             list.ForEach(aData => set(aData));
-            Update(list);
+            return Update(list);
         }
-
-        /// <summary>
-        /// 获取IShardingQueryable
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <returns></returns>
         public IShardingQueryable<T> GetIShardingQueryable<T>() where T : class, new()
         {
             return new ShardingQueryable<T>(_db.GetIQueryable<T>(), _transaction);
         }
-
-        /// <summary>
-        /// 获取所有数据
-        /// </summary>
-        /// <typeparam name="T">实体泛型</typeparam>
-        /// <returns></returns>
         public List<T> GetList<T>() where T : class, new()
         {
             return GetIShardingQueryable<T>().ToList();
@@ -260,8 +217,7 @@ namespace Coldairarrow.DataRepository
             }
             finally
             {
-                Dispose();
-                _openedTransaction = false;
+                DisposeTransaction();
             }
 
             return (isOK, resEx);
@@ -305,30 +261,7 @@ namespace Coldairarrow.DataRepository
             disposedValue = true;
         }
 
-        ~ShardingRepository()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// 执行与释放或重置非托管资源关联的应用程序定义的任务。
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        int IBaseRepository.Insert<T>(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> InsertAsync<T>(T entity) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IBaseRepository.Insert<T>(List<T> entities)
         {
             throw new NotImplementedException();
         }
@@ -338,17 +271,7 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
-        int IBaseRepository.DeleteAll<T>()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> DeleteAllAsync<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IBaseRepository.Delete<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -358,17 +281,7 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
-        int IBaseRepository.Delete<T>(List<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IBaseRepository.Delete<T>(Expression<Func<T, bool>> condition)
         {
             throw new NotImplementedException();
         }
@@ -378,17 +291,7 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
-        int IBaseRepository.Update<T>(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> UpdateAsync<T>(T entity) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IBaseRepository.Update<T>(List<T> entities)
         {
             throw new NotImplementedException();
         }
@@ -398,27 +301,12 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
-        int IBaseRepository.UpdateAny<T>(T entity, List<string> properties)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> UpdateAnyAsync<T>(T entity, List<string> properties) where T : class, new()
         {
             throw new NotImplementedException();
         }
 
-        int IBaseRepository.UpdateAny<T>(List<T> entities, List<string> properties)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IBaseRepository.UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set)
         {
             throw new NotImplementedException();
         }
@@ -433,8 +321,15 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
         public void DisposeTransaction()
         {
+            _openedTransaction = false;
+            _transaction.DisposeTransaction();
             ((IInternalTransaction)_transaction).DisposeTransaction();
         }
 
