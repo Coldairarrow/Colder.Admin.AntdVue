@@ -88,8 +88,10 @@ namespace Coldairarrow.DataRepository
 
         private ShardingConfig _config { get; } = ShardingConfig.Instance;
         private List<AbstractTable> _absTables { get; } = new List<AbstractTable>();
-        private List<(string conString, ReadWriteType opType)> _physicDbs { get; } = new List<(string conString, ReadWriteType opType)>();
-        private List<(string physicTableName, string dataSourceName)> _physicTables { get; } = new List<(string physicTableName, string dataSourceName)>();
+        private List<(string conString, ReadWriteType opType)> _physicDbs { get; }
+            = new List<(string conString, ReadWriteType opType)>();
+        private List<(string physicTableName, string dataSourceName)> _physicTables { get; }
+            = new List<(string physicTableName, string dataSourceName)>();
 
         #endregion
     }

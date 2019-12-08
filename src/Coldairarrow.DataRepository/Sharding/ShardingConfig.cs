@@ -17,7 +17,7 @@ namespace Coldairarrow.DataRepository
         /// </summary>
         private ShardingConfig()
         {
-            
+
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace Coldairarrow.DataRepository
         {
             _absDb.Add(new AbstractDatabse
             {
-                AbsDbName=absDbName,
-                Tables=tables
+                AbsDbName = absDbName,
+                Tables = tables
             });
         }
 
@@ -215,7 +215,8 @@ namespace Coldairarrow.DataRepository
     public class AbstractTable
     {
         public string AbsTableName { get; set; }
-        public List<(string physicTableName, string dataSourceName)> PhysicTables { get; set; } = new List<(string physicTableName, string dataSourceName)>();
+        public List<(string physicTableName, string dataSourceName)> PhysicTables { get; set; }
+            = new List<(string physicTableName, string dataSourceName)>();
         public Func<object, string> FindTable { get; set; }
     }
 }

@@ -27,7 +27,6 @@ namespace Coldairarrow.Util
 
                 }
             });
-            _objList.Dispose();
             _objList = null;
         }
     }

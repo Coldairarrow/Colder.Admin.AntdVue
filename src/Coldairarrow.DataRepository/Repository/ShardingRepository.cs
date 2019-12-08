@@ -244,21 +244,14 @@ namespace Coldairarrow.DataRepository
 
         #region Dispose
 
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
+        private bool _disposed { get; set; } = false;
+        public virtual void Dispose()
         {
-            if (disposedValue)
+            if (_disposed)
                 return;
 
-            if (disposing)
-            {
-                _transaction.Dispose();
-            }
-
-            _openedTransaction = false;
-
-            disposedValue = true;
+            _disposed = true;
+            _transaction?.Dispose();
         }
 
         public Task<int> InsertAsync<T>(T entity) where T : class, new()
@@ -317,11 +310,6 @@ namespace Coldairarrow.DataRepository
         }
 
         public Task<List<T>> GetListAsync<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
         {
             throw new NotImplementedException();
         }

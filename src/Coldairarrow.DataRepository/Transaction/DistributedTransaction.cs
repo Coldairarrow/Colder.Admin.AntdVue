@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Util;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -35,7 +36,6 @@ namespace Coldairarrow.DataRepository
         #endregion
 
         #region 内部成员
-
         private IsolationLevel _isolationLevel { get; set; }
         private SynchronizedCollection<IRepository> _repositorys { get; set; }
             = new SynchronizedCollection<IRepository>();
@@ -124,7 +124,6 @@ namespace Coldairarrow.DataRepository
 
             _disposed = true;
             DisposeTransaction();
-            _repositorys?.Dispose();
             _repositorys = null;
         }
 
