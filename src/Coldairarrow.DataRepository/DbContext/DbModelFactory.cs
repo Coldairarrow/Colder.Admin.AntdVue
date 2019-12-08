@@ -19,7 +19,7 @@ namespace Coldairarrow.DataRepository
 
         static DbModelFactory()
         {
-            InitModelType();
+            InitEntityType();
         }
 
         #endregion
@@ -53,11 +53,37 @@ namespace Coldairarrow.DataRepository
             return resModel;
         }
 
+        /// <summary>
+        /// 获取实体模型
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <returns></returns>
+        public static Type GetEntityType(string tableName)
+        {
+            if (!_entityTypeMap.ContainsKey(tableName))
+                throw new Exception($"表[{tableName}]缺少实体模型!");
+
+            return _entityTypeMap[tableName];
+        }
+
+        /// <summary>
+        /// 添加实体模型
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="entityType">实体模型</param>
+        public static void AddEntityType(string tableName, Type entityType)
+        {
+            if (_entityTypeMap.ContainsKey(tableName))
+                throw new Exception($"表[{tableName}]已存在实体模型!");
+
+            _entityTypeMap[tableName] = entityType;
+        }
+
         #endregion
 
         #region 私有成员
 
-        private static void InitModelType()
+        private static void InitEntityType()
         {
             List<Type> types = GlobalData.FxAllTypes
                 .Where(x => x.GetCustomAttribute(typeof(TableAttribute), false) != null)
@@ -65,10 +91,10 @@ namespace Coldairarrow.DataRepository
 
             types.ForEach(aType =>
             {
-                _modelTypeMap[aType.Name] = aType;
+                _entityTypeMap[aType.Name] = aType;
             });
         }
-        private static ConcurrentDictionary<string, Type> _modelTypeMap { get; } =
+        private static ConcurrentDictionary<string, Type> _entityTypeMap { get; } =
             new ConcurrentDictionary<string, Type>();
         private static ConcurrentDictionary<string, IModel> _dbCompiledModel { get; }
             = new ConcurrentDictionary<string, IModel>();
@@ -84,7 +110,7 @@ namespace Coldairarrow.DataRepository
                 default: throw new Exception("暂不支持该数据库!");
             }
             ModelBuilder modelBuilder = new ModelBuilder(conventionSet);
-            _modelTypeMap.Values.ForEach(x =>
+            _entityTypeMap.Values.ForEach(x =>
             {
                 modelBuilder.Model.AddEntityType(x);
             });
@@ -95,9 +121,8 @@ namespace Coldairarrow.DataRepository
         {
             return $"{dbType.ToString()}{conStr}";
         }
-        private static object _buildCompiledModelLock { get; } = new object();
-        private static UsingLock<object> _modelLock { get; } = new UsingLock<object>();
-        private static readonly ConcurrentDictionary<string, object> _lockDic = new ConcurrentDictionary<string, object>();
+        private static readonly ConcurrentDictionary<string, object> _lockDic
+            = new ConcurrentDictionary<string, object>();
 
         #endregion
 
