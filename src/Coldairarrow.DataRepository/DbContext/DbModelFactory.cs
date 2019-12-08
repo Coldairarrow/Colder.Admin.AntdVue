@@ -77,6 +77,7 @@ namespace Coldairarrow.DataRepository
                 throw new Exception($"表[{tableName}]已存在实体模型!");
 
             _entityTypeMap[tableName] = entityType;
+            _dbCompiledModel.Clear();
         }
 
         #endregion
