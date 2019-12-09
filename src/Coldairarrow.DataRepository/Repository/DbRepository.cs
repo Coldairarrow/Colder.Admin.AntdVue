@@ -591,6 +591,7 @@ namespace Coldairarrow.DataRepository
             if (_disposed)
                 return;
 
+            _disposed = true;
             DisposeTransaction();
             _db.Dispose();
         }

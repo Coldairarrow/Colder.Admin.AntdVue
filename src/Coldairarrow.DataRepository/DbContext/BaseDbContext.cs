@@ -16,9 +16,10 @@ namespace Coldairarrow.DataRepository
 
         public void Detach()
         {
-            ChangeTracker.Entries().ForEach(aEntry =>
+            ChangeTracker.Entries().ToList().ForEach(aEntry =>
             {
-                aEntry.State = EntityState.Detached;
+                if (aEntry.State != EntityState.Detached)
+                    aEntry.State = EntityState.Detached;
             });
         }
 
