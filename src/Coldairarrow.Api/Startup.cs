@@ -123,11 +123,6 @@ namespace Coldairarrow.Api
 
             //AOP
             builder.RegisterType<Interceptor>();
-
-            //请求结束自动释放
-            builder.RegisterType<DisposableContainer>()
-                .As<IDisposableContainer>()
-                .InstancePerLifetimeScope();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

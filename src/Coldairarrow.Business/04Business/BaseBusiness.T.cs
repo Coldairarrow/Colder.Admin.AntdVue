@@ -63,6 +63,7 @@ namespace Coldairarrow.Business
         private object _serviceLock = new object();
         protected virtual string _valueField { get; } = "Id";
         protected virtual string _textField { get => throw new Exception("请在子类重写"); }
+        private SynchronizedCollection<IRepository> _dbs { get; } = new SynchronizedCollection<IRepository>();
 
         #endregion
 
@@ -514,8 +515,13 @@ namespace Coldairarrow.Business
 
         #region Dispose
 
+        private bool _disposed = false;
         public virtual void Dispose()
         {
+            if (_disposed)
+                return;
+
+            _disposed = true;
             _service?.Dispose();
         }
 

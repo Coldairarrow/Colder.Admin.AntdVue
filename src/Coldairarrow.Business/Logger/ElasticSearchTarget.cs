@@ -19,15 +19,14 @@ namespace Coldairarrow.Business
 
             var pool = new StaticConnectionPool(GlobalSwitch.ElasticSearchNodes);
             _connectionSettings = new ConnectionSettings(pool).DefaultIndex(index);
-
             _elasticClient = new ElasticClient(_connectionSettings);
-            if (!_elasticClient.IndexExists(Indices.Parse(index)).Exists)
+            if (!_elasticClient.Indices.Exists(Indices.Parse(index)).Exists)
             {
                 var descriptor = new CreateIndexDescriptor(index)
-                    .Mappings(ms => ms
-                        .Map<Base_Log>(m => m.AutoMap())
+                    .Map(ms => ms
+                        .AutoMap<Base_Log>()
                     );
-                var res = _elasticClient.CreateIndex(descriptor);
+                var res = _elasticClient.Indices.Create(descriptor);
             }
         }
 
