@@ -37,12 +37,7 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-            //int number = Process.GetCurrentProcess().Threads.Cast<ProcessThread>().Where(x => x.ThreadState == ThreadState.Running).Count();
-            //Console.WriteLine($"当前线程数:{number}");
-            //int thread1 = 0;
-            //int thread2 = 0;
-            //ThreadPool.ThreadCount;
-            //ThreadPool.GetMaxThreads(out thread1, out thread2);
+
             Console.WriteLine("完成");
             Console.ReadLine();
         }
