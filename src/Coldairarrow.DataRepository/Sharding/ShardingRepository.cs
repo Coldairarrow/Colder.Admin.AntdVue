@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace Coldairarrow.DataRepository
 {
@@ -29,17 +30,17 @@ namespace Coldairarrow.DataRepository
         private List<(object targetObj, IRepository targetDb)> GetMapConfigs<T>(List<T> entities)
         {
             var configs = entities.Select(x => ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, x)).ToList();
-            Dictionary<string, IRepository> targetDbs = new Dictionary<string, IRepository>();
-            configs.GroupBy(x => GetDbId(x.conString, x.dbType)).Select(x => x.Key).ForEach(aDb =>
+            configs.ForEach(aConfig =>
             {
-                var theConfig = configs.Where(x => GetDbId(x.conString, x.dbType) == aDb).FirstOrDefault();
-                targetDbs[aDb] = DbFactory.GetRepository(theConfig.conString, theConfig.dbType);
+                var dbId = GetDbId(aConfig.conString, aConfig.dbType);
+                if (!_repositories.ContainsKey(dbId))
+                    _repositories[dbId] = DbFactory.GetRepository(aConfig.conString, aConfig.dbType);
             });
             List<(object targetObj, IRepository targetDb)> resList = new List<(object targetObj, IRepository targetDb)>();
             entities.ForEach(aEntity =>
             {
                 (string tableName, string conString, DatabaseType dbType) = ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, aEntity);
-                var targetDb = targetDbs[GetDbId(conString, dbType)];
+                var targetDb = _repositories[GetDbId(conString, dbType)];
                 var targetObj = aEntity.ChangeType(MapTable(tableName));
                 resList.Add((targetObj, targetDb));
             });
@@ -54,22 +55,22 @@ namespace Coldairarrow.DataRepository
         private int WriteTable<T>(List<T> entities, Func<object, IRepository, int> accessData)
         {
             var mapConfigs = GetMapConfigs(entities);
+            int count = 0;
 
             var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
             if (!_openedTransaction)
             {
                 using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
                 {
-                    int count = 0;
                     var (Success, ex) = transaction.RunTransaction(() =>
                     {
                         count = Run();
                     });
                     if (!Success)
                         throw ex;
-                    else
-                        return count;
                 }
+                ClearRepositories();
+                return count;
             }
             else
             {
@@ -79,19 +80,25 @@ namespace Coldairarrow.DataRepository
 
             int Run()
             {
-                int count = 0;
+                int tmpCount = 0;
 
                 mapConfigs.ForEach(aConfig =>
                 {
                     count += accessData(aConfig.targetObj, aConfig.targetDb);
                 });
 
-                dbs.ForEach(x => x.Dispose());
-                return count;
+                return tmpCount;
             }
         }
         private bool _openedTransaction { get; set; } = false;
         private DistributedTransaction _transaction { get; set; }
+        private ConcurrentDictionary<string, IRepository> _repositories { get; }
+            = new ConcurrentDictionary<string, IRepository>();
+        private void ClearRepositories()
+        {
+            _repositories.ForEach(x => x.Value.Dispose());
+            _repositories.Clear();
+        }
 
         #endregion
 
@@ -193,67 +200,6 @@ namespace Coldairarrow.DataRepository
             return GetIShardingQueryable<T>().ToList();
         }
 
-        #endregion
-
-        #region 事物处理
-
-        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
-        {
-            bool isOK = true;
-            Exception resEx = null;
-            try
-            {
-                BeginTransaction(isolationLevel);
-
-                action();
-
-                CommitTransaction();
-            }
-            catch (Exception ex)
-            {
-                RollbackTransaction();
-                isOK = false;
-                resEx = ex;
-            }
-            finally
-            {
-                DisposeTransaction();
-            }
-
-            return (isOK, resEx);
-        }
-
-        public void BeginTransaction(IsolationLevel isolationLevel)
-        {
-            _openedTransaction = true;
-            _transaction = new DistributedTransaction();
-            _transaction.BeginTransaction(isolationLevel);
-        }
-
-        public void CommitTransaction()
-        {
-            _transaction.CommitTransaction();
-        }
-
-        public void RollbackTransaction()
-        {
-            _transaction.RollbackTransaction();
-        }
-
-        #endregion
-
-        #region Dispose
-
-        private bool _disposed { get; set; } = false;
-        public virtual void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-            _transaction?.Dispose();
-        }
-
         public Task<int> InsertAsync<T>(T entity) where T : class, new()
         {
             throw new NotImplementedException();
@@ -314,11 +260,73 @@ namespace Coldairarrow.DataRepository
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region 事物处理
+
+        public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            bool isOK = true;
+            Exception resEx = null;
+            try
+            {
+                BeginTransaction(isolationLevel);
+
+                action();
+
+                CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                RollbackTransaction();
+                isOK = false;
+                resEx = ex;
+            }
+            finally
+            {
+                DisposeTransaction();
+            }
+
+            return (isOK, resEx);
+        }
+
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            _openedTransaction = true;
+            _transaction = new DistributedTransaction();
+            _transaction.BeginTransaction(isolationLevel);
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction.CommitTransaction();
+        }
+
+        public void RollbackTransaction()
+        {
+            _transaction.RollbackTransaction();
+        }
+
         public void DisposeTransaction()
         {
             _openedTransaction = false;
             _transaction.DisposeTransaction();
-            ((IInternalTransaction)_transaction).DisposeTransaction();
+            ClearRepositories();
+        }
+
+        #endregion
+
+        #region Dispose
+
+        private bool _disposed { get; set; } = false;
+        public virtual void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            _transaction?.Dispose();
+            ClearRepositories();
         }
 
         #endregion

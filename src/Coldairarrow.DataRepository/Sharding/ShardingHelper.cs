@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Coldairarrow.DataRepository
 {
-    public static class ShardingHelper
+    internal static class ShardingHelper
     {
         /// <summary>
         /// 映射物理表

@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.Coldairarrow.Api", "Cold
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "10.Coldairarrow.UnitTests", "Coldairarrow.UnitTests\10.Coldairarrow.UnitTests.csproj", "{44057E25-34B9-489B-B737-D4B56EB339A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coldairarrow.ApiTest", "Coldairarrow.ApiTest\Coldairarrow.ApiTest.csproj", "{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{44057E25-34B9-489B-B737-D4B56EB339A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44057E25-34B9-489B-B737-D4B56EB339A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44057E25-34B9-489B-B737-D4B56EB339A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F67F097C-9741-4AA3-BA34-8AB6CFBFD475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

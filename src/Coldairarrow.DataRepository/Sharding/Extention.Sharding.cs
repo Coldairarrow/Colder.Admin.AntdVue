@@ -13,8 +13,7 @@ namespace Coldairarrow.DataRepository
         /// <typeparam name="T">实体泛型</typeparam>
         /// <param name="source">数据源</param>
         /// <returns></returns>
-        public static IShardingQueryable<T> ToSharding<T>(this IQueryable<T> source) where T:class,new 
-            ()
+        public static IShardingQueryable<T> ToSharding<T>(this IQueryable<T> source) where T : class, new()
         {
             return new ShardingQueryable<T>(source);
         }

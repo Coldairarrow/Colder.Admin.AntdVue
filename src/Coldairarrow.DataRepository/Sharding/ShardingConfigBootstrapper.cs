@@ -75,6 +75,13 @@ namespace Coldairarrow.DataRepository
                 FindTable = findTable,
                 PhysicTables = value
             });
+
+            //动态实体模型
+            var absEntityType = DbModelFactory.GetEntityType(absTableName);
+            value.ForEach(aPhysicTable =>
+            {
+                DbModelFactory.AddEntityType(aPhysicTable.physicTableName, ShardingHelper.MapTable(absEntityType, aPhysicTable.physicTableName));
+            });
         }
 
         void IAddAbstractTable.AddAbsTable(string absTableName, Action<IAddPhysicTable> physicTableBuilder, IShardingRule rule)
