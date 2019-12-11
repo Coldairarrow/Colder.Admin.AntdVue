@@ -5,7 +5,6 @@ using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers
 {
@@ -49,27 +48,6 @@ namespace Coldairarrow.Api.Controllers
             db.Delete(data);
 
             return Success("");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> WriteLogTest_EF()
-        {
-            using (var db = new DefaultDbContext())
-            {
-                
-                db.Base_Logs.Add(GetNewLog());
-                await db.SaveChangesAsync();
-            }
-
-            return Success();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> WriteLogTest_FreeSql()
-        {
-            await FreeSqlHelper.FreeSql.Insert<Base_Log>().AppendData(GetNewLog()).ExecuteAffrowsAsync();
-
-            return Success();
         }
     }
 }

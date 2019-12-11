@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Util;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -27,8 +26,8 @@ namespace Coldairarrow.DataRepository
             {
                 repositories.ForEach(aRepository =>
                 {
-                    if (!_repositorys.Contains(aRepository))
-                        _repositorys.Add(aRepository);
+                    if (!_repositories.Contains(aRepository))
+                        _repositories.Add(aRepository);
                 });
             }
         }
@@ -37,7 +36,7 @@ namespace Coldairarrow.DataRepository
 
         #region 内部成员
         private IsolationLevel _isolationLevel { get; set; }
-        private SynchronizedCollection<IRepository> _repositorys { get; set; }
+        private SynchronizedCollection<IRepository> _repositories { get; set; }
             = new SynchronizedCollection<IRepository>();
 
         #endregion
@@ -50,12 +49,12 @@ namespace Coldairarrow.DataRepository
         {
             repositories.ForEach(aRepositroy =>
             {
-                if (!_repositorys.Contains(aRepositroy))
+                if (!_repositories.Contains(aRepositroy))
                 {
                     if (OpenTransaction)
                         (aRepositroy as IInternalTransaction).BeginTransaction(_isolationLevel);
 
-                    _repositorys.Add(aRepositroy);
+                    _repositories.Add(aRepositroy);
                 }
             });
         }
@@ -64,12 +63,12 @@ namespace Coldairarrow.DataRepository
         {
             OpenTransaction = true;
             _isolationLevel = isolationLevel;
-            _repositorys.ForEach(aRepository => (aRepository as IInternalTransaction).BeginTransaction(isolationLevel));
+            _repositories.ForEach(aRepository => (aRepository as IInternalTransaction).BeginTransaction(isolationLevel));
         }
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            if (_repositorys.Count == 0)
+            if (_repositories.Count == 0)
                 throw new Exception("IRepository数量不能为0");
 
             bool isOK = true;
@@ -98,18 +97,18 @@ namespace Coldairarrow.DataRepository
 
         public void CommitTransaction()
         {
-            _repositorys.ForEach(x => (x as IInternalTransaction).CommitTransaction());
+            _repositories.ForEach(x => (x as IInternalTransaction).CommitTransaction());
         }
 
         public void RollbackTransaction()
         {
-            _repositorys.ForEach(x => (x as IInternalTransaction).RollbackTransaction());
+            _repositories.ForEach(x => (x as IInternalTransaction).RollbackTransaction());
         }
 
         public void DisposeTransaction()
         {
             OpenTransaction = false;
-            _repositorys.ForEach(x => (x as IInternalTransaction).DisposeTransaction());
+            _repositories.ForEach(x => (x as IInternalTransaction).DisposeTransaction());
         }
 
         #endregion
@@ -124,7 +123,7 @@ namespace Coldairarrow.DataRepository
 
             _disposed = true;
             DisposeTransaction();
-            _repositorys = null;
+            _repositories = null;
         }
 
         #endregion

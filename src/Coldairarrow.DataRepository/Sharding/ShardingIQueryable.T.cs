@@ -22,9 +22,9 @@ namespace Coldairarrow.DataRepository
         private Type _absTableType { get; }
         private string _absTableName { get; }
         private IQueryable<T> _source { get; set; }
-        private Type MapTable(Type absTable, string targetTableName)
+        private Type MapTable(string targetTableName)
         {
-            return ShardingHelper.MapTable(absTable, targetTableName);
+            return DbModelFactory.GetEntityType(targetTableName);
         }
         public List<T> ToList()
         {
@@ -48,7 +48,7 @@ namespace Coldairarrow.DataRepository
             {
                 tasks.Add(Task.Run(() =>
                 {
-                    var targetTable = MapTable(_absTableType, aTable.tableName);
+                    var targetTable = MapTable(aTable.tableName);
                     var targetDb = DbFactory.GetRepository(aTable.conString, aTable.dbType);
                     if (_openTransaction)
                         _transaction.AddRepository(targetDb);
@@ -155,7 +155,7 @@ namespace Coldairarrow.DataRepository
             {
                 tasks.Add(Task.Run(() =>
                 {
-                    var targetTable = MapTable(_absTableType, aTable.tableName);
+                    var targetTable = MapTable(aTable.tableName);
                     var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
                     var newQ = newSource.ChangeSource(targetIQ);
 
