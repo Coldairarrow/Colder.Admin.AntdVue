@@ -1,13 +1,8 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading;
 
 namespace Coldairarrow.Console1
 {
@@ -37,7 +32,6 @@ namespace Coldairarrow.Console1
 
         static void Main(string[] args)
         {
-
             Console.WriteLine("完成");
             Console.ReadLine();
         }
