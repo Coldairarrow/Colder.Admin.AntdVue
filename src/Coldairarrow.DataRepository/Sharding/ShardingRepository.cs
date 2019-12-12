@@ -107,10 +107,19 @@ namespace Coldairarrow.DataRepository
         {
             return Insert(new List<T> { entity });
         }
+        public async Task<int> InsertAsync<T>(T entity) where T : class, new()
+        {
+            return await InsertAsync(new List<T> { entity });
+        }
         public int Insert<T>(List<T> entities) where T : class, new()
         {
             return WriteTable(entities, (targetObj, targetDb) => targetDb.Insert(targetObj));
         }
+        public Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
         public int DeleteAll<T>() where T : class, new()
         {
             var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
@@ -200,15 +209,7 @@ namespace Coldairarrow.DataRepository
             return GetIShardingQueryable<T>().ToList();
         }
 
-        public Task<int> InsertAsync<T>(T entity) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<int> DeleteAllAsync<T>() where T : class, new()
         {
