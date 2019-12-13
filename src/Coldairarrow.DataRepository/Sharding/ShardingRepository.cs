@@ -30,12 +30,7 @@ namespace Coldairarrow.DataRepository
         private List<(object targetObj, IRepository targetDb)> GetMapConfigs<T>(List<T> entities)
         {
             var configs = entities.Select(x => ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, x)).ToList();
-            configs.ForEach(aConfig =>
-            {
-                var dbId = GetDbId(aConfig.conString, aConfig.dbType);
-                if (!_repositories.ContainsKey(dbId))
-                    _repositories[dbId] = DbFactory.GetRepository(aConfig.conString, aConfig.dbType);
-            });
+            SetRepositories(configs.Select(x => (x.conString, x.dbType)).ToList());
             List<(object targetObj, IRepository targetDb)> resList = new List<(object targetObj, IRepository targetDb)>();
             entities.ForEach(aEntity =>
             {
@@ -46,25 +41,30 @@ namespace Coldairarrow.DataRepository
             });
 
             return resList;
-
-            string GetDbId(string conString, DatabaseType dbType)
-            {
-                return $"{conString}{dbType.ToString()}";
-            }
         }
-        private int WriteTable<T>(List<T> entities, Func<object, IRepository, int> accessData)
+        private string GetDbId(string conString, DatabaseType dbType)
         {
-            var mapConfigs = GetMapConfigs(entities);
+            return $"{conString}{dbType.ToString()}";
+        }
+        private void SetRepositories(List<(string conString, DatabaseType dbType)> physicDbs)
+        {
+            physicDbs.ForEach(aConfig =>
+            {
+                var dbId = GetDbId(aConfig.conString, aConfig.dbType);
+                if (!_repositories.ContainsKey(dbId))
+                    _repositories[dbId] = DbFactory.GetRepository(aConfig.conString, aConfig.dbType);
+            });
+        }
+        private int PackAccessData(IRepository[] dbs, Func<int> access)
+        {
             int count = 0;
-
-            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
             if (!_openedTransaction)
             {
                 using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
                 {
                     var (Success, ex) = transaction.RunTransaction(() =>
                     {
-                        count = Run();
+                        count = access();
                     });
                     if (!Success)
                         throw ex;
@@ -75,20 +75,63 @@ namespace Coldairarrow.DataRepository
             else
             {
                 _transaction.AddRepository(dbs);
-                return Run();
+                count = access();
             }
 
-            int Run()
+            return count;
+        }
+        private async Task<int> PackAccessDataAsync(IRepository[] dbs, Func<Task<int>> access)
+        {
+            int count = 0;
+            if (!_openedTransaction)
+            {
+                using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
+                {
+                    var (Success, ex) = transaction.RunTransaction(async () =>
+                    {
+                        count = await access();
+                    });
+                    if (!Success)
+                        throw ex;
+                }
+                ClearRepositories();
+                return count;
+            }
+            else
+            {
+                _transaction.AddRepository(dbs);
+                count = await access();
+            }
+
+            return count;
+        }
+        private int WriteTable<T>(List<T> entities, Func<object, IRepository, int> accessData)
+        {
+            var mapConfigs = GetMapConfigs(entities);
+            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
+
+            return PackAccessData(dbs, () =>
             {
                 int tmpCount = 0;
 
                 mapConfigs.ForEach(aConfig =>
                 {
-                    count += accessData(aConfig.targetObj, aConfig.targetDb);
+                    tmpCount += accessData(aConfig.targetObj, aConfig.targetDb);
                 });
 
                 return tmpCount;
-            }
+            });
+        }
+        private async Task<int> WriteTableAsync<T>(List<T> entities, Func<object, IRepository, Task<int>> accessDataAsync)
+        {
+            var mapConfigs = GetMapConfigs(entities);
+            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
+
+            return await PackAccessDataAsync(dbs, async () =>
+            {
+                var tasks = mapConfigs.Select(aConfig => accessDataAsync(aConfig.targetObj, aConfig.targetDb));
+                return (await Task.WhenAll(tasks.ToArray())).Sum();
+            });
         }
         private bool _openedTransaction { get; set; } = false;
         private DistributedTransaction _transaction { get; set; }
@@ -115,11 +158,10 @@ namespace Coldairarrow.DataRepository
         {
             return WriteTable(entities, (targetObj, targetDb) => targetDb.Insert(targetObj));
         }
-        public Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
+        public async Task<int> InsertAsync<T>(List<T> entities) where T : class, new()
         {
-            throw new NotImplementedException();
+            return await WriteTableAsync(entities, (targetObj, targetDb) => targetDb.InsertAsync(targetObj));
         }
-
         public int DeleteAll<T>() where T : class, new()
         {
             var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
@@ -163,6 +205,10 @@ namespace Coldairarrow.DataRepository
 
                 return count;
             }
+        }
+        public Task<int> DeleteAllAsync<T>() where T : class, new()
+        {
+            throw new NotImplementedException();
         }
         public int Delete<T>(T entity) where T : class, new()
         {
@@ -211,10 +257,6 @@ namespace Coldairarrow.DataRepository
 
 
 
-        public Task<int> DeleteAllAsync<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<int> DeleteAsync<T>(T entity) where T : class, new()
         {
