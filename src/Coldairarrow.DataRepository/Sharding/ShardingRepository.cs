@@ -27,10 +27,15 @@ namespace Coldairarrow.DataRepository
         {
             return DbModelFactory.GetEntityType(targetTableName);
         }
+        private List<(string targetTableName, IRepository targetDb)> GetTargetDb(List<(string tableName, string conString, DatabaseType dbType)> configs)
+        {
+            SetRepositories(configs.Select(x => (x.conString, x.dbType)).ToList());
+            return configs.Select(x => (x.tableName, _repositories[GetDbId(x.conString, x.dbType)])).ToList();
+        }
         private List<(object targetObj, IRepository targetDb)> GetMapConfigs<T>(List<T> entities)
         {
             var configs = entities.Select(x => ShardingConfig.Instance.GetTheWriteTable(typeof(T).Name, x)).ToList();
-            SetRepositories(configs.Select(x => (x.conString, x.dbType)).ToList());
+            var targetDbs = GetTargetDb(configs);
             List<(object targetObj, IRepository targetDb)> resList = new List<(object targetObj, IRepository targetDb)>();
             entities.ForEach(aEntity =>
             {
@@ -55,8 +60,9 @@ namespace Coldairarrow.DataRepository
                     _repositories[dbId] = DbFactory.GetRepository(aConfig.conString, aConfig.dbType);
             });
         }
-        private int PackAccessData(IRepository[] dbs, Func<int> access)
+        private int PackAccessData(Func<int> access)
         {
+            var dbs = _repositories.Values.ToArray();
             int count = 0;
             if (!_openedTransaction)
             {
@@ -80,8 +86,10 @@ namespace Coldairarrow.DataRepository
 
             return count;
         }
-        private async Task<int> PackAccessDataAsync(IRepository[] dbs, Func<Task<int>> access)
+        private async Task<int> PackAccessDataAsync(Func<Task<int>> access)
         {
+            var dbs = _repositories.Values.ToArray();
+
             int count = 0;
             if (!_openedTransaction)
             {
@@ -108,9 +116,8 @@ namespace Coldairarrow.DataRepository
         private int WriteTable<T>(List<T> entities, Func<object, IRepository, int> accessData)
         {
             var mapConfigs = GetMapConfigs(entities);
-            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
 
-            return PackAccessData(dbs, () =>
+            return PackAccessData(() =>
             {
                 int tmpCount = 0;
 
@@ -125,9 +132,8 @@ namespace Coldairarrow.DataRepository
         private async Task<int> WriteTableAsync<T>(List<T> entities, Func<object, IRepository, Task<int>> accessDataAsync)
         {
             var mapConfigs = GetMapConfigs(entities);
-            var dbs = mapConfigs.Select(x => x.targetDb).Distinct().ToArray();
 
-            return await PackAccessDataAsync(dbs, async () =>
+            return await PackAccessDataAsync(async () =>
             {
                 var tasks = mapConfigs.Select(aConfig => accessDataAsync(aConfig.targetObj, aConfig.targetDb));
                 return (await Task.WhenAll(tasks.ToArray())).Sum();
@@ -165,58 +171,44 @@ namespace Coldairarrow.DataRepository
         public int DeleteAll<T>() where T : class, new()
         {
             var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
-            var allDbs = configs.Select(x => new
-            {
-                Db = DbFactory.GetRepository(x.conString, x.dbType),
-                TargetType = MapTable(x.tableName)
-            }).ToList();
-
-            var dbs = allDbs.Select(x => x.Db).ToArray();
-
-            if (!_openedTransaction)
-            {
-                int count = 0;
-                using (var transaction = DistributedTransactionFactory.GetDistributedTransaction(dbs))
-                {
-                    var (Success, ex) = transaction.RunTransaction(() =>
-                    {
-                        count = Run();
-                    });
-                    if (!Success)
-                        throw ex;
-                    else
-                        return count;
-                }
-            }
-            else
-            {
-                _transaction.AddRepository(dbs);
-                return Run();
-            }
-
-            int Run()
+            var targetDbs = GetTargetDb(configs);
+            return PackAccessData(() =>
             {
                 int count = 0;
 
-                allDbs.ForEach(x =>
+                targetDbs.ForEach(x =>
                 {
-                    count += x.Db.DeleteAll(x.TargetType);
+                    count += x.targetDb.DeleteAll(MapTable(x.targetTableName));
                 });
 
                 return count;
-            }
+            });
         }
-        public Task<int> DeleteAllAsync<T>() where T : class, new()
+        public async Task<int> DeleteAllAsync<T>() where T : class, new()
         {
-            throw new NotImplementedException();
+            var configs = ShardingConfig.Instance.GetAllWriteTables(typeof(T).Name);
+            var targetDbs = GetTargetDb(configs);
+            return await PackAccessDataAsync(async () =>
+            {
+                var tasks = targetDbs.Select(x => x.targetDb.DeleteAllAsync(MapTable(x.targetTableName)));
+                return (await Task.WhenAll(tasks.ToArray())).Sum();
+            });
         }
         public int Delete<T>(T entity) where T : class, new()
         {
             return Delete(new List<T> { entity });
         }
+        public async Task<int> DeleteAsync<T>(T entity) where T : class, new()
+        {
+            return await DeleteAsync(new List<T> { entity });
+        }
         public int Delete<T>(List<T> entities) where T : class, new()
         {
             return WriteTable(entities, (targetObj, targetDb) => targetDb.Delete(targetObj));
+        }
+        public async Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
+        {
+            return await WriteTableAsync(entities, (targetObj, targetDb) => targetDb.DeleteAsync(targetObj));
         }
         public int Delete<T>(Expression<Func<T, bool>> condition) where T : class, new()
         {
@@ -224,27 +216,55 @@ namespace Coldairarrow.DataRepository
 
             return Delete(deleteList);
         }
+        public async Task<int> DeleteAsync<T>(Expression<Func<T, bool>> condition) where T : class, new()
+        {
+            var deleteList = GetIShardingQueryable<T>().Where(condition).ToList();
+
+            return await DeleteAsync(deleteList);
+        }
         public int Update<T>(T entity) where T : class, new()
         {
             return Update(new List<T> { entity });
+        }
+        public async Task<int> UpdateAsync<T>(T entity) where T : class, new()
+        {
+            return await UpdateAsync(new List<T> { entity });
         }
         public int Update<T>(List<T> entities) where T : class, new()
         {
             return WriteTable(entities, (targetObj, targetDb) => targetDb.Update(targetObj));
         }
+        public async Task<int> UpdateAsync<T>(List<T> entities) where T : class, new()
+        {
+            return await WriteTableAsync(entities, (targetObj, targetDb) => targetDb.UpdateAsync(targetObj));
+        }
         public int UpdateAny<T>(T entity, List<string> properties) where T : class, new()
         {
             return UpdateAny(new List<T> { entity }, properties);
         }
+        public async Task<int> UpdateAnyAsync<T>(T entity, List<string> properties) where T : class, new()
+        {
+            return await UpdateAnyAsync(new List<T> { entity }, properties);
+        }
         public int UpdateAny<T>(List<T> entities, List<string> properties) where T : class, new()
         {
             return WriteTable(entities, (targetObj, targetDb) => targetDb.UpdateAny(targetObj, properties));
+        }
+        public async Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
+        {
+            return await WriteTableAsync(entities, (targetObj, targetDb) => targetDb.UpdateAnyAsync(targetObj, properties));
         }
         public int UpdateWhere<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
         {
             var list = GetIShardingQueryable<T>().Where(whereExpre).ToList();
             list.ForEach(aData => set(aData));
             return Update(list);
+        }
+        public async Task<int> UpdateWhereAsync<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
+        {
+            var list = GetIShardingQueryable<T>().Where(whereExpre).ToList();
+            list.ForEach(aData => set(aData));
+            return await UpdateAsync(list);
         }
         public IShardingQueryable<T> GetIShardingQueryable<T>() where T : class, new()
         {
@@ -254,53 +274,9 @@ namespace Coldairarrow.DataRepository
         {
             return GetIShardingQueryable<T>().ToList();
         }
-
-
-
-
-        public Task<int> DeleteAsync<T>(T entity) where T : class, new()
+        public async Task<List<T>> GetListAsync<T>() where T : class, new()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteAsync<T>(List<T> entities) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteAsync<T>(Expression<Func<T, bool>> condition) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateAsync<T>(T entity) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateAsync<T>(List<T> entities) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateAnyAsync<T>(T entity, List<string> properties) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateAnyAsync<T>(List<T> entities, List<string> properties) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateWhereAsync<T>(Expression<Func<T, bool>> whereExpre, Action<T> set) where T : class, new()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<T>> GetListAsync<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
+            return await GetIShardingQueryable<T>().ToListAsync();
         }
 
         #endregion
@@ -361,7 +337,7 @@ namespace Coldairarrow.DataRepository
 
         #region Dispose
 
-        private bool _disposed { get; set; } = false;
+        private bool _disposed = false;
         public virtual void Dispose()
         {
             if (_disposed)
