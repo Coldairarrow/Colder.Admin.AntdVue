@@ -10,6 +10,8 @@ namespace Coldairarrow.DataRepository
 {
     internal class ShardingQueryable<T> : IShardingQueryable<T> where T : class, new()
     {
+        #region 构造函数
+
         public ShardingQueryable(IQueryable<T> source, DistributedTransaction transaction = null)
         {
             _source = source;
@@ -17,6 +19,11 @@ namespace Coldairarrow.DataRepository
             _absTableName = _absTableType.Name;
             _transaction = transaction;
         }
+
+        #endregion
+
+        #region 私有成员
+
         private DistributedTransaction _transaction { get; }
         private bool _openTransaction { get => _transaction?.OpenTransaction == true; }
         private Type _absTableType { get; }
@@ -25,6 +32,81 @@ namespace Coldairarrow.DataRepository
         private Type MapTable(string targetTableName)
         {
             return DbModelFactory.GetEntityType(targetTableName);
+        }
+        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable<T> newSource = null)
+        {
+            newSource = newSource ?? _source;
+            var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
+            List<Task<dynamic>> tasks = new List<Task<dynamic>>();
+            tables.ForEach(aTable =>
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    var targetTable = MapTable(aTable.tableName);
+                    var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
+                    var newQ = newSource.ChangeSource(targetIQ);
+
+                    return access(newQ);
+                }));
+            });
+            Task.WaitAll(tasks.ToArray());
+
+            return tasks.Select(x => x.Result).ToList();
+        }
+        private async Task<List<dynamic>> GetStatisDataAsync(Func<IQueryable, Task<dynamic>> access, IQueryable<T> newSource = null)
+        {
+            newSource = newSource ?? _source;
+            var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
+            List<Task<dynamic>> tasks = new List<Task<dynamic>>();
+            tasks = tables.Select(aTable =>
+            {
+                var targetTable = MapTable(aTable.tableName);
+                var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
+                var newQ = newSource.ChangeSource(targetIQ);
+
+                return access(newQ);
+            }).ToList();
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+
+        #endregion
+
+        #region 外部接口
+
+        public IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        {
+            _source = _source.Where(predicate);
+
+            return this;
+        }
+        public IShardingQueryable<T> Where(string predicate, params object[] values)
+        {
+            _source = _source.Where(predicate, values);
+
+            return this;
+        }
+        public IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector)
+        {
+            _source = _source.OrderBy(keySelector);
+
+            return this;
+        }
+        public IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector)
+        {
+            _source = _source.OrderByDescending(keySelector);
+
+            return this;
+        }
+        public IShardingQueryable<T> OrderBy(string ordering, params object[] values)
+        {
+            _source = _source.OrderBy(ordering, values);
+
+            return this;
+        }
+        public int Count()
+        {
+            return GetStatisData(x => x.Count()).Sum(x => (int)x);
         }
         public List<T> ToList()
         {
@@ -97,36 +179,6 @@ namespace Coldairarrow.DataRepository
         {
             return ToList().FirstOrDefault();
         }
-        public IShardingQueryable<T> Where(Expression<Func<T, bool>> predicate)
-        {
-            _source = _source.Where(predicate);
-
-            return this;
-        }
-        public IShardingQueryable<T> Where(string predicate, params object[] values)
-        {
-            _source = _source.Where(predicate, values);
-
-            return this;
-        }
-        public IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector)
-        {
-            _source = _source.OrderBy(keySelector);
-
-            return this;
-        }
-        public IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector)
-        {
-            _source = _source.OrderByDescending(keySelector);
-
-            return this;
-        }
-        public IShardingQueryable<T> OrderBy(string ordering, params object[] values)
-        {
-            _source = _source.OrderBy(ordering, values);
-
-            return this;
-        }
         public IShardingQueryable<T> Skip(int count)
         {
             _source = _source.Skip(count);
@@ -145,30 +197,6 @@ namespace Coldairarrow.DataRepository
             _source = _source.OrderBy($"{pagination.SortField} {pagination.SortType}");
 
             return Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows).ToList();
-        }
-        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable<T> newSource = null)
-        {
-            newSource = newSource ?? _source;
-            var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
-            List<Task<dynamic>> tasks = new List<Task<dynamic>>();
-            tables.ForEach(aTable =>
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    var targetTable = MapTable(aTable.tableName);
-                    var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
-                    var newQ = newSource.ChangeSource(targetIQ);
-
-                    return access(newQ);
-                }));
-            });
-            Task.WaitAll(tasks.ToArray());
-
-            return tasks.Select(x => x.Result).ToList();
-        }
-        public int Count()
-        {
-            return GetStatisData(x => x.Count()).Sum(x => (int)x);
         }
         public TResult Max<TResult>(Expression<Func<T, TResult>> selector)
         {
@@ -276,5 +304,142 @@ namespace Coldairarrow.DataRepository
             var newSource = _source.Where(predicate);
             return GetStatisData(x => x.Any(), newSource).Any(x => x == true);
         }
+
+        public Task<List<T>> ToListAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CountAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> FirstOrDefaultAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<T>> GetPaginationAsync(Pagination pagination)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TResult> MaxAsync<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TResult> MinAsync<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double> AverageAsync(Expression<Func<T, int>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double?> AverageAsync(Expression<Func<T, int?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<float> AverageAsync(Expression<Func<T, float>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<float?> AverageAsync(Expression<Func<T, float?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double> AverageAsync(Expression<Func<T, long>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double?> AverageAsync(Expression<Func<T, long?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double> AverageAsync(Expression<Func<T, double>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double?> AverageAsync(Expression<Func<T, double?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal?> AverageAsync(Expression<Func<T, decimal?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal?> SumAsync(Expression<Func<T, decimal?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double> SumAsync(Expression<Func<T, double>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<double?> SumAsync(Expression<Func<T, double?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<float> SumAsync(Expression<Func<T, float>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<float?> SumAsync(Expression<Func<T, float?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> SumAsync(Expression<Func<T, int>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int?> SumAsync(Expression<Func<T, int?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<long> SumAsync(Expression<Func<T, long>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<long?> SumAsync(Expression<Func<T, long?>> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
