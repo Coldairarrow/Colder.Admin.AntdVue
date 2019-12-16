@@ -3,8 +3,11 @@ using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers
 {
@@ -18,12 +21,6 @@ namespace Coldairarrow.Api.Controllers
                 Id = IdHelper.GetId(),
                 CreateTime = DateTime.Now
             };
-        }
-
-        [HttpGet]
-        public IActionResult Test()
-        {
-            return HtmlContent("");
         }
 
         /// <summary>
@@ -48,6 +45,28 @@ namespace Coldairarrow.Api.Controllers
             db.Delete(data);
 
             return Success("");
+        }
+
+        [HttpGet]
+        public IActionResult Test1()
+        {
+            HttpHelper.GetData("http://www.baidu.com");
+
+            return HtmlContent("1");
+        }
+
+        static ServiceProvider ServiceProvider { get; }
+            = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+        [HttpGet]
+        public async Task<IActionResult> Test2()
+        {
+            var httpClientFactory = ServiceProvider.GetService<IHttpClientFactory>();
+            var client = httpClientFactory.CreateClient();
+            var response = await client.SendAsync(new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "http://www.baidu.com"));
+            var content = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine(content);
+
+            return HtmlContent("1");
         }
     }
 }
