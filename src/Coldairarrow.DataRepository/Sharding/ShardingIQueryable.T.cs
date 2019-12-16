@@ -108,6 +108,16 @@ namespace Coldairarrow.DataRepository
         {
             return GetStatisData(x => x.Count()).Sum(x => (int)x);
         }
+        public async Task<int> CountAsync()
+        {
+            var results = await GetStatisDataAsync(async x => await IQueryableHelper.CountAsync(x));
+
+            return results.Sum(x => (int)x);
+        }
+        private List<T> PackToList<U>(Func<IQueryable, U> getlist)
+        {
+
+        }
         public List<T> ToList()
         {
             //去除分页,获取前Take+Skip数量
@@ -136,22 +146,19 @@ namespace Coldairarrow.DataRepository
                         _transaction.AddRepository(targetDb);
                     var targetIQ = targetDb.GetIQueryable(targetTable);
                     var newQ = noPaginSource.ChangeSource(targetIQ);
-                    List<T> list = new List<T>();
                     var theLock = lockMap[aTable.conString];
                     if (_openTransaction)
                         lock (theLock)
                         {
-                            Run();
+                            return Run();
                         }
                     else
-                        Run();
+                        return Run();
 
-                    return list;
-
-                    void Run()
+                    List<T> Run()
                     {
-                        list = newQ
-                            .CastToList<object>()
+                        return newQ
+                            .Cast<object>()
                             .Select(x => x.ChangeType<T>())
                             .ToList();
                     }
@@ -175,6 +182,11 @@ namespace Coldairarrow.DataRepository
 
             return resList;
         }
+        public async Task<List<T>> ToListAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public T FirstOrDefault()
         {
             return ToList().FirstOrDefault();
@@ -305,137 +317,129 @@ namespace Coldairarrow.DataRepository
             return GetStatisData(x => x.Any(), newSource).Any(x => x == true);
         }
 
-        public Task<List<T>> ToListAsync()
+
+
+        public async Task<T> FirstOrDefaultAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountAsync()
+        public async Task<List<T>> GetPaginationAsync(Pagination pagination)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> FirstOrDefaultAsync()
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<T>> GetPaginationAsync(Pagination pagination)
+        public async Task<TResult> MaxAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<TResult> MinAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TResult> MaxAsync<TResult>(Expression<Func<T, TResult>> selector)
+        public async Task<double> AverageAsync(Expression<Func<T, int>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TResult> MinAsync<TResult>(Expression<Func<T, TResult>> selector)
+        public async Task<double?> AverageAsync(Expression<Func<T, int?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double> AverageAsync(Expression<Func<T, int>> selector)
+        public async Task<float> AverageAsync(Expression<Func<T, float>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double?> AverageAsync(Expression<Func<T, int?>> selector)
+        public async Task<float?> AverageAsync(Expression<Func<T, float?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<float> AverageAsync(Expression<Func<T, float>> selector)
+        public async Task<double> AverageAsync(Expression<Func<T, long>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<float?> AverageAsync(Expression<Func<T, float?>> selector)
+        public async Task<double?> AverageAsync(Expression<Func<T, long?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double> AverageAsync(Expression<Func<T, long>> selector)
+        public async Task<double> AverageAsync(Expression<Func<T, double>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double?> AverageAsync(Expression<Func<T, long?>> selector)
+        public async Task<double?> AverageAsync(Expression<Func<T, double?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double> AverageAsync(Expression<Func<T, double>> selector)
+        public async Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double?> AverageAsync(Expression<Func<T, double?>> selector)
+        public async Task<decimal?> AverageAsync(Expression<Func<T, decimal?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector)
+        public async Task<decimal> SumAsync(Expression<Func<T, decimal>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<decimal?> AverageAsync(Expression<Func<T, decimal?>> selector)
+        public async Task<decimal?> SumAsync(Expression<Func<T, decimal?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector)
+        public async Task<double> SumAsync(Expression<Func<T, double>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<decimal?> SumAsync(Expression<Func<T, decimal?>> selector)
+        public async Task<double?> SumAsync(Expression<Func<T, double?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double> SumAsync(Expression<Func<T, double>> selector)
+        public async Task<float> SumAsync(Expression<Func<T, float>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double?> SumAsync(Expression<Func<T, double?>> selector)
+        public async Task<float?> SumAsync(Expression<Func<T, float?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<float> SumAsync(Expression<Func<T, float>> selector)
+        public async Task<int> SumAsync(Expression<Func<T, int>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<float?> SumAsync(Expression<Func<T, float?>> selector)
+        public async Task<int?> SumAsync(Expression<Func<T, int?>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> SumAsync(Expression<Func<T, int>> selector)
+        public async Task<long> SumAsync(Expression<Func<T, long>> selector)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int?> SumAsync(Expression<Func<T, int?>> selector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<long> SumAsync(Expression<Func<T, long>> selector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<long?> SumAsync(Expression<Func<T, long?>> selector)
+        public async Task<long?> SumAsync(Expression<Func<T, long?>> selector)
         {
             throw new NotImplementedException();
         }
