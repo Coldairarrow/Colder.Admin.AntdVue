@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
+using Coldairarrow.DataRepository;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -33,14 +35,22 @@ namespace Coldairarrow.Console1
             AutofacHelper.Container = builder.Build();
         }
 
-        static async Task Main()
+        public static async Task HttpClientFactoryTest()
         {
             var serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
             var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
             var client = httpClientFactory.CreateClient();
             var response = await client.SendAsync(new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "http://www.baidu.com"));
             var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content);
+        }
+
+        static async Task Main()
+        {
+            var db = DbFactory.GetRepository();
+            var list = await db.GetListAsync(typeof(Base_User));
+            //var count = await IQueryableHelper.CountAsync(db.GetIQueryable<Base_User>());
+
+            Console.WriteLine();
         }
     }
 }

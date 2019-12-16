@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -17,6 +18,16 @@ namespace Coldairarrow.Util
     /// </summary>
     public static partial class Extention
     {
+        //public static Task<int> CountAsync(this IQueryable queryable)
+        //{
+        //    IQueryable<object> q = null;
+        //    q.CountAsync
+        //    var dbSet = context.GetType().GetMethod("Set").MakeGenericMethod(entityType).Invoke(context, null);
+        //    var resQ = typeof(EntityFrameworkQueryableExtensions).GetMethod("AsNoTracking").MakeGenericMethod(entityType).Invoke(null, new object[] { dbSet });
+
+        //    return resQ as IQueryable;
+        //}
+
         /// <summary>
         /// 获取分页后的数据
         /// </summary>
