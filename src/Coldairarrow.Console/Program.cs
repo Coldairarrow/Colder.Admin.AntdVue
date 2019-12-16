@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Coldairarrow.Util;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Console1
 {
@@ -30,10 +33,14 @@ namespace Coldairarrow.Console1
             AutofacHelper.Container = builder.Build();
         }
 
-        static void Main(string[] args)
+        static async Task Main()
         {
-            Console.WriteLine("完成");
-            Console.ReadLine();
+            var serviceProvider = new ServiceCollection().AddHttpClient().BuildServiceProvider();
+            var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+            var client = httpClientFactory.CreateClient();
+            var response = await client.SendAsync(new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "http://www.baidu.com"));
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(content);
         }
     }
 }
