@@ -114,10 +114,10 @@ namespace Coldairarrow.DataRepository
 
             return results.Sum(x => (int)x);
         }
-        private List<T> PackToList<U>(Func<IQueryable, U> getlist)
-        {
+        //private List<T> PackToList<U>(Func<IQueryable, U> getlist)
+        //{
 
-        }
+        //}
         public List<T> ToList()
         {
             //去除分页,获取前Take+Skip数量

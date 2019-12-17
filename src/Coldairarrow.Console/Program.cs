@@ -44,11 +44,29 @@ namespace Coldairarrow.Console1
             var content = await response.Content.ReadAsStringAsync();
         }
 
+        public static async Task AsyncTest()
+        {
+            await Task.Run(() =>
+            {
+                throw new Exception("11");
+            });
+        }
+
         static async Task Main()
         {
-            var db = DbFactory.GetRepository();
-            var list = await db.GetListAsync(typeof(Base_User));
+            //var db = DbFactory.GetRepository();
+            //var list = await db.GetListAsync(typeof(Base_User));
             //var count = await IQueryableHelper.CountAsync(db.GetIQueryable<Base_User>());
+            try
+            {
+                await AsyncTest();
+                //TaskHelper.RunSync(() => AsyncTest());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            //AsyncTest();
 
             Console.WriteLine();
         }
