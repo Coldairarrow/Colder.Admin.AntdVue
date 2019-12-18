@@ -52,21 +52,9 @@ namespace Coldairarrow.Console1
             });
         }
 
-        static async Task Main()
+        static void Main()
         {
-            //var db = DbFactory.GetRepository();
-            //var list = await db.GetListAsync(typeof(Base_User));
-            //var count = await IQueryableHelper.CountAsync(db.GetIQueryable<Base_User>());
-            try
-            {
-                await AsyncTest();
-                //TaskHelper.RunSync(() => AsyncTest());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            //AsyncTest();
+            var db = DbFactory.GetRepository();
 
             Console.WriteLine();
         }

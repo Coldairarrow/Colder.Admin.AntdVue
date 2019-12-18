@@ -2155,6 +2155,26 @@
             <param name="exportColumnName">是否将第一行当作标题行</param>
             <returns></returns>
         </member>
+        <member name="T:Coldairarrow.Util.AsyncHelper">
+            <summary>
+            异步转同步,防止ASP.NET中死锁
+            https://cpratt.co/async-tips-tricks/
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Util.AsyncHelper.RunSync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            同步执行
+            </summary>
+            <param name="func">任务</param>
+        </member>
+        <member name="M:Coldairarrow.Util.AsyncHelper.RunSync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            同步执行
+            </summary>
+            <typeparam name="TResult">返回类型</typeparam>
+            <param name="func">任务</param>
+            <returns></returns>
+        </member>
         <member name="T:Coldairarrow.Util.BaiduApiHelper">
             <summary>
             百度接口签名帮助类
@@ -3068,12 +3088,6 @@
             <typeparam name="T">值类型</typeparam>
             <param name="source">值的集合</param>
             <returns></returns>
-        </member>
-        <member name="T:Coldairarrow.Util.TaskHelper">
-            <summary>
-            异步转同步,防止ASP.NET中死锁
-            https://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously
-            </summary>
         </member>
         <member name="T:Coldairarrow.Util.TreeHelper">
             <summary>

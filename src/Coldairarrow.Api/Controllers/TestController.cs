@@ -46,27 +46,5 @@ namespace Coldairarrow.Api.Controllers
 
             return Success("");
         }
-
-        [HttpGet]
-        public IActionResult Test1()
-        {
-            HttpHelper.GetData("http://www.baidu.com");
-
-            return HtmlContent("1");
-        }
-
-        static ServiceProvider ServiceProvider { get; }
-            = new ServiceCollection().AddHttpClient().BuildServiceProvider();
-        [HttpGet]
-        public async Task<IActionResult> Test2()
-        {
-            var httpClientFactory = ServiceProvider.GetService<IHttpClientFactory>();
-            var client = httpClientFactory.CreateClient();
-            var response = await client.SendAsync(new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "http://www.baidu.com"));
-            var content = await response.Content.ReadAsStringAsync();
-            //Console.WriteLine(content);
-
-            return HtmlContent("1");
-        }
     }
 }
