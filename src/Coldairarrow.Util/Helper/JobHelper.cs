@@ -15,8 +15,8 @@ namespace Coldairarrow.Util
 
         static JobHelper()
         {
-            _scheduler = TaskHelper.RunSync(() => StdSchedulerFactory.GetDefaultScheduler());
-            TaskHelper.RunSync(() => _scheduler.Start());
+            _scheduler = AsyncHelper.RunSync(() => StdSchedulerFactory.GetDefaultScheduler());
+            AsyncHelper.RunSync(() => _scheduler.Start());
         }
         private static readonly IScheduler _scheduler;
         static ConcurrentDictionary<string, Action> _jobs { get; }
@@ -44,7 +44,7 @@ namespace Coldairarrow.Util
                 .StartNow()
                 .WithSimpleSchedule(x => x.WithInterval(timeSpan).RepeatForever())
                 .Build();
-            TaskHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
+            AsyncHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
 
             return key;
         }
@@ -69,7 +69,7 @@ namespace Coldairarrow.Util
                 .StartNow()
                 .WithCronSchedule($"{s} {m} {h} * * ?")//每天定时
                 .Build();
-            TaskHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
+            AsyncHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
 
             return key;
         }
@@ -97,7 +97,7 @@ namespace Coldairarrow.Util
                 .StartAt(DateTime.Now + delay)
                 .WithSimpleSchedule(x => x.WithRepeatCount(0).WithInterval(TimeSpan.FromSeconds(10)))
                 .Build();
-            TaskHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
+            AsyncHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
 
             return key;
         }
@@ -108,7 +108,7 @@ namespace Coldairarrow.Util
         /// <param name="jobId">任务标识Id</param>
         public static void RemoveJob(string jobId)
         {
-            TaskHelper.RunSync(() => _scheduler.DeleteJob(new JobKey(jobId)));
+            AsyncHelper.RunSync(() => _scheduler.DeleteJob(new JobKey(jobId)));
             _jobs.TryRemove(jobId, out _);
         }
 
