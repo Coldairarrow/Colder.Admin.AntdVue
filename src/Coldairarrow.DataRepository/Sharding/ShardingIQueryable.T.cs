@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Coldairarrow.DataRepository
         public ShardingQueryable(IQueryable<T> source, DistributedTransaction transaction = null)
         {
             _source = source;
-            _absTableType = (_source.GetObjQuery() as IQueryable).ElementType;
+            _absTableType = source.ElementType;
             _absTableName = _absTableType.Name;
             _transaction = transaction;
         }
@@ -114,11 +115,11 @@ namespace Coldairarrow.DataRepository
 
             return results.Sum(x => (int)x);
         }
-        //private List<T> PackToList<U>(Func<IQueryable, U> getlist)
-        //{
-
-        //}
         public List<T> ToList()
+        {
+            return AsyncHelper.RunSync(() => ToListAsync());
+        }
+        public async Task<List<T>> ToListAsync()
         {
             //去除分页,获取前Take+Skip数量
             int? take = _source.GetTakeCount();
@@ -131,46 +132,25 @@ namespace Coldairarrow.DataRepository
 
             //从各个分表获取数据
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
-            List<Task<List<T>>> tasks = new List<Task<List<T>>>();
-            Dictionary<string, object> lockMap = new Dictionary<string, object>();
-            tables.GroupBy(x => x.conString)
-                .Select(x => x.Key)
-                .ForEach(x => lockMap.Add(x, new object()));
-            tables.ForEach(aTable =>
+            SynchronizedCollection<IRepository> dbs = new SynchronizedCollection<IRepository>();
+            List<Task<List<T>>> tasks = tables.Select(aTable =>
             {
-                tasks.Add(Task.Run(() =>
-                {
-                    var targetTable = MapTable(aTable.tableName);
-                    var targetDb = DbFactory.GetRepository(aTable.conString, aTable.dbType);
-                    if (_openTransaction)
-                        _transaction.AddRepository(targetDb);
-                    var targetIQ = targetDb.GetIQueryable(targetTable);
-                    var newQ = noPaginSource.ChangeSource(targetIQ);
-                    var theLock = lockMap[aTable.conString];
-                    if (_openTransaction)
-                        lock (theLock)
-                        {
-                            return Run();
-                        }
-                    else
-                        return Run();
-
-                    List<T> Run()
-                    {
-                        return newQ
-                            .Cast<object>()
-                            .Select(x => x.ChangeType<T>())
-                            .ToList();
-                    }
-                }));
-            });
-            Task.WaitAll(tasks.ToArray());
+                var targetTable = MapTable(aTable.tableName);
+                var targetDb = DbFactory.GetRepository(aTable.conString, aTable.dbType);
+                if (_openTransaction)
+                    _transaction.AddRepository(targetDb);
+                else
+                    dbs.Add(targetDb);
+                var targetIQ = targetDb.GetIQueryable(targetTable);
+                var newQ = noPaginSource.ChangeSource(targetIQ);
+                return newQ
+                    .Cast<object>()
+                    .Select(x => x.ChangeType<T>())
+                    .ToListAsync();
+            }).ToList();
             List<T> all = new List<T>();
-            tasks.ForEach(aTask =>
-            {
-                all.AddRange(aTask.Result);
-            });
-
+            (await Task.WhenAll(tasks.ToArray())).ToList().ForEach(x => all.AddRange(x));
+            dbs.ForEach(x => x.Dispose());
             //合并数据
             var resList = all;
             if (!sortColumn.IsNullOrEmpty() && !sortType.IsNullOrEmpty())
@@ -182,11 +162,6 @@ namespace Coldairarrow.DataRepository
 
             return resList;
         }
-        public async Task<List<T>> ToListAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public T FirstOrDefault()
         {
             return ToList().FirstOrDefault();
