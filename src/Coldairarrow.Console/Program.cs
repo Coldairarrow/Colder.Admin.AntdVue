@@ -5,6 +5,7 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -54,7 +55,9 @@ namespace Coldairarrow.Console1
 
         static void Main()
         {
-            var db = DbFactory.GetRepository();
+            //var db = DbFactory.GetRepository();
+            List<int> list = new List<int>();
+            var a = list.FirstOrDefault();
 
             Console.WriteLine();
         }
