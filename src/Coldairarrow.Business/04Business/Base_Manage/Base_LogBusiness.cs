@@ -41,6 +41,21 @@ namespace Coldairarrow.Business.Base_Manage
             return logSearcher.GetLogList(pagination, logContent, logType, level, opUserName, startTime, endTime);
         }
 
+        public void DeleteLog(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
+        {
+            ILogDeleter logDeleter;
+            if (GlobalSwitch.LoggerType.HasFlag(LoggerType.RDBMS))
+            {
+                logDeleter = new RDBMSTarget();
+                logDeleter.DeleteLog(logContent, logType, level, opUserName, startTime, endTime);
+            }
+            if (GlobalSwitch.LoggerType.HasFlag(LoggerType.ElasticSearch))
+            {
+                logDeleter = new ElasticSearchTarget();
+                logDeleter.DeleteLog(logContent, logType, level, opUserName, startTime, endTime);
+            }
+        }
+
         #endregion
 
         #region к╫спЁит╠

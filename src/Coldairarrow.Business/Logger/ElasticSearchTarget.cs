@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business
 {
-    public class ElasticSearchTarget : BaseTarget, ILogSearcher
+    public class ElasticSearchTarget : BaseTarget, ILogSearcher, ILogDeleter
     {
         #region 构造函数
 
@@ -85,6 +85,28 @@ namespace Coldairarrow.Business
             pagination.Total = (int)result.Total;
 
             return result.Documents.ToList();
+        }
+
+        public void DeleteLog(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
+        {
+            var client = GetElasticClient();
+            var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
+            if (!logContent.IsNullOrEmpty())
+                filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
+            if (!logType.IsNullOrEmpty())
+                filters.Add(q => q.Terms(t => t.Field(f => f.LogType).Terms(logType)));
+            if (!level.IsNullOrEmpty())
+                filters.Add(q => q.Terms(t => t.Field(f => f.Level).Terms(level)));
+            if (!opUserName.IsNullOrEmpty())
+                filters.Add(q => q.Wildcard(w => w.Field(f => f.CreatorRealName).Value($"*{opUserName}*")));
+            if (!startTime.IsNullOrEmpty())
+                filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).GreaterThan(startTime)));
+            if (!endTime.IsNullOrEmpty())
+                filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).LessThan(endTime)));
+
+            client.DeleteByQuery<Base_Log>(s => s.Query(q =>
+                      q.Bool(b => b.Filter(filters.ToArray()))
+                ));
         }
 
         #endregion
