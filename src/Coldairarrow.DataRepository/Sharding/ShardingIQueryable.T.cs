@@ -34,7 +34,7 @@ namespace Coldairarrow.DataRepository
         {
             return DbModelFactory.GetEntityType(targetTableName);
         }
-        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable<T> newSource = null)
+        private List<dynamic> GetStatisData(Func<IQueryable, dynamic> access, IQueryable newSource = null)
         {
             newSource = newSource ?? _source;
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
@@ -54,7 +54,7 @@ namespace Coldairarrow.DataRepository
 
             return tasks.Select(x => x.Result).ToList();
         }
-        private async Task<List<dynamic>> GetStatisDataAsync(Func<IQueryable, Task<dynamic>> access, IQueryable<T> newSource = null)
+        private async Task<List<dynamic>> GetStatisDataAsync(Func<IQueryable, Task<dynamic>> access, IQueryable newSource = null)
         {
             newSource = newSource ?? _source;
             var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
@@ -69,6 +69,48 @@ namespace Coldairarrow.DataRepository
             }).ToList();
 
             return (await Task.WhenAll(tasks)).ToList();
+        }
+        private async Task<List<TResult>> GetStatisDataGenericAsync<TResult>(Func<IQueryable, Task<TResult>> access, IQueryable newSource = null)
+        {
+            newSource = newSource ?? _source;
+            var tables = ShardingConfig.Instance.GetReadTables(_absTableName);
+            List<Task<TResult>> tasks = new List<Task<TResult>>();
+            tasks = tables.Select(aTable =>
+            {
+                var targetTable = MapTable(aTable.tableName);
+                var targetIQ = DbFactory.GetRepository(aTable.conString, aTable.dbType).GetIQueryable(targetTable);
+                var newQ = newSource.ChangeSource(targetIQ);
+
+                return access(newQ);
+            }).ToList();
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+
+        private dynamic DynamicAverage(dynamic selector)
+        {
+            var list = GetStatisData(x => new KeyValuePair<int, dynamic>(x.Count(), Coldairarrow.Util.Extention.DynamicSum(x, selector))).Select(x => (KeyValuePair<int, dynamic>)x).ToList();
+            var count = list.Sum(x => x.Key);
+            dynamic sumList = list.Select(x => (decimal?)x.Value).ToList();
+            dynamic sum = Enumerable.Sum(sumList);
+
+            return (decimal?)sum / count;
+        }
+        private Task<TResult> DynamicAverageAsync<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            //获取总数量
+            var newSource = _source.Select(selector);
+            var list = GetStatisDataGenericAsync(x => (,))
+            var count = list.Sum(x => x.Key);
+            dynamic sumList = list.Select(x => (decimal?)x.Value).ToList();
+            dynamic sum = Enumerable.Sum(sumList);
+
+            return (decimal?)sum / count;
+        }
+
+        private dynamic DynamicSum(dynamic selector)
+        {
+            return GetStatisData(x => Coldairarrow.Util.Extention.DynamicSum(x, selector)).Sum(x => (decimal?)x);
         }
 
         #endregion
@@ -105,13 +147,25 @@ namespace Coldairarrow.DataRepository
 
             return this;
         }
+        public IShardingQueryable<T> Skip(int count)
+        {
+            _source = _source.Skip(count);
+
+            return this;
+        }
+        public IShardingQueryable<T> Take(int count)
+        {
+            _source = _source.Take(count);
+
+            return this;
+        }
         public int Count()
         {
             return GetStatisData(x => x.Count()).Sum(x => (int)x);
         }
         public async Task<int> CountAsync()
         {
-            var results = await GetStatisDataAsync(async x => await IQueryableHelper.CountAsync(x));
+            var results = await GetStatisDataAsync(x => EntityFrameworkQueryableExtensions.CountAsync((dynamic)x));
 
             return results.Sum(x => (int)x);
         }
@@ -164,19 +218,15 @@ namespace Coldairarrow.DataRepository
         }
         public T FirstOrDefault()
         {
-            return ToList().FirstOrDefault();
+            var list = GetStatisData(x => x.FirstOrDefault());
+            list.RemoveAll(x => x == null);
+            return list.Select(x => Coldairarrow.Util.Extention.ChangeType<T>(x)).FirstOrDefault();
         }
-        public IShardingQueryable<T> Skip(int count)
+        public async Task<T> FirstOrDefaultAsync()
         {
-            _source = _source.Skip(count);
-
-            return this;
-        }
-        public IShardingQueryable<T> Take(int count)
-        {
-            _source = _source.Take(count);
-
-            return this;
+            var list = await GetStatisDataAsync(x => EntityFrameworkQueryableExtensions.FirstOrDefaultAsync((dynamic)x));
+            list.RemoveAll(x => x.IsNullOrEmpty());
+            return list.Select(x => (T)x.ChangeType<T>()).FirstOrDefault();
         }
         public List<T> GetPagination(Pagination pagination)
         {
@@ -185,26 +235,34 @@ namespace Coldairarrow.DataRepository
 
             return Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows).ToList();
         }
+        public async Task<List<T>> GetPaginationAsync(Pagination pagination)
+        {
+            pagination.Total = Count();
+            _source = _source.OrderBy($"{pagination.SortField} {pagination.SortType}");
+
+            return await Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows).ToListAsync();
+        }
         public TResult Max<TResult>(Expression<Func<T, TResult>> selector)
         {
             return GetStatisData(x => x.Max(selector)).Max(x => (TResult)x);
+        }
+        public async Task<TResult> MaxAsync<TResult>(Expression<Func<T, TResult>> selector)
+        {
+            var newSource = _source.Select(selector);
+            var results = await GetStatisDataAsync(x => EntityFrameworkQueryableExtensions.MaxAsync((dynamic)x), newSource);
+
+            return results.Max(x => (TResult)x);
         }
         public TResult Min<TResult>(Expression<Func<T, TResult>> selector)
         {
             return GetStatisData(x => x.Min(selector)).Min(x => (TResult)x);
         }
-        private dynamic DynamicAverage(dynamic selector)
+        public async Task<TResult> MinAsync<TResult>(Expression<Func<T, TResult>> selector)
         {
-            var list = GetStatisData(x => new KeyValuePair<int, dynamic>(x.Count(), Coldairarrow.Util.Extention.DynamicSum(x, selector))).Select(x => (KeyValuePair<int, dynamic>)x).ToList();
-            var count = list.Sum(x => x.Key);
-            dynamic sumList = list.Select(x => (decimal?)x.Value).ToList();
-            dynamic sum = Enumerable.Sum(sumList);
+            var newSource = _source.Select(selector);
+            var results = await GetStatisDataAsync(x => EntityFrameworkQueryableExtensions.MinAsync((dynamic)x), newSource);
 
-            return (decimal?)sum / count;
-        }
-        private dynamic DynamicSum(dynamic selector)
-        {
-            return GetStatisData(x => Coldairarrow.Util.Extention.DynamicSum(x, selector)).Sum(x => (decimal?)x);
+            return results.Min(x => (TResult)x);
         }
         public double Average(Expression<Func<T, int>> selector)
         {
@@ -294,30 +352,14 @@ namespace Coldairarrow.DataRepository
 
 
 
-        public async Task<T> FirstOrDefaultAsync()
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<List<T>> GetPaginationAsync(Pagination pagination)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TResult> MaxAsync<TResult>(Expression<Func<T, TResult>> selector)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<TResult> MinAsync<TResult>(Expression<Func<T, TResult>> selector)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<double> AverageAsync(Expression<Func<T, int>> selector)
         {
