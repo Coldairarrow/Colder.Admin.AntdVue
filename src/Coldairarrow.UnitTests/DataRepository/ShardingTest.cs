@@ -170,6 +170,14 @@ namespace Coldairarrow.UnitTests
         {
             _db.Insert(_dataList);
 
+            //Count
+            new Action(() =>
+            {
+                var local = _dataList.Count;
+                var db = _db.GetIShardingQueryable<Base_UnitTest>().Count();
+                Assert.AreEqual(local, db);
+            })();
+
             //GetList获取表的所有数据
             new Action(() =>
             {

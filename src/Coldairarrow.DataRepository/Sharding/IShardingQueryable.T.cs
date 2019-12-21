@@ -15,10 +15,10 @@ namespace Coldairarrow.DataRepository
         IShardingQueryable<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector);
         IShardingQueryable<T> OrderByDescending<TKey>(Expression<Func<T, TKey>> keySelector);
         IShardingQueryable<T> OrderBy(string ordering, params object[] values);
-        List<T> ToList();
-        Task<List<T>> ToListAsync();
         int Count();
         Task<int> CountAsync();
+        List<T> ToList();
+        Task<List<T>> ToListAsync();
         T FirstOrDefault();
         Task<T> FirstOrDefaultAsync();
         List<T> GetPagination(Pagination pagination);
