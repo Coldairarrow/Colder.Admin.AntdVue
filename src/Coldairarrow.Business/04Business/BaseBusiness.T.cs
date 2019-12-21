@@ -63,19 +63,34 @@ namespace Coldairarrow.Business
         private object _serviceLock = new object();
         protected virtual string _valueField { get; } = "Id";
         protected virtual string _textField { get => throw new Exception("请在子类重写"); }
-        private SynchronizedCollection<IRepository> _dbs { get; } = new SynchronizedCollection<IRepository>();
+        private SynchronizedCollection<IRepository> _dbs { get; }
+            = new SynchronizedCollection<IRepository>();
+        private IRepository GetBusRepository(string conString, DatabaseType? dbType, bool autoDispose)
+        {
+            var db = new BusRepository(DbFactory.GetRepository(conString, dbType));
+            if (autoDispose)
+                _dbs.Add(db);
+
+            return db;
+        }
+        private IRepository GetFullRepository(string conString, DatabaseType? dbType, bool autoDispose)
+        {
+            var db = DbFactory.GetRepository(conString, dbType);
+            if (autoDispose)
+                _dbs.Add(db);
+
+            return db;
+        }
 
         #endregion
 
         #region 外部属性
 
         /// <summary>
-        /// 底层仓储接口,支持跨表操作
+        /// 业务仓储接口(支持软删除),支持联表操作
         /// 注：仅支持单线程操作
+        /// 注：多线程请使用GetNewService(conString,dbType,false),并且需要手动释放
         /// </summary>
-        /// <value>
-        /// The service.
-        /// </value>
         public IRepository Service
         {
             get
@@ -86,7 +101,7 @@ namespace Coldairarrow.Business
                     {
                         if (_service == null)
                         {
-                            _service = new BusRepository(DbFactory.GetRepository(_conString, _dbType));
+                            _service = GetBusRepository(_conString, _dbType, true);
                         }
                     }
                 }
@@ -115,11 +130,6 @@ namespace Coldairarrow.Business
         public IRepository GetNewService(string conString, DatabaseType dbType)
         {
             return new BusRepository(DbFactory.GetRepository(conString, dbType));
-        }
-
-        public void UseRepository(IRepository repository)
-        {
-            _service = repository;
         }
 
         #endregion
@@ -522,7 +532,7 @@ namespace Coldairarrow.Business
                 return;
 
             _disposed = true;
-            _service?.Dispose();
+            _dbs?.ForEach(x => x?.Dispose());
         }
 
         #endregion

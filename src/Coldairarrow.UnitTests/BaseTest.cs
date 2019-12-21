@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
@@ -27,6 +28,13 @@ namespace Coldairarrow.UnitTests
         {
             InitId();
         }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            string tmp = string.Empty;
+        }
+
         private static void InitId()
         {
             new IdHelperBootstrapper()

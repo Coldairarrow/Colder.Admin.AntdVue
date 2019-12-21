@@ -2836,13 +2836,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.IQueryableHelper.CountAsync(System.Linq.IQueryable)">
-            <summary>
-            获取Count
-            </summary>
-            <param name="queryable">数据源</param>
-            <returns></returns>
-        </member>
         <member name="T:Coldairarrow.Util.JobHelper">
             <summary>
             任务帮助类

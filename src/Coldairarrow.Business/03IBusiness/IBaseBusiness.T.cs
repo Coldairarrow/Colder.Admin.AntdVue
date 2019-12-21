@@ -2,8 +2,6 @@
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -152,16 +150,6 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <returns></returns>
         IQueryable<T> GetIQueryable();
-
-        #endregion
-
-        #region 执行Sql语句
-
-        #endregion
-
-        #region 业务操作
-
-        void UseRepository(IRepository repository);
 
         #endregion
     }

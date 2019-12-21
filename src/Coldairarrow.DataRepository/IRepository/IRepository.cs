@@ -151,6 +151,20 @@ namespace Coldairarrow.DataRepository
         /// <returns></returns>
         Task<int> Delete_SqlAsync(Type entityType, string where, params object[] paramters);
 
+        /// <summary>
+        /// 删除指定数据源
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        int Delete_Sql(IQueryable source);
+
+        /// <summary>
+        /// 删除指定数据源
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <returns></returns>
+        Task<int> Delete_SqlAsync(IQueryable source);
+
         #endregion
 
         #region 更新数据
@@ -198,6 +212,26 @@ namespace Coldairarrow.DataRepository
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
         Task<int> UpdateWhere_SqlAsync(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values);
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        int UpdateWhere_Sql(IQueryable source, params (string field, UpdateType updateType, object value)[] values);
+
+        /// <summary>
+        /// 使用SQL语句按照条件更新
+        /// 用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+        /// 注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <param name="values">字段值设置</param>
+        /// <returns>影响条数</returns>
+        Task<int> UpdateWhere_SqlAsync(IQueryable source, params (string field, UpdateType updateType, object value)[] values);
 
         #endregion
 

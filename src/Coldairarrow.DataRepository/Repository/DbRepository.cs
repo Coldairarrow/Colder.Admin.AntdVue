@@ -345,28 +345,36 @@ namespace Coldairarrow.DataRepository
         public int Delete_Sql<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
             var iq = GetIQueryable<T>().Where(where);
-            var sql = GetDeleteSql(iq);
 
-            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+            return Delete_Sql(iq);
         }
         public async Task<int> Delete_SqlAsync<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
             var iq = GetIQueryable<T>().Where(where);
-            var sql = GetDeleteSql(iq);
 
-            return await ExecuteSqlAsync(sql.sql, sql.paramters.ToArray());
+            return await Delete_SqlAsync(iq);
         }
         public int Delete_Sql(Type entityType, string where, params object[] paramters)
         {
             var iq = GetIQueryable(entityType).Where(where, paramters);
-            var sql = GetDeleteSql(iq);
 
-            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+            return Delete_Sql(iq);
         }
         public async Task<int> Delete_SqlAsync(Type entityType, string where, params object[] paramters)
         {
             var iq = GetIQueryable(entityType).Where(where, paramters);
-            var sql = GetDeleteSql(iq);
+
+            return await Delete_SqlAsync(iq);
+        }
+        public int Delete_Sql(IQueryable source)
+        {
+            var sql = GetDeleteSql(source);
+
+            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+        }
+        public async Task<int> Delete_SqlAsync(IQueryable source)
+        {
+            var sql = GetDeleteSql(source);
 
             return await ExecuteSqlAsync(sql.sql, sql.paramters.ToArray());
         }
@@ -433,28 +441,36 @@ namespace Coldairarrow.DataRepository
         public int UpdateWhere_Sql<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
         {
             var iq = GetIQueryable<T>().Where(where);
-            var sql = GetUpdateWhereSql(iq, values);
 
-            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+            return UpdateWhere_Sql(iq, values);
         }
         public async Task<int> UpdateWhere_SqlAsync<T>(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values) where T : class, new()
         {
             var iq = GetIQueryable<T>().Where(where);
-            var sql = GetUpdateWhereSql(iq, values);
 
-            return await ExecuteSqlAsync(sql.sql, sql.paramters.ToArray());
+            return await UpdateWhere_SqlAsync(iq, values);
         }
         public int UpdateWhere_Sql(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
         {
             var iq = GetIQueryable(entityType).Where(where, paramters);
-            var sql = GetUpdateWhereSql(iq, values);
 
-            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+            return UpdateWhere_Sql(iq, values);
         }
         public async Task<int> UpdateWhere_SqlAsync(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
         {
             var iq = GetIQueryable(entityType).Where(where, paramters);
-            var sql = GetUpdateWhereSql(iq, values);
+
+            return await UpdateWhere_SqlAsync(iq, values);
+        }
+        public int UpdateWhere_Sql(IQueryable source, params (string field, UpdateType updateType, object value)[] values)
+        {
+            var sql = GetUpdateWhereSql(source, values);
+
+            return ExecuteSql(sql.sql, sql.paramters.ToArray());
+        }
+        public async Task<int> UpdateWhere_SqlAsync(IQueryable source, params (string field, UpdateType updateType, object value)[] values)
+        {
+            var sql = GetUpdateWhereSql(source, values);
 
             return await ExecuteSqlAsync(sql.sql, sql.paramters.ToArray());
         }
