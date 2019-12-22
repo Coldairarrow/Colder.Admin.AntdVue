@@ -60,6 +60,7 @@ namespace Coldairarrow.Business
         private string _conString { get; }
         private DatabaseType? _dbType { get; }
         private IRepository _service { get; set; }
+        private IRepository _fullService { get; set; }
         private object _serviceLock = new object();
         protected virtual string _valueField { get; } = "Id";
         protected virtual string _textField { get => throw new Exception("请在子类重写"); }
@@ -73,6 +74,14 @@ namespace Coldairarrow.Business
 
             return db;
         }
+        private IRepository GetBusRepository(IRepository fullRepository, bool autoDispose)
+        {
+            var db = new BusRepository(fullRepository);
+            if (autoDispose)
+                _dbs.Add(db);
+
+            return db;
+        }
         private IRepository GetFullRepository(string conString, DatabaseType? dbType, bool autoDispose)
         {
             var db = DbFactory.GetRepository(conString, dbType);
@@ -80,6 +89,21 @@ namespace Coldairarrow.Business
                 _dbs.Add(db);
 
             return db;
+        }
+        private void InitDb()
+        {
+            if (_service == null) //双if +lock
+            {
+                lock (_serviceLock)
+                {
+                    if (_service == null)
+                    {
+                        _fullService = GetFullRepository(_conString, _dbType, true);
+                        _service = GetBusRepository(_fullService, true);
+                    }
+                }
+            }
+
         }
 
         #endregion
@@ -95,16 +119,7 @@ namespace Coldairarrow.Business
         {
             get
             {
-                if (_service == null) //双if +lock
-                {
-                    lock (_serviceLock)
-                    {
-                        if (_service == null)
-                        {
-                            _service = GetBusRepository(_conString, _dbType, true);
-                        }
-                    }
-                }
+                InitDb();
 
                 return _service;
             }
@@ -117,7 +132,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public IRepository GetNewService()
         {
-            return new BusRepository(DbFactory.GetRepository(_conString, _dbType));
+            return GetBusRepository(_conString, _dbType, true);
         }
 
         /// <summary>
@@ -126,10 +141,49 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <param name="conString">连接字符串</param>
         /// <param name="dbType">数据库类型</param>
+        /// <param name="autoDispose">自动释放</param>
         /// <returns></returns>
-        public IRepository GetNewService(string conString, DatabaseType dbType)
+        public IRepository GetNewService(string conString, DatabaseType dbType, bool autoDispose)
         {
-            return new BusRepository(DbFactory.GetRepository(conString, dbType));
+            return GetBusRepository(conString, dbType, autoDispose);
+        }
+
+        /// <summary>
+        /// 完整仓储接口(不支持软删除,直接操作数据库),支持联表操作
+        /// 注：仅支持单线程操作
+        /// 注：多线程请使用GetNewFullService(conString,dbType,false),并且需要手动释放
+        /// </summary>
+        public IRepository FullService
+        {
+            get
+            {
+                InitDb();
+
+                return _fullService;
+            }
+        }
+
+        /// <summary>
+        /// 获取新的数据仓储
+        /// 注:支持多线程(每个线程需要单独的IRepository)
+        /// </summary>
+        /// <returns></returns>
+        public IRepository GetNewFullService()
+        {
+            return GetFullRepository(_conString, _dbType, true);
+        }
+
+        /// <summary>
+        /// 获取新的数据仓储
+        /// 注:支持多线程(每个线程需要单独的IRepository)
+        /// </summary>
+        /// <param name="conString">连接字符串</param>
+        /// <param name="dbType">数据库类型</param>
+        /// <param name="autoDispose">自动释放</param>
+        /// <returns></returns>
+        public IRepository GetNewFullService(string conString, DatabaseType dbType, bool autoDispose)
+        {
+            return GetFullRepository(conString, dbType, autoDispose);
         }
 
         #endregion

@@ -55,9 +55,6 @@ namespace Coldairarrow.Console1
 
         static void Main()
         {
-            //var db = DbFactory.GetRepository();
-            List<int> list = new List<int>();
-            var a = list.FirstOrDefault();
 
             Console.WriteLine();
         }

@@ -441,7 +441,13 @@
             <param name="password">密码</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.Controllers.TestController.PressTest">
+        <member name="M:Coldairarrow.Api.Controllers.TestController.PressTest1">
+            <summary>
+            压力测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Api.Controllers.TestController.PressTest2">
             <summary>
             压力测试
             </summary>
