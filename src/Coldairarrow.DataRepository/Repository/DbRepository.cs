@@ -601,7 +601,7 @@ namespace Coldairarrow.DataRepository
 
         #region Dispose
 
-        private bool _disposed { get; set; }
+        private bool _disposed = false;
         public virtual void Dispose()
         {
             if (_disposed)

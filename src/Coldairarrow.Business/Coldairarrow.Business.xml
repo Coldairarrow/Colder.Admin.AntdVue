@@ -271,13 +271,10 @@
         </member>
         <member name="P:Coldairarrow.Business.BaseBusiness`1.Service">
             <summary>
-            底层仓储接口,支持跨表操作
+            业务仓储接口(支持软删除),支持联表操作
             注：仅支持单线程操作
-            多线程请使用GetNewService(conString,dbType,false),
+            注：多线程请使用GetNewService(conString,dbType,false),并且需要手动释放
             </summary>
-            <value>
-            The service.
-            </value>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewService">
             <summary>
@@ -286,13 +283,38 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewService(System.String,Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewService(System.String,Coldairarrow.Util.DatabaseType,System.Boolean)">
             <summary>
             获取新的数据仓储
             注:支持多线程(每个线程需要单独的IRepository)
             </summary>
             <param name="conString">连接字符串</param>
             <param name="dbType">数据库类型</param>
+            <param name="autoDispose">自动释放</param>
+            <returns></returns>
+        </member>
+        <member name="P:Coldairarrow.Business.BaseBusiness`1.FullService">
+            <summary>
+            完整仓储接口(不支持软删除,直接操作数据库),支持联表操作
+            注：仅支持单线程操作
+            注：多线程请使用GetNewFullService(conString,dbType,false),并且需要手动释放
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewFullService">
+            <summary>
+            获取新的数据仓储
+            注:支持多线程(每个线程需要单独的IRepository)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetNewFullService(System.String,Coldairarrow.Util.DatabaseType,System.Boolean)">
+            <summary>
+            获取新的数据仓储
+            注:支持多线程(每个线程需要单独的IRepository)
+            </summary>
+            <param name="conString">连接字符串</param>
+            <param name="dbType">数据库类型</param>
+            <param name="autoDispose">自动释放</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Insert(`0)">
