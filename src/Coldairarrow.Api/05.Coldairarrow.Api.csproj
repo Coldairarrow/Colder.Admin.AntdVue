@@ -30,9 +30,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="FreeSql" Version="0.12.5" />
-    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="0.12.5" />
-    <PackageReference Include="FreeSql.Provider.SqlServer" Version="0.12.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
