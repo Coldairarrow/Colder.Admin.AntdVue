@@ -150,7 +150,7 @@ namespace Coldairarrow.Business.Base_Manage
     [MapTo(typeof(Base_User))]
     public class Base_UserDTO : Base_User
     {
-        public string RoleNames { get => string.Join(",", RoleNameList); }
+        public string RoleNames { get => string.Join(",", RoleNameList ?? new List<string>()); }
         public List<string> RoleIdList { get; set; }
         public List<string> RoleNameList { get; set; }
         public EnumType.RoleTypeEnum RoleType
