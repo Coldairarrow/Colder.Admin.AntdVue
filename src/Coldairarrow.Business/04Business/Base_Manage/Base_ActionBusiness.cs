@@ -1,4 +1,4 @@
-using Coldairarrow.Entity.Base_Manage;
+ï»¿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -11,7 +11,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_ActionBusiness : BaseBusiness<Base_Action>, IBase_ActionBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_Action> GetDataList(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)
         {
@@ -50,7 +50,7 @@ namespace Coldairarrow.Business.Base_Manage
                 selectable = selectable
             }).ToList();
 
-            //²Ëµ¥½ÚµãÖĞ,Èô×Ó½ÚµãÎª¿ÕÔòÒÆ³ı¸¸½Úµã
+            //èœå•èŠ‚ç‚¹ä¸­,è‹¥å­èŠ‚ç‚¹ä¸ºç©ºåˆ™ç§»é™¤çˆ¶èŠ‚ç‚¹
             if (checkEmptyChildren)
                 treeList = treeList.Where(x => x.Type != 0 || TreeHelper.GetChildren(treeList, x, false).Count > 0).ToList();
 
@@ -78,9 +78,9 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡Ö¸¶¨µÄµ¥ÌõÊı¾İ
+        /// è·å–æŒ‡å®šçš„å•æ¡æ•°æ®
         /// </summary>
-        /// <param name="id">Ö÷¼ü</param>
+        /// <param name="id">ä¸»é”®</param>
         /// <returns></returns>
         public Base_Action GetTheData(string id)
         {
@@ -131,28 +131,28 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.ParentId = parentId;
                 aData.NeedAction = true;
             });
-            //É¾³ıÔ­À´
+            //åˆ é™¤åŸæ¥
             Delete_Sql(x => x.ParentId == parentId && x.Type == 2);
-            //ĞÂÔö
+            //æ–°å¢
             Insert(permissionList);
 
-            //È¨ÏŞÖµ±ØĞëÎ¨Ò»
+            //æƒé™å€¼å¿…é¡»å”¯ä¸€
             var repeatValues = GetIQueryable()
                 .GroupBy(x => x.Value)
                 .Where(x => !string.IsNullOrEmpty(x.Key) && x.Count() > 1)
                 .Select(x => x.Key)
                 .ToList();
             if (repeatValues.Count > 0)
-                throw new Exception($"ÒÔÏÂÈ¨ÏŞÖµÖØ¸´:{string.Join(",", repeatValues)}");
+                throw new Exception($"ä»¥ä¸‹æƒé™å€¼é‡å¤:{string.Join(",", repeatValues)}");
         }
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }
@@ -160,24 +160,24 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_ActionDTO : TreeModel
     {
         /// <summary>
-        /// ÀàĞÍ,²Ëµ¥=0,Ò³Ãæ=1,È¨ÏŞ=2
+        /// ç±»å‹,èœå•=0,é¡µé¢=1,æƒé™=2
         /// </summary>
         public Int32 Type { get; set; }
 
         /// <summary>
-        /// ²Ëµ¥µØÖ·
+        /// èœå•åœ°å€
         /// </summary>
         public String Url { get; set; }
 
         public string path { get => Url; }
 
         /// <summary>
-        /// ÊÇ·ñĞèÒªÈ¨ÏŞ(½öÒ³ÃæÓĞĞ§)
+        /// æ˜¯å¦éœ€è¦æƒé™(ä»…é¡µé¢æœ‰æ•ˆ)
         /// </summary>
         public bool NeedAction { get; set; }
 
         public string TypeText { get => ((ActionTypeEnum)Type).ToString(); }
-        public string NeedActionText { get => NeedAction ? "ÊÇ" : "·ñ"; }
+        public string NeedActionText { get => NeedAction ? "æ˜¯" : "å¦"; }
         public object children { get => Children; }
 
         public string title { get => Text; }
@@ -186,7 +186,7 @@ namespace Coldairarrow.Business.Base_Manage
         public bool selectable { get; set; }
 
         /// <summary>
-        /// Í¼±ê
+        /// å›¾æ ‡
         /// </summary>
         [JsonIgnore]
         public string Icon { get; set; }
@@ -194,7 +194,7 @@ namespace Coldairarrow.Business.Base_Manage
         public string icon { get => Icon; }
 
         /// <summary>
-        /// ÅÅĞò
+        /// æ’åº
         /// </summary>
         public int Sort { get; set; }
 
