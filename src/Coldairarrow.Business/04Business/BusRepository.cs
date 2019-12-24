@@ -16,7 +16,7 @@ namespace Coldairarrow.Business
     /// 软删除:查询:获取Deleted=false,删除:更新Deleted=true
     /// 其它:按照具体业务修改
     /// </summary>
-    public class BusRepository : IRepository
+    internal class BusRepository : IRepository
     {
         public BusRepository(IRepository db)
         {
@@ -33,6 +33,17 @@ namespace Coldairarrow.Business
         public Action<string> HandleSqlLog { set => _db.HandleSqlLog = value; }
         public string ConnectionString => _db.ConnectionString;
         public DatabaseType DbType => _db.DbType;
+        private T LogicDeleteFilter<T>(T data)
+        {
+            return LogicDeleteFilter(new List<T> { data }).FirstOrDefault();
+        }
+        private List<T> LogicDeleteFilter<T>(List<T> list)
+        {
+            if (NeedLogicDelete(typeof(T)))
+                return list.Where(x => !(bool)x.GetPropertyValue(Deleted)).ToList();
+            else
+                return list;
+        }
 
         #region 重写
 
@@ -49,6 +60,18 @@ namespace Coldairarrow.Business
             }
 
             return q;
+        }
+        public T GetEntity<T>(params object[] keyValue) where T : class, new()
+        {
+            var obj = _db.GetEntity<T>(keyValue);
+
+            return LogicDeleteFilter(obj);
+        }
+        public async Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
+        {
+            var obj = await _db.GetEntityAsync<T>(keyValue);
+
+            return LogicDeleteFilter(obj);
         }
         public List<object> GetList(Type type)
         {
@@ -218,14 +241,6 @@ namespace Coldairarrow.Business
         public Task<int> UpdateWhere_SqlAsync(Type entityType, string where, object[] paramters, params (string field, UpdateType updateType, object value)[] values)
         {
             return _db.UpdateWhere_SqlAsync(entityType, where, paramters, values);
-        }
-        public T GetEntity<T>(params object[] keyValue) where T : class, new()
-        {
-            return _db.GetEntity<T>(keyValue);
-        }
-        public Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
-        {
-            return _db.GetEntityAsync<T>(keyValue);
         }
         public DataTable GetDataTableWithSql(string sql, params (string paramterName, object value)[] parameters)
         {

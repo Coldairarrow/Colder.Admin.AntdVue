@@ -31,7 +31,6 @@ namespace Coldairarrow.Console1
         }
         static void Main()
         {
-
             Console.WriteLine("完成");
             Console.WriteLine();
         }
