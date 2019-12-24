@@ -1,4 +1,4 @@
-using AutoMapper;
+ï»¿using AutoMapper;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
@@ -10,7 +10,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_RoleBusiness : BaseBusiness<Base_Role>, IBase_RoleBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_RoleDTO> GetDataList(Pagination pagination, string roleId = null, string roleName = null)
         {
@@ -41,7 +41,7 @@ namespace Coldairarrow.Business.Base_Manage
                     .ToList();
                 _list.ForEach(aData =>
                 {
-                    if (aData.RoleName == RoleTypeEnum.³¬¼¶¹ÜÀíÔ±.ToString())
+                    if (aData.RoleName == RoleTypeEnum.è¶…çº§ç®¡ç†å‘˜.ToString())
                         aData.Actions = allActionIds;
                     else
                         aData.Actions = roleActions.Where(x => x.RoleId == aData.Id).Select(x => x.ActionId).ToList();
@@ -54,8 +54,8 @@ namespace Coldairarrow.Business.Base_Manage
             return GetDataList(new Pagination(), id).FirstOrDefault();
         }
 
-        [DataAddLog(LogType.ÏµÍ³½ÇÉ«¹ÜÀí, "RoleName", "½ÇÉ«")]
-        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "½ÇÉ«Ãû" })]
+        [DataAddLog(LogType.ç³»ç»Ÿè§’è‰²ç®¡ç†, "RoleName", "è§’è‰²")]
+        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "è§’è‰²å" })]
         public AjaxResult AddData(Base_Role newData, List<string> actions)
         {
             var res = RunTransaction(() =>
@@ -64,13 +64,13 @@ namespace Coldairarrow.Business.Base_Manage
                 SetRoleAction(newData.Id, actions);
             });
             if (!res.Success)
-                throw new Exception("ÏµÍ³Òì³£,ÇëÖØÊÔ", res.ex);
+                throw new Exception("ç³»ç»Ÿå¼‚å¸¸,è¯·é‡è¯•", res.ex);
 
             return Success();
         }
 
-        [DataEditLog(LogType.ÏµÍ³½ÇÉ«¹ÜÀí, "RoleName", "½ÇÉ«")]
-        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "½ÇÉ«Ãû" })]
+        [DataEditLog(LogType.ç³»ç»Ÿè§’è‰²ç®¡ç†, "RoleName", "è§’è‰²")]
+        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "è§’è‰²å" })]
         public AjaxResult UpdateData(Base_Role theData, List<string> actions)
         {
             var res = RunTransaction(() =>
@@ -79,12 +79,12 @@ namespace Coldairarrow.Business.Base_Manage
                 SetRoleAction(theData.Id, actions);
             });
             if (!res.Success)
-                throw new Exception("ÏµÍ³Òì³£,ÇëÖØÊÔ", res.ex);
+                throw new Exception("ç³»ç»Ÿå¼‚å¸¸,è¯·é‡è¯•", res.ex);
 
             return Success();
         }
 
-        [DataDeleteLog(LogType.ÏµÍ³½ÇÉ«¹ÜÀí, "RoleName", "½ÇÉ«")]
+        [DataDeleteLog(LogType.ç³»ç»Ÿè§’è‰²ç®¡ç†, "RoleName", "è§’è‰²")]
         public AjaxResult DeleteData(List<string> ids)
         {
             var res = RunTransaction(() =>
@@ -93,14 +93,14 @@ namespace Coldairarrow.Business.Base_Manage
                 Service.Delete_Sql<Base_RoleAction>(x => ids.Contains(x.Id));
             });
             if (!res.Success)
-                throw new Exception("ÏµÍ³Òì³£,ÇëÖØÊÔ", res.ex);
+                throw new Exception("ç³»ç»Ÿå¼‚å¸¸,è¯·é‡è¯•", res.ex);
 
             return Success();
         }
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         private void SetRoleAction(string roleId, List<string> actions)
         {
@@ -118,7 +118,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }

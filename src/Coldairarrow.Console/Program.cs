@@ -2,7 +2,9 @@
 using Autofac.Extras.DynamicProxy;
 using Coldairarrow.Util;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Coldairarrow.Console1
 {
@@ -31,6 +33,15 @@ namespace Coldairarrow.Console1
         }
         static void Main()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            string path = $"D:\\文档\\0软件项目\\GitHub\\Colder.Admin.AntdVue";
+            var files = Directory.GetFiles(path);
+            files.ForEach(aFile =>
+            {
+                var oldEncoding = new IdentifyEncoding().GetEncodingString(new FileInfo(aFile));
+                var content = File.ReadAllText(aFile, Encoding.GetEncoding(oldEncoding));
+                File.WriteAllText(aFile, content, Encoding.UTF8);
+            });
             Console.WriteLine("完成");
             Console.WriteLine();
         }
