@@ -4,10 +4,8 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers

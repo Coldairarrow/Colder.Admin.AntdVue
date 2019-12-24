@@ -2464,6 +2464,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Coldairarrow.Util.HttpClientHelper">
+            <summary>
+            Http请求帮助类
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.HttpHelper">
             <summary>
             Http请求操作帮助类
