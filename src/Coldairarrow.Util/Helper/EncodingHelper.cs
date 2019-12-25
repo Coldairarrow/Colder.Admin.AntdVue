@@ -1,740 +1,16 @@
 ﻿using System;
 using System.IO;
 
-namespace Coldairarrow.Console1
+namespace Coldairarrow.Util
 {
-    #region Class IdentifyEncoding.....
     /// <summary>
-    /// 检测字符编码的类
-    /// <seealso cref="System.IO.Stream"/>
-    /// <seealso cref="System.Uri"/>
-    /// <seealso cref="System.IO.FileInfo"/>
+    /// 编码帮助类
     /// </summary>
-    /// <remarks>
-    /// <![CDATA[
-    /// <strong>IdentifyEncoding</strong> 用来检测 <see cref="Uri"/>，<see cref="System.IO.FileInfo"/>，<see cref="sbyte"/> 字节数组的编码．
-    /// Create By lion  <br/>
-    /// 2005-02-21 22:00  <br/>
-    /// Support .Net Framework v1.1.4322 <br/> 
-    /// WebSite：www.lionsky.net(lion-a AT sohu.com) <br/> 
-    /// ]]>
-    /// </remarks>
-    public class IdentifyEncoding
+    public static class EncodingHelper
     {
-        #region Fields.....
+        #region 构造函数
 
-        // Frequency tables to hold the GB, Big5, and EUC-TW character
-        // frequencies
-        internal static int[][] GBFreq = new int[94][];
-        internal static int[][] GBKFreq = new int[126][];
-        internal static int[][] Big5Freq = new int[94][];
-        internal static int[][] EUC_TWFreq = new int[94][];
-
-        internal static string[] nicename = new string[]
-         {
-    "GB2312", "GBK", "HZ", "Big5", "CNS 11643",
-    "ISO 2022CN", "UTF-8", "Unicode", "ASCII", "OTHER"
-         };
-
-        #endregion
-
-        #region Methods.....
-
-        /// <summary>
-        /// 初始化 <see cref="IdentifyEncoding"/> 的实例
-        /// </summary>
-        public IdentifyEncoding() { Initialize_Frequencies(); }
-
-        #region GetEncodingString.....
-        /// <summary>
-        /// 从指定的 <see cref="Uri"/> 中判断编码类型
-        /// </summary>
-        /// <param name="testurl">要判断的 <see cref="Uri"/> </param>
-        /// <returns>返回编码类型（"GB2312", "GBK", "HZ", "Big5", "CNS 11643", "ISO 2022CN", "UTF-8", "Unicode", "ASCII", "OTHER"）</returns>
-        /// <example>
-        /// 以下示例演示了如何调用 <see cref="GetEncodingString"/> 方法：
-        /// <code>
-        ///  IdentifyEncoding ide = new IdentifyEncoding();
-        ///  Response.Write(ide.GetEncodingString(new Uri("http://china5.nikkeibp.co.jp/china/news/com/200307/pr_com200307170131.html")));  
-        /// </code>
-        /// </example>
-        public virtual string GetEncodingString(System.Uri testurl)
-        {
-            sbyte[] rawtext = new sbyte[1024];
-            int bytesread = 0, byteoffset = 0;
-            System.IO.Stream chinesestream;
-            try
-            {
-                chinesestream = System.Net.WebRequest.Create(testurl.AbsoluteUri).GetResponse().GetResponseStream();
-                while ((bytesread = ReadInput(chinesestream, ref rawtext, byteoffset, rawtext.Length - byteoffset)) > 0)
-                {
-                    byteoffset += bytesread;
-                }
-                chinesestream.Close();
-            }
-            catch (System.Exception e)
-            {
-                System.Console.Error.WriteLine("Error loading or using URL " + e.ToString());
-            }
-            return GetEncodingString(rawtext);
-        }
-
-        /// <summary>
-        /// 从指定的 <see cref="System.IO.FileInfo"/> 中判断编码类型
-        /// </summary>
-        /// <param name="testfile">要判断的 <see cref="System.IO.FileInfo"/> </param>
-        /// <returns>返回编码类型（"GB2312", "GBK", "HZ", "Big5", "CNS 11643", "ISO 2022CN", "UTF-8", "Unicode", "ASCII", "OTHER"）</returns>
-        /// <example>
-        /// 以下示例演示了如何调用 <see cref="GetEncodingString"/> 方法：
-        /// <code>
-        ///  IdentifyEncoding ide = new IdentifyEncoding();
-        ///  Response.Write(ide.GetEncodingString(new System.IO.FileInfo(@"C:\test.txt")));  
-        /// </code>
-        /// </example>
-        public virtual string GetEncodingString(System.IO.FileInfo testfile)
-        {
-            sbyte[] rawtext;
-            rawtext = new sbyte[(int)FileLength(testfile)];
-            try
-            {
-                using var chinesefile = new FileStream(testfile.FullName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-                ReadInput(chinesefile, ref rawtext, 0, rawtext.Length);
-            }
-            catch (System.Exception e)
-            {
-                System.Console.Error.WriteLine("Error: " + e);
-            }
-
-            return GetEncodingString(rawtext);
-        }
-
-
-        /// <summary>
-        /// 从指定的 <see cref="sbyte"/> 字节数组中判断编码类型
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="System.IO.FileInfo"/> </param>
-        /// <returns>返回编码类型（"GB2312", "GBK", "HZ", "Big5", "CNS 11643", "ISO 2022CN", "UTF-8", "Unicode", "ASCII", "OTHER"）</returns>
-        /// <example>
-        /// 以下示例演示了如何调用 <see cref="GetEncodingString"/> 方法：
-        /// <code>
-        ///  IdentifyEncoding ide = new IdentifyEncoding();
-        ///  Response.Write(ide.GetEncodingString(IdentifyEncoding.ToSByteArray(System.Text.Encoding.GetEncoding("gb2312").GetBytes("Lion互动网络(www.lionsky.net)")))); 
-        /// </code>
-        /// </example>
-        public virtual string GetEncodingString(sbyte[] rawtext)
-        {
-            int[] scores;
-            int index, maxscore = 0;
-            int encoding_guess = 0;
-
-            scores = new int[10];
-            //分析编码的概率
-            scores[0] = GB2312Probability(rawtext);
-            scores[1] = GBKProbability(rawtext);
-            scores[2] = HZProbability(rawtext);
-            scores[3] = BIG5Probability(rawtext);
-            scores[4] = ENCTWProbability(rawtext);
-            scores[5] = ISO2022CNProbability(rawtext);
-            scores[6] = UTF8Probability(rawtext);
-            scores[7] = UnicodeProbability(rawtext);
-            scores[8] = ASCIIProbability(rawtext);
-            scores[9] = 0;
-
-            // Tabulate Scores
-            for (index = 0; index < 10; index++)
-            {
-                if (scores[index] > maxscore)
-                {
-                    encoding_guess = index;
-                    maxscore = scores[index];
-                }
-            }
-
-            // Return OTHER if nothing scored above 50
-            if (maxscore <= 50)
-            {
-                encoding_guess = 9;
-            }
-
-            return nicename[encoding_guess];
-        }
-        #endregion
-
-        #region About Probability.....
-        #region GB2312Probability
-        /// <summary>
-        /// 判断是GB2312编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int GB2312Probability(sbyte[] rawtext)
-        {
-            int i, rawtextlen = 0;
-
-            int dbchars = 1, gbchars = 1;
-            long gbfreq = 0, totalfreq = 1;
-            float rangeval = 0, freqval = 0;
-            int row, column;
-
-            // Stage 1:  Check to see if characters fit into acceptable ranges
-
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen - 1; i++)
-            {
-                if (rawtext[i] >= 0)
-                {
-                    //asciichars++;
-                }
-                else
-                {
-                    dbchars++;
-                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF7) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
-                    {
-                        gbchars++;
-                        totalfreq += 500;
-                        row = rawtext[i] + 256 - 0xA1;
-                        column = rawtext[i + 1] + 256 - 0xA1;
-                        if (GBFreq[row][column] != 0)
-                        {
-                            gbfreq += GBFreq[row][column];
-                        }
-                        else if (15 <= row && row < 55)
-                        {
-                            gbfreq += 200;
-                        }
-                    }
-                    i++;
-                }
-            }
-
-            rangeval = 50 * ((float)gbchars / (float)dbchars);
-            freqval = 50 * ((float)gbfreq / (float)totalfreq);
-
-
-            return (int)(rangeval + freqval);
-        }
-
-        #endregion
-
-        #region GBKProbability.....
-        /// <summary>
-        /// 判断是GBK编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int GBKProbability(sbyte[] rawtext)
-        {
-            int i, rawtextlen = 0;
-
-            int dbchars = 1, gbchars = 1;
-            long gbfreq = 0, totalfreq = 1;
-            float rangeval = 0, freqval = 0;
-            int row, column;
-
-            // Stage 1:  Check to see if characters fit into acceptable ranges
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen - 1; i++)
-            {
-                if (rawtext[i] >= 0)
-                {
-                    //asciichars++;
-                }
-                else
-                {
-                    dbchars++;
-                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF7) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
-                    {
-                        gbchars++;
-                        totalfreq += 500;
-                        row = rawtext[i] + 256 - 0xA1;
-                        column = rawtext[i + 1] + 256 - 0xA1;
-
-                        if (GBFreq[row][column] != 0)
-                        {
-                            gbfreq += GBFreq[row][column];
-                        }
-                        else if (15 <= row && row < 55)
-                        {
-                            gbfreq += 200;
-                        }
-                    }
-                    else if ((sbyte)Identity(0x81) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xFE) && (((sbyte)Identity(0x80) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE)) || ((sbyte)0x40 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E)))
-                    {
-                        gbchars++;
-                        totalfreq += 500;
-                        row = rawtext[i] + 256 - 0x81;
-                        if (0x40 <= rawtext[i + 1] && rawtext[i + 1] <= 0x7E)
-                        {
-                            column = rawtext[i + 1] - 0x40;
-                        }
-                        else
-                        {
-                            column = rawtext[i + 1] + 256 - 0x80;
-                        }
-
-                        if (GBKFreq[row][column] != 0)
-                        {
-                            gbfreq += GBKFreq[row][column];
-                        }
-                    }
-                    i++;
-                }
-            }
-
-            rangeval = 50 * ((float)gbchars / (float)dbchars);
-            freqval = 50 * ((float)gbfreq / (float)totalfreq);
-
-            return (int)(rangeval + freqval) - 1;
-        }
-
-        #endregion
-
-        #region HZProbability.....
-        /// <summary>
-        /// 判断是HZ编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int HZProbability(sbyte[] rawtext)
-        {
-            int i, rawtextlen;
-            int hzchars = 0, dbchars = 1;
-            long hzfreq = 0, totalfreq = 1;
-            float rangeval = 0, freqval = 0;
-            int hzstart = 0, hzend = 0;
-            int row, column;
-
-            rawtextlen = rawtext.Length;
-
-            for (i = 0; i < rawtextlen; i++)
-            {
-                if (rawtext[i] == '~')
-                {
-                    if (rawtext[i + 1] == '{')
-                    {
-                        hzstart++;
-                        i += 2;
-                        while (i < rawtextlen - 1)
-                        {
-                            if (rawtext[i] == 0x0A || rawtext[i] == 0x0D)
-                            {
-                                break;
-                            }
-                            else if (rawtext[i] == '~' && rawtext[i + 1] == '}')
-                            {
-                                hzend++;
-                                i++;
-                                break;
-                            }
-                            else if ((0x21 <= rawtext[i] && rawtext[i] <= 0x77) && (0x21 <= rawtext[i + 1] && rawtext[i + 1] <= 0x77))
-                            {
-                                hzchars += 2;
-                                row = rawtext[i] - 0x21;
-                                column = rawtext[i + 1] - 0x21;
-                                totalfreq += 500;
-                                if (GBFreq[row][column] != 0)
-                                {
-                                    hzfreq += GBFreq[row][column];
-                                }
-                                else if (15 <= row && row < 55)
-                                {
-                                    hzfreq += 200;
-                                }
-                            }
-                            else if (((byte)0xA1 <= rawtext[i] && rawtext[i] <= (byte)0xF7) && ((byte)0xA1 <= rawtext[i + 1] && rawtext[i + 1] <= (byte)0xF7))
-                            {
-                                hzchars += 2;
-                                row = rawtext[i] + 256 - 0xA1;
-                                column = rawtext[i + 1] + 256 - 0xA1;
-                                totalfreq += 500;
-                                if (GBFreq[row][column] != 0)
-                                {
-                                    hzfreq += GBFreq[row][column];
-                                }
-                                else if (15 <= row && row < 55)
-                                {
-                                    hzfreq += 200;
-                                }
-                            }
-                            dbchars += 2;
-                            i += 2;
-                        }
-                    }
-                    else if (rawtext[i + 1] == '}')
-                    {
-                        hzend++;
-                        i++;
-                    }
-                    else if (rawtext[i + 1] == '~')
-                    {
-                        i++;
-                    }
-                }
-            }
-
-            if (hzstart > 4)
-            {
-                rangeval = 50;
-            }
-            else if (hzstart > 1)
-            {
-                rangeval = 41;
-            }
-            else if (hzstart > 0)
-            {
-                // Only 39 in case the sequence happened to occur
-                rangeval = 39; // in otherwise non-Hz text
-            }
-            else
-            {
-                rangeval = 0;
-            }
-            freqval = 50 * ((float)hzfreq / (float)totalfreq);
-
-
-            return (int)(rangeval + freqval);
-        }
-
-        #endregion
-
-        #region BIG5Probability.....
-        /// <summary>
-        /// 判断是BIG5编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int BIG5Probability(sbyte[] rawtext)
-        {
-            int i, rawtextlen = 0;
-            int dbchars = 1, bfchars = 1;
-            float rangeval = 0, freqval = 0;
-            long bffreq = 0, totalfreq = 1;
-            int row, column;
-
-            // Check to see if characters fit into acceptable ranges
-
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen - 1; i++)
-            {
-                if (rawtext[i] >= 0)
-                {
-                    //asciichars++;
-                }
-                else
-                {
-                    dbchars++;
-                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF9) && (((sbyte)0x40 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E) || ((sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))))
-                    {
-                        bfchars++;
-                        totalfreq += 500;
-                        row = rawtext[i] + 256 - 0xA1;
-                        if (0x40 <= rawtext[i + 1] && rawtext[i + 1] <= 0x7E)
-                        {
-                            column = rawtext[i + 1] - 0x40;
-                        }
-                        else
-                        {
-                            column = rawtext[i + 1] + 256 - 0x61;
-                        }
-                        if (Big5Freq[row][column] != 0)
-                        {
-                            bffreq += Big5Freq[row][column];
-                        }
-                        else if (3 <= row && row <= 37)
-                        {
-                            bffreq += 200;
-                        }
-                    }
-                    i++;
-                }
-            }
-
-            rangeval = 50 * ((float)bfchars / (float)dbchars);
-            freqval = 50 * ((float)bffreq / (float)totalfreq);
-
-
-            return (int)(rangeval + freqval);
-        }
-
-        #endregion
-
-        #region ENCTWProbability.....
-        /// <summary>
-        /// 判断是CNS11643(台湾)编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int ENCTWProbability(sbyte[] rawtext)
-        {
-            int i, rawtextlen = 0;
-            int dbchars = 1, cnschars = 1;
-            long cnsfreq = 0, totalfreq = 1;
-            float rangeval = 0, freqval = 0;
-            int row, column;
-
-            // Check to see if characters fit into acceptable ranges
-            // and have expected frequency of use
-
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen - 1; i++)
-            {
-                if (rawtext[i] >= 0)
-                {
-                    // in ASCII range
-                    //asciichars++;
-                }
-                else
-                {
-                    // high bit set
-                    dbchars++;
-                    if (i + 3 < rawtextlen && (sbyte)Identity(0x8E) == rawtext[i] && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xB0) && (sbyte)Identity(0xA1) <= rawtext[i + 2] && rawtext[i + 2] <= (sbyte)Identity(0xFE) && (sbyte)Identity(0xA1) <= rawtext[i + 3] && rawtext[i + 3] <= (sbyte)Identity(0xFE))
-                    {
-                        // Planes 1 - 16
-
-                        cnschars++;
-                        // These are all less frequent chars so just ignore freq
-                        i += 3;
-                    }
-                    else if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xFE) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
-                    {
-                        cnschars++;
-                        totalfreq += 500;
-                        row = rawtext[i] + 256 - 0xA1;
-                        column = rawtext[i + 1] + 256 - 0xA1;
-                        if (EUC_TWFreq[row][column] != 0)
-                        {
-                            cnsfreq += EUC_TWFreq[row][column];
-                        }
-                        else if (35 <= row && row <= 92)
-                        {
-                            cnsfreq += 150;
-                        }
-                        i++;
-                    }
-                }
-            }
-
-
-            rangeval = 50 * ((float)cnschars / (float)dbchars);
-            freqval = 50 * ((float)cnsfreq / (float)totalfreq);
-
-
-            return (int)(rangeval + freqval);
-        }
-
-        #endregion
-
-        #region ISO2022CNProbability.....
-        /// <summary>
-        /// 判断是ISO2022CN编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int ISO2022CNProbability(sbyte[] rawtext)
-        {
-            int i, rawtextlen = 0;
-            int dbchars = 1, isochars = 1;
-            long isofreq = 0, totalfreq = 1;
-            float rangeval = 0, freqval = 0;
-            int row, column;
-
-            // Check to see if characters fit into acceptable ranges
-            // and have expected frequency of use
-
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen - 1; i++)
-            {
-                if (rawtext[i] == (sbyte)0x1B && i + 3 < rawtextlen)
-                {
-                    // Escape char ESC
-                    if (rawtext[i + 1] == (sbyte)0x24 && rawtext[i + 2] == 0x29 && rawtext[i + 3] == (sbyte)0x41)
-                    {
-                        // GB Escape  $ ) A
-                        i += 4;
-                        while (rawtext[i] != (sbyte)0x1B)
-                        {
-                            dbchars++;
-                            if ((0x21 <= rawtext[i] && rawtext[i] <= 0x77) && (0x21 <= rawtext[i + 1] && rawtext[i + 1] <= 0x77))
-                            {
-                                isochars++;
-                                row = rawtext[i] - 0x21;
-                                column = rawtext[i + 1] - 0x21;
-                                totalfreq += 500;
-                                if (GBFreq[row][column] != 0)
-                                {
-                                    isofreq += GBFreq[row][column];
-                                }
-                                else if (15 <= row && row < 55)
-                                {
-                                    isofreq += 200;
-                                }
-                                i++;
-                            }
-                            i++;
-                        }
-                    }
-                    else if (i + 3 < rawtextlen && rawtext[i + 1] == (sbyte)0x24 && rawtext[i + 2] == (sbyte)0x29 && rawtext[i + 3] == (sbyte)0x47)
-                    {
-                        // CNS Escape $ ) G
-                        i += 4;
-                        while (rawtext[i] != (sbyte)0x1B)
-                        {
-                            dbchars++;
-                            if ((sbyte)0x21 <= rawtext[i] && rawtext[i] <= (sbyte)0x7E && (sbyte)0x21 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E)
-                            {
-                                isochars++;
-                                totalfreq += 500;
-                                row = rawtext[i] - 0x21;
-                                column = rawtext[i + 1] - 0x21;
-                                if (EUC_TWFreq[row][column] != 0)
-                                {
-                                    isofreq += EUC_TWFreq[row][column];
-                                }
-                                else if (35 <= row && row <= 92)
-                                {
-                                    isofreq += 150;
-                                }
-                                i++;
-                            }
-                            i++;
-                        }
-                    }
-                    if (rawtext[i] == (sbyte)0x1B && i + 2 < rawtextlen && rawtext[i + 1] == (sbyte)0x28 && rawtext[i + 2] == (sbyte)0x42)
-                    {
-                        // ASCII:  ESC ( B
-                        i += 2;
-                    }
-                }
-            }
-
-            rangeval = 50 * ((float)isochars / (float)dbchars);
-            freqval = 50 * ((float)isofreq / (float)totalfreq);
-
-            return (int)(rangeval + freqval);
-        }
-
-        #endregion
-
-        #region UTF8Probability.....
-        /// <summary>
-        /// 判断是UTF8编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int UTF8Probability(sbyte[] rawtext)
-        {
-            int score = 0;
-            int i, rawtextlen = 0;
-            int goodbytes = 0, asciibytes = 0;
-
-            // Maybe also use UTF8 Byte Order Mark:  EF BB BF
-
-            // Check to see if characters fit into acceptable ranges
-            rawtextlen = rawtext.Length;
-            for (i = 0; i < rawtextlen; i++)
-            {
-                if ((rawtext[i] & (sbyte)0x7F) == rawtext[i])
-                {
-                    // One byte
-                    asciibytes++;
-                    // Ignore ASCII, can throw off count
-                }
-                else if (-64 <= rawtext[i] && rawtext[i] <= -33 && i + 1 < rawtextlen && -128 <= rawtext[i + 1] && rawtext[i + 1] <= -65)
-                {
-                    goodbytes += 2;
-                    i++;
-                }
-                else if (-32 <= rawtext[i] && rawtext[i] <= -17 && i + 2 < rawtextlen && -128 <= rawtext[i + 1] && rawtext[i + 1] <= -65 && -128 <= rawtext[i + 2] && rawtext[i + 2] <= -65)
-                {
-                    goodbytes += 3;
-                    i += 2;
-                }
-            }
-
-            if (asciibytes == rawtextlen)
-            {
-                return 0;
-            }
-
-            score = (int)(100 * ((float)goodbytes / (float)(rawtextlen - asciibytes)));
-
-            // If not above 98, reduce to zero to prevent coincidental matches
-            // Allows for some (few) bad formed sequences
-            if (score > 98)
-            {
-                return score;
-            }
-            else if (score > 95 && goodbytes > 30)
-            {
-                return score;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        #endregion
-
-        #region UnicodeProbability.....
-        /// <summary>
-        /// 判断是Unicode编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int UnicodeProbability(sbyte[] rawtext)
-        {
-            //int score = 0;
-            //int i, rawtextlen = 0;
-            //int goodbytes = 0, asciibytes = 0;
-
-            if (((sbyte)Identity(0xFE) == rawtext[0] && (sbyte)Identity(0xFF) == rawtext[1]) || ((sbyte)Identity(0xFF) == rawtext[0] && (sbyte)Identity(0xFE) == rawtext[1]))
-            {
-                return 100;
-            }
-
-            return 0;
-        }
-
-        #endregion
-
-        #region ASCIIProbability.....
-        /// <summary>
-        /// 判断是ASCII编码的可能性
-        /// </summary>
-        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
-        /// <returns>返回 0 至 100 之间的可能性</returns>
-        internal virtual int ASCIIProbability(sbyte[] rawtext)
-        {
-            int score = 70;
-            int i, rawtextlen;
-
-            rawtextlen = rawtext.Length;
-
-            for (i = 0; i < rawtextlen; i++)
-            {
-                if (rawtext[i] < 0)
-                {
-                    score = score - 5;
-                }
-                else if (rawtext[i] == (sbyte)0x1B)
-                {
-                    // ESC (used by ISO 2022)
-                    score = score - 5;
-                }
-            }
-
-            return score;
-        }
-
-        #endregion
-        #endregion
-
-        #region Initialize_Frequencies.....
-        /// <summary>
-        /// 初始化必要的条件
-        /// </summary>
-        internal virtual void Initialize_Frequencies()
+        static EncodingHelper()
         {
             int i;
             if (GBFreq[0] == null)
@@ -744,7 +20,8 @@ namespace Coldairarrow.Console1
                     GBFreq[i] = new int[94];
                 }
 
-                #region GBFreq[20][35] = 599;
+                #region 
+                GBFreq[20][35] = 599;
                 GBFreq[49][26] = 598;
                 GBFreq[41][38] = 597;
                 GBFreq[17][26] = 596;
@@ -1155,7 +432,8 @@ namespace Coldairarrow.Console1
                     GBKFreq[i] = new int[191];
                 }
 
-                #region GBKFreq[52][132] = 600;
+                #region 
+                GBKFreq[52][132] = 600;
                 GBKFreq[73][135] = 599;
                 GBKFreq[49][123] = 598;
                 GBKFreq[77][146] = 597;
@@ -1466,7 +744,8 @@ namespace Coldairarrow.Console1
                 {
                     Big5Freq[i] = new int[158];
                 }
-                #region Big5Freq[9][89] = 600;
+                #region 
+                Big5Freq[9][89] = 600;
                 Big5Freq[11][15] = 599;
                 Big5Freq[3][66] = 598;
                 Big5Freq[6][121] = 597;
@@ -1875,7 +1154,8 @@ namespace Coldairarrow.Console1
                 {
                     EUC_TWFreq[i] = new int[94];
                 }
-                #region EUC_TWFreq[48][49] = 599;
+                #region 
+                EUC_TWFreq[48][49] = 599;
                 EUC_TWFreq[35][65] = 598;
                 EUC_TWFreq[41][27] = 597;
                 EUC_TWFreq[35][0] = 596;
@@ -2276,82 +1556,601 @@ namespace Coldairarrow.Console1
                 EUC_TWFreq[46][59] = 201;
                 #endregion
             }
+
         }
 
         #endregion
 
-        #region ToByteArray.....
-        /// <summary>
-        /// 将此实例中的指定 <see cref="sbyte"/> 字符数组转换到 <see cref="byte"/> 字符数组。
-        /// </summary>
-        /// <param name="sbyteArray">要转换的 <see cref="sbyte"/> 字符数组</param>
-        /// <returns>返回转换后的 <see cref="byte"/> 字符数组</returns>
-        public static byte[] ToByteArray(sbyte[] sbyteArray)
+        #region 私有成员
+
+        private static int[][] GBFreq = new int[94][];
+        private static int[][] GBKFreq = new int[126][];
+        private static int[][] Big5Freq = new int[94][];
+        private static int[][] EUC_TWFreq = new int[94][];
+
+        private static string[] nicename = new string[]{
+            "GB2312", "GBK", "HZ", "Big5", "CNS 11643","ISO 2022CN", "UTF-8", "Unicode", "ASCII", "OTHER"};
+
+        private static string GetEncodingString(sbyte[] rawtext)
         {
-            byte[] byteArray = new byte[sbyteArray.Length];
-            for (int index = 0; index < sbyteArray.Length; index++)
-                byteArray[index] = (byte)sbyteArray[index];
-            return byteArray;
+            int[] scores;
+            int index, maxscore = 0;
+            int encoding_guess = 0;
+
+            scores = new int[10];
+            //分析编码的概率
+            scores[0] = GB2312Probability(rawtext);
+            scores[1] = GBKProbability(rawtext);
+            scores[2] = HZProbability(rawtext);
+            scores[3] = BIG5Probability(rawtext);
+            scores[4] = ENCTWProbability(rawtext);
+            scores[5] = ISO2022CNProbability(rawtext);
+            scores[6] = UTF8Probability(rawtext);
+            scores[7] = UnicodeProbability(rawtext);
+            scores[8] = ASCIIProbability(rawtext);
+            scores[9] = 0;
+
+            // Tabulate Scores
+            for (index = 0; index < 10; index++)
+            {
+                if (scores[index] > maxscore)
+                {
+                    encoding_guess = index;
+                    maxscore = scores[index];
+                }
+            }
+
+            // Return OTHER if nothing scored above 50
+            if (maxscore <= 50)
+            {
+                encoding_guess = 9;
+            }
+
+            return nicename[encoding_guess];
         }
 
         /// <summary>
-        /// 将此实例中的指定字符串转换到 <see cref="byte"/> 字符数组。
+        /// 判断是GB2312编码的可能性
         /// </summary>
-        /// <param name="sourceString">要转换的字符串</param>
-        /// <returns>返回转换后的 <see cref="byte"/> 字符数组</returns>
-        public static byte[] ToByteArray(string sourceString)
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int GB2312Probability(sbyte[] rawtext)
         {
-            byte[] byteArray = new byte[sourceString.Length];
-            for (int index = 0; index < sourceString.Length; index++)
-                byteArray[index] = (byte)sourceString[index];
-            return byteArray;
+            int i, rawtextlen = 0;
+
+            int dbchars = 1, gbchars = 1;
+            long gbfreq = 0, totalfreq = 1;
+            float rangeval = 0, freqval = 0;
+            int row, column;
+
+            // Stage 1:  Check to see if characters fit into acceptable ranges
+
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen - 1; i++)
+            {
+                if (rawtext[i] >= 0)
+                {
+                    //asciichars++;
+                }
+                else
+                {
+                    dbchars++;
+                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF7) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
+                    {
+                        gbchars++;
+                        totalfreq += 500;
+                        row = rawtext[i] + 256 - 0xA1;
+                        column = rawtext[i + 1] + 256 - 0xA1;
+                        if (GBFreq[row][column] != 0)
+                        {
+                            gbfreq += GBFreq[row][column];
+                        }
+                        else if (15 <= row && row < 55)
+                        {
+                            gbfreq += 200;
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            rangeval = 50 * ((float)gbchars / (float)dbchars);
+            freqval = 50 * ((float)gbfreq / (float)totalfreq);
+
+
+            return (int)(rangeval + freqval);
         }
 
         /// <summary>
-        /// 将此实例中的指定 <see cref="object"/> 数组转换到 <see cref="byte"/> 字符数组。
+        /// 判断是GBK编码的可能性
         /// </summary>
-        /// <param name="tempObjectArray">要转换的 <see cref="object"/> 字符数组</param>
-        /// <returns>返回转换后的 <see cref="byte"/> 字符数组</returns>
-        public static byte[] ToByteArray(object[] tempObjectArray)
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int GBKProbability(sbyte[] rawtext)
         {
-            byte[] byteArray = new byte[tempObjectArray.Length];
-            for (int index = 0; index < tempObjectArray.Length; index++)
-                byteArray[index] = (byte)tempObjectArray[index];
-            return byteArray;
-        }
-        #endregion
+            int i, rawtextlen = 0;
 
-        #region ToSByteArray.....
+            int dbchars = 1, gbchars = 1;
+            long gbfreq = 0, totalfreq = 1;
+            float rangeval = 0, freqval = 0;
+            int row, column;
+
+            // Stage 1:  Check to see if characters fit into acceptable ranges
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen - 1; i++)
+            {
+                if (rawtext[i] >= 0)
+                {
+                    //asciichars++;
+                }
+                else
+                {
+                    dbchars++;
+                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF7) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
+                    {
+                        gbchars++;
+                        totalfreq += 500;
+                        row = rawtext[i] + 256 - 0xA1;
+                        column = rawtext[i + 1] + 256 - 0xA1;
+
+                        if (GBFreq[row][column] != 0)
+                        {
+                            gbfreq += GBFreq[row][column];
+                        }
+                        else if (15 <= row && row < 55)
+                        {
+                            gbfreq += 200;
+                        }
+                    }
+                    else if ((sbyte)Identity(0x81) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xFE) && (((sbyte)Identity(0x80) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE)) || ((sbyte)0x40 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E)))
+                    {
+                        gbchars++;
+                        totalfreq += 500;
+                        row = rawtext[i] + 256 - 0x81;
+                        if (0x40 <= rawtext[i + 1] && rawtext[i + 1] <= 0x7E)
+                        {
+                            column = rawtext[i + 1] - 0x40;
+                        }
+                        else
+                        {
+                            column = rawtext[i + 1] + 256 - 0x80;
+                        }
+
+                        if (GBKFreq[row][column] != 0)
+                        {
+                            gbfreq += GBKFreq[row][column];
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            rangeval = 50 * ((float)gbchars / (float)dbchars);
+            freqval = 50 * ((float)gbfreq / (float)totalfreq);
+
+            return (int)(rangeval + freqval) - 1;
+        }
 
         /// <summary>
-        /// 将此实例中的指定 <see cref="byte"/> 字符数组转换到 <see cref="sbyte"/> 字符数组。
+        /// 判断是HZ编码的可能性
         /// </summary>
-        /// <param name="byteArray">要转换的 <see cref="byte"/> 字符数组</param>
-        /// <returns>返回转换后的 <see cref="sbyte"/> 字符数组</returns>
-        public static sbyte[] ToSByteArray(byte[] byteArray)
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int HZProbability(sbyte[] rawtext)
         {
-            sbyte[] sbyteArray = new sbyte[byteArray.Length];
-            for (int index = 0; index < byteArray.Length; index++)
-                sbyteArray[index] = (sbyte)byteArray[index];
-            return sbyteArray;
+            int i, rawtextlen;
+            int hzchars = 0, dbchars = 1;
+            long hzfreq = 0, totalfreq = 1;
+            float rangeval = 0, freqval = 0;
+            int hzstart = 0, hzend = 0;
+            int row, column;
+
+            rawtextlen = rawtext.Length;
+
+            for (i = 0; i < rawtextlen; i++)
+            {
+                if (rawtext[i] == '~')
+                {
+                    if (rawtext[i + 1] == '{')
+                    {
+                        hzstart++;
+                        i += 2;
+                        while (i < rawtextlen - 1)
+                        {
+                            if (rawtext[i] == 0x0A || rawtext[i] == 0x0D)
+                            {
+                                break;
+                            }
+                            else if (rawtext[i] == '~' && rawtext[i + 1] == '}')
+                            {
+                                hzend++;
+                                i++;
+                                break;
+                            }
+                            else if ((0x21 <= rawtext[i] && rawtext[i] <= 0x77) && (0x21 <= rawtext[i + 1] && rawtext[i + 1] <= 0x77))
+                            {
+                                hzchars += 2;
+                                row = rawtext[i] - 0x21;
+                                column = rawtext[i + 1] - 0x21;
+                                totalfreq += 500;
+                                if (GBFreq[row][column] != 0)
+                                {
+                                    hzfreq += GBFreq[row][column];
+                                }
+                                else if (15 <= row && row < 55)
+                                {
+                                    hzfreq += 200;
+                                }
+                            }
+                            //else if (0xA1 <= rawtext[i] && rawtext[i] <= 0xF7 && 0xA1 <= rawtext[i + 1] && rawtext[i + 1] <= 0xF7)
+                            //{
+                            //    hzchars += 2;
+                            //    row = rawtext[i] + 256 - 0xA1;
+                            //    column = rawtext[i + 1] + 256 - 0xA1;
+                            //    totalfreq += 500;
+                            //    if (GBFreq[row][column] != 0)
+                            //    {
+                            //        hzfreq += GBFreq[row][column];
+                            //    }
+                            //    else if (15 <= row && row < 55)
+                            //    {
+                            //        hzfreq += 200;
+                            //    }
+                            //}
+                            dbchars += 2;
+                            i += 2;
+                        }
+                    }
+                    else if (rawtext[i + 1] == '}')
+                    {
+                        hzend++;
+                        i++;
+                    }
+                    else if (rawtext[i + 1] == '~')
+                    {
+                        i++;
+                    }
+                }
+            }
+
+            if (hzstart > 4)
+            {
+                rangeval = 50;
+            }
+            else if (hzstart > 1)
+            {
+                rangeval = 41;
+            }
+            else if (hzstart > 0)
+            {
+                // Only 39 in case the sequence happened to occur
+                rangeval = 39; // in otherwise non-Hz text
+            }
+            else
+            {
+                rangeval = 0;
+            }
+            freqval = 50 * ((float)hzfreq / (float)totalfreq);
+
+
+            return (int)(rangeval + freqval);
         }
 
-        #endregion
+        /// <summary>
+        /// 判断是BIG5编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int BIG5Probability(sbyte[] rawtext)
+        {
+            int i, rawtextlen = 0;
+            int dbchars = 1, bfchars = 1;
+            float rangeval = 0, freqval = 0;
+            long bffreq = 0, totalfreq = 1;
+            int row, column;
 
-        #region ReadInput.....
-        /// <summary>从流读取字节序列，并将此流中的位置提升读取的字节数.</summary>
-        /// <param name="sourceStream">要读取的流.</param>
-        /// <param name="target">字节数组。此方法返回时，该缓冲区包含指定的字符数组，该数组的 start 和 (start + count-1) 之间的值由从当前源中读取的字节替换。</param>
-        /// <param name="start">buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。.</param>
-        /// <param name="count">要从当前流中最多读取的字节数。</param>
-        /// <returns>读入缓冲区中的总字节数。如果当前可用的字节数没有请求的字节数那么多，则总字节数可能小于请求的字节数，或者如果已到达流的末尾，则为零 (0)。</returns>
-        /// <exception cref="ArgumentException">start 与 count 的和大于缓冲区长度。</exception>
-        /// <exception cref="ArgumentNullException">target 为空引用（Visual Basic 中为 Nothing）。</exception>
-        /// <exception cref="ArgumentOutOfRangeException">offset 或 count 为负。</exception>
-        /// <exception cref="System.IO.IOException">发生 I/O 错误。</exception>
-        /// <exception cref="NotSupportedException">流不支持读取。</exception>
-        /// <exception cref="ObjectDisposedException">在流关闭后调用方法。</exception>
-        public static int ReadInput(System.IO.Stream sourceStream, ref sbyte[] target, int start, int count)
+            // Check to see if characters fit into acceptable ranges
+
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen - 1; i++)
+            {
+                if (rawtext[i] >= 0)
+                {
+                    //asciichars++;
+                }
+                else
+                {
+                    dbchars++;
+                    if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xF9) && (((sbyte)0x40 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E) || ((sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))))
+                    {
+                        bfchars++;
+                        totalfreq += 500;
+                        row = rawtext[i] + 256 - 0xA1;
+                        if (0x40 <= rawtext[i + 1] && rawtext[i + 1] <= 0x7E)
+                        {
+                            column = rawtext[i + 1] - 0x40;
+                        }
+                        else
+                        {
+                            column = rawtext[i + 1] + 256 - 0x61;
+                        }
+                        if (Big5Freq[row][column] != 0)
+                        {
+                            bffreq += Big5Freq[row][column];
+                        }
+                        else if (3 <= row && row <= 37)
+                        {
+                            bffreq += 200;
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            rangeval = 50 * ((float)bfchars / (float)dbchars);
+            freqval = 50 * ((float)bffreq / (float)totalfreq);
+
+
+            return (int)(rangeval + freqval);
+        }
+
+        /// <summary>
+        /// 判断是CNS11643(台湾)编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int ENCTWProbability(sbyte[] rawtext)
+        {
+            int i, rawtextlen = 0;
+            int dbchars = 1, cnschars = 1;
+            long cnsfreq = 0, totalfreq = 1;
+            float rangeval = 0, freqval = 0;
+            int row, column;
+
+            // Check to see if characters fit into acceptable ranges
+            // and have expected frequency of use
+
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen - 1; i++)
+            {
+                if (rawtext[i] >= 0)
+                {
+                    // in ASCII range
+                    //asciichars++;
+                }
+                else
+                {
+                    // high bit set
+                    dbchars++;
+                    if (i + 3 < rawtextlen && (sbyte)Identity(0x8E) == rawtext[i] && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xB0) && (sbyte)Identity(0xA1) <= rawtext[i + 2] && rawtext[i + 2] <= (sbyte)Identity(0xFE) && (sbyte)Identity(0xA1) <= rawtext[i + 3] && rawtext[i + 3] <= (sbyte)Identity(0xFE))
+                    {
+                        // Planes 1 - 16
+
+                        cnschars++;
+                        // These are all less frequent chars so just ignore freq
+                        i += 3;
+                    }
+                    else if ((sbyte)Identity(0xA1) <= rawtext[i] && rawtext[i] <= (sbyte)Identity(0xFE) && (sbyte)Identity(0xA1) <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)Identity(0xFE))
+                    {
+                        cnschars++;
+                        totalfreq += 500;
+                        row = rawtext[i] + 256 - 0xA1;
+                        column = rawtext[i + 1] + 256 - 0xA1;
+                        if (EUC_TWFreq[row][column] != 0)
+                        {
+                            cnsfreq += EUC_TWFreq[row][column];
+                        }
+                        else if (35 <= row && row <= 92)
+                        {
+                            cnsfreq += 150;
+                        }
+                        i++;
+                    }
+                }
+            }
+
+
+            rangeval = 50 * ((float)cnschars / (float)dbchars);
+            freqval = 50 * ((float)cnsfreq / (float)totalfreq);
+
+
+            return (int)(rangeval + freqval);
+        }
+
+        /// <summary>
+        /// 判断是ISO2022CN编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int ISO2022CNProbability(sbyte[] rawtext)
+        {
+            int i, rawtextlen = 0;
+            int dbchars = 1, isochars = 1;
+            long isofreq = 0, totalfreq = 1;
+            float rangeval = 0, freqval = 0;
+            int row, column;
+
+            // Check to see if characters fit into acceptable ranges
+            // and have expected frequency of use
+
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen - 1; i++)
+            {
+                if (rawtext[i] == (sbyte)0x1B && i + 3 < rawtextlen)
+                {
+                    // Escape char ESC
+                    if (rawtext[i + 1] == (sbyte)0x24 && rawtext[i + 2] == 0x29 && rawtext[i + 3] == (sbyte)0x41)
+                    {
+                        // GB Escape  $ ) A
+                        i += 4;
+                        while (rawtext[i] != (sbyte)0x1B)
+                        {
+                            dbchars++;
+                            if ((0x21 <= rawtext[i] && rawtext[i] <= 0x77) && (0x21 <= rawtext[i + 1] && rawtext[i + 1] <= 0x77))
+                            {
+                                isochars++;
+                                row = rawtext[i] - 0x21;
+                                column = rawtext[i + 1] - 0x21;
+                                totalfreq += 500;
+                                if (GBFreq[row][column] != 0)
+                                {
+                                    isofreq += GBFreq[row][column];
+                                }
+                                else if (15 <= row && row < 55)
+                                {
+                                    isofreq += 200;
+                                }
+                                i++;
+                            }
+                            i++;
+                        }
+                    }
+                    else if (i + 3 < rawtextlen && rawtext[i + 1] == (sbyte)0x24 && rawtext[i + 2] == (sbyte)0x29 && rawtext[i + 3] == (sbyte)0x47)
+                    {
+                        // CNS Escape $ ) G
+                        i += 4;
+                        while (rawtext[i] != (sbyte)0x1B)
+                        {
+                            dbchars++;
+                            if ((sbyte)0x21 <= rawtext[i] && rawtext[i] <= (sbyte)0x7E && (sbyte)0x21 <= rawtext[i + 1] && rawtext[i + 1] <= (sbyte)0x7E)
+                            {
+                                isochars++;
+                                totalfreq += 500;
+                                row = rawtext[i] - 0x21;
+                                column = rawtext[i + 1] - 0x21;
+                                if (EUC_TWFreq[row][column] != 0)
+                                {
+                                    isofreq += EUC_TWFreq[row][column];
+                                }
+                                else if (35 <= row && row <= 92)
+                                {
+                                    isofreq += 150;
+                                }
+                                i++;
+                            }
+                            i++;
+                        }
+                    }
+                    if (rawtext[i] == (sbyte)0x1B && i + 2 < rawtextlen && rawtext[i + 1] == (sbyte)0x28 && rawtext[i + 2] == (sbyte)0x42)
+                    {
+                        // ASCII:  ESC ( B
+                        i += 2;
+                    }
+                }
+            }
+
+            rangeval = 50 * ((float)isochars / (float)dbchars);
+            freqval = 50 * ((float)isofreq / (float)totalfreq);
+
+            return (int)(rangeval + freqval);
+        }
+
+        /// <summary>
+        /// 判断是UTF8编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int UTF8Probability(sbyte[] rawtext)
+        {
+            int score = 0;
+            int i, rawtextlen = 0;
+            int goodbytes = 0, asciibytes = 0;
+
+            // Maybe also use UTF8 Byte Order Mark:  EF BB BF
+
+            // Check to see if characters fit into acceptable ranges
+            rawtextlen = rawtext.Length;
+            for (i = 0; i < rawtextlen; i++)
+            {
+                if ((rawtext[i] & (sbyte)0x7F) == rawtext[i])
+                {
+                    // One byte
+                    asciibytes++;
+                    // Ignore ASCII, can throw off count
+                }
+                else if (-64 <= rawtext[i] && rawtext[i] <= -33 && i + 1 < rawtextlen && -128 <= rawtext[i + 1] && rawtext[i + 1] <= -65)
+                {
+                    goodbytes += 2;
+                    i++;
+                }
+                else if (-32 <= rawtext[i] && rawtext[i] <= -17 && i + 2 < rawtextlen && -128 <= rawtext[i + 1] && rawtext[i + 1] <= -65 && -128 <= rawtext[i + 2] && rawtext[i + 2] <= -65)
+                {
+                    goodbytes += 3;
+                    i += 2;
+                }
+            }
+
+            if (asciibytes == rawtextlen)
+            {
+                return 0;
+            }
+
+            score = (int)(100 * ((float)goodbytes / (float)(rawtextlen - asciibytes)));
+
+            // If not above 98, reduce to zero to prevent coincidental matches
+            // Allows for some (few) bad formed sequences
+            if (score > 98)
+            {
+                return score;
+            }
+            else if (score > 95 && goodbytes > 30)
+            {
+                return score;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// 判断是Unicode编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int UnicodeProbability(sbyte[] rawtext)
+        {
+            //int score = 0;
+            //int i, rawtextlen = 0;
+            //int goodbytes = 0, asciibytes = 0;
+
+            if (((sbyte)Identity(0xFE) == rawtext[0] && (sbyte)Identity(0xFF) == rawtext[1]) || ((sbyte)Identity(0xFF) == rawtext[0] && (sbyte)Identity(0xFE) == rawtext[1]))
+            {
+                return 100;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// 判断是ASCII编码的可能性
+        /// </summary>
+        /// <param name="rawtext">要判断的 <see cref="sbyte"/> 字节数组</param>
+        /// <returns>返回 0 至 100 之间的可能性</returns>
+        private static int ASCIIProbability(sbyte[] rawtext)
+        {
+            int score = 70;
+            int i, rawtextlen;
+
+            rawtextlen = rawtext.Length;
+
+            for (i = 0; i < rawtextlen; i++)
+            {
+                if (rawtext[i] < 0)
+                {
+                    score = score - 5;
+                }
+                else if (rawtext[i] == (sbyte)0x1B)
+                {
+                    // ESC (used by ISO 2022)
+                    score = score - 5;
+                }
+            }
+
+            return score;
+        }
+
+        private static int ReadInput(Stream sourceStream, ref sbyte[] target, int start, int count)
         {
             // Returns 0 bytes if not enough space in target
             if (target.Length == 0)
@@ -2370,94 +2169,57 @@ namespace Coldairarrow.Console1
             return bytesRead;
         }
 
-        /// <summary>从字符系列读取字节序列，并将此字符系列中的位置提升读取的字节数.</summary>
-        /// <param name="sourceTextReader">要读取的流.</param>
-        /// <param name="target">字节数组。此方法返回时，该缓冲区包含指定的字符数组，该数组的 start 和 (start + count-1) 之间的值由从当前源中读取的字节替换。</param>
-        /// <param name="start">buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。.</param>
-        /// <param name="count">要从当前流中最多读取的字节数。</param>
-        /// <returns>读入缓冲区中的总字节数。如果当前可用的字节数没有请求的字节数那么多，则总字节数可能小于请求的字节数，或者如果已到达流的末尾，则为零 (0)。</returns>
-        /// <exception cref="ArgumentException">start 与 count 的和大于缓冲区长度。</exception>
-        /// <exception cref="ArgumentNullException">target 为空引用（Visual Basic 中为 Nothing）。</exception>
-        /// <exception cref="ArgumentOutOfRangeException">offset 或 count 为负。</exception>
-        /// <exception cref="System.IO.IOException">发生 I/O 错误。</exception>
-        /// <exception cref="NotSupportedException">流不支持读取。</exception>
-        /// <exception cref="ObjectDisposedException">在流关闭后调用方法。</exception>
-        public static int ReadInput(System.IO.TextReader sourceTextReader, ref sbyte[] target, int start, int count)
-        {
-            // Returns 0 bytes if not enough space in target
-            if (target.Length == 0) return 0;
-
-            char[] charArray = new char[target.Length];
-            int bytesRead = sourceTextReader.Read(charArray, start, count);
-
-            // Returns -1 if EOF
-            if (bytesRead == 0) return -1;
-
-            for (int index = start; index < start + bytesRead; index++)
-                target[index] = (sbyte)charArray[index];
-
-            return bytesRead;
-        }
-        #endregion
-
-        #region FileLength.....
         /// <summary>
         /// 检测当前文件的大小
         /// </summary>
         /// <param name="file">被检测的文件</param>
         /// <returns>当前文件的大小。</returns>
-        public static long FileLength(System.IO.FileInfo file)
+        private static long FileLength(FileInfo file)
         {
-            if (System.IO.Directory.Exists(file.FullName))
+            if (Directory.Exists(file.FullName))
                 return 0;
             else
                 return file.Length;
         }
+
+        /// <summary>
+        /// This method returns the literal value received
+        /// </summary>
+        /// <param name="literal">The literal to return</param>
+        /// <returns>The received value</returns>
+        private static long Identity(long literal)
+        {
+            return literal;
+        }
+
         #endregion
 
-        #region Identity.....
-        /// <summary>
-        /// This method returns the literal value received
-        /// </summary>
-        /// <param name="literal">The literal to return</param>
-        /// <returns>The received value</returns>
-        public static long Identity(long literal)
-        {
-            return literal;
-        }
+        #region 外部接口
 
         /// <summary>
-        /// This method returns the literal value received
+        /// 获取文件编码信息
         /// </summary>
-        /// <param name="literal">The literal to return</param>
-        /// <returns>The received value</returns>
-        public static ulong Identity(ulong literal)
+        /// <param name="file">文件</param>
+        /// <returns>编码字符串</returns>
+        public static string GetEncodingString(FileInfo file)
         {
-            return literal;
-        }
+            sbyte[] rawtext;
+            rawtext = new sbyte[(int)FileLength(file)];
+            try
+            {
+                using (var chinesefile = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+                {
+                    ReadInput(chinesefile, ref rawtext, 0, rawtext.Length);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("Error: " + e);
+            }
 
-        /// <summary>
-        /// This method returns the literal value received
-        /// </summary>
-        /// <param name="literal">The literal to return</param>
-        /// <returns>The received value</returns>
-        public static float Identity(float literal)
-        {
-            return literal;
+            return GetEncodingString(rawtext);
         }
-
-        /// <summary>
-        /// This method returns the literal value received
-        /// </summary>
-        /// <param name="literal">The literal to return</param>
-        /// <returns>The received value</returns>
-        public static double Identity(double literal)
-        {
-            return literal;
-        }
-        #endregion
 
         #endregion
     }
-    #endregion
 }

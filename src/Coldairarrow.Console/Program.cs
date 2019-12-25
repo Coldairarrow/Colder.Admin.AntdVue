@@ -35,10 +35,10 @@ namespace Coldairarrow.Console1
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             string path = $"D:\\文档\\0软件项目\\GitHub\\Colder.Admin.AntdVue";
-            var files = Directory.GetFiles(path);
+            var files = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
             files.ForEach(aFile =>
             {
-                var oldEncoding = new IdentifyEncoding().GetEncodingString(new FileInfo(aFile));
+                var oldEncoding = EncodingHelper.GetEncodingString(new FileInfo(aFile));
                 var content = File.ReadAllText(aFile, Encoding.GetEncoding(oldEncoding));
                 File.WriteAllText(aFile, content, Encoding.UTF8);
             });

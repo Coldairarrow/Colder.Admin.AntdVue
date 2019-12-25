@@ -2312,6 +2312,95 @@
             <param name="firstFunc">首先执行的方法</param>
             <param name="next">接下来执行的方法</param>
         </member>
+        <member name="T:Coldairarrow.Util.EncodingHelper">
+            <summary>
+            编码帮助类
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.GB2312Probability(System.SByte[])">
+            <summary>
+            判断是GB2312编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.GBKProbability(System.SByte[])">
+            <summary>
+            判断是GBK编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.HZProbability(System.SByte[])">
+            <summary>
+            判断是HZ编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.BIG5Probability(System.SByte[])">
+            <summary>
+            判断是BIG5编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.ENCTWProbability(System.SByte[])">
+            <summary>
+            判断是CNS11643(台湾)编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.ISO2022CNProbability(System.SByte[])">
+            <summary>
+            判断是ISO2022CN编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.UTF8Probability(System.SByte[])">
+            <summary>
+            判断是UTF8编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.UnicodeProbability(System.SByte[])">
+            <summary>
+            判断是Unicode编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.ASCIIProbability(System.SByte[])">
+            <summary>
+            判断是ASCII编码的可能性
+            </summary>
+            <param name="rawtext">要判断的 <see cref="T:System.SByte"/> 字节数组</param>
+            <returns>返回 0 至 100 之间的可能性</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.FileLength(System.IO.FileInfo)">
+            <summary>
+            检测当前文件的大小
+            </summary>
+            <param name="file">被检测的文件</param>
+            <returns>当前文件的大小。</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.Identity(System.Int64)">
+            <summary>
+            This method returns the literal value received
+            </summary>
+            <param name="literal">The literal to return</param>
+            <returns>The received value</returns>
+        </member>
+        <member name="M:Coldairarrow.Util.EncodingHelper.GetEncodingString(System.IO.FileInfo)">
+            <summary>
+            获取文件编码信息
+            </summary>
+            <param name="file">文件</param>
+            <returns>编码字符串</returns>
+        </member>
         <member name="M:Coldairarrow.Util.EnumHelper.ToOptionList(System.Type)">
             <summary>
             将枚举类型转为选项列表
