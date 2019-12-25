@@ -1,4 +1,4 @@
-using Coldairarrow.Business.Base_Manage;
+锘縰sing Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region 获取
+        #region 鑾峰彇
 
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_UserDTO>>> GetDataList(Pagination pagination, string keyword)
@@ -49,7 +49,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region 提交
+        #region 鎻愪氦
 
         [HttpPost]
         public ActionResult<AjaxResult> SaveData(Base_User theData, string newPwd, string roleIdsJson)
