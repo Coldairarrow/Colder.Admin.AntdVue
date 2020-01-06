@@ -39,7 +39,7 @@ namespace Coldairarrow.Util
         Semaphore _semaphore { get; } = new Semaphore(0, int.MaxValue);
         private void Start()
         {
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 while (_isRun)
                 {
@@ -60,7 +60,7 @@ namespace Coldairarrow.Util
                         HandleException?.Invoke(ex);
                     }
                 }
-            });
+            }, TaskCreationOptions.LongRunning);
         }
         private bool _isRun { get; set; } = true;
         private TimeSpan _timeSpan { get; set; }
@@ -82,6 +82,7 @@ namespace Coldairarrow.Util
         }
 
         public Action<Exception> HandleException { get; set; }
+
         #endregion
     }
 }
