@@ -2099,6 +2099,14 @@
             <param name="dt">表格数据</param>
             <returns>Byte数组</returns>
         </member>
+        <member name="M:Coldairarrow.Util.AsposeOfficeHelper.ExportExcelByTemplate(System.String,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            通过模板导出Excel
+            </summary>
+            <param name="templateFile">模板</param>
+            <param name="dataSource">数据源</param>
+            <returns>文件Byte[]</returns>
+        </member>
         <member name="M:Coldairarrow.Util.AsposeOfficeHelper.ReadExcel(System.String)">
             <summary>
             从excel文件导入数据
