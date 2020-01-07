@@ -1,4 +1,5 @@
 ﻿using Aspose.Cells;
+using System;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -49,6 +50,40 @@ namespace Coldairarrow.Util
             var ms = new MemoryStream();
             book.Save(ms, SaveFormat.Excel97To2003);
             return ms.ToArray();
+        }
+
+        /// <summary>
+        /// 通过模板导出Excel
+        /// </summary>
+        /// <param name="templateFile">模板</param>
+        /// <param name="dataSource">数据源</param>
+        /// <returns>文件Byte[]</returns>
+        public static byte[] ExportExcelByTemplate(string templateFile, params (string SourceName, object Data)[] dataSource)
+        {
+            if (templateFile.IsNullOrEmpty())
+                throw new Exception("模板不能为空");
+            if (dataSource.Length == 0)
+                throw new Exception("数据源不能为空");
+
+            WorkbookDesigner designer = new WorkbookDesigner
+            {
+                Workbook = new Workbook(templateFile)
+            };
+            var workBook = designer.Workbook;
+
+            dataSource.ForEach(aDataSource =>
+            {
+                designer.SetDataSource(aDataSource.SourceName, aDataSource.Data);
+            });
+            designer.Process();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workBook.Save(stream, SaveFormat.Excel97To2003);
+                var fileBytes = stream.ToArray();
+
+                return fileBytes;
+            }
         }
 
         /// <summary>
