@@ -1,4 +1,4 @@
-using Coldairarrow.Business.Base_Manage;
+锘縰sing Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// 应用密钥
+    /// 搴旂敤瀵嗛挜
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
@@ -25,7 +25,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region 获取
+        #region 鑾峰彇
 
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_Log>>> GetLogList(
@@ -62,7 +62,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region 提交
+        #region 鎻愪氦
 
         #endregion
     }

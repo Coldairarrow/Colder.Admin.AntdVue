@@ -5,19 +5,23 @@ namespace Coldairarrow.Business.Cache
 {
     public abstract class BaseCache<T> : IBaseCache<T> where T : class
     {
+        public BaseCache()
+        {
+            _moduleKey = GetType().FullName;
+        }
+
         #region 私有成员
 
-        protected abstract string _moduleKey { get; }
+        protected string _moduleKey { get; }
         protected abstract T GetDbData(string key);
+        protected string BuildKey(string idKey)
+        {
+            return $"{GlobalSwitch.ProjectName}_Cache_{_moduleKey}_{idKey}";
+        }
 
         #endregion
 
         #region 外部接口
-
-        public string BuildKey(string idKey)
-        {
-            return $"{GlobalSwitch.ProjectName}_Cache_{_moduleKey}_{idKey}";
-        }
 
         public T GetCache(string idKey)
         {

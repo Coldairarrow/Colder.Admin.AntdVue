@@ -1,4 +1,4 @@
-using Coldairarrow.Business.Base_Manage;
+ï»¿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// Ó¦ÓÃÃÜÔ¿
+    /// åº”ç”¨å¯†é’¥
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
@@ -24,13 +24,13 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region »ñÈ¡
+        #region è·å–
 
         /// <summary>
-        /// »ñÈ¡Êı¾İÁĞ±í
+        /// è·å–æ•°æ®åˆ—è¡¨
         /// </summary>
-        /// <param name="pagination">·ÖÒ³²ÎÊı</param>
-        /// <param name="keyword">¹Ø¼ü×Ö</param>
+        /// <param name="pagination">åˆ†é¡µå‚æ•°</param>
+        /// <param name="keyword">å…³é”®å­—</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_AppSecret>>> GetDataList(Pagination pagination, string keyword)
@@ -41,9 +41,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡ÏêÇé
+        /// è·å–è¯¦æƒ…
         /// </summary>
-        /// <param name="id">idÖ÷¼ü</param>
+        /// <param name="id">idä¸»é”®</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<Base_AppSecret>> GetTheData(string id)
@@ -55,12 +55,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region Ìá½»
+        #region æäº¤
 
         /// <summary>
-        /// ±£´æ
+        /// ä¿å­˜
         /// </summary>
-        /// <param name="theData">±£´æµÄÊı¾İ</param>
+        /// <param name="theData">ä¿å­˜çš„æ•°æ®</param>
         [HttpPost]
         public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
         {
@@ -80,9 +80,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// É¾³ıÊı¾İ
+        /// åˆ é™¤æ•°æ®
         /// </summary>
-        /// <param name="ids">idÊı×é,JSONÊı×é</param>
+        /// <param name="ids">idæ•°ç»„,JSONæ•°ç»„</param>
         [HttpPost]
         public ActionResult<AjaxResult> DeleteData(string ids)
         {

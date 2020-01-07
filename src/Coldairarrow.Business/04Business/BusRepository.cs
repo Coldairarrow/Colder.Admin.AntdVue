@@ -64,6 +64,8 @@ namespace Coldairarrow.Business
         public T GetEntity<T>(params object[] keyValue) where T : class, new()
         {
             var obj = _db.GetEntity<T>(keyValue);
+            if (obj == null)
+                return null;
 
             return LogicDeleteFilter(obj);
         }

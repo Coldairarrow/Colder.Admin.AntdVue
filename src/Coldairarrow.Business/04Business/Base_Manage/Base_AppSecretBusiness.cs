@@ -1,4 +1,4 @@
-using Coldairarrow.Entity.Base_Manage;
+ï»¿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_AppSecret> GetDataList(Pagination pagination, string keyword)
         {
@@ -25,9 +25,9 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡Ö¸¶¨µÄµ¥ÌõÊı¾İ
+        /// è·å–æŒ‡å®šçš„å•æ¡æ•°æ®
         /// </summary>
-        /// <param name="id">Ö÷¼ü</param>
+        /// <param name="id">ä¸»é”®</param>
         /// <returns></returns>
         public Base_AppSecret GetTheData(string id)
         {
@@ -40,12 +40,12 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// Ìí¼ÓÊı¾İ
+        /// æ·»åŠ æ•°æ®
         /// </summary>
-        /// <param name="newData">Êı¾İ</param>
+        /// <param name="newData">æ•°æ®</param>
         [DataRepeatValidate(new string[] { "AppId" },
-            new string[] { "Ó¦ÓÃId" })]
-        [DataAddLog(LogType.½Ó¿ÚÃÜÔ¿¹ÜÀí, "AppId", "Ó¦ÓÃId")]
+            new string[] { "åº”ç”¨Id" })]
+        [DataAddLog(LogType.æ¥å£å¯†é’¥ç®¡ç†, "AppId", "åº”ç”¨Id")]
         public AjaxResult AddData(Base_AppSecret newData)
         {
             Insert(newData);
@@ -54,11 +54,11 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ
+        /// æ›´æ–°æ•°æ®
         /// </summary>
         [DataRepeatValidate(new string[] { "AppId" },
-            new string[] { "Ó¦ÓÃId" })]
-        [DataEditLog(LogType.½Ó¿ÚÃÜÔ¿¹ÜÀí, "AppId", "Ó¦ÓÃId")]
+            new string[] { "åº”ç”¨Id" })]
+        [DataEditLog(LogType.æ¥å£å¯†é’¥ç®¡ç†, "AppId", "åº”ç”¨Id")]
         public AjaxResult UpdateData(Base_AppSecret theData)
         {
             Update(theData);
@@ -66,7 +66,7 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
-        [DataDeleteLog(LogType.½Ó¿ÚÃÜÔ¿¹ÜÀí, "AppId", "Ó¦ÓÃId")]
+        [DataDeleteLog(LogType.æ¥å£å¯†é’¥ç®¡ç†, "AppId", "åº”ç”¨Id")]
         public AjaxResult DeleteData(List<string> ids)
         {
             Delete(ids);
@@ -76,11 +76,11 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }

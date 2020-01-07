@@ -1,4 +1,4 @@
-using Coldairarrow.Entity.Base_Manage;
+ï»¿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_DbLink> GetDataList(Pagination pagination)
         {
@@ -15,9 +15,9 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡Ö¸¶¨µÄµ¥ÌõÊı¾İ
+        /// è·å–æŒ‡å®šçš„å•æ¡æ•°æ®
         /// </summary>
-        /// <param name="id">Ö÷¼ü</param>
+        /// <param name="id">ä¸»é”®</param>
         /// <returns></returns>
         public Base_DbLink GetTheData(string id)
         {
@@ -25,9 +25,9 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// Ìí¼ÓÊı¾İ
+        /// æ·»åŠ æ•°æ®
         /// </summary>
-        /// <param name="newData">Êı¾İ</param>
+        /// <param name="newData">æ•°æ®</param>
         public AjaxResult AddData(Base_DbLink newData)
         {
             Insert(newData);
@@ -36,7 +36,7 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ
+        /// æ›´æ–°æ•°æ®
         /// </summary>
         public AjaxResult UpdateData(Base_DbLink theData)
         {
@@ -54,11 +54,11 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }

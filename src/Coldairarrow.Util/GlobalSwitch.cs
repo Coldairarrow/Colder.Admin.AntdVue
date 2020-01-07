@@ -100,7 +100,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// Redis配置字符串
         /// </summary>
-        public const string RedisConfig = null /*"61.153.17.101:6379"*/;
+        public const string RedisConfig = null /*"localhost:6379"*/;
 
         #endregion
 
