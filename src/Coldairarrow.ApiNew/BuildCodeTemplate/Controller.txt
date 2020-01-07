@@ -1,0 +1,93 @@
+﻿using Coldairarrow.Business.%areaName%;
+using Coldairarrow.Entity.%areaName%;
+using Coldairarrow.Util;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+
+namespace Coldairarrow.Api.Controllers.%areaName%
+{
+    [Route("/%areaName%/[controller]/[action]")]
+    public class %entityName%Controller : BaseApiController
+    {
+        #region DI
+
+        public %entityName%Controller(I%entityName%Business %busName%)
+        {
+            %_busName% = %busName%;
+        }
+
+        I%entityName%Business %_busName% { get; }
+
+        #endregion
+
+        #region 获取
+
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <param name="pagination">分页参数</param>
+        /// <param name="condition">查询字段</param>
+        /// <param name="keyword">关键字</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<List<%entityName%>>> GetDataList(Pagination pagination, string condition, string keyword)
+        {
+            var dataList = %_busName%.GetDataList(pagination, condition, keyword);
+
+            return DataTable(dataList, pagination);
+        }
+
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<AjaxResult<%entityName%>> GetTheData(string id)
+        {
+            var theData = %_busName%.GetTheData(id);
+
+            return Success(theData);
+        }
+
+        #endregion
+
+        #region 提交
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="data">保存的数据</param>
+        [HttpPost]
+        public ActionResult<AjaxResult> SaveData(%entityName% data)
+        {
+            AjaxResult res;
+            if (data.Id.IsNullOrEmpty())
+            {
+                data.InitEntity();
+
+                res = %_busName%.AddData(data);
+            }
+            else
+            {
+                res = %_busName%.UpdateData(data);
+            }
+
+            return JsonContent(res.ToJson());
+        }
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="ids">id数组,JSON数组</param>
+        [HttpPost]
+        public ActionResult<AjaxResult> DeleteData(string ids)
+        {
+            var res = %_busName%.DeleteData(ids.ToList<string>());
+
+            return JsonContent(res.ToJson());
+        }
+
+        #endregion
+    }
+}

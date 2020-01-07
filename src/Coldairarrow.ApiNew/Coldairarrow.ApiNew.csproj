@@ -2,14 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Coldairarrow.Api</RootNamespace>
-    <AssemblyName>Coldairarrow.Api</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>Coldairarrow.Api.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>Coldairarrow.ApiNew.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
