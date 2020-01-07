@@ -7,7 +7,7 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 系统缓存帮助类
     /// </summary>
-    public class SystemCache : ICache
+    class SystemCache : ICache
     {
         static SystemCache()
         {
