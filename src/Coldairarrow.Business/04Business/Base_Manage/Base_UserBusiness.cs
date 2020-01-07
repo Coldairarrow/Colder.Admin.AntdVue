@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using Coldairarrow.Business.Cache;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,11 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
     {
+        public Base_UserBusiness(IBase_UserCache userCache)
+        {
+            _userCache = userCache;
+        }
+        IBase_UserCache _userCache { get; }
         protected override string _textField => "RealName";
 
         #region 外部接口
@@ -105,7 +111,11 @@ namespace Coldairarrow.Business.Base_Manage
                 SetUserRole(theData.Id, roleIds);
             });
             if (res.Success)
+            {
+                _userCache.UpdateCache(theData.Id);
+
                 return Success();
+            }
             else
                 throw new Exception("系统异常", res.ex);
         }
@@ -118,6 +128,8 @@ namespace Coldairarrow.Business.Base_Manage
             var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
 
             Delete(ids);
+
+            _userCache.UpdateCache(ids);
 
             return Success();
         }

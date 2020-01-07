@@ -115,23 +115,22 @@
             注：即该键未被访问后一段时间后过期，若此键一直被访问则过期时间自动延长
             </summary>
         </member>
+        <member name="T:Coldairarrow.Util.IRedisCache">
+            <summary>
+            Redis缓存
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.RedisCache">
             <summary>
             Redis缓存
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.RedisCache.#ctor">
-            <summary>
-            默认构造函数
-            注：使用默认配置，即localhost:6379,无密码
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.RedisCache.#ctor(System.String,System.Int32)">
+        <member name="M:Coldairarrow.Util.RedisCache.#ctor(System.String)">
             <summary>
             构造函数
+            注意：请以单例使用
             </summary>
             <param name="config">配置字符串</param>
-            <param name="databaseIndex">数据库索引</param>
         </member>
         <member name="T:Coldairarrow.Util.SystemCache">
             <summary>
@@ -748,29 +747,6 @@
             <param name="filePath">文件路径（包含文件名）</param>
             <param name="nameSpace">实体命名空间</param>
             <param name="schemaName">架构（模式）名</param>
-        </member>
-        <member name="T:Coldairarrow.Util.RedisHelper">
-            <summary>
-            Redis帮助类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.RedisHelper.GetConnection(System.String,System.Int32,System.String)">
-            <summary>
-            获取Redis连接
-            注：此对象无需一直创建，建议使用单列模式
-            </summary>
-            <param name="serverIp">Redis服务器Ip</param>
-            <param name="port">端口</param>
-            <param name="password">密码</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.RedisHelper.GetConnection(System.String)">
-            <summary>
-            获取Redis连接
-            注：此对象无需一直创建，建议使用单列模式
-            </summary>
-            <param name="config">配置字符串</param>
-            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.SqlServerHelper">
             <summary>

@@ -47,6 +47,6 @@ namespace Coldairarrow.Util
         /// <summary>
         /// Redis缓存
         /// </summary>
-        public static ICache RedisCache { get; }
+        public static IRedisCache RedisCache { get; }
     }
 }
