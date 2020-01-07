@@ -40,6 +40,12 @@
     <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="wwwroot\Upload\_.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
