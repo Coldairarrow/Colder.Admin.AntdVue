@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Coldairarrow.Entity.Base_Manage
 {
     /// <summary>
-    /// µ¥Ôª²âÊÔ±í
+    /// å•å…ƒæµ‹è¯•è¡¨
     /// </summary>
     [Table("Base_UnitTest")]
     public class Base_UnitTest
     {
 
         /// <summary>
-        /// ´úÀíÖ÷¼ü
+        /// ä»£ç†ä¸»é”®
         /// </summary>
         [Key]
         public String Id { get; set; }

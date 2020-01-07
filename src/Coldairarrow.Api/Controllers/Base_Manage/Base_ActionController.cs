@@ -1,4 +1,4 @@
-using Coldairarrow.Business.Base_Manage;
+ï»¿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// ÏµÍ³È¨ÏŞ
+    /// ç³»ç»Ÿæƒé™
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
@@ -24,12 +24,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region »ñÈ¡
+        #region è·å–
 
         /// <summary>
-        /// »ñÈ¡ÏêÇé
+        /// è·å–è¯¦æƒ…
         /// </summary>
-        /// <param name="id">idÖ÷¼ü</param>
+        /// <param name="id">idä¸»é”®</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<Base_Action>> GetTheData(string id)
@@ -40,9 +40,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡Êı¾İÁĞ±í
+        /// è·å–æ•°æ®åˆ—è¡¨
         /// </summary>
-        /// <param name="parentId">¸¸¼¶Id</param>
+        /// <param name="parentId">çˆ¶çº§Id</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_Action>>> GetPermissionList(string parentId)
@@ -61,9 +61,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡²Ëµ¥Ê÷ÁĞ±í
+        /// è·å–èœå•æ ‘åˆ—è¡¨
         /// </summary>
-        /// <param name="keyword">¹Ø¼ü×Ö</param>
+        /// <param name="keyword">å…³é”®å­—</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetMenuTreeList(string keyword)
@@ -74,9 +74,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// »ñÈ¡È«ĞÄ°®ÄãÊ÷ÁĞ±í
+        /// è·å–å…¨å¿ƒçˆ±ä½ æ ‘åˆ—è¡¨
         /// </summary>
-        /// <param name="keyword">¹Ø¼ü×Ö</param>
+        /// <param name="keyword">å…³é”®å­—</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetActionTreeList(string keyword)
@@ -88,7 +88,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #endregion
 
-        #region Ìá½»
+        #region æäº¤
 
         [HttpPost]
         public ActionResult<AjaxResult> SaveData(Base_Action theData, string permissionListJson)
@@ -110,9 +110,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         /// <summary>
-        /// É¾³ıÊı¾İ
+        /// åˆ é™¤æ•°æ®
         /// </summary>
-        /// <param name="ids">idÊı×é,JSONÊı×é</param>
+        /// <param name="ids">idæ•°ç»„,JSONæ•°ç»„</param>
         [HttpPost]
         public ActionResult<AjaxResult> DeleteData(string ids)
         {
@@ -122,11 +122,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         ///// <summary>
-        ///// ±£´æÈ¨ÏŞ
+        ///// ä¿å­˜æƒé™
         ///// </summary>
         ///// <returns></returns>
-        ///// <param name="parentId">¸¸¼¶Id</param>
-        ///// <param name="permissionListJson">È¨ÏŞÁĞ±íJSONÊı×é</param>
+        ///// <param name="parentId">çˆ¶çº§Id</param>
+        ///// <param name="permissionListJson">æƒé™åˆ—è¡¨JSONæ•°ç»„</param>
         //[HttpPost]
         //public ActionResult<AjaxResult> SavePermission(string parentId, string permissionListJson)
         //{

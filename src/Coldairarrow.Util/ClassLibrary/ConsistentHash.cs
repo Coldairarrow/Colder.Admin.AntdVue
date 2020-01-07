@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +6,10 @@ using System.Text;
 namespace Coldairarrow.Util
 {
     /// <summary>
-    /// Ò»ÖÂĞÔHASH,½â¾ö´«Í³HASHµÄÀ©ÈİÄÑµÄÎÊÌâ
-    /// ×¢:³£ÓÃÓë·Ö²¼Ê½»º´æÓë·Ö±í
+    /// ä¸€è‡´æ€§HASH,è§£å†³ä¼ ç»ŸHASHçš„æ‰©å®¹éš¾çš„é—®é¢˜
+    /// æ³¨:å¸¸ç”¨ä¸åˆ†å¸ƒå¼ç¼“å­˜ä¸åˆ†è¡¨
     /// </summary>
-    /// <typeparam name="T">·ºĞÍ</typeparam>
+    /// <typeparam name="T">æ³›å‹</typeparam>
     public class ConsistentHash<T>
     {
         SortedDictionary<int, T> circle { get; set; } = new SortedDictionary<int, T>();

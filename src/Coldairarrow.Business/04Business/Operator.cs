@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Business.Cache;
 using Coldairarrow.Util;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
@@ -11,7 +12,7 @@ namespace Coldairarrow.Business
     {
         #region DI
 
-        private IBase_UserBusiness _sysUserBus { get => AutofacHelper.GetScopeService<IBase_UserBusiness>(); }
+        private IBase_UserCache _userCache { get => AutofacHelper.GetScopeService<IBase_UserCache>(); }
         public ILogger Logger { get => AutofacHelper.GetScopeService<ILogger>(); }
 
         #endregion
@@ -39,7 +40,7 @@ namespace Coldairarrow.Business
             }
         }
 
-        public Base_UserDTO Property { get => _sysUserBus.GetTheData(UserId); }
+        public Base_UserDTO Property { get => _userCache.GetCache(UserId); }
 
         #region 操作方法
 

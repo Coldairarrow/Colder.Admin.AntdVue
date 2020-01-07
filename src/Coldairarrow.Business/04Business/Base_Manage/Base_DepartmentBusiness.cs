@@ -1,4 +1,4 @@
-using Coldairarrow.Entity.Base_Manage;
+ï»¿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DepartmentBusiness : BaseBusiness<Base_Department>, IBase_DepartmentBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_DepartmentTreeDTO> GetTreeDataList(string parentId = null)
         {
@@ -49,8 +49,8 @@ namespace Coldairarrow.Business.Base_Manage
             return GetEntity(id);
         }
 
-        [DataRepeatValidate(new string[] { "Name" }, new string[] { "²¿ÃÅÃû" })]
-        [DataAddLog(LogType.²¿ÃÅ¹ÜÀí, "Name", "²¿ÃÅÃû")]
+        [DataRepeatValidate(new string[] { "Name" }, new string[] { "éƒ¨é—¨å" })]
+        [DataAddLog(LogType.éƒ¨é—¨ç®¡ç†, "Name", "éƒ¨é—¨å")]
         public AjaxResult AddData(Base_Department newData)
         {
             Insert(newData);
@@ -58,8 +58,8 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
-        [DataRepeatValidate(new string[] { "Name" }, new string[] { "²¿ÃÅÃû" })]
-        [DataEditLog(LogType.²¿ÃÅ¹ÜÀí, "Name", "²¿ÃÅÃû")]
+        [DataRepeatValidate(new string[] { "Name" }, new string[] { "éƒ¨é—¨å" })]
+        [DataEditLog(LogType.éƒ¨é—¨ç®¡ç†, "Name", "éƒ¨é—¨å")]
         public AjaxResult UpdateData(Base_Department theData)
         {
             Update(theData);
@@ -67,11 +67,11 @@ namespace Coldairarrow.Business.Base_Manage
             return Success();
         }
 
-        [DataDeleteLog(LogType.²¿ÃÅ¹ÜÀí, "Name", "²¿ÃÅÃû")]
+        [DataDeleteLog(LogType.éƒ¨é—¨ç®¡ç†, "Name", "éƒ¨é—¨å")]
         public AjaxResult DeleteData(List<string> ids)
         {
             if (GetIQueryable().Any(x => ids.Contains(x.ParentId)))
-                return Error("½ûÖ¹É¾³ı£¡ÇëÏÈÉ¾³ıËùÓĞ×Ó¼¶£¡");
+                return Error("ç¦æ­¢åˆ é™¤ï¼è¯·å…ˆåˆ é™¤æ‰€æœ‰å­çº§ï¼");
 
             Delete(ids);
 
@@ -80,7 +80,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         #endregion
     }

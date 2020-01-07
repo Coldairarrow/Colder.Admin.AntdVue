@@ -1,4 +1,4 @@
-﻿using StackExchange.Redis;
+﻿using CSRedis;
 using System;
 
 namespace Coldairarrow.Util
@@ -6,43 +6,31 @@ namespace Coldairarrow.Util
     /// <summary>
     /// Redis缓存
     /// </summary>
-    public class RedisCache : ICache
+    public class RedisCache : IRedisCache
     {
         /// <summary>
-        /// 默认构造函数
-        /// 注：使用默认配置，即localhost:6379,无密码
-        /// </summary>
-        public RedisCache()
-        {
-            _databaseIndex = 0;
-            string config = "localhost:6379";
-            _redisConnection = ConnectionMultiplexer.Connect(config);
-        }
-
-        /// <summary>
         /// 构造函数
+        /// 注意：请以单例使用
         /// </summary>
         /// <param name="config">配置字符串</param>
-        /// <param name="databaseIndex">数据库索引</param>
-        public RedisCache(string config, int databaseIndex = 0)
+        public RedisCache(string config)
         {
-            _databaseIndex = databaseIndex;
-            _redisConnection = ConnectionMultiplexer.Connect(config);
+            _redisCLient = new CSRedisClient(config);
         }
+        private CSRedisClient _redisCLient { get; }
 
-        private ConnectionMultiplexer _redisConnection { get; }
-        private IDatabase _db { get => _redisConnection.GetDatabase(_databaseIndex); }
-        private int _databaseIndex { get; }
+        public CSRedisClient Db => _redisCLient;
+
         public bool ContainsKey(string key)
         {
-            return _db.KeyExists(key);
+            return _redisCLient.Exists(key);
         }
 
         public object GetCache(string key)
         {
             object value = null;
-            var redisValue = _db.StringGet(key);
-            if (!redisValue.HasValue)
+            var redisValue = _redisCLient.Get(key);
+            if (redisValue.IsNullOrEmpty())
                 return null;
             ValueInfoEntry valueEntry = redisValue.ToString().ToObject<ValueInfoEntry>();
             if (valueEntry.TypeName == typeof(string).AssemblyQualifiedName)
@@ -63,12 +51,12 @@ namespace Coldairarrow.Util
 
         public void SetKeyExpire(string key, TimeSpan expire)
         {
-            _db.KeyExpire(key, expire);
+            _redisCLient.Expire(key, expire);
         }
 
         public void RemoveCache(string key)
         {
-            _db.KeyDelete(key);
+            _redisCLient.Del(key);
         }
 
         public void SetCache(string key, object value)
@@ -104,9 +92,9 @@ namespace Coldairarrow.Util
 
             string theValue = entry.ToJson();
             if (timeout == null)
-                _db.StringSet(key, theValue);
+                _redisCLient.Set(key, theValue);
             else
-                _db.StringSet(key, theValue, timeout);
+                _redisCLient.Set(key, theValue, (int)timeout.Value.TotalSeconds);
         }
     }
 }

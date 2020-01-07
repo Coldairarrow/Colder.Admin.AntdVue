@@ -1,4 +1,4 @@
-using Coldairarrow.Entity.Base_Manage;
+ï»¿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
@@ -7,18 +7,18 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, IDependency
     {
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         /// <summary>
-        /// »ñÈ¡ÈÕÖ¾ÁĞ±í
+        /// è·å–æ—¥å¿—åˆ—è¡¨
         /// </summary>
-        /// <param name="logContent">ÈÕÖ¾ÄÚÈİ</param>
-        /// <param name="logType">ÈÕÖ¾ÀàĞÍ</param>
-        /// <param name="level">ÈÕÖ¾¼¶±ğ</param>
-        /// <param name="opUserName">²Ù×÷ÈËÓÃ»§Ãû</param>
-        /// <param name="startTime">¿ªÊ¼Ê±¼ä</param>
-        /// <param name="endTime">½áÊøÊ±¼ä</param>
-        /// <param name="pagination">·ÖÒ³²ÎÊı</param>
+        /// <param name="logContent">æ—¥å¿—å†…å®¹</param>
+        /// <param name="logType">æ—¥å¿—ç±»å‹</param>
+        /// <param name="level">æ—¥å¿—çº§åˆ«</param>
+        /// <param name="opUserName">æ“ä½œäººç”¨æˆ·å</param>
+        /// <param name="startTime">å¼€å§‹æ—¶é—´</param>
+        /// <param name="endTime">ç»“æŸæ—¶é—´</param>
+        /// <param name="pagination">åˆ†é¡µå‚æ•°</param>
         /// <returns></returns>
         public List<Base_Log> GetLogList(
             Pagination pagination,
@@ -36,7 +36,7 @@ namespace Coldairarrow.Business.Base_Manage
             else if (GlobalSwitch.LoggerType.HasFlag(LoggerType.ElasticSearch))
                 logSearcher = new ElasticSearchTarget();
             else
-                throw new Exception("ÇëÖ¸¶¨ÈÕÖ¾ÀàĞÍÎªRDBMS»òElasticSearch!");
+                throw new Exception("è¯·æŒ‡å®šæ—¥å¿—ç±»å‹ä¸ºRDBMSæˆ–ElasticSearch!");
 
             return logSearcher.GetLogList(pagination, logContent, logType, level, opUserName, startTime, endTime);
         }
@@ -58,11 +58,11 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }

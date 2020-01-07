@@ -1,3 +1,4 @@
+ï»¿using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,14 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
     {
+        public Base_UserBusiness(IBase_UserCache userCache)
+        {
+            _userCache = userCache;
+        }
+        IBase_UserCache _userCache { get; }
         protected override string _textField => "RealName";
 
-        #region Íâ²¿½Ó¿Ú
+        #region å¤–éƒ¨æ¥å£
 
         public List<Base_UserDTO> GetDataList(Pagination pagination, bool all, string userId = null, string keyword = null)
         {
@@ -45,7 +51,7 @@ namespace Coldairarrow.Business.Base_Manage
 
             void SetProperty(List<Base_UserDTO> users)
             {
-                //²¹³äÓÃ»§½ÇÉ«ÊôĞÔ
+                //è¡¥å……ç”¨æˆ·è§’è‰²å±æ€§
                 List<string> userIds = users.Select(x => x.Id).ToList();
                 var userRoles = (from a in Service.GetIQueryable<Base_UserRole>()
                                  join b in Service.GetIQueryable<Base_Role>() on a.RoleId equals b.Id
@@ -73,10 +79,10 @@ namespace Coldairarrow.Business.Base_Manage
                 return GetDataList(new Pagination(), true, id).FirstOrDefault();
         }
 
-        [DataAddLog(LogType.ÏµÍ³ÓÃ»§¹ÜÀí, "RealName", "ÓÃ»§")]
+        [DataAddLog(LogType.ç³»ç»Ÿç”¨æˆ·ç®¡ç†, "RealName", "ç”¨æˆ·")]
         [DataRepeatValidate(
             new string[] { "UserName" },
-            new string[] { "ÓÃ»§Ãû" })]
+            new string[] { "ç”¨æˆ·å" })]
         public AjaxResult AddData(Base_User newData, List<string> roleIds)
         {
             var res = RunTransaction(() =>
@@ -87,17 +93,17 @@ namespace Coldairarrow.Business.Base_Manage
             if (res.Success)
                 return Success();
             else
-                throw new Exception("ÏµÍ³Òì³£", res.ex);
+                throw new Exception("ç³»ç»Ÿå¼‚å¸¸", res.ex);
         }
 
-        [DataEditLog(LogType.ÏµÍ³ÓÃ»§¹ÜÀí, "RealName", "ÓÃ»§")]
+        [DataEditLog(LogType.ç³»ç»Ÿç”¨æˆ·ç®¡ç†, "RealName", "ç”¨æˆ·")]
         [DataRepeatValidate(
             new string[] { "UserName" },
-            new string[] { "ÓÃ»§Ãû" })]
+            new string[] { "ç”¨æˆ·å" })]
         public AjaxResult UpdateData(Base_User theData, List<string> roleIds)
         {
             if (theData.Id == GlobalSwitch.AdminId && Operator?.UserId != theData.Id)
-                return new ErrorResult("½ûÖ¹¸ü¸Ä³¬¼¶¹ÜÀíÔ±£¡");
+                return new ErrorResult("ç¦æ­¢æ›´æ”¹è¶…çº§ç®¡ç†å‘˜ï¼");
 
             var res = RunTransaction(() =>
             {
@@ -105,26 +111,32 @@ namespace Coldairarrow.Business.Base_Manage
                 SetUserRole(theData.Id, roleIds);
             });
             if (res.Success)
+            {
+                _userCache.UpdateCache(theData.Id);
+
                 return Success();
+            }
             else
-                throw new Exception("ÏµÍ³Òì³£", res.ex);
+                throw new Exception("ç³»ç»Ÿå¼‚å¸¸", res.ex);
         }
 
-        [DataDeleteLog(LogType.ÏµÍ³ÓÃ»§¹ÜÀí, "RealName", "ÓÃ»§")]
+        [DataDeleteLog(LogType.ç³»ç»Ÿç”¨æˆ·ç®¡ç†, "RealName", "ç”¨æˆ·")]
         public AjaxResult DeleteData(List<string> ids)
         {
             if (ids.Contains(GlobalSwitch.AdminId))
-                return Error("³¬¼¶¹ÜÀíÔ±ÊÇÄÚÖÃÕËºÅ,½ûÖ¹É¾³ı£¡");
+                return Error("è¶…çº§ç®¡ç†å‘˜æ˜¯å†…ç½®è´¦å·,ç¦æ­¢åˆ é™¤ï¼");
             var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
 
             Delete(ids);
+
+            _userCache.UpdateCache(ids);
 
             return Success();
         }
 
         #endregion
 
-        #region Ë½ÓĞ³ÉÔ±
+        #region ç§æœ‰æˆå‘˜
 
         private void SetUserRole(string userId, List<string> roleIds)
         {
@@ -141,7 +153,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         #endregion
 
-        #region Êı¾İÄ£ĞÍ
+        #region æ•°æ®æ¨¡å‹
 
         #endregion
     }
@@ -170,7 +182,7 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
         public string DepartmentName { get; set; }
-        public string SexText { get => Sex == 1 ? "ÄĞ" : "Å®"; }
+        public string SexText { get => Sex == 1 ? "ç”·" : "å¥³"; }
         public string BirthdayText { get => Birthday?.ToString("yyyy-MM-dd"); }
     }
 }
