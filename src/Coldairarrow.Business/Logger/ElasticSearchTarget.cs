@@ -15,7 +15,7 @@ namespace Coldairarrow.Business
 
         static ElasticSearchTarget()
         {
-            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_Log).Name}".ToLower();
+            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_Log).Name}_v1".ToLower();
 
             var pool = new StaticConnectionPool(GlobalSwitch.ElasticSearchNodes);
             _connectionSettings = new ConnectionSettings(pool).DefaultIndex(index);
@@ -38,7 +38,8 @@ namespace Coldairarrow.Business
         private static ElasticClient _elasticClient { get; set; }
         protected override void Write(LogEventInfo logEvent)
         {
-            GetElasticClient().IndexDocument(GetBase_SysLogInfo(logEvent));
+            var res = GetElasticClient().IndexDocument(GetBase_SysLogInfo(logEvent));
+            string tmp = string.Empty;
         }
         private ElasticClient GetElasticClient()
         {
@@ -61,7 +62,12 @@ namespace Coldairarrow.Business
             var client = GetElasticClient();
             var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
             if (!logContent.IsNullOrEmpty())
-                filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
+            {
+                logContent.Split(' ').ForEach(aKeyword =>
+                {
+                    filters.Add(q => q.Terms(t => t.Field(f => f.LogContent).Terms(aKeyword.ToLower())));
+                });
+            }
             if (!logType.IsNullOrEmpty())
                 filters.Add(q => q.Terms(t => t.Field(f => f.LogType).Terms(logType)));
             if (!level.IsNullOrEmpty())
@@ -92,7 +98,12 @@ namespace Coldairarrow.Business
             var client = GetElasticClient();
             var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
             if (!logContent.IsNullOrEmpty())
-                filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
+            {
+                logContent.Split(' ').ForEach(aKeyword =>
+                {
+                    filters.Add(q => q.Terms(t => t.Field(f => f.LogContent).Terms(aKeyword.ToLower())));
+                });
+            }
             if (!logType.IsNullOrEmpty())
                 filters.Add(q => q.Terms(t => t.Field(f => f.LogType).Terms(logType)));
             if (!level.IsNullOrEmpty())

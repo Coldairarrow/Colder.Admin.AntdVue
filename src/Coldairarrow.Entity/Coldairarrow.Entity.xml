@@ -204,6 +204,56 @@
             上级部门Id
             </summary>
         </member>
+        <member name="T:Coldairarrow.Entity.Base_Manage.Base_Log">
+            <summary>
+            系统日志表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Id">
+            <summary>
+            自然主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorRealName">
+            <summary>
+            创建人姓名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Deleted">
+            <summary>
+            否已删除
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogContent">
+            <summary>
+            日志内容
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Data">
+            <summary>
+            数据备份（转为JSON字符串）
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_Role">
             <summary>
             系统角色表
@@ -277,56 +327,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.ActionId">
             <summary>
             权限Id
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.Base_Log">
-            <summary>
-            系统日志表
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Id">
-            <summary>
-            自然主键
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorId">
-            <summary>
-            创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Deleted">
-            <summary>
-            否已删除
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Level">
-            <summary>
-            日志级别
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogType">
-            <summary>
-            日志类型
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogContent">
-            <summary>
-            日志内容
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Data">
-            <summary>
-            数据备份（转为JSON字符串）
             </summary>
         </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_UnitTest">

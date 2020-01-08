@@ -110,7 +110,7 @@ namespace Coldairarrow.Util
         /// 日志记录方式
         /// 注:可用位运算,LoggerType.RDBMS | LoggerType.File表示同时记录到数据库和文件
         /// </summary>
-        public static readonly LoggerType LoggerType = LoggerType.RDBMS;
+        public static readonly LoggerType LoggerType = /*LoggerType.RDBMS |*/ LoggerType.ElasticSearch;
 
         /// <summary>
         /// ElasticSearch服务器配置
