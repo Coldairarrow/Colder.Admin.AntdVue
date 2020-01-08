@@ -15,7 +15,7 @@ namespace Coldairarrow.Business
 
         static ElasticSearchTarget()
         {
-            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_Log).Name}_v1".ToLower();
+            string index = $"{GlobalSwitch.ProjectName}.{typeof(Base_Log).Name}".ToLower();
 
             var pool = new StaticConnectionPool(GlobalSwitch.ElasticSearchNodes);
             _connectionSettings = new ConnectionSettings(pool).DefaultIndex(index);
@@ -38,8 +38,7 @@ namespace Coldairarrow.Business
         private static ElasticClient _elasticClient { get; set; }
         protected override void Write(LogEventInfo logEvent)
         {
-            var res = GetElasticClient().IndexDocument(GetBase_SysLogInfo(logEvent));
-            string tmp = string.Empty;
+            GetElasticClient().IndexDocument(GetBase_SysLogInfo(logEvent));
         }
         private ElasticClient GetElasticClient()
         {
