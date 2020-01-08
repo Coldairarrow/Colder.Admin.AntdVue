@@ -61,7 +61,12 @@ namespace Coldairarrow.Business
             var client = GetElasticClient();
             var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
             if (!logContent.IsNullOrEmpty())
-                filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
+            {
+                logContent.Split(' ').ForEach(aKeyword =>
+                {
+                    filters.Add(q => q.Terms(t => t.Field(f => f.LogContent).Terms(aKeyword.ToLower())));
+                });
+            }
             if (!logType.IsNullOrEmpty())
                 filters.Add(q => q.Terms(t => t.Field(f => f.LogType).Terms(logType)));
             if (!level.IsNullOrEmpty())
@@ -92,7 +97,12 @@ namespace Coldairarrow.Business
             var client = GetElasticClient();
             var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
             if (!logContent.IsNullOrEmpty())
-                filters.Add(q => q.Wildcard(w => w.Field(f => f.LogContent).Value($"*{logContent}*")));
+            {
+                logContent.Split(' ').ForEach(aKeyword =>
+                {
+                    filters.Add(q => q.Terms(t => t.Field(f => f.LogContent).Terms(aKeyword.ToLower())));
+                });
+            }
             if (!logType.IsNullOrEmpty())
                 filters.Add(q => q.Terms(t => t.Field(f => f.LogType).Terms(logType)));
             if (!level.IsNullOrEmpty())
