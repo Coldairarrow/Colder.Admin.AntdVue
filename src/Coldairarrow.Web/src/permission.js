@@ -12,7 +12,6 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['Login'] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
-  console.log('跳转', to.path)
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   // 已授权
