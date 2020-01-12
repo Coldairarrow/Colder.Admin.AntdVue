@@ -194,6 +194,40 @@
             </summary>
             <param name="context"></param>
         </member>
+        <member name="T:Coldairarrow.Api.FormatResponseAttribute">
+            <summary>
+            若Action返回对象为自定义对象,则将其转为JSON
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.FormatResponseAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.FormatResponseAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Coldairarrow.Api.NoFormatResponseAttribute">
+            <summary>
+            返回结果不进行格式化
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Api.NoFormatResponseAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="context">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.NoFormatResponseAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="T:Coldairarrow.Api.CorsMiddleware">
             <summary>
             跨域中间件
@@ -323,7 +357,7 @@
         </member>
         <member name="M:Coldairarrow.Api.Controllers.Base_Manage.Base_ActionController.GetActionTreeList(System.String)">
             <summary>
-            获取全心爱你树列表
+            获取权限树列表
             </summary>
             <param name="keyword">关键字</param>
             <returns></returns>
