@@ -13,21 +13,12 @@ namespace Coldairarrow.Api.Controllers
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
-        private Base_Log GetNewLog()
-        {
-            return new Base_Log
-            {
-                Id = IdHelper.GetId(),
-                CreateTime = DateTime.Now
-            };
-        }
-
         /// <summary>
         /// 压力测试
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult PressTest1()
+        public async Task<AjaxResult> PressTest1()
         {
             var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
             using (var db = DbFactory.GetRepository())
@@ -39,13 +30,13 @@ namespace Coldairarrow.Api.Controllers
                     Age = 10,
                     UserName = Guid.NewGuid().ToString()
                 };
-                db.Insert(data);
+                await db.InsertAsync(data);
                 db.Update(data);
                 db.GetIQueryable<Base_UnitTest>().FirstOrDefault();
                 db.Delete(data);
             }
 
-            return Success("1");
+            return new AjaxResult { Success = true };
         }
 
         /// <summary>
@@ -73,6 +64,5 @@ namespace Coldairarrow.Api.Controllers
 
             return Success("2");
         }
-
     }
 }

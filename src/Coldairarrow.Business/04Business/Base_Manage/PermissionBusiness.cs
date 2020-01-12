@@ -43,14 +43,14 @@ namespace Coldairarrow.Business.Base_Manage
         {
             var q = GetIQ(userId);
 
-            return _actionBus.GetTreeDataList(null, new List<int> { 0, 1 }, false, q, true);
+            return _actionBus.GetTreeDataListAsync(null, new List<int> { 0, 1 }, false, q, true);
         }
 
         public List<string> GetUserPermissionValues(string userId)
         {
             var q = GetIQ(userId);
             return _actionBus
-                .GetDataList(new Pagination(), null, null, new List<int> { 2 }, q)
+                .GetDataListAsync(new Pagination(), null, null, new List<int> { 2 }, q)
                 .Select(x => x.Value)
                 .ToList();
         }

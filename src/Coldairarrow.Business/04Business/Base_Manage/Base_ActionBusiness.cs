@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
@@ -13,7 +14,7 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_Action> GetDataList(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)
+        public async Task<List<Base_Action>> GetDataListAsync(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)
         {
             q = q ?? GetIQueryable();
             var where = LinqHelper.True<Base_Action>();
@@ -26,15 +27,15 @@ namespace Coldairarrow.Business.Base_Manage
             if (types?.Count > 0)
                 where = where.And(x => types.Contains(x.Type));
 
-            return q.Where(where).GetPagination(pagination).ToList();
+            return await q.Where(where).GetPagination(pagination).ToListAsync();
         }
 
-        public List<Base_ActionDTO> GetTreeDataList(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null, bool checkEmptyChildren = false)
+        public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null, bool checkEmptyChildren = false)
         {
             var where = LinqHelper.True<Base_Action>();
             if (!types.IsNullOrEmpty())
                 where = where.And(x => types.Contains(x.Type));
-            var qList = (q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToList();
+            var qList = await (q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToListAsync();
 
             var treeList = qList.Select(x => new Base_ActionDTO
             {
@@ -54,16 +55,16 @@ namespace Coldairarrow.Business.Base_Manage
             if (checkEmptyChildren)
                 treeList = treeList.Where(x => x.Type != 0 || TreeHelper.GetChildren(treeList, x, false).Count > 0).ToList();
 
-            SetProperty(treeList);
+            await SetProperty(treeList);
 
             return TreeHelper.BuildTree(treeList);
 
-            void SetProperty(List<Base_ActionDTO> _list)
+            async Task SetProperty(List<Base_ActionDTO> _list)
             {
                 var ids = _list.Select(x => x.Id).ToList();
-                var allPermissions = GetIQueryable()
+                var allPermissions = await GetIQueryable()
                     .Where(x => ids.Contains(x.ParentId) && x.Type == 2)
-                    .ToList();
+                    .ToListAsync();
 
                 _list.ForEach(aData =>
                 {
@@ -82,25 +83,23 @@ namespace Coldairarrow.Business.Base_Manage
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        public Base_Action GetTheData(string id)
+        public async Task<Base_Action> GetTheData(string id)
         {
-            return GetEntity(id);
+            return await GetEntityAsync(id);
         }
 
-        public AjaxResult AddData(Base_Action newData, List<Base_Action> permissionList)
+        public async void AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
         {
-            var res = RunTransaction(() =>
+            var res = RunTransaction(async () =>
             {
-                Insert(newData);
-                SavePermission(newData.Id, permissionList);
+                await InsertAsync(newData);
+                await SavePermission(newData.Id, permissionList);
             });
-            if (res.Success)
-                return Success();
-            else
+            if (!res.Success)
                 throw res.ex;
         }
 
-        public AjaxResult UpdateData(Base_Action theData, List<Base_Action> permissionList)
+        public Task UpdateDataAsync(Base_Action theData, List<Base_Action> permissionList)
         {
             var res = RunTransaction(() =>
             {
@@ -113,14 +112,14 @@ namespace Coldairarrow.Business.Base_Manage
                 throw res.ex;
         }
 
-        public AjaxResult DeleteData(List<string> ids)
+        public Task DeleteDataAsync(List<string> ids)
         {
             Delete(ids);
 
             return Success();
         }
 
-        public void SavePermission(string parentId, List<Base_Action> permissionList)
+        public Task SavePermission(string parentId, List<Base_Action> permissionList)
         {
             permissionList.ForEach(aData =>
             {

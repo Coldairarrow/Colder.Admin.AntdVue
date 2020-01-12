@@ -47,7 +47,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_Action>>> GetPermissionList(string parentId)
         {
-            var dataList = _actionBus.GetDataList(new Pagination(), null, parentId, new List<int> { 2 });
+            var dataList = _actionBus.GetDataListAsync(new Pagination(), null, parentId, new List<int> { 2 });
 
             return Success(dataList);
         }
@@ -55,7 +55,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_Action>>> GetAllActionList()
         {
-            var dataList = _actionBus.GetDataList(new Pagination(), null, null, new List<int> { 0, 1, 2 });
+            var dataList = _actionBus.GetDataListAsync(new Pagination(), null, null, new List<int> { 0, 1, 2 });
 
             return Success(dataList);
         }
@@ -68,20 +68,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetMenuTreeList(string keyword)
         {
-            var dataList = _actionBus.GetTreeDataList(keyword, new List<int> { 0, 1 }, true);
+            var dataList = _actionBus.GetTreeDataListAsync(keyword, new List<int> { 0, 1 }, true);
 
             return Success(dataList);
         }
 
         /// <summary>
-        /// 获取全心爱你树列表
+        /// 获取权限树列表
         /// </summary>
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult<AjaxResult<List<Base_ActionDTO>>> GetActionTreeList(string keyword)
         {
-            var dataList = _actionBus.GetTreeDataList(keyword, null, false);
+            var dataList = _actionBus.GetTreeDataListAsync(keyword, null, false);
 
             return Success(dataList);
         }
@@ -99,11 +99,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 theData.InitEntity();
 
-                res = _actionBus.AddData(theData, permissionList);
+                res = _actionBus.AddDataAsync(theData, permissionList);
             }
             else
             {
-                res = _actionBus.UpdateData(theData, permissionList);
+                res = _actionBus.UpdateDataAsync(theData, permissionList);
             }
 
             return JsonContent(res.ToJson());
@@ -116,24 +116,10 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public ActionResult<AjaxResult> DeleteData(string ids)
         {
-            var res = _actionBus.DeleteData(ids.ToList<string>());
+            var res = _actionBus.DeleteDataAsync(ids.ToList<string>());
 
             return JsonContent(res.ToJson());
         }
-
-        ///// <summary>
-        ///// 保存权限
-        ///// </summary>
-        ///// <returns></returns>
-        ///// <param name="parentId">父级Id</param>
-        ///// <param name="permissionListJson">权限列表JSON数组</param>
-        //[HttpPost]
-        //public ActionResult<AjaxResult> SavePermission(string parentId, string permissionListJson)
-        //{
-        //    var res = _actionBus.SavePermission(parentId, permissionListJson?.ToList<Base_Action>());
-
-        //    return JsonContent(res.ToJson());
-        //}
 
         #endregion
     }
