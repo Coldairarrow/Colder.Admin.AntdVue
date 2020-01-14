@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.DataRepository
 {
@@ -66,6 +67,16 @@ namespace Coldairarrow.DataRepository
             _repositories.ForEach(aRepository => (aRepository as IInternalTransaction).BeginTransaction(isolationLevel));
         }
 
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
+        {
+            OpenTransaction = true;
+            _isolationLevel = isolationLevel;
+            foreach (var aRepository in _repositories)
+            {
+                await (aRepository as IInternalTransaction).BeginTransactionAsync(isolationLevel);
+            }
+        }
+
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             if (_repositories.Count == 0)
@@ -109,6 +120,35 @@ namespace Coldairarrow.DataRepository
         {
             OpenTransaction = false;
             _repositories.ForEach(x => (x as IInternalTransaction).DisposeTransaction());
+        }
+
+        public async Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            if (_repositories.Count == 0)
+                throw new Exception("IRepository数量不能为0");
+
+            bool isOK = true;
+            Exception resEx = null;
+            try
+            {
+                await BeginTransactionAsync(isolationLevel);
+
+                await action();
+
+                CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                RollbackTransaction();
+                isOK = false;
+                resEx = ex;
+            }
+            finally
+            {
+                DisposeTransaction();
+            }
+
+            return (isOK, resEx);
         }
 
         #endregion

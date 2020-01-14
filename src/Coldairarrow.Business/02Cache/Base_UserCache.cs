@@ -9,7 +9,9 @@ namespace Coldairarrow.Business.Cache
         IBase_UserBusiness _userBus { get => AutofacHelper.GetScopeService<IBase_UserBusiness>(); }
         protected override Base_UserDTO GetDbData(string key)
         {
-            return _userBus.GetDataList(new Pagination(), true, key).FirstOrDefault();
+            var list = AsyncHelper.RunSync(() => _userBus.GetDataListAsync(new Pagination(), true, key));
+
+            return list.FirstOrDefault();
         }
     }
 }

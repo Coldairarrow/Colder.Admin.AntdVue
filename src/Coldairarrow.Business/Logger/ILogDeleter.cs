@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
     public interface ILogDeleter
     {
-        void DeleteLog(
+        Task DeleteLogAsync(
             string logContent,
             string logType,
             string level,

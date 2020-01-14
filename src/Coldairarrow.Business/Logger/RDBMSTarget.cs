@@ -1,16 +1,18 @@
 ﻿using Coldairarrow.DataRepository;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
     public class RDBMSTarget : BaseTarget, ILogSearcher, ILogDeleter
     {
-        public List<Base_Log> GetLogList(
+        public async Task<List<Base_Log>> GetLogListAsync(
             Pagination pagination,
             string logContent,
             string logType,
@@ -35,7 +37,7 @@ namespace Coldairarrow.Business
                 if (!endTime.IsNullOrEmpty())
                     whereExp = whereExp.And(x => x.CreateTime <= endTime);
 
-                return db.GetIQueryable<Base_Log>().Where(whereExp).GetPagination(pagination).ToList();
+                return await db.GetIQueryable<Base_Log>().Where(whereExp).GetPagination(pagination).ToListAsync();
             }
         }
 
@@ -47,7 +49,7 @@ namespace Coldairarrow.Business
             }
         }
 
-        public void DeleteLog(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
+        public async Task DeleteLogAsync(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
         {
             using (var db = DbFactory.GetRepository())
             {
@@ -65,7 +67,7 @@ namespace Coldairarrow.Business
                 if (!endTime.IsNullOrEmpty())
                     whereExp = whereExp.And(x => x.CreateTime <= endTime);
 
-                db.Delete_Sql(whereExp);
+                await db.Delete_SqlAsync(whereExp);
             }
         }
     }

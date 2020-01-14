@@ -1,7 +1,9 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -9,12 +11,15 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_DepartmentTreeDTO> GetTreeDataList(string parentId = null)
+        public async Task<List<Base_DepartmentTreeDTO>> GetTreeDataListAsync(string parentId = null)
         {
             var where = LinqHelper.True<Base_Department>();
             if (!parentId.IsNullOrEmpty())
                 where = where.And(x => x.ParentId == parentId);
-            var list = GetIQueryable().Where(where).ToList()
+
+
+            var list = await GetIQueryable().Where(where).ToListAsync();
+            var treeList = list
                 .Select(x => new Base_DepartmentTreeDTO
                 {
                     Id = x.Id,
@@ -23,18 +28,18 @@ namespace Coldairarrow.Business.Base_Manage
                     Value = x.Id
                 }).ToList();
 
-            return TreeHelper.BuildTree(list);
+            return TreeHelper.BuildTree(treeList);
         }
 
-        public List<string> GetChildrenIds(string departmentId)
+        public async Task<List<string>> GetChildrenIdsAsync(string departmentId)
         {
-            var allNode = GetIQueryable().Select(x => new TreeModel
+            var allNode = await GetIQueryable().Select(x => new TreeModel
             {
                 Id = x.Id,
                 ParentId = x.ParentId,
                 Text = x.Name,
                 Value = x.Id
-            }).ToList();
+            }).ToListAsync();
 
             var children = TreeHelper
                 .GetChildren(allNode, allNode.Where(x => x.Id == departmentId).FirstOrDefault(), true)
@@ -44,38 +49,32 @@ namespace Coldairarrow.Business.Base_Manage
             return children;
         }
 
-        public Base_Department GetTheData(string id)
+        public async Task<Base_Department> GetTheDataAsync(string id)
         {
-            return GetEntity(id);
+            return await GetEntityAsync(id);
         }
 
         [DataRepeatValidate(new string[] { "Name" }, new string[] { "部门名" })]
         [DataAddLog(LogType.部门管理, "Name", "部门名")]
-        public AjaxResult AddData(Base_Department newData)
+        public async Task AddDataAsync(Base_Department newData)
         {
-            Insert(newData);
-
-            return Success();
+            await InsertAsync(newData);
         }
 
         [DataRepeatValidate(new string[] { "Name" }, new string[] { "部门名" })]
         [DataEditLog(LogType.部门管理, "Name", "部门名")]
-        public AjaxResult UpdateData(Base_Department theData)
+        public async Task UpdateDataAsync(Base_Department theData)
         {
-            Update(theData);
-
-            return Success();
+            await UpdateAsync(theData);
         }
 
         [DataDeleteLog(LogType.部门管理, "Name", "部门名")]
-        public AjaxResult DeleteData(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
-            if (GetIQueryable().Any(x => ids.Contains(x.ParentId)))
-                return Error("禁止删除！请先删除所有子级！");
+            if (await GetIQueryable().AnyAsync(x => ids.Contains(x.ParentId)))
+                throw new BusException("禁止删除！请先删除所有子级！");
 
-            Delete(ids);
-
-            return Success();
+            await DeleteAsync(ids);
         }
 
         #endregion

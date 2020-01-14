@@ -2,6 +2,7 @@
 using Coldairarrow.Util;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -20,7 +21,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// <param name="endTime">结束时间</param>
         /// <param name="pagination">分页参数</param>
         /// <returns></returns>
-        public List<Base_Log> GetLogList(
+        public async Task<List<Base_Log>> GetLogListAsync(
             Pagination pagination,
             string logContent,
             string logType,
@@ -38,21 +39,21 @@ namespace Coldairarrow.Business.Base_Manage
             else
                 throw new Exception("请指定日志类型为RDBMS或ElasticSearch!");
 
-            return logSearcher.GetLogList(pagination, logContent, logType, level, opUserName, startTime, endTime);
+            return await logSearcher.GetLogListAsync(pagination, logContent, logType, level, opUserName, startTime, endTime);
         }
 
-        public void DeleteLog(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
+        public async Task DeleteLogAsync(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
         {
             ILogDeleter logDeleter;
             if (GlobalSwitch.LoggerType.HasFlag(LoggerType.RDBMS))
             {
                 logDeleter = new RDBMSTarget();
-                logDeleter.DeleteLog(logContent, logType, level, opUserName, startTime, endTime);
+                await logDeleter.DeleteLogAsync(logContent, logType, level, opUserName, startTime, endTime);
             }
             if (GlobalSwitch.LoggerType.HasFlag(LoggerType.ElasticSearch))
             {
                 logDeleter = new ElasticSearchTarget();
-                logDeleter.DeleteLog(logContent, logType, level, opUserName, startTime, endTime);
+                await logDeleter.DeleteLogAsync(logContent, logType, level, opUserName, startTime, endTime);
             }
         }
 

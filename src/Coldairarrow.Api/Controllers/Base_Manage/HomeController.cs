@@ -1,6 +1,8 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -29,27 +31,25 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         [CheckParamNotEmpty("userName", "password")]
         [NoCheckJWT]
-        public ActionResult<AjaxResult> SubmitLogin(string userName, string password)
+        public async Task<AjaxResult<string>> SubmitLogin(string userName, string password)
         {
-            AjaxResult res = _homeBus.SubmitLogin(userName, password);
-
-            return JsonContent(res.ToJson());
+            return await _homeBus.SubmitLoginAsync(userName, password);
         }
 
         [HttpPost]
         [CheckParamNotEmpty("oldPwd", "newPwd")]
-        public IActionResult ChangePwd(string oldPwd, string newPwd)
+        public async Task<AjaxResult> ChangePwd(string oldPwd, string newPwd)
         {
-            var res = _homeBus.ChangePwd(oldPwd, newPwd);
+            await _homeBus.ChangePwdAsync(oldPwd, newPwd);
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         [HttpPost]
-        public IActionResult GetOperatorInfo()
+        public async Task<AjaxResult> GetOperatorInfo()
         {
-            var theInfo = _userBus.GetTheData(Operator.UserId);
-            var permissions = _permissionBus.GetUserPermissionValues(Operator.UserId);
+            var theInfo = await _userBus.GetTheDataAsync(Operator.UserId);
+            var permissions = await _permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
             var resObj = new
             {
                 UserInfo = theInfo,
@@ -60,11 +60,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public IActionResult GetOperatorMenuList()
+        public async Task<AjaxResult<List<Base_ActionDTO>>> GetOperatorMenuList()
         {
-            var dataList = _permissionBus.GetUserMenuList(Operator.UserId);
+            var list = await _permissionBus.GetUserMenuListAsync(Operator.UserId);
 
-            return Success(dataList);
+            return Success(list);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #endregion
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_DbLink>>> GetAllDbLink()
+        public AjaxResult<List<Base_DbLink>> GetAllDbLink()
         {
             var list = _buildCodeBus.GetAllDbLink();
 
@@ -29,15 +29,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<DbTableInfo>>> GetDbTableList(string linkId)
+        public AjaxResult<List<DbTableInfo>> GetDbTableList(string linkId)
         {
             var list = _buildCodeBus.GetDbTableList(linkId);
 
-            return JsonContent(new Pagination().BuildTableResult_AntdVue(list).ToJson());
+            return DataTable(list);
         }
 
         [HttpPost]
-        public IActionResult Build(string linkId, string areaName, string tablesJson, string buildTypesJson )
+        public AjaxResult Build(string linkId, string areaName, string tablesJson, string buildTypesJson)
         {
             _buildCodeBus.Build(linkId, areaName, tablesJson?.ToList<string>(), buildTypesJson?.ToList<int>());
 

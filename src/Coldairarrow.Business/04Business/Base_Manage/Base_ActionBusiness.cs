@@ -83,43 +83,39 @@ namespace Coldairarrow.Business.Base_Manage
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        public async Task<Base_Action> GetTheData(string id)
+        public async Task<Base_Action> GetTheDataAsync(string id)
         {
             return await GetEntityAsync(id);
         }
 
-        public async void AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
+        public async Task AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
         {
-            var res = RunTransaction(async () =>
+            var res = await RunTransactionAsync(async () =>
             {
                 await InsertAsync(newData);
-                await SavePermission(newData.Id, permissionList);
+                await SavePermissionAsync(newData.Id, permissionList);
             });
             if (!res.Success)
                 throw res.ex;
         }
 
-        public Task UpdateDataAsync(Base_Action theData, List<Base_Action> permissionList)
+        public async Task UpdateDataAsync(Base_Action theData, List<Base_Action> permissionList)
         {
-            var res = RunTransaction(() =>
-            {
-                Update(theData);
-                SavePermission(theData.Id, permissionList);
-            });
-            if (res.Success)
-                return Success();
-            else
+            var res = await RunTransactionAsync(async () =>
+             {
+                 await UpdateAsync(theData);
+                 await SavePermissionAsync(theData.Id, permissionList);
+             });
+            if (!res.Success)
                 throw res.ex;
         }
 
-        public Task DeleteDataAsync(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
-            Delete(ids);
-
-            return Success();
+            await DeleteAsync(ids);
         }
 
-        public Task SavePermission(string parentId, List<Base_Action> permissionList)
+        public async Task SavePermissionAsync(string parentId, List<Base_Action> permissionList)
         {
             permissionList.ForEach(aData =>
             {
@@ -131,16 +127,16 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.NeedAction = true;
             });
             //删除原来
-            Delete_Sql(x => x.ParentId == parentId && x.Type == 2);
+            await Delete_SqlAsync(x => x.ParentId == parentId && x.Type == 2);
             //新增
-            Insert(permissionList);
+            await InsertAsync(permissionList);
 
             //权限值必须唯一
-            var repeatValues = GetIQueryable()
+            var repeatValues = await GetIQueryable()
                 .GroupBy(x => x.Value)
                 .Where(x => !string.IsNullOrEmpty(x.Key) && x.Count() > 1)
                 .Select(x => x.Key)
-                .ToList();
+                .ToListAsync();
             if (repeatValues.Count > 0)
                 throw new Exception($"以下权限值重复:{string.Join(",", repeatValues)}");
         }

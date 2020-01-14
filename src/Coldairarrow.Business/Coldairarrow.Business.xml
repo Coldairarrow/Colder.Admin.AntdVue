@@ -4,7 +4,7 @@
         <name>Coldairarrow.Business</name>
     </assembly>
     <members>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
@@ -36,43 +36,43 @@
             排序
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             添加数据
             </summary>
             <param name="newData">数据</param>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             添加数据
             </summary>
             <param name="newData">数据</param>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogList(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogListAsync(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             获取日志列表
             </summary>
@@ -673,7 +673,7 @@
             <param name="msg">错误提示</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String)">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionListAsync(System.String,System.String)">
             <summary>
             构建前端Select远程搜索数据
             </summary>
@@ -681,7 +681,7 @@
             <param name="q">查询关键字</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String,System.String,System.String,System.Linq.IQueryable{`0})">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionListAsync(System.String,System.String,System.String,System.String,System.Linq.IQueryable{`0})">
             <summary>
             构建前端Select远程搜索数据
             </summary>
