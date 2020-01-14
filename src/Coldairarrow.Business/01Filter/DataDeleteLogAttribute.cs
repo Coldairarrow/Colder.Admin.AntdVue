@@ -24,11 +24,8 @@ namespace Coldairarrow.Business
 
         public override void OnActionExecuted(IInvocation invocation)
         {
-            if ((invocation.ReturnValue as AjaxResult).Success)
-            {
-                string names = string.Join(",", _deleteList.Select(x => x.GetPropertyValue(_nameField)?.ToString()));
-                Logger.Info(_logType, $"删除{_dataName}:{names}", _deleteList.ToJson());
-            }
+            string names = string.Join(",", _deleteList.Select(x => x.GetPropertyValue(_nameField)?.ToString()));
+            Logger.Info(_logType, $"删除{_dataName}:{names}", _deleteList.ToJson());
         }
     }
 }
