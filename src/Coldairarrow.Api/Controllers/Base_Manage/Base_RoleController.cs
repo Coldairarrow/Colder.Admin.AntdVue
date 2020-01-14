@@ -2,8 +2,8 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -34,11 +34,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="roleName">角色名</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string roleName)
+        public async Task<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string roleName)
         {
-            var dataList = _roleBus.GetDataList(pagination, null, roleName);
+            var dataList = await _roleBus.GetDataListAsync(pagination, null, roleName);
 
-            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
+            return DataTable(dataList, pagination);
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<Base_RoleDTO>> GetTheData(string id)
+        public async Task<AjaxResult<Base_RoleDTO>> GetTheData(string id)
         {
-            var theData = _roleBus.GetTheData(id) ?? new Base_RoleDTO();
+            var theData = await _roleBus.GetTheDataAsync(id) ?? new Base_RoleDTO();
 
             return Success(theData);
         }
@@ -64,22 +64,21 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="theData">保存的数据</param>
         /// <param name="actionsJson">权限值JSON</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_Role theData, string actionsJson)
+        public async Task<AjaxResult> SaveData(Base_Role theData, string actionsJson)
         {
-            AjaxResult res;
             var actionList = actionsJson?.ToList<string>();
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _roleBus.AddData(theData, actionList);
+                await _roleBus.AddDataAsync(theData, actionList);
             }
             else
             {
-                res = _roleBus.UpdateData(theData, actionList);
+                await _roleBus.UpdateDataAsync(theData, actionList);
             }
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         /// <summary>
@@ -87,11 +86,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public ActionResult<AjaxResult> DeleteData(string ids)
+        public async Task<AjaxResult> DeleteData(string ids)
         {
-            var res = _roleBus.DeleteData(ids.ToList<string>());
+            await _roleBus.DeleteDataAsync(ids.ToList<string>());
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         #endregion

@@ -44,7 +44,7 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> PressTest2()
+        public async Task<AjaxResult> PressTest2()
         {
             var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
             using (var db = DbFactory.GetRepository())

@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.DataRepository;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -193,6 +194,10 @@ namespace Coldairarrow.Business
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             return Service.RunTransaction(action, isolationLevel);
+        }
+        public async Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            return await Service.RunTransactionAsync(action, isolationLevel);
         }
 
         #endregion
@@ -653,9 +658,9 @@ namespace Coldairarrow.Business
         /// <param name="selectedValueJson">已选择的项，JSON数组</param>
         /// <param name="q">查询关键字</param>
         /// <returns></returns>
-        public List<SelectOption> GetOptionList(string selectedValueJson, string q)
+        public async Task<List<SelectOption>> GetOptionListAsync(string selectedValueJson, string q)
         {
-            return GetOptionList(selectedValueJson, q, _textField, _valueField, null);
+            return await GetOptionListAsync(selectedValueJson, q, _textField, _valueField, null);
         }
 
         /// <summary>
@@ -667,7 +672,7 @@ namespace Coldairarrow.Business
         /// <param name="valueField">值字段</param>
         /// <param name="source">指定数据源</param>
         /// <returns></returns>
-        public List<SelectOption> GetOptionList(string selectedValueJson, string q, string textFiled, string valueField, IQueryable<T> source = null)
+        public async Task<List<SelectOption>> GetOptionListAsync(string selectedValueJson, string q, string textFiled, string valueField, IQueryable<T> source = null)
         {
             Pagination pagination = new Pagination
             {
@@ -679,7 +684,7 @@ namespace Coldairarrow.Business
             List<string> ids = selectedValueJson?.ToList<string>() ?? new List<string>();
             if (ids.Count > 0)
             {
-                selectedList = GetNewQ().Where($"@0.Contains({valueField})", ids).ToList();
+                selectedList = await GetNewQ().Where($"@0.Contains({valueField})", ids).ToListAsync();
 
                 where += $" && !@0.Contains({valueField})";
             }
@@ -688,7 +693,7 @@ namespace Coldairarrow.Business
             {
                 where += $" && it.{textFiled}.Contains(@1)";
             }
-            List<T> newQList = GetNewQ().Where(where, ids, q).GetPagination(pagination).ToList();
+            List<T> newQList = await GetNewQ().Where(where, ids, q).GetPagination(pagination).ToListAsync();
 
             var resList = selectedList.Concat(newQList).Select(x => new SelectOption
             {

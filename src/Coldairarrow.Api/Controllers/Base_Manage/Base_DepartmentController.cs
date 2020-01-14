@@ -3,6 +3,7 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -23,17 +24,17 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public ActionResult<AjaxResult<Base_Department>> GetTheData(string id)
+        public async Task<AjaxResult<Base_Department>> GetTheData(string id)
         {
-            var theData = _departmentBus.GetTheData(id) ?? new Base_Department();
+            var theData = await _departmentBus.GetTheDataAsync(id) ?? new Base_Department();
 
             return Success(theData);
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_DepartmentTreeDTO>>> GetTreeDataList(string parentId)
+        public async Task<AjaxResult<List<Base_DepartmentTreeDTO>>> GetTreeDataList(string parentId)
         {
-            var dataList = _departmentBus.GetTreeDataList(parentId);
+            var dataList = await _departmentBus.GetTreeDataListAsync(parentId);
 
             return Success(dataList);
         }
@@ -43,29 +44,28 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_Department theData)
+        public async Task<AjaxResult> SaveData(Base_Department theData)
         {
-            AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _departmentBus.AddData(theData);
+                await _departmentBus.AddDataAsync(theData);
             }
             else
             {
-                res = _departmentBus.UpdateData(theData);
+                await _departmentBus.UpdateDataAsync(theData);
             }
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult> DeleteData(string ids)
+        public async Task<AjaxResult> DeleteData(string ids)
         {
-            var res = _departmentBus.DeleteData(ids.ToList<string>());
+            await _departmentBus.DeleteDataAsync(ids.ToList<string>());
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         #endregion

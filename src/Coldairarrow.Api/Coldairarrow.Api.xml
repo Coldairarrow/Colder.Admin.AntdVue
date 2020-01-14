@@ -149,12 +149,6 @@
             </summary>
             <param name="filterContext"></param>
         </member>
-        <member name="M:Coldairarrow.Api.CheckSignAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="filterContext"></param>
-        </member>
         <member name="T:Coldairarrow.Api.IgnoreSignAttribute">
             <summary>
             忽略接口签名校验
@@ -170,12 +164,6 @@
             Action执行之前执行
             </summary>
             <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.ApiPermissionAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
         </member>
         <member name="T:Coldairarrow.Api.NoApiPermissionAttribute">
             <summary>
@@ -276,26 +264,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseController.Success(System.String)">
-            <summary>
-            返回成功
-            </summary>
-            <param name="msg">消息</param>
-            <returns></returns>
-        </member>
         <member name="M:Coldairarrow.Api.BaseController.Success``1(``0)">
             <summary>
             返回成功
             </summary>
-            <param name="data">返回的数据</param>
+            <param name="data">返回数据</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Api.BaseController.Success``1(``0,System.String)">
             <summary>
             返回成功
             </summary>
-            <param name="data">返回的数据</param>
-            <param name="msg">返回的消息</param>
+            <param name="data">返回数据</param>
+            <param name="msg">返回消息</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Api.BaseController.Error">
@@ -418,12 +399,6 @@
             删除数据
             </summary>
             <param name="ids">id数组,JSON数组</param>
-        </member>
-        <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_LogController">
-            <summary>
-            应用密钥
-            </summary>
-            <seealso cref="T:Coldairarrow.Api.BaseApiController" />
         </member>
         <member name="T:Coldairarrow.Api.Controllers.Base_Manage.Base_RoleController">
             <summary>

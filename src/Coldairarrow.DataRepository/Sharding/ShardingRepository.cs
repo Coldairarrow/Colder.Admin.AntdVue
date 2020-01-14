@@ -1,11 +1,11 @@
 ﻿using Coldairarrow.Util;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
 
 namespace Coldairarrow.DataRepository
 {
@@ -308,24 +308,51 @@ namespace Coldairarrow.DataRepository
 
             return (isOK, resEx);
         }
+        public async Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            bool isOK = true;
+            Exception resEx = null;
+            try
+            {
+                await BeginTransactionAsync(isolationLevel);
 
+                await action();
+
+                CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                RollbackTransaction();
+                isOK = false;
+                resEx = ex;
+            }
+            finally
+            {
+                DisposeTransaction();
+            }
+
+            return (isOK, resEx);
+        }
         public void BeginTransaction(IsolationLevel isolationLevel)
         {
             _openedTransaction = true;
             _transaction = new DistributedTransaction();
             _transaction.BeginTransaction(isolationLevel);
         }
-
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
+        {
+            _openedTransaction = true;
+            _transaction = new DistributedTransaction();
+            await _transaction.BeginTransactionAsync(isolationLevel);
+        }
         public void CommitTransaction()
         {
             _transaction.CommitTransaction();
         }
-
         public void RollbackTransaction()
         {
             _transaction.RollbackTransaction();
         }
-
         public void DisposeTransaction()
         {
             _openedTransaction = false;

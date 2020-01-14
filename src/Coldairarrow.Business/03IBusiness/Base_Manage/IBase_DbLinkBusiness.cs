@@ -1,15 +1,16 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_DbLinkBusiness
     {
-        List<Base_DbLink> GetDataList(Pagination pagination);
-        Base_DbLink GetTheData(string id);
-        AjaxResult AddData(Base_DbLink newData);
-        AjaxResult UpdateData(Base_DbLink theData);
-        AjaxResult DeleteData(List<string> ids);
+        Task<List<Base_DbLink>> GetDataListAsync(Pagination pagination);
+        Task<Base_DbLink> GetTheDataAsync(string id);
+        Task AddDataAsync(Base_DbLink newData);
+        Task UpdateDataAsync(Base_DbLink theData);
+        Task DeleteDataAsync(List<string> ids);
     }
 }

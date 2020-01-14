@@ -22,6 +22,6 @@ namespace Coldairarrow.DataRepository
         /// <param name="action">执行操作</param>
         /// <param name="isolationLevel">事务级别,默认为ReadCommitted</param>
         /// <returns></returns>
-        Task<(bool Success, Exception ex)> RunTransactionAsync(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+        Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
     }
 }

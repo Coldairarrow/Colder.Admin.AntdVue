@@ -3,6 +3,7 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -24,25 +25,25 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_UserDTO>>> GetDataList(Pagination pagination, string keyword)
+        public async Task<AjaxResult<List<Base_UserDTO>>> GetDataList(Pagination pagination, string keyword)
         {
-            var dataList = _userBus.GetDataList(pagination, false, null, keyword);
+            var dataList = await _userBus.GetDataListAsync(pagination, false, null, keyword);
 
-            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
+            return DataTable(dataList, pagination);
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult<Base_UserDTO>> GetTheData(string id)
+        public async Task<AjaxResult<Base_UserDTO>> GetTheData(string id)
         {
-            var theData = _userBus.GetTheData(id) ?? new Base_UserDTO();
+            var theData = await _userBus.GetTheDataAsync(id) ?? new Base_UserDTO();
 
             return Success(theData);
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<SelectOption>>> GetOptionList(string selectedValueJson, string q)
+        public async Task<AjaxResult<List<SelectOption>>> GetOptionList(string selectedValueJson, string q)
         {
-            var list = _userBus.GetOptionList(selectedValueJson, q);
+            var list = await _userBus.GetOptionListAsync(selectedValueJson, q);
 
             return Success(list);
         }
@@ -52,9 +53,8 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_User theData, string newPwd, string roleIdsJson)
+        public async Task<AjaxResult> SaveData(Base_User theData, string newPwd, string roleIdsJson)
         {
-            AjaxResult res;
             if (!newPwd.IsNullOrEmpty())
                 theData.Password = newPwd.ToMD5String();
             var roleIds = roleIdsJson?.ToList<string>() ?? new List<string>();
@@ -62,22 +62,22 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 theData.InitEntity();
 
-                res = _userBus.AddData(theData, roleIds);
+                await _userBus.AddDataAsync(theData, roleIds);
             }
             else
             {
-                res = _userBus.UpdateData(theData, roleIds);
+                await _userBus.UpdateDataAsync(theData, roleIds);
             }
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult> DeleteData(string ids)
+        public async Task<AjaxResult> DeleteData(string ids)
         {
-            var res = _userBus.DeleteData(ids.ToList<string>());
+            await _userBus.DeleteDataAsync(ids.ToList<string>());
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         #endregion

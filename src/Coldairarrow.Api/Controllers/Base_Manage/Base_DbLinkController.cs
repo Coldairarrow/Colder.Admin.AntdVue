@@ -3,6 +3,7 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -27,17 +28,17 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_DbLink>>> GetDataList(Pagination pagination)
+        public async Task<AjaxResult<List<Base_DbLink>>> GetDataList(Pagination pagination)
         {
-            var dataList = _dbLinkBus.GetDataList(pagination);
+            var dataList = await _dbLinkBus.GetDataListAsync(pagination);
 
-            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
+            return DataTable(dataList, pagination);
         }
 
         [HttpPost]
-        public ActionResult<AjaxResult<Base_DbLink>> GetTheData(string id)
+        public async Task<AjaxResult<Base_DbLink>> GetTheData(string id)
         {
-            var theData = _dbLinkBus.GetTheData(id) ?? new Base_DbLink();
+            var theData = await _dbLinkBus.GetTheDataAsync(id) ?? new Base_DbLink();
 
             return Success(theData);
         }
@@ -51,21 +52,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_DbLink theData)
+        public async Task<AjaxResult> SaveData(Base_DbLink theData)
         {
-            AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _dbLinkBus.AddData(theData);
+                await _dbLinkBus.AddDataAsync(theData);
             }
             else
             {
-                res = _dbLinkBus.UpdateData(theData);
+                await _dbLinkBus.UpdateDataAsync(theData);
             }
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public ActionResult<AjaxResult> DeleteData(string ids)
+        public async Task<AjaxResult> DeleteData(string ids)
         {
-            var res = _dbLinkBus.DeleteData(ids.ToList<string>());
+            await _dbLinkBus.DeleteDataAsync(ids.ToList<string>());
 
-            return JsonContent(res.ToJson());
+            return Success();
         }
 
         #endregion
