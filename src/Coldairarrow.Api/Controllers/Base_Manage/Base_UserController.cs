@@ -33,19 +33,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public async Task<AjaxResult<Base_UserDTO>> GetTheData(string id)
+        public async Task<Base_UserDTO> GetTheData(string id)
         {
-            var theData = await _userBus.GetTheDataAsync(id) ?? new Base_UserDTO();
-
-            return Success(theData);
+            return await _userBus.GetTheDataAsync(id) ?? new Base_UserDTO();
         }
 
         [HttpPost]
-        public async Task<AjaxResult<List<SelectOption>>> GetOptionList(string selectedValueJson, string q)
+        public async Task<List<SelectOption>> GetOptionList(string selectedValueJson, string q)
         {
-            var list = await _userBus.GetOptionListAsync(selectedValueJson, q);
-
-            return Success(list);
+            return await _userBus.GetOptionListAsync(selectedValueJson, q);
         }
 
         #endregion
@@ -53,7 +49,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_User theData, string newPwd, string roleIdsJson)
+        public async Task SaveData(Base_User theData, string newPwd, string roleIdsJson)
         {
             if (!newPwd.IsNullOrEmpty())
                 theData.Password = newPwd.ToMD5String();
@@ -68,16 +64,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _userBus.UpdateDataAsync(theData, roleIds);
             }
-
-            return Success();
         }
 
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _userBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion

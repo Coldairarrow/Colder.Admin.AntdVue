@@ -21,27 +21,21 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #endregion
 
         [HttpPost]
-        public AjaxResult<List<Base_DbLink>> GetAllDbLink()
+        public List<Base_DbLink> GetAllDbLink()
         {
-            var list = _buildCodeBus.GetAllDbLink();
-
-            return Success(list);
+            return _buildCodeBus.GetAllDbLink();
         }
 
         [HttpPost]
-        public AjaxResult<List<DbTableInfo>> GetDbTableList(string linkId)
+        public List<DbTableInfo> GetDbTableList(string linkId)
         {
-            var list = _buildCodeBus.GetDbTableList(linkId);
-
-            return DataTable(list);
+            return _buildCodeBus.GetDbTableList(linkId);
         }
 
         [HttpPost]
-        public AjaxResult Build(string linkId, string areaName, string tablesJson, string buildTypesJson)
+        public void Build(string linkId, string areaName, string tablesJson, string buildTypesJson)
         {
             _buildCodeBus.Build(linkId, areaName, tablesJson?.ToList<string>(), buildTypesJson?.ToList<int>());
-
-            return Success();
         }
     }
 }

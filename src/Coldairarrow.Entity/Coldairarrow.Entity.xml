@@ -24,11 +24,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Deleted">
             <summary>
             否已删除
@@ -94,11 +89,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_AppSecret.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_AppSecret.Deleted">
             <summary>
             否已删除
@@ -139,11 +129,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_DbLink.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_DbLink.Deleted">
             <summary>
             否已删除
@@ -182,11 +167,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.CreatorId">
             <summary>
             创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.CreatorRealName">
-            <summary>
-            创建人姓名
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.Deleted">
@@ -274,11 +254,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Role.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Role.Deleted">
             <summary>
             否已删除
@@ -307,11 +282,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.CreatorId">
             <summary>
             创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.CreatorRealName">
-            <summary>
-            创建人姓名
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.Deleted">
@@ -374,11 +344,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.Deleted">
             <summary>
             否已删除
@@ -434,11 +399,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserRole.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserRole.Deleted">
             <summary>
             否已删除
@@ -467,6 +427,56 @@
         <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.ActionTypeEnum">
             <summary>
             类型,菜单=0,页面=1,权限=2
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.TestManage.Base_BuildTest">
+            <summary>
+            生成测试表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Id">
+            <summary>
+            自然主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.CreatorId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Deleted">
+            <summary>
+            否已删除
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Column1">
+            <summary>
+            列1
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Column2">
+            <summary>
+            列2
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Column3">
+            <summary>
+            列3
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Column4">
+            <summary>
+            列4
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.TestManage.Base_BuildTest.Column5">
+            <summary>
+            列5
             </summary>
         </member>
     </members>

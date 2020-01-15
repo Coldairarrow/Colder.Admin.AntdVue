@@ -47,11 +47,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<Base_RoleDTO>> GetTheData(string id)
+        public async Task<Base_RoleDTO> GetTheData(string id)
         {
-            var theData = await _roleBus.GetTheDataAsync(id) ?? new Base_RoleDTO();
-
-            return Success(theData);
+            return await _roleBus.GetTheDataAsync(id) ?? new Base_RoleDTO();
         }
 
         #endregion
@@ -64,7 +62,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="theData">保存的数据</param>
         /// <param name="actionsJson">权限值JSON</param>
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_Role theData, string actionsJson)
+        public async Task SaveData(Base_Role theData, string actionsJson)
         {
             var actionList = actionsJson?.ToList<string>();
             if (theData.Id.IsNullOrEmpty())
@@ -77,8 +75,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _roleBus.UpdateDataAsync(theData, actionList);
             }
-
-            return Success();
         }
 
         /// <summary>
@@ -86,11 +82,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _roleBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion

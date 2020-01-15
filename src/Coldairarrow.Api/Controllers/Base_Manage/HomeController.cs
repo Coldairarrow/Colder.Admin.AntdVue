@@ -31,22 +31,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         [CheckParamNotEmpty("userName", "password")]
         [NoCheckJWT]
-        public async Task<AjaxResult<string>> SubmitLogin(string userName, string password)
+        public async Task<string> SubmitLogin(string userName, string password)
         {
             return await _homeBus.SubmitLoginAsync(userName, password);
         }
 
         [HttpPost]
         [CheckParamNotEmpty("oldPwd", "newPwd")]
-        public async Task<AjaxResult> ChangePwd(string oldPwd, string newPwd)
+        public async Task ChangePwd(string oldPwd, string newPwd)
         {
             await _homeBus.ChangePwdAsync(oldPwd, newPwd);
-
-            return Success();
         }
 
         [HttpPost]
-        public async Task<AjaxResult> GetOperatorInfo()
+        public async Task<object> GetOperatorInfo()
         {
             var theInfo = await _userBus.GetTheDataAsync(Operator.UserId);
             var permissions = await _permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
@@ -56,15 +54,13 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
                 Permissions = permissions
             };
 
-            return Success(resObj);
+            return resObj;
         }
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_ActionDTO>>> GetOperatorMenuList()
+        public async Task<List<Base_ActionDTO>> GetOperatorMenuList()
         {
-            var list = await _permissionBus.GetUserMenuListAsync(Operator.UserId);
-
-            return Success(list);
+            return await _permissionBus.GetUserMenuListAsync(Operator.UserId);
         }
     }
 }

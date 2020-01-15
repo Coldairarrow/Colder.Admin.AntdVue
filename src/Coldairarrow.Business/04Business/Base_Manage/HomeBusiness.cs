@@ -10,7 +10,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness, IDependency
     {
-        public async Task<AjaxResult<string>> SubmitLoginAsync(string userName, string password)
+        public async Task<string> SubmitLoginAsync(string userName, string password)
         {
             if (userName.IsNullOrEmpty() || password.IsNullOrEmpty())
                 throw new BusException("账号或密码不能为空！");
@@ -28,7 +28,7 @@ namespace Coldairarrow.Business.Base_Manage
             };
             string token = JWTHelper.GetToken(jWTPayload.ToJson(), JWTHelper.JWTSecret);
 
-            return Success(token);
+            return token;
         }
 
         public async Task ChangePwdAsync(string oldPwd, string newPwd)

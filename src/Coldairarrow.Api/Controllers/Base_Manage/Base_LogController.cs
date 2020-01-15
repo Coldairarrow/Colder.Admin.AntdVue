@@ -42,19 +42,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public AjaxResult<List<SelectOption>> GetLogTypeList()
+        public List<SelectOption> GetLogTypeList()
         {
-            var list = EnumHelper.ToOptionList(typeof(LogType));
-
-            return Success(list);
+            return EnumHelper.ToOptionList(typeof(LogType));
         }
 
         [HttpPost]
-        public AjaxResult<List<SelectOption>> GetLoglevelList()
+        public List<SelectOption> GetLoglevelList()
         {
-            var list = EnumHelper.ToOptionList(typeof(LogLevel));
-
-            return Success(list);
+            return EnumHelper.ToOptionList(typeof(LogLevel));
         }
 
         #endregion

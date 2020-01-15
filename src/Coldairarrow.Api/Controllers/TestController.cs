@@ -44,7 +44,7 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<AjaxResult> PressTest2()
+        public async Task PressTest2()
         {
             var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
             using (var db = DbFactory.GetRepository())
@@ -61,8 +61,6 @@ namespace Coldairarrow.Api.Controllers
                 await db.GetIQueryable<Base_UnitTest>().FirstOrDefaultAsync();
                 await db.DeleteAsync(data);
             }
-
-            return Success("2");
         }
     }
 }

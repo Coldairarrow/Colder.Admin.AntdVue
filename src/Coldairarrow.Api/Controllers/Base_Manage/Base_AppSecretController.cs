@@ -47,11 +47,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<Base_AppSecret>> GetTheData(string id)
+        public async Task<Base_AppSecret> GetTheData(string id)
         {
-            var theData = await _appSecretBus.GetTheDataAsync(id) ?? new Base_AppSecret();
-
-            return Success(theData);
+            return await _appSecretBus.GetTheDataAsync(id) ?? new Base_AppSecret();
         }
 
         #endregion
@@ -63,7 +61,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_AppSecret theData)
+        public async Task SaveData(Base_AppSecret theData)
         {
             if (theData.Id.IsNullOrEmpty())
             {
@@ -75,8 +73,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _appSecretBus.UpdateDataAsync(theData);
             }
-
-            return Success();
         }
 
         /// <summary>
@@ -84,11 +80,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _appSecretBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion

@@ -28,11 +28,6 @@ namespace Coldairarrow.Entity.Base_Manage
         public String CreatorId { get; set; }
 
         /// <summary>
-        /// 创建人姓名
-        /// </summary>
-        public String CreatorRealName { get; set; }
-
-        /// <summary>
         /// 否已删除
         /// </summary>
         public Boolean Deleted { get; set; }
