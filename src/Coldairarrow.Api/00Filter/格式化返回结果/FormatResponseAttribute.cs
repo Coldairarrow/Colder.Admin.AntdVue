@@ -27,8 +27,15 @@ namespace Coldairarrow.Api
             if (context.ContainsFilter<NoJsonParamterAttribute>())
                 return;
 
-            if (context.Result is ObjectResult res)
-                context.Result = JsonContent(res.Value.ToJson());
+            if (context.Result is EmptyResult)
+                context.Result = Success();
+            else if (context.Result is ObjectResult res)
+            {
+                if (res.Value is AjaxResult)
+                    context.Result = JsonContent(res.Value.ToJson());
+                else
+                    context.Result = Success(res.Value);
+            }
         }
     }
 }

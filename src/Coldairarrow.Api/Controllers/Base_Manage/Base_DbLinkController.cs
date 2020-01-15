@@ -36,11 +36,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public async Task<AjaxResult<Base_DbLink>> GetTheData(string id)
+        public async Task<Base_DbLink> GetTheData(string id)
         {
-            var theData = await _dbLinkBus.GetTheDataAsync(id) ?? new Base_DbLink();
-
-            return Success(theData);
+            return await _dbLinkBus.GetTheDataAsync(id) ?? new Base_DbLink();
         }
 
         #endregion
@@ -52,7 +50,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_DbLink theData)
+        public async Task SaveData(Base_DbLink theData)
         {
             if (theData.Id.IsNullOrEmpty())
             {
@@ -64,8 +62,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _dbLinkBus.UpdateDataAsync(theData);
             }
-
-            return Success();
         }
 
         /// <summary>
@@ -73,11 +69,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _dbLinkBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion

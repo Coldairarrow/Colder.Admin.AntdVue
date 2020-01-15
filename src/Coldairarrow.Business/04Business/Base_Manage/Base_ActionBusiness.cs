@@ -122,7 +122,6 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.Id = IdHelper.GetId();
                 aData.CreateTime = DateTime.Now;
                 aData.CreatorId = null;
-                aData.CreatorRealName = null;
                 aData.ParentId = parentId;
                 aData.NeedAction = true;
             });

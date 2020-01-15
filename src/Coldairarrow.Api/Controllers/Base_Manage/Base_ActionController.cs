@@ -33,11 +33,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<Base_Action>> GetTheData(string id)
+        public async Task<Base_Action> GetTheData(string id)
         {
-            var theData = (await _actionBus.GetTheDataAsync(id)) ?? new Base_Action();
-
-            return Success(theData);
+            return (await _actionBus.GetTheDataAsync(id)) ?? new Base_Action();
         }
 
         /// <summary>
@@ -46,19 +44,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="parentId">父级Id</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<List<Base_Action>>> GetPermissionList(string parentId)
+        public async Task<List<Base_Action>> GetPermissionList(string parentId)
         {
-            var dataList = await _actionBus.GetDataListAsync(new Pagination(), null, parentId, new List<int> { 2 });
-
-            return Success(dataList);
+            return await _actionBus.GetDataListAsync(new Pagination(), null, parentId, new List<int> { 2 });
         }
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_Action>>> GetAllActionList()
+        public async Task<List<Base_Action>> GetAllActionList()
         {
-            var dataList = await _actionBus.GetDataListAsync(new Pagination(), null, null, new List<int> { 0, 1, 2 });
-
-            return Success(dataList);
+            return await _actionBus.GetDataListAsync(new Pagination(), null, null, new List<int> { 0, 1, 2 });
         }
 
         /// <summary>
@@ -67,11 +61,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<List<Base_ActionDTO>>> GetMenuTreeList(string keyword)
+        public async Task<List<Base_ActionDTO>> GetMenuTreeList(string keyword)
         {
-            var dataList = await _actionBus.GetTreeDataListAsync(keyword, new List<int> { 0, 1 }, true);
-
-            return Success(dataList);
+            return await _actionBus.GetTreeDataListAsync(keyword, new List<int> { 0, 1 }, true);
         }
 
         /// <summary>
@@ -80,11 +72,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<List<Base_ActionDTO>>> GetActionTreeList(string keyword)
+        public async Task<List<Base_ActionDTO>> GetActionTreeList(string keyword)
         {
-            var dataList = await _actionBus.GetTreeDataListAsync(keyword, null, false);
-
-            return Success(dataList);
+            return await _actionBus.GetTreeDataListAsync(keyword, null, false);
         }
 
         #endregion
@@ -92,7 +82,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_Action theData, string permissionListJson)
+        public async Task SaveData(Base_Action theData, string permissionListJson)
         {
             var permissionList = permissionListJson?.ToList<Base_Action>();
             if (theData.Id.IsNullOrEmpty())
@@ -105,8 +95,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _actionBus.UpdateDataAsync(theData, permissionList);
             }
-
-            return Success();
         }
 
         /// <summary>
@@ -114,11 +102,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _actionBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion

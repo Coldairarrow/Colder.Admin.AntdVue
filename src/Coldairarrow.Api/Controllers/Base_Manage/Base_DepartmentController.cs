@@ -24,19 +24,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<Base_Department>> GetTheData(string id)
+        public async Task<Base_Department> GetTheData(string id)
         {
-            var theData = await _departmentBus.GetTheDataAsync(id) ?? new Base_Department();
-
-            return Success(theData);
+            return await _departmentBus.GetTheDataAsync(id) ?? new Base_Department();
         }
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_DepartmentTreeDTO>>> GetTreeDataList(string parentId)
+        public async Task<List<Base_DepartmentTreeDTO>> GetTreeDataList(string parentId)
         {
-            var dataList = await _departmentBus.GetTreeDataListAsync(parentId);
-
-            return Success(dataList);
+            return await _departmentBus.GetTreeDataListAsync(parentId);
         }
 
         #endregion
@@ -44,7 +40,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task<AjaxResult> SaveData(Base_Department theData)
+        public async Task SaveData(Base_Department theData)
         {
             if (theData.Id.IsNullOrEmpty())
             {
@@ -56,16 +52,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             {
                 await _departmentBus.UpdateDataAsync(theData);
             }
-
-            return Success();
         }
 
         [HttpPost]
-        public async Task<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
             await _departmentBus.DeleteDataAsync(ids.ToList<string>());
-
-            return Success();
         }
 
         #endregion
