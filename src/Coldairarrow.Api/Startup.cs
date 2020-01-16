@@ -156,6 +156,7 @@ namespace Coldairarrow.Api
             AutofacHelper.Container = app.ApplicationServices.GetAutofacRoot();
             InitAutoMapper();
             InitId();
+            ApiLog();
         }
 
         private void InitAutoMapper()
@@ -183,6 +184,18 @@ namespace Coldairarrow.Api
                 //使用Zookeeper
                 //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
                 .Boot();
+        }
+
+        private void ApiLog()
+        {
+            HttpHelper.HandleLog = log =>
+            {
+                //接口日志
+                using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
+                {
+                    lifescope.Resolve<ILogger>().Info(LogType.系统跟踪, log);
+                }
+            };
         }
     }
 }

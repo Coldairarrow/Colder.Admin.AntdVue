@@ -2552,6 +2552,11 @@
             静态构造函数
             </summary>
         </member>
+        <member name="P:Coldairarrow.Util.HttpHelper.HandleLog">
+            <summary>
+            记录日志
+            </summary>
+        </member>
         <member name="M:Coldairarrow.Util.HttpHelper.GetData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.Dictionary{System.String,System.String},System.Security.Cryptography.X509Certificates.X509Certificate)">
             <summary>
             发起GET请求
