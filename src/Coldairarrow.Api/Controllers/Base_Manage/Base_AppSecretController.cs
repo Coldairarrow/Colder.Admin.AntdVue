@@ -3,6 +3,7 @@ using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -33,11 +34,11 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_AppSecret>>> GetDataList(Pagination pagination, string keyword)
+        public async Task<AjaxResult<List<Base_AppSecret>>> GetDataList(Pagination pagination, string keyword)
         {
-            var dataList = _appSecretBus.GetDataList(pagination, keyword);
+            var dataList = await _appSecretBus.GetDataListAsync(pagination, keyword);
 
-            return Content(pagination.BuildTableResult_AntdVue(dataList).ToJson());
+            return DataTable(dataList, pagination);
         }
 
         /// <summary>
@@ -46,11 +47,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <param name="id">id主键</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<AjaxResult<Base_AppSecret>> GetTheData(string id)
+        public async Task<Base_AppSecret> GetTheData(string id)
         {
-            var theData = _appSecretBus.GetTheData(id) ?? new Base_AppSecret();
-
-            return Success(theData);
+            return await _appSecretBus.GetTheDataAsync(id) ?? new Base_AppSecret();
         }
 
         #endregion
@@ -62,21 +61,18 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="theData">保存的数据</param>
         [HttpPost]
-        public ActionResult<AjaxResult> SaveData(Base_AppSecret theData)
+        public async Task SaveData(Base_AppSecret theData)
         {
-            AjaxResult res;
             if (theData.Id.IsNullOrEmpty())
             {
                 theData.InitEntity();
 
-                res = _appSecretBus.AddData(theData);
+                await _appSecretBus.AddDataAsync(theData);
             }
             else
             {
-                res = _appSecretBus.UpdateData(theData);
+                await _appSecretBus.UpdateDataAsync(theData);
             }
-
-            return JsonContent(res.ToJson());
         }
 
         /// <summary>
@@ -84,11 +80,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public ActionResult<AjaxResult> DeleteData(string ids)
+        public async Task DeleteData(string ids)
         {
-            var res = _appSecretBus.DeleteData(ids.ToList<string>());
-
-            return JsonContent(res.ToJson());
+            await _appSecretBus.DeleteDataAsync(ids.ToList<string>());
         }
 
         #endregion

@@ -1,7 +1,9 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -9,9 +11,9 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_DbLink> GetDataList(Pagination pagination)
+        public async Task<List<Base_DbLink>> GetDataListAsync(Pagination pagination)
         {
-            return GetIQueryable().GetPagination(pagination).ToList();
+            return await GetIQueryable().GetPagination(pagination).ToListAsync();
         }
 
         /// <summary>
@@ -19,37 +21,31 @@ namespace Coldairarrow.Business.Base_Manage
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        public Base_DbLink GetTheData(string id)
+        public async Task<Base_DbLink> GetTheDataAsync(string id)
         {
-            return GetEntity(id);
+            return await GetEntityAsync(id);
         }
 
         /// <summary>
         /// 添加数据
         /// </summary>
         /// <param name="newData">数据</param>
-        public AjaxResult AddData(Base_DbLink newData)
+        public async Task AddDataAsync(Base_DbLink newData)
         {
-            Insert(newData);
-
-            return Success();
+            await InsertAsync(newData);
         }
 
         /// <summary>
         /// 更新数据
         /// </summary>
-        public AjaxResult UpdateData(Base_DbLink theData)
+        public async Task UpdateDataAsync(Base_DbLink theData)
         {
-            Update(theData);
-
-            return Success();
+            await UpdateAsync(theData);
         }
 
-        public AjaxResult DeleteData(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
-            Delete(ids);
-
-            return Success();
+            await DeleteAsync(ids);
         }
 
         #endregion

@@ -2,13 +2,14 @@
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
     /// <summary>
     /// 接口权限校验
     /// </summary>
-    public class ApiPermissionAttribute : BaseActionFilter, IActionFilter
+    public class ApiPermissionAttribute : BaseActionFilterAsync
     {
         public ApiPermissionAttribute(string permissionValue)
         {
@@ -24,24 +25,15 @@ namespace Coldairarrow.Api
         /// Action执行之前执行
         /// </summary>
         /// <param name="context">过滤器上下文</param>
-        public void OnActionExecuting(ActionExecutingContext context)
+        public async override Task OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ContainsFilter<NoApiPermissionAttribute>())
                 return;
 
             IPermissionBusiness permissionBus = AutofacHelper.GetScopeService<IPermissionBusiness>();
-            var permissions = permissionBus.GetUserPermissionValues(Operator.UserId);
+            var permissions = await permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
             if (!permissions.Contains(_permissionValue))
                 context.Result = Error("权限不足!");
-        }
-
-        /// <summary>
-        /// Action执行完毕之后执行
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-
         }
     }
 }

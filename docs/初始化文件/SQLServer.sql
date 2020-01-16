@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2019-11-10 22:02:35
+Date: 2020-01-15 20:32:51
 */
 
 
@@ -22,7 +22,6 @@ CREATE TABLE [Base_Action] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [ParentId] nvarchar(50) NULL ,
 [Type] int NOT NULL DEFAULT ((0)) ,
@@ -89,20 +88,6 @@ EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人Id'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
 , @level1type = 'TABLE', @level1name = N'Base_Action'
 , @level2type = 'COLUMN', @level2name = N'CreatorId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Action', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Action'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Action'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
 GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
@@ -236,7 +221,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), (N'1182652599069839360', N'2019-10-11 21:42:06.000', null, null, N'0', N'1178957405992521728', N'1', N'系统日志', N'/Base_Manage/Base_Log/List', null, N'1', null, N'25'), (N'1188800845714558976', N'2019-10-28 20:53:03.127', null, null, N'1', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1188800845714558977', N'2019-10-28 20:53:03.127', null, null, N'1', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1188800845714558978', N'2019-10-28 20:53:03.127', null, null, N'1', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'超级管理员', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'超级管理员', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'超级管理员', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0')
+INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), (N'1182652599069839360', N'2019-10-11 21:42:06.000', null, N'0', N'1178957405992521728', N'1', N'系统日志', N'/Base_Manage/Base_Log/List', null, N'1', null, N'25'), (N'1188800845714558976', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1188800845714558977', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1188800845714558978', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1194606035118067712', N'2019-11-13 21:20:48.137', N'Admin', N'1', N'1193158266167758848', N'1', N'生成测试', N'/TestManage/Base_BuildTest/List', null, N'0', null, N'0'), (N'1217067513028808704', N'2020-01-14 20:54:41.787', N'Admin', N'1', N'1193158266167758848', N'1', N'测试菜单', N'/TestManage/Base_BuildTest/List', null, N'0', null, N'0')
 GO
 GO
 COMMIT TRANSACTION
@@ -249,7 +234,6 @@ CREATE TABLE [Base_AppSecret] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [AppId] varchar(50) NULL ,
 [AppSecret] varchar(50) NULL ,
@@ -315,20 +299,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_AppSecret', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_AppSecret'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_AppSecret'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_AppSecret', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -388,7 +358,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_AppSecret] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [AppId], [AppSecret], [AppName]) VALUES (N'1172497995938271232', N'2019-09-13 21:11:20.000', N'Admin', N'超级管理员', N'0', N'PcAdmin', N'wtMaiTRPTT3hrf5e', N'后台AppId'), (N'1173937877642383360', N'2019-09-17 20:32:55.000', N'Admin', N'超级管理员', N'0', N'AppAdmin', N'IVh9LLSVFcoQPQ5K', N'APP密钥')
+INSERT INTO [Base_AppSecret] ([Id], [CreateTime], [CreatorId], [Deleted], [AppId], [AppSecret], [AppName]) VALUES (N'1172497995938271232', N'2019-09-13 21:11:20.000', N'Admin', N'0', N'PcAdmin', N'wtMaiTRPTT3hrf5e', N'后台AppId'), (N'1173937877642383360', N'2019-09-17 20:32:55.000', N'Admin', N'0', N'AppAdmin', N'IVh9LLSVFcoQPQ5K', N'APP密钥')
 GO
 GO
 COMMIT TRANSACTION
@@ -401,7 +371,6 @@ CREATE TABLE [Base_BuildTest] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [Column1] varchar(50) NULL ,
 [Column2] varchar(50) NULL ,
@@ -465,20 +434,6 @@ EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人Id'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
 , @level1type = 'TABLE', @level1name = N'Base_BuildTest'
 , @level2type = 'COLUMN', @level2name = N'CreatorId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_BuildTest', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_BuildTest'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_BuildTest'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
 GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
@@ -570,6 +525,9 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
+INSERT INTO [Base_BuildTest] ([Id], [CreateTime], [CreatorId], [Deleted], [Column1], [Column2], [Column3], [Column4], [Column5]) VALUES (N'1194606447787249664', N'2019-11-13 21:22:26.000', N'Admin', N'1', N'1', N'1', N'1', N'1', N'1')
+GO
+GO
 COMMIT TRANSACTION
 GO
 
@@ -580,7 +538,6 @@ CREATE TABLE [Base_DbLink] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [LinkName] varchar(50) NULL ,
 [ConnectionStr] varchar(500) NULL ,
@@ -646,20 +603,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_DbLink', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_DbLink'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_DbLink'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_DbLink', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -719,7 +662,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_DbLink] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [LinkName], [ConnectionStr], [DbType]) VALUES (N'1183373232498020352', N'2019-10-13 21:25:39.000', N'Admin', N'超级管理员', N'0', N'BaseDb', N'Data Source=.;Initial Catalog=Colder.Admin.AntdVue;Integrated Security=True', N'SqlServer')
+INSERT INTO [Base_DbLink] ([Id], [CreateTime], [CreatorId], [Deleted], [LinkName], [ConnectionStr], [DbType]) VALUES (N'1183373232498020352', N'2019-10-13 21:25:39.000', N'Admin', N'0', N'BaseDb', N'Data Source=.;Initial Catalog=Colder.Admin.AntdVue;Integrated Security=True', N'SqlServer')
 GO
 GO
 COMMIT TRANSACTION
@@ -732,7 +675,6 @@ CREATE TABLE [Base_Department] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [Name] varchar(50) NULL ,
 [ParentId] varchar(50) NULL 
@@ -797,20 +739,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_Department', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Department'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Department'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Department', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -856,7 +784,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_Department] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [Name], [ParentId]) VALUES (N'1181175685528424448', N'2019-10-07 19:53:23.000', null, null, N'0', N'宁波分公司', null), (N'1181175803631636480', N'2019-10-07 19:53:51.427', null, null, N'0', N'鄞州事业部', N'1181175685528424448'), (N'1181175865409540096', N'2019-10-07 19:54:06.000', null, null, N'0', N'海曙事业部', N'1181175685528424448')
+INSERT INTO [Base_Department] ([Id], [CreateTime], [CreatorId], [Deleted], [Name], [ParentId]) VALUES (N'1181175685528424448', N'2019-10-07 19:53:23.000', null, N'0', N'宁波分公司', null), (N'1181175803631636480', N'2019-10-07 19:53:51.427', null, N'0', N'鄞州事业部', N'1181175685528424448'), (N'1181175865409540096', N'2019-10-07 19:54:06.000', null, N'0', N'海曙事业部', N'1181175685528424448')
 GO
 GO
 COMMIT TRANSACTION
@@ -1033,7 +961,6 @@ CREATE TABLE [Base_Role] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [RoleName] nvarchar(50) NULL 
 )
@@ -1097,20 +1024,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_Role', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Role'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Role'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Role', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -1142,9 +1055,6 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_Role] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [RoleName]) VALUES (N'1180486275199668224', N'2019-10-05 22:13:55.000', null, null, N'0', N'超级管理员'), (N'1180819481383931904', N'2019-10-06 20:17:57.000', null, null, N'0', N'部门管理员')
-GO
-GO
 COMMIT TRANSACTION
 GO
 
@@ -1155,7 +1065,6 @@ CREATE TABLE [Base_RoleAction] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [RoleId] varchar(50) NULL ,
 [ActionId] varchar(50) NULL 
@@ -1220,20 +1129,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_RoleAction', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_RoleAction'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_RoleAction'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_RoleAction', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -1279,7 +1174,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_RoleAction] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [RoleId], [ActionId]) VALUES (N'1188801858282459136', N'2019-10-28 20:57:04.543', null, null, N'0', N'1180486275199668224', N'1182654049414025216'), (N'1188801858282459137', N'2019-10-28 20:57:04.543', null, null, N'0', N'1180486275199668224', N'1182654208411701248'), (N'1188801858282459138', N'2019-10-28 20:57:04.543', null, null, N'0', N'1180486275199668224', N'1183370665412005888'), (N'1188801984434540544', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188044797802188800'), (N'1188801984434540545', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188044797802188801'), (N'1188801984434540546', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1182652433302556672'), (N'1188801984434540547', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1178957405992521728'), (N'1188801984434540548', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801109783744512'), (N'1188801984434540549', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801109783744513'), (N'1188801984434540550', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801109783744514'), (N'1188801984434540551', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1182652266117599232'), (N'1188801984434540552', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188800845714558976'), (N'1188801984434540553', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188800845714558977'), (N'1188801984434540554', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188800845714558978'), (N'1188801984434540555', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1182652367447789568'), (N'1188801984434540556', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801057778569216'), (N'1188801984434540557', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801057778569217'), (N'1188801984434540558', N'2019-10-28 20:57:34.620', null, null, N'0', N'1180819481383931904', N'1188801057778569218')
+INSERT INTO [Base_RoleAction] ([Id], [CreateTime], [CreatorId], [Deleted], [RoleId], [ActionId]) VALUES (N'1188801858282459136', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1182654049414025216'), (N'1188801858282459137', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1182654208411701248'), (N'1188801858282459138', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1183370665412005888'), (N'1188801984434540544', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188044797802188800'), (N'1188801984434540545', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188044797802188801'), (N'1188801984434540546', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652433302556672'), (N'1188801984434540547', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1178957405992521728'), (N'1188801984434540548', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744512'), (N'1188801984434540549', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744513'), (N'1188801984434540550', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744514'), (N'1188801984434540551', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652266117599232'), (N'1188801984434540552', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558976'), (N'1188801984434540553', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558977'), (N'1188801984434540554', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558978'), (N'1188801984434540555', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652367447789568'), (N'1188801984434540556', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569216'), (N'1188801984434540557', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569217'), (N'1188801984434540558', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569218')
 GO
 GO
 COMMIT TRANSACTION
@@ -1371,9 +1266,6 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_UnitTest] ([Id], [UserId], [UserName], [Age]) VALUES (N'10', null, null, null), (N'1193526482081681408', N'1193526482081681409', N'超级管理员', N'22'), (N'232504dc-bfcf-4ad5-80b1-a5be0de4978a', N'Admin', N'1193526486141767680', N'22'), (N'57fcab2a-502b-4f04-bd7f-8f90ef17c158', N'Admin', N'超级管理员', N'22')
-GO
-GO
 COMMIT TRANSACTION
 GO
 
@@ -1462,9 +1354,6 @@ GO
 -- Records of Base_UnitTest_0
 -- ----------------------------
 BEGIN TRANSACTION
-GO
-INSERT INTO [Base_UnitTest_0] ([Id], [UserId], [UserName], [Age]) VALUES (N'4242e164-fa1b-46a3-920f-f2d7b16f8b5d', N'Admin2', N'超级管理员', N'22')
-GO
 GO
 COMMIT TRANSACTION
 GO
@@ -1654,7 +1543,6 @@ CREATE TABLE [Base_User] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [UserName] varchar(50) NULL ,
 [Password] varchar(50) NULL ,
@@ -1719,20 +1607,6 @@ EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人Id'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
 , @level1type = 'TABLE', @level1name = N'Base_User'
 , @level2type = 'COLUMN', @level2name = N'CreatorId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_User', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_User'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_User'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
 GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
@@ -1838,7 +1712,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_User] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [UserName], [Password], [RealName], [Sex], [Birthday], [DepartmentId]) VALUES (N'1181928860648738816', N'2019-10-09 21:46:14.000', null, N'超级管理员', N'0', N'xiaohua', N'e10adc3949ba59abbe56e057f20f883e', N'小花', N'0', null, null), (N'1183363221872971776', N'2019-10-13 20:45:52.577', N'Admin', N'超级管理员', N'0', N'aa', null, N'aaa', N'0', null, null), (N'Admin', N'2019-09-13 21:10:03.000', N'Admin', N'超级管理员', N'0', N'Admin', N'e10adc3949ba59abbe56e057f20f883e', N'超级管理员', N'1', N'2019-09-13', null)
+INSERT INTO [Base_User] ([Id], [CreateTime], [CreatorId], [Deleted], [UserName], [Password], [RealName], [Sex], [Birthday], [DepartmentId]) VALUES (N'1181928860648738816', N'2019-10-09 21:46:14.000', null, N'0', N'xiaohua', N'e10adc3949ba59abbe56e057f20f883e', N'小花', N'0', null, null), (N'1183363221872971776', N'2019-10-13 20:45:52.577', N'Admin', N'1', N'aa', null, N'aaa', N'0', null, null), (N'Admin', N'2019-09-13 21:10:03.000', N'Admin', N'0', N'Admin', N'e10adc3949ba59abbe56e057f20f883e', N'超级管理员', N'1', N'2019-09-13', null)
 GO
 GO
 COMMIT TRANSACTION
@@ -1851,7 +1725,6 @@ CREATE TABLE [Base_UserRole] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
 [CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
 [Deleted] bit NOT NULL DEFAULT ('false') ,
 [UserId] varchar(50) NULL ,
 [RoleId] varchar(50) NULL 
@@ -1916,20 +1789,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_UserRole', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UserRole'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UserRole'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UserRole', 
 'COLUMN', N'Deleted')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -1975,7 +1834,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_UserRole] ([Id], [CreateTime], [CreatorId], [CreatorRealName], [Deleted], [UserId], [RoleId]) VALUES (N'1181927367719784448', N'2019-10-09 21:40:18.270', null, null, N'0', N'1181922344629702656', N'1180819481383931904'), (N'1181927367719784449', N'2019-10-09 21:40:18.270', null, null, N'0', N'1181922344629702656', N'1180486275199668224'), (N'1181927783786352640', N'2019-10-09 21:41:57.470', null, null, N'0', N'1181927783727632384', N'1180819481383931904'), (N'1188802049190400000', N'2019-10-28 20:57:50.057', null, null, N'0', N'1181928860648738816', N'1180819481383931904')
+INSERT INTO [Base_UserRole] ([Id], [CreateTime], [CreatorId], [Deleted], [UserId], [RoleId]) VALUES (N'1181927367719784448', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180819481383931904'), (N'1181927367719784449', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180486275199668224'), (N'1181927783786352640', N'2019-10-09 21:41:57.470', null, N'0', N'1181927783727632384', N'1180819481383931904'), (N'1188802049190400000', N'2019-10-28 20:57:50.057', null, N'0', N'1181928860648738816', N'1180819481383931904')
 GO
 GO
 COMMIT TRANSACTION
