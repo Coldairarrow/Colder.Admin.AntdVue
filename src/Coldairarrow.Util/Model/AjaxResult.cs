@@ -11,9 +11,7 @@
         public bool Success { get; set; }
 
         /// <summary>
-        /// 错误代码：
-        /// 1：未登录
-        /// 其它待定义
+        /// 错误代码
         /// </summary>
         public int ErrorCode { get; set; }
 

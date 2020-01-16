@@ -1,8 +1,8 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
@@ -45,16 +45,16 @@ HttpHelper.SafeSignRequest
     /// 校验签名、十分严格
     /// 防抵赖、防伪造、防重复调用
     /// </summary>
-    public class CheckSignAttribute : Attribute, IActionFilter
+    public class CheckSignAttribute : BaseActionFilterAsync
     {
         /// <summary>
         /// Action执行之前执行
         /// </summary>
         /// <param name="filterContext"></param>
-        public void OnActionExecuting(ActionExecutingContext filterContext)
+        public async override Task OnActionExecuting(ActionExecutingContext filterContext)
         {
             IBase_AppSecretBusiness appSecretBus = AutofacHelper.GetScopeService<IBase_AppSecretBusiness>();
-            ILogger logger= AutofacHelper.GetScopeService<ILogger>();
+            ILogger logger = AutofacHelper.GetScopeService<ILogger>();
 
             //若为本地测试，则不需要校验
             if (GlobalSwitch.RunMode == RunMode.LocalTest)
@@ -110,7 +110,7 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string appSecret = appSecretBus.GetAppSecret(appId);
+            string appSecret = await appSecretBus.GetAppSecretAsync(appId);
             if (appSecret.IsNullOrEmpty())
             {
                 ReturnError("header:appId无效");
@@ -133,23 +133,8 @@ body:{body}
 
             void ReturnError(string msg)
             {
-                AjaxResult res = new AjaxResult
-                {
-                    Success = false,
-                    Msg = msg
-                };
-
-                filterContext.Result = new ContentResult { Content = res.ToJson(), ContentType = "application/json;charset=utf-8" };
+                filterContext.Result = Error(msg);
             }
-        }
-
-        /// <summary>
-        /// Action执行完毕之后执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-
         }
     }
 }

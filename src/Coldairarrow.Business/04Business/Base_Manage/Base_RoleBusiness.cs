@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
@@ -12,7 +14,7 @@ namespace Coldairarrow.Business.Base_Manage
     {
         #region 外部接口
 
-        public List<Base_RoleDTO> GetDataList(Pagination pagination, string roleId = null, string roleName = null)
+        public async Task<List<Base_RoleDTO>> GetDataListAsync(Pagination pagination, string roleId = null, string roleName = null)
         {
             var where = LinqHelper.True<Base_Role>();
             if (!roleId.IsNullOrEmpty())
@@ -20,25 +22,25 @@ namespace Coldairarrow.Business.Base_Manage
             if (!roleName.IsNullOrEmpty())
                 where = where.And(x => x.RoleName.Contains(roleName));
 
-            var list = GetIQueryable()
+            var list = (await GetIQueryable()
                 .Where(where)
                 .GetPagination(pagination)
-                .ToList()
+                .ToListAsync())
                 .Select(x => Mapper.Map<Base_RoleDTO>(x))
                 .ToList();
 
-            SetProperty(list);
+            await SetProperty(list);
 
             return list;
 
-            void SetProperty(List<Base_RoleDTO> _list)
+            async Task SetProperty(List<Base_RoleDTO> _list)
             {
-                var allActionIds = Service.GetIQueryable<Base_Action>().Select(x => x.Id).ToList();
+                var allActionIds = await Service.GetIQueryable<Base_Action>().Select(x => x.Id).ToListAsync();
 
                 var ids = _list.Select(x => x.Id).ToList();
-                var roleActions = Service.GetIQueryable<Base_RoleAction>()
+                var roleActions = await Service.GetIQueryable<Base_RoleAction>()
                     .Where(x => ids.Contains(x.RoleId))
-                    .ToList();
+                    .ToListAsync();
                 _list.ForEach(aData =>
                 {
                     if (aData.RoleName == RoleTypeEnum.超级管理员.ToString())
@@ -49,60 +51,54 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
 
-        public Base_RoleDTO GetTheData(string id)
+        public async Task<Base_RoleDTO> GetTheDataAsync(string id)
         {
-            return GetDataList(new Pagination(), id).FirstOrDefault();
+            return (await GetDataListAsync(new Pagination(), id)).FirstOrDefault();
         }
 
         [DataAddLog(LogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
-        public AjaxResult AddData(Base_Role newData, List<string> actions)
+        public async Task AddDataAsync(Base_Role newData, List<string> actions)
         {
-            var res = RunTransaction(() =>
+            var res = await RunTransactionAsync(async () =>
             {
-                Insert(newData);
-                SetRoleAction(newData.Id, actions);
+                await InsertAsync(newData);
+                await SetRoleActionAsync(newData.Id, actions);
             });
             if (!res.Success)
                 throw new Exception("系统异常,请重试", res.ex);
-
-            return Success();
         }
 
         [DataEditLog(LogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
-        public AjaxResult UpdateData(Base_Role theData, List<string> actions)
+        public async Task UpdateDataAsync(Base_Role theData, List<string> actions)
         {
-            var res = RunTransaction(() =>
+            var res = await RunTransactionAsync(async () =>
             {
-                Update(theData);
-                SetRoleAction(theData.Id, actions);
+                await UpdateAsync(theData);
+                await SetRoleActionAsync(theData.Id, actions);
             });
             if (!res.Success)
                 throw new Exception("系统异常,请重试", res.ex);
-
-            return Success();
         }
 
         [DataDeleteLog(LogType.系统角色管理, "RoleName", "角色")]
-        public AjaxResult DeleteData(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
-            var res = RunTransaction(() =>
+            var res = await RunTransactionAsync(async () =>
             {
-                Delete(ids);
-                Service.Delete_Sql<Base_RoleAction>(x => ids.Contains(x.Id));
+                await DeleteAsync(ids);
+                await Service.Delete_SqlAsync<Base_RoleAction>(x => ids.Contains(x.Id));
             });
             if (!res.Success)
                 throw new Exception("系统异常,请重试", res.ex);
-
-            return Success();
         }
 
         #endregion
 
         #region 私有成员
 
-        private void SetRoleAction(string roleId, List<string> actions)
+        private async Task SetRoleActionAsync(string roleId, List<string> actions)
         {
             var roleActions = (actions ?? new List<string>())
                 .Select(x => new Base_RoleAction
@@ -112,8 +108,8 @@ namespace Coldairarrow.Business.Base_Manage
                     CreateTime = DateTime.Now,
                     RoleId = roleId
                 }).ToList();
-            Service.Delete_Sql<Base_RoleAction>(x => x.RoleId == roleId);
-            Service.Insert(roleActions);
+            await Service.Delete_SqlAsync<Base_RoleAction>(x => x.RoleId == roleId);
+            await Service.InsertAsync(roleActions);
         }
 
         #endregion
