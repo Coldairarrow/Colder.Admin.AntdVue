@@ -39,6 +39,11 @@ namespace Coldairarrow.Util
         #region 外部接口
 
         /// <summary>
+        /// 记录日志
+        /// </summary>
+        public static Action<string> HandleLog { get; set; }
+
+        /// <summary>
         /// 发起GET请求
         /// 注：若使用证书,推荐使用X509Certificate2的pkcs12证书
         /// </summary>
@@ -171,16 +176,48 @@ namespace Coldairarrow.Util
                 }
             }
 
-            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            string resData = string.Empty;
+            DateTime startTime = DateTime.Now;
+            try
             {
-                int httpStatusCode = (int)response.StatusCode;
-                using (Stream responseStream = response.GetResponseStream())
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
-                    string resData = reader.ReadToEnd();
+                    int httpStatusCode = (int)response.StatusCode;
+                    using (Stream responseStream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
+                        resData = reader.ReadToEnd();
 
-                    return resData;
+                        return resData;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                resData = $"异常:{ExceptionHelper.GetExceptionAllMsg(ex)}";
+
+                throw ex;
+            }
+            finally
+            {
+                var time = DateTime.Now - startTime;
+                if (resData?.Length > 1000)
+                {
+                    resData = new string(resData.Copy(0, 1000).ToArray());
+                    resData += "......";
+                }
+
+                string log =
+$@"方向:请求外部接口
+url:{url}
+method:{method}
+contentType:{contentType}
+body:{body}
+耗时:{(int)time.TotalMilliseconds}ms
+
+返回:{resData}
+";
+                HandleLog?.Invoke(log);
             }
         }
 
