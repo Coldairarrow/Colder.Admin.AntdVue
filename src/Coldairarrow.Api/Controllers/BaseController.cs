@@ -9,6 +9,7 @@ namespace Coldairarrow.Api
     /// 基控制器
     /// </summary>
     [JsonParamter]
+    [ApiLog]
     [FormatResponse]
     public class BaseController : ControllerBase
     {
