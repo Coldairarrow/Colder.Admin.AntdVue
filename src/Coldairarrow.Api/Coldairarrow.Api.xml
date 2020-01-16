@@ -182,6 +182,18 @@
             </summary>
             <param name="context"></param>
         </member>
+        <member name="M:Coldairarrow.Api.ApiLogAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Action执行之前执行
+            </summary>
+            <param name="filterContext">过滤器上下文</param>
+        </member>
+        <member name="M:Coldairarrow.Api.ApiLogAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Action执行完毕之后执行
+            </summary>
+            <param name="filterContext"></param>
+        </member>
         <member name="T:Coldairarrow.Api.FormatResponseAttribute">
             <summary>
             若Action返回对象为自定义对象,则将其转为JSON
