@@ -18,8 +18,11 @@ namespace Coldairarrow.Api
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             await OnActionExecuting(context);
-            var nextContext = await next();
-            await OnActionExecuted(nextContext);
+            if (context.Result == null)
+            {
+                var nextContext = await next();
+                await OnActionExecuted(nextContext);
+            }
         }
     }
 }
