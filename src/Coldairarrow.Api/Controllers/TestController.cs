@@ -18,25 +18,27 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [CheckJWT]
+        [ApiPermission("aaa")]
         public async Task<AjaxResult> PressTest1()
         {
-            var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
-            using (var db = DbFactory.GetRepository())
-            {
-                Base_UnitTest data = new Base_UnitTest
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserId = Guid.NewGuid().ToString(),
-                    Age = 10,
-                    UserName = Guid.NewGuid().ToString()
-                };
-                await db.InsertAsync(data);
-                db.Update(data);
-                db.GetIQueryable<Base_UnitTest>().FirstOrDefault();
-                db.Delete(data);
-            }
+            //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
+            //using (var db = DbFactory.GetRepository())
+            //{
+            //    Base_UnitTest data = new Base_UnitTest
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        UserId = Guid.NewGuid().ToString(),
+            //        Age = 10,
+            //        UserName = Guid.NewGuid().ToString()
+            //    };
+            //    await db.InsertAsync(data);
+            //    db.Update(data);
+            //    db.GetIQueryable<Base_UnitTest>().FirstOrDefault();
+            //    db.Delete(data);
+            //}
 
-            return new AjaxResult { Success = true };
+            return await Task.FromResult(new AjaxResult { Success = true });
         }
 
         /// <summary>

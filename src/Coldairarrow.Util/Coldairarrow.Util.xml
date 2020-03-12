@@ -2950,6 +2950,15 @@
             <param name="delay">延时时间</param>
             <returns>任务标识Id</returns>
         </member>
+        <member name="M:Coldairarrow.Util.JobHelper.SetCronJob(System.Action,System.String)">
+            <summary>
+            通过表达式创建任务
+            表达式规则参考:http://www.jsons.cn/quartzcron/
+            </summary>
+            <param name="action">执行的操作</param>
+            <param name="cronExpression">表达式</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.JobHelper.RemoveJob(System.String)">
             <summary>
             删除任务
