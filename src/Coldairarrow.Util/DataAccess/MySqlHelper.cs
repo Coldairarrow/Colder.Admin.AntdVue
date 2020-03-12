@@ -29,7 +29,7 @@ namespace Coldairarrow.Util
         {
             { "boolean",typeof(bool)},
             { "bit(1)",typeof(bool)},
-            { "tinyint unsigned",typeof(byte)},
+            { "tinyint unsigned",typeof(bool)},
             { "binary",typeof(byte[])},
             { "varbinary",typeof(byte[])},
             { "blob",typeof(byte[])},
@@ -40,7 +40,7 @@ namespace Coldairarrow.Util
             { "smallint",typeof(Int16)},
             { "int",typeof(Int32)},
             { "bigint",typeof(Int64)},
-            { "tinyint",typeof(SByte)},
+            { "tinyint",typeof(bool)},
             { "float",typeof(Single)},
             { "char",typeof(string)},
             { "varchar",typeof(string)},
@@ -93,7 +93,8 @@ WHERE TABLE_SCHEMA = @dbName";
 	a.DATA_TYPE as Type,
 	(a.COLUMN_KEY = 'PRI') as IsKey,
 	(a.IS_NULLABLE = 'YES') as IsNullable,
-	a.COLUMN_COMMENT as Description
+	a.COLUMN_COMMENT as Description,
+    a.ORDINAL_POSITION
 from information_schema.columns a 
 where table_name=@tableName and table_schema=@dbName
 ORDER BY a.ORDINAL_POSITION";
