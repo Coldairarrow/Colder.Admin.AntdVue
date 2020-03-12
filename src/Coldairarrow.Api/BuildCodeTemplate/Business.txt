@@ -1,8 +1,10 @@
 ﻿using Coldairarrow.Entity.%areaName%;
 using Coldairarrow.Util;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.%areaName%
 {
@@ -10,7 +12,7 @@ namespace Coldairarrow.Business.%areaName%
     {
         #region 外部接口
 
-        public List<%entityName%> GetDataList(Pagination pagination, string condition, string keyword)
+        public async Task<List<%entityName%>> GetDataListAsync(Pagination pagination, string condition, string keyword)
         {
             var q = GetIQueryable();
             var where = LinqHelper.True<%entityName%>();
@@ -23,33 +25,27 @@ namespace Coldairarrow.Business.%areaName%
                 where = where.And(newWhere);
             }
 
-            return q.Where(where).GetPagination(pagination).ToList();
+            return await q.Where(where).GetPagination(pagination).ToListAsync();
         }
 
-        public %entityName% GetTheData(string id)
+        public async Task<%entityName%> GetTheDataAsync(string id)
         {
-            return GetEntity(id);
+            return await GetEntityAsync(id);
         }
 
-        public AjaxResult AddData(%entityName% data)
+        public async Task AddDataAsync(%entityName% data)
         {
-            Insert(data);
-
-            return Success();
+            await InsertAsync(data);
         }
 
-        public AjaxResult UpdateData(%entityName% data)
+        public async Task UpdateDataAsync(%entityName% data)
         {
-            Update(data);
-
-            return Success();
+            await UpdateAsync(data);
         }
 
-        public AjaxResult DeleteData(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
-            Delete(ids);
-
-            return Success();
+            await DeleteAsync(ids);
         }
 
         #endregion

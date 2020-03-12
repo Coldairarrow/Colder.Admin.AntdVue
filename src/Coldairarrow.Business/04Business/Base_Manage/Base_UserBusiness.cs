@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -20,7 +21,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         #region 外部接口
 
-        public List<Base_UserDTO> GetDataList(Pagination pagination, bool all, string userId = null, string keyword = null)
+        public async Task<List<Base_UserDTO>> GetDataListAsync(Pagination pagination, bool all, string userId = null, string keyword = null)
         {
             Expression<Func<Base_User, Base_Department, Base_UserDTO>> select = (a, b) => new Base_UserDTO
             {
@@ -43,25 +44,25 @@ namespace Coldairarrow.Business.Base_Manage
                     || EF.Functions.Like(x.RealName, keyword));
             }
 
-            var list = q.Where(where).GetPagination(pagination).ToList();
+            var list = await q.Where(where).GetPagination(pagination).ToListAsync();
 
-            SetProperty(list);
+            await SetProperty(list);
 
             return list;
 
-            void SetProperty(List<Base_UserDTO> users)
+            async Task SetProperty(List<Base_UserDTO> users)
             {
                 //补充用户角色属性
                 List<string> userIds = users.Select(x => x.Id).ToList();
-                var userRoles = (from a in Service.GetIQueryable<Base_UserRole>()
-                                 join b in Service.GetIQueryable<Base_Role>() on a.RoleId equals b.Id
-                                 where userIds.Contains(a.UserId)
-                                 select new
-                                 {
-                                     a.UserId,
-                                     RoleId = b.Id,
-                                     b.RoleName
-                                 }).ToList();
+                var userRoles = await (from a in Service.GetIQueryable<Base_UserRole>()
+                                       join b in Service.GetIQueryable<Base_Role>() on a.RoleId equals b.Id
+                                       where userIds.Contains(a.UserId)
+                                       select new
+                                       {
+                                           a.UserId,
+                                           RoleId = b.Id,
+                                           b.RoleName
+                                       }).ToListAsync();
                 users.ForEach(aUser =>
                 {
                     var roleList = userRoles.Where(x => x.UserId == aUser.Id);
@@ -71,28 +72,26 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
 
-        public Base_UserDTO GetTheData(string id)
+        public async Task<Base_UserDTO> GetTheDataAsync(string id)
         {
             if (id.IsNullOrEmpty())
                 return null;
             else
-                return GetDataList(new Pagination(), true, id).FirstOrDefault();
+                return (await GetDataListAsync(new Pagination(), true, id)).FirstOrDefault();
         }
 
         [DataAddLog(LogType.系统用户管理, "RealName", "用户")]
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
-        public AjaxResult AddData(Base_User newData, List<string> roleIds)
+        public async Task AddDataAsync(Base_User newData, List<string> roleIds)
         {
-            var res = RunTransaction(() =>
+            var res = await RunTransactionAsync(async () =>
             {
-                Insert(newData);
-                SetUserRole(newData.Id, roleIds);
+                await InsertAsync(newData);
+                await SetUserRoleAsync(newData.Id, roleIds);
             });
-            if (res.Success)
-                return Success();
-            else
+            if (!res.Success)
                 throw new Exception("系统异常", res.ex);
         }
 
@@ -100,45 +99,41 @@ namespace Coldairarrow.Business.Base_Manage
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
-        public AjaxResult UpdateData(Base_User theData, List<string> roleIds)
+        public async Task UpdateDataAsync(Base_User theData, List<string> roleIds)
         {
             if (theData.Id == GlobalSwitch.AdminId && Operator?.UserId != theData.Id)
-                return new ErrorResult("禁止更改超级管理员！");
+                throw new BusException("禁止更改超级管理员！");
 
-            var res = RunTransaction(() =>
+            var res = await RunTransactionAsync(async () =>
             {
-                Update(theData);
-                SetUserRole(theData.Id, roleIds);
+                await UpdateAsync(theData);
+                await SetUserRoleAsync(theData.Id, roleIds);
             });
             if (res.Success)
             {
                 _userCache.UpdateCache(theData.Id);
-
-                return Success();
             }
             else
                 throw new Exception("系统异常", res.ex);
         }
 
         [DataDeleteLog(LogType.系统用户管理, "RealName", "用户")]
-        public AjaxResult DeleteData(List<string> ids)
+        public async Task DeleteDataAsync(List<string> ids)
         {
             if (ids.Contains(GlobalSwitch.AdminId))
-                return Error("超级管理员是内置账号,禁止删除！");
-            var userIds = GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToList();
+                throw new BusException("超级管理员是内置账号,禁止删除！");
+            var userIds = await GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToListAsync();
 
-            Delete(ids);
+            await DeleteAsync(ids);
 
             _userCache.UpdateCache(ids);
-
-            return Success();
         }
 
         #endregion
 
         #region 私有成员
 
-        private void SetUserRole(string userId, List<string> roleIds)
+        private async Task SetUserRoleAsync(string userId, List<string> roleIds)
         {
             var userRoleList = roleIds.Select(x => new Base_UserRole
             {
@@ -147,8 +142,8 @@ namespace Coldairarrow.Business.Base_Manage
                 UserId = userId,
                 RoleId = x
             }).ToList();
-            Service.Delete_Sql<Base_UserRole>(x => x.UserId == userId);
-            Service.Insert(userRoleList);
+            await Service.Delete_SqlAsync<Base_UserRole>(x => x.UserId == userId);
+            await Service.InsertAsync(userRoleList);
         }
 
         #endregion

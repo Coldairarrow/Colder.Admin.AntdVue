@@ -5,7 +5,7 @@ using System;
 
 namespace Coldairarrow.Api
 {
-    public class BaseActionFilter : Attribute
+    public abstract class BaseActionFilter : Attribute
     {
         public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
 

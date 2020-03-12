@@ -188,6 +188,12 @@ namespace Coldairarrow.DataRepository
             _transaction = _db.Database.BeginTransaction(isolationLevel);
         }
 
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
+        {
+            _openedTransaction = true;
+            _transaction = await _db.Database.BeginTransactionAsync(isolationLevel);
+        }
+
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             bool success = true;
@@ -197,6 +203,32 @@ namespace Coldairarrow.DataRepository
                 BeginTransaction(isolationLevel);
 
                 action();
+
+                CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                resEx = ex;
+                RollbackTransaction();
+            }
+            finally
+            {
+                DisposeTransaction();
+            }
+
+            return (success, resEx);
+        }
+
+        public async Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        {
+            bool success = true;
+            Exception resEx = null;
+            try
+            {
+                await BeginTransactionAsync(isolationLevel);
+
+                await action();
 
                 CommitTransaction();
             }

@@ -4,7 +4,7 @@
         <name>Coldairarrow.Business</name>
     </assembly>
     <members>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
@@ -36,43 +36,43 @@
             排序
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             添加数据
             </summary>
             <param name="newData">数据</param>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheData(System.String)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheDataAsync(System.String)">
             <summary>
             获取指定的单条数据
             </summary>
             <param name="id">主键</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             添加数据
             </summary>
             <param name="newData">数据</param>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateData(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
             <summary>
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogList(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogListAsync(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             获取日志列表
             </summary>
@@ -111,7 +111,19 @@
             </summary>
             <param name="entity">实体对象</param>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.InsertAsync(`0)">
+            <summary>
+            添加数据
+            </summary>
+            <param name="entity">实体对象</param>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Insert(System.Collections.Generic.List{`0})">
+            <summary>
+            添加多条数据
+            </summary>
+            <param name="entities">实体对象集合</param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.InsertAsync(System.Collections.Generic.List{`0})">
             <summary>
             添加多条数据
             </summary>
@@ -128,7 +140,18 @@
             删除所有数据
             </summary>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAllAsync">
+            <summary>
+            删除所有数据
+            </summary>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Delete(System.String)">
+            <summary>
+            删除指定主键数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAsync(System.String)">
             <summary>
             删除指定主键数据
             </summary>
@@ -140,7 +163,19 @@
             </summary>
             <param name="keys"></param>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            通过主键删除多条数据
+            </summary>
+            <param name="keys"></param>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Delete(`0)">
+            <summary>
+            删除单条数据
+            </summary>
+            <param name="entity">实体对象</param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAsync(`0)">
             <summary>
             删除单条数据
             </summary>
@@ -152,7 +187,19 @@
             </summary>
             <param name="entities">实体对象集合</param>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAsync(System.Collections.Generic.List{`0})">
+            <summary>
+            删除多条数据
+            </summary>
+            <param name="entities">实体对象集合</param>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            删除指定条件数据
+            </summary>
+            <param name="condition">筛选条件</param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             删除指定条件数据
             </summary>
@@ -160,12 +207,29 @@
         </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Delete_Sql(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
-            Deletes the SQL.
+            使用SQL语句按照条件删除数据
+            用法:Delete_Sql"Base_User"(x=>x.Id == "Admin")
+            注：生成的SQL类似于DELETE FROM [Base_User] WHERE [Name] = 'xxx' WHERE [Id] = 'Admin'
             </summary>
-            <param name="where">The where.</param>
-            <returns></returns>
+            <param name="where">条件</param>
+            <returns>影响条数</returns>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.Delete_SqlAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            使用SQL语句按照条件删除数据
+            用法:Delete_Sql"Base_User"(x=>x.Id == "Admin")
+            注：生成的SQL类似于DELETE FROM [Base_User] WHERE [Name] = 'xxx' WHERE [Id] = 'Admin'
+            </summary>
+            <param name="where">条件</param>
+            <returns>影响条数</returns>
         </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.Update(`0)">
+            <summary>
+            更新单条数据
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateAsync(`0)">
             <summary>
             更新单条数据
             </summary>
@@ -177,21 +241,20 @@
             </summary>
             <param name="entities"></param>
         </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateAny(`0,System.Collections.Generic.List{System.String})">
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateAsync(System.Collections.Generic.List{`0})">
             <summary>
-            更新单条数据指定属性
+            更新多条数据
             </summary>
-            <param name="entity">实体对象</param>
-            <param name="properties">属性</param>
-        </member>
-        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateAny(System.Collections.Generic.List{`0},System.Collections.Generic.List{System.String})">
-            <summary>
-            更新多条数据执行属性
-            </summary>
-            <param name="entities">实体对象集合</param>
-            <param name="properties">属性</param>
+            <param name="entities"></param>
         </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateWhere(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Action{`0})">
+            <summary>
+            通过条件更新数据
+            </summary>
+            <param name="whereExpre">筛选条件</param>
+            <param name="set">更新操作</param>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateWhereAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Action{`0})">
             <summary>
             通过条件更新数据
             </summary>
@@ -208,6 +271,16 @@
             <param name="values">字段值设置</param>
             <returns>影响条数</returns>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.UpdateWhere_SqlAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,Coldairarrow.Util.UpdateType,System.Object}[])">
+            <summary>
+            使用SQL语句按照条件更新
+            用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+            注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+            </summary>
+            <param name="where">筛选条件</param>
+            <param name="values">字段值设置</param>
+            <returns>影响条数</returns>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetEntity(System.Object[])">
             <summary>
             通过主键获取单条数据
@@ -215,7 +288,21 @@
             <param name="keyValue">主键</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetEntityAsync(System.Object[])">
+            <summary>
+            通过主键获取单条数据
+            </summary>
+            <param name="keyValue">主键</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetList">
+            <summary>
+            获取所有数据
+            注:会获取所有数据,数据量大请勿使用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Business.IBaseBusiness`1.GetListAsync">
             <summary>
             获取所有数据
             注:会获取所有数据,数据量大请勿使用
@@ -323,7 +410,19 @@
             </summary>
             <param name="entity">实体对象</param>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.InsertAsync(`0)">
+            <summary>
+            添加数据
+            </summary>
+            <param name="entity">实体对象</param>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Insert(System.Collections.Generic.List{`0})">
+            <summary>
+            添加多条数据
+            </summary>
+            <param name="entities">实体对象集合</param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.InsertAsync(System.Collections.Generic.List{`0})">
             <summary>
             添加多条数据
             </summary>
@@ -340,7 +439,18 @@
             删除所有数据
             </summary>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAllAsync">
+            <summary>
+            删除所有数据
+            </summary>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Delete(System.String)">
+            <summary>
+            删除指定主键数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAsync(System.String)">
             <summary>
             删除指定主键数据
             </summary>
@@ -352,7 +462,19 @@
             </summary>
             <param name="keys"></param>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            通过主键删除多条数据
+            </summary>
+            <param name="keys"></param>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Delete(`0)">
+            <summary>
+            删除单条数据
+            </summary>
+            <param name="entity">实体对象</param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAsync(`0)">
             <summary>
             删除单条数据
             </summary>
@@ -364,7 +486,19 @@
             </summary>
             <param name="entities">实体对象集合</param>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAsync(System.Collections.Generic.List{`0})">
+            <summary>
+            删除多条数据
+            </summary>
+            <param name="entities">实体对象集合</param>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            删除指定条件数据
+            </summary>
+            <param name="condition">筛选条件</param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             删除指定条件数据
             </summary>
@@ -381,7 +515,24 @@
             影响条数
             </returns>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.Delete_SqlAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            使用SQL语句按照条件删除数据
+            用法:Delete_Sql"Base_User"(x=&gt;x.Id == "Admin")
+            注：生成的SQL类似于DELETE FROM [Base_User] WHERE [Name] = 'xxx' WHERE [Id] = 'Admin'
+            </summary>
+            <param name="where">条件</param>
+            <returns>
+            影响条数
+            </returns>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.Update(`0)">
+            <summary>
+            更新一条数据
+            </summary>
+            <param name="entity">实体对象</param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateAsync(`0)">
             <summary>
             更新一条数据
             </summary>
@@ -393,19 +544,11 @@
             </summary>
             <param name="entities">数据列表</param>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateAny(`0,System.Collections.Generic.List{System.String})">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateAsync(System.Collections.Generic.List{`0})">
             <summary>
-            更新一条数据,某些属性
-            </summary>
-            <param name="entity">实体对象</param>
-            <param name="properties">需要更新的字段</param>
-        </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateAny(System.Collections.Generic.List{`0},System.Collections.Generic.List{System.String})">
-            <summary>
-            更新多条数据,某些属性
+            更新多条数据
             </summary>
             <param name="entities">数据列表</param>
-            <param name="properties">需要更新的字段</param>
         </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateWhere(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Action{`0})">
             <summary>
@@ -414,6 +557,33 @@
             <param name="whereExpre">筛选表达式</param>
             <param name="set">更改属性回调</param>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateWhereAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Action{`0})">
+            <summary>
+            指定条件更新
+            </summary>
+            <param name="whereExpre">筛选表达式</param>
+            <param name="set">更改属性回调</param>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateWhere_Sql(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,Coldairarrow.Util.UpdateType,System.Object}[])">
+            <summary>
+            使用SQL语句按照条件更新
+            用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+            注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+            </summary>
+            <param name="where">筛选条件</param>
+            <param name="values">字段值设置</param>
+            <returns>影响条数</returns>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.UpdateWhere_SqlAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.ValueTuple{System.String,Coldairarrow.Util.UpdateType,System.Object}[])">
+            <summary>
+            使用SQL语句按照条件更新
+            用法:UpdateWhere_Sql"Base_User"(x=>x.Id == "Admin",("Name","小明"))
+            注：生成的SQL类似于UPDATE [TABLE] SET [Name] = 'xxx' WHERE [Id] = 'Admin'
+            </summary>
+            <param name="where">筛选条件</param>
+            <param name="values">字段值设置</param>
+            <returns>影响条数</returns>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetEntity(System.Object[])">
             <summary>
             获取实体
@@ -421,7 +591,20 @@
             <param name="keyValue">主键</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetEntityAsync(System.Object[])">
+            <summary>
+            获取实体
+            </summary>
+            <param name="keyValue">主键</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Business.BaseBusiness`1.GetList">
+            <summary>
+            获取表的所有数据，当数据量很大时不要使用！
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetListAsync">
             <summary>
             获取表的所有数据，当数据量很大时不要使用！
             </summary>
@@ -490,7 +673,7 @@
             <param name="msg">错误提示</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String)">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionListAsync(System.String,System.String)">
             <summary>
             构建前端Select远程搜索数据
             </summary>
@@ -498,7 +681,7 @@
             <param name="q">查询关键字</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionList(System.String,System.String,System.String,System.String,System.Linq.IQueryable{`0})">
+        <member name="M:Coldairarrow.Business.BaseBusiness`1.GetOptionListAsync(System.String,System.String,System.String,System.String,System.Linq.IQueryable{`0})">
             <summary>
             构建前端Select远程搜索数据
             </summary>

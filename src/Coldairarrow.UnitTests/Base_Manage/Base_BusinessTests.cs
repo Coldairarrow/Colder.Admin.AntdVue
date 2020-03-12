@@ -120,37 +120,37 @@ namespace Coldairarrow.UnitTests
             Assert.AreEqual(2, count);
 
             //更新单条数据指定属性
-            _baseBus.DeleteAll();
-            _baseBus.Insert(_newData);
-            var newUpdateData = _newData.DeepClone();
-            newUpdateData.UserName = "普通管理员";
-            newUpdateData.UserId = "xiaoming";
-            newUpdateData.Age = 100;
-            _baseBus.UpdateAny(newUpdateData, new List<string> { "UserName", "Age" });
-            var dbSingleData = _baseBus.GetIQueryable().FirstOrDefault();
-            newUpdateData.UserId = "Admin";
-            Assert.AreEqual(newUpdateData.ToJson(), dbSingleData.ToJson());
+            //_baseBus.DeleteAll();
+            //_baseBus.Insert(_newData);
+            //var newUpdateData = _newData.DeepClone();
+            //newUpdateData.UserName = "普通管理员";
+            //newUpdateData.UserId = "xiaoming";
+            //newUpdateData.Age = 100;
+            //_baseBus.UpdateAny(newUpdateData, new List<string> { "UserName", "Age" });
+            //var dbSingleData = _baseBus.GetIQueryable().FirstOrDefault();
+            //newUpdateData.UserId = "Admin";
+            //Assert.AreEqual(newUpdateData.ToJson(), dbSingleData.ToJson());
 
             //更新多条数据指定属性
-            _baseBus.DeleteAll();
-            _baseBus.Insert(_insertList);
-            var newList1 = _insertList.DeepClone();
-            var newList2 = _insertList.DeepClone();
-            newList1.ForEach(aData =>
-            {
-                aData.Age = 100;
-                aData.UserId = "Test";
-                aData.UserName = "测试";
-            });
-            newList2.ForEach(aData =>
-            {
-                aData.Age = 100;
-                aData.UserName = "测试";
-            });
+            //_baseBus.DeleteAll();
+            //_baseBus.Insert(_insertList);
+            //var newList1 = _insertList.DeepClone();
+            //var newList2 = _insertList.DeepClone();
+            //newList1.ForEach(aData =>
+            //{
+            //    aData.Age = 100;
+            //    aData.UserId = "Test";
+            //    aData.UserName = "测试";
+            //});
+            //newList2.ForEach(aData =>
+            //{
+            //    aData.Age = 100;
+            //    aData.UserName = "测试";
+            //});
 
-            _baseBus.UpdateAny(newList1, new List<string> { "UserName", "Age" });
-            var dbData = _baseBus.GetList();
-            Assert.AreEqual(newList2.OrderBy(x => x.Id).ToJson(), dbData.OrderBy(x => x.Id).ToJson());
+            //_baseBus.UpdateAny(newList1, new List<string> { "UserName", "Age" });
+            //var dbData = _baseBus.GetList();
+            //Assert.AreEqual(newList2.OrderBy(x => x.Id).ToJson(), dbData.OrderBy(x => x.Id).ToJson());
 
             //更新指定条件数据
             _baseBus.DeleteAll();

@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -15,7 +16,7 @@ namespace Coldairarrow.Util
                 .ToList();
 
             //执行前
-            foreach(var aFiler in allFilers)
+            foreach (var aFiler in allFilers)
             {
                 aFiler.OnActionExecuting(invocation);
 
@@ -25,6 +26,10 @@ namespace Coldairarrow.Util
 
             //执行
             invocation.Proceed();
+
+            //若异常则不执行后面的
+            if (invocation.ReturnValue is Task resTask && resTask.Status == TaskStatus.Faulted)
+                return;
 
             //执行后
             allFilers.ForEach(aFiler =>
