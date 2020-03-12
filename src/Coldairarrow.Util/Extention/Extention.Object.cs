@@ -25,7 +25,7 @@ namespace Coldairarrow.Util
             });
         }
 
-        private static BindingFlags _bindingFlags { get; } 
+        private static BindingFlags _bindingFlags { get; }
             = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
 
         /// <summary>

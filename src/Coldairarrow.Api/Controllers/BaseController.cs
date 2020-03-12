@@ -9,6 +9,8 @@ namespace Coldairarrow.Api
     /// 基控制器
     /// </summary>
     [JsonParamter]
+    [ApiLog]
+    [FormatResponse]
     public class BaseController : ControllerBase
     {
         /// <summary>
@@ -35,7 +37,7 @@ namespace Coldairarrow.Api
         /// 返回成功
         /// </summary>
         /// <returns></returns>
-        protected ContentResult Success()
+        protected AjaxResult Success()
         {
             AjaxResult res = new AjaxResult
             {
@@ -43,49 +45,33 @@ namespace Coldairarrow.Api
                 Msg = "请求成功！",
             };
 
-            return JsonContent(res.ToJson());
+            return res;
         }
 
         /// <summary>
         /// 返回成功
         /// </summary>
-        /// <param name="msg">消息</param>
+        /// <param name="data">返回数据</param>
         /// <returns></returns>
-        protected ContentResult Success(string msg)
-        {
-            AjaxResult res = new AjaxResult
-            {
-                Success = true,
-                Msg = msg,
-            };
-
-            return JsonContent(res.ToJson());
-        }
-
-        /// <summary>
-        /// 返回成功
-        /// </summary>
-        /// <param name="data">返回的数据</param>
-        /// <returns></returns>
-        protected ContentResult Success<T>(T data)
+        protected AjaxResult<T> Success<T>(T data)
         {
             AjaxResult<T> res = new AjaxResult<T>
             {
                 Success = true,
-                Msg = "请求成功！",
+                Msg = "操作成功",
                 Data = data
             };
 
-            return JsonContent(res.ToJson());
+            return res;
         }
 
         /// <summary>
         /// 返回成功
         /// </summary>
-        /// <param name="data">返回的数据</param>
-        /// <param name="msg">返回的消息</param>
+        /// <param name="data">返回数据</param>
+        /// <param name="msg">返回消息</param>
         /// <returns></returns>
-        protected ContentResult Success<T>(T data, string msg)
+        protected AjaxResult<T> Success<T>(T data, string msg)
         {
             AjaxResult<T> res = new AjaxResult<T>
             {
@@ -94,14 +80,14 @@ namespace Coldairarrow.Api
                 Data = data
             };
 
-            return JsonContent(res.ToJson());
+            return res;
         }
 
         /// <summary>
         /// 返回错误
         /// </summary>
         /// <returns></returns>
-        protected ContentResult Error()
+        protected AjaxResult Error()
         {
             AjaxResult res = new AjaxResult
             {
@@ -109,7 +95,7 @@ namespace Coldairarrow.Api
                 Msg = "请求失败！",
             };
 
-            return JsonContent(res.ToJson());
+            return res;
         }
 
         /// <summary>
@@ -117,7 +103,7 @@ namespace Coldairarrow.Api
         /// </summary>
         /// <param name="msg">错误提示</param>
         /// <returns></returns>
-        protected ContentResult Error(string msg)
+        protected AjaxResult Error(string msg)
         {
             AjaxResult res = new AjaxResult
             {
@@ -125,7 +111,7 @@ namespace Coldairarrow.Api
                 Msg = msg,
             };
 
-            return JsonContent(res.ToJson());
+            return res;
         }
 
         /// <summary>
@@ -134,7 +120,7 @@ namespace Coldairarrow.Api
         /// <typeparam name="T">类型</typeparam>
         /// <param name="list">数据列表</param>
         /// <returns></returns>
-        protected ContentResult DataTable<T>(List<T> list)
+        protected AjaxResult<List<T>> DataTable<T>(List<T> list)
         {
             return DataTable(list, new Pagination());
         }
@@ -146,9 +132,9 @@ namespace Coldairarrow.Api
         /// <param name="list">数据列表</param>
         /// <param name="pagination">分页参数</param>
         /// <returns></returns>
-        protected ContentResult DataTable<T>(List<T> list, Pagination pagination)
+        protected AjaxResult<List<T>> DataTable<T>(List<T> list, Pagination pagination)
         {
-            return JsonContent(pagination.BuildTableResult_AntdVue(list).ToJson());
+            return pagination.BuildTableResult_AntdVue(list);
         }
     }
 }

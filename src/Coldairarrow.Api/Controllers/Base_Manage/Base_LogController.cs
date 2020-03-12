@@ -4,13 +4,10 @@ using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
-    /// <summary>
-    /// 应用密钥
-    /// </summary>
-    /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
     public class Base_LogController : BaseApiController
     {
@@ -28,7 +25,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public ActionResult<AjaxResult<List<Base_Log>>> GetLogList(
+        public async Task<AjaxResult<List<Base_Log>>> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,
@@ -39,25 +36,21 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             pagination.SortField = "CreateTime";
             pagination.SortType = "desc";
-            var list = _logBus.GetLogList(pagination, logContent, logType, level, opUserName, startTime, endTime);
+            var list = await _logBus.GetLogListAsync(pagination, logContent, logType, level, opUserName, startTime, endTime);
 
-            return JsonContent(pagination.BuildTableResult_AntdVue(list).ToJson());
+            return DataTable(list, pagination);
         }
 
         [HttpPost]
-        public ActionResult GetLogTypeList()
+        public List<SelectOption> GetLogTypeList()
         {
-            var list = EnumHelper.ToOptionList(typeof(LogType));
-
-            return Success(list);
+            return EnumHelper.ToOptionList(typeof(LogType));
         }
 
         [HttpPost]
-        public ActionResult GetLoglevelList()
+        public List<SelectOption> GetLoglevelList()
         {
-            var list = EnumHelper.ToOptionList(typeof(LogLevel));
-
-            return Success(list);
+            return EnumHelper.ToOptionList(typeof(LogLevel));
         }
 
         #endregion

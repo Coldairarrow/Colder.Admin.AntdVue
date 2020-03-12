@@ -1,10 +1,10 @@
-﻿using Coldairarrow.Util;
+﻿using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
     public interface IHomeBusiness
     {
-        AjaxResult SubmitLogin(string userName, string password);
-        AjaxResult ChangePwd(string oldPwd, string newPwd);
+        Task<string> SubmitLoginAsync(string userName, string password);
+        Task ChangePwdAsync(string oldPwd, string newPwd);
     }
 }

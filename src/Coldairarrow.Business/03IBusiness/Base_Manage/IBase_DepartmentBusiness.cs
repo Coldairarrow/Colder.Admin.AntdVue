@@ -1,16 +1,16 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
-using Coldairarrow.Util;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_DepartmentBusiness
     {
-        List<Base_DepartmentTreeDTO> GetTreeDataList(string parentId = null);
-        Base_Department GetTheData(string id);
-        List<string> GetChildrenIds(string departmentId);
-        AjaxResult AddData(Base_Department newData);
-        AjaxResult UpdateData(Base_Department theData);
-        AjaxResult DeleteData(List<string> ids);
+        Task<List<Base_DepartmentTreeDTO>> GetTreeDataListAsync(string parentId = null);
+        Task<Base_Department> GetTheDataAsync(string id);
+        Task<List<string>> GetChildrenIdsAsync(string departmentId);
+        Task AddDataAsync(Base_Department newData);
+        Task UpdateDataAsync(Base_Department theData);
+        Task DeleteDataAsync(List<string> ids);
     }
 }

@@ -11,14 +11,14 @@
       >
         删除
       </a-button>
-    </div> -->
+    </div>-->
 
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="20">
           <a-col :md="6" :sm="24">
             <a-form-item label="内容">
-              <a-input v-model="queryParam.logContent" placeholder="" />
+              <a-input v-model="queryParam.logContent" placeholder />
             </a-form-item>
           </a-col>
           <a-col :md="3" :sm="24">
@@ -37,13 +37,13 @@
           </a-col>
           <a-col :md="4" :sm="24">
             <a-form-item label="操作人">
-              <a-input v-model="queryParam.opUserName" placeholder="" />
+              <a-input v-model="queryParam.opUserName" placeholder />
             </a-form-item>
           </a-col>
           <a-col :md="10" :sm="24">
             <a-form-item label="时间">
-              <a-date-picker v-model="queryParam.startTime" showTime format="YYYY-MM-DD HH:mm:ss" />
-              ~<a-date-picker v-model="queryParam.endTime" showTime format="YYYY-MM-DD HH:mm:ss" />
+              <a-date-picker v-model="queryParam.startTime" showTime format="YYYY-MM-DD HH:mm:ss" />~
+              <a-date-picker v-model="queryParam.endTime" showTime format="YYYY-MM-DD HH:mm:ss" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -65,11 +65,12 @@
       :bordered="true"
       :rowClassName="rowClassName"
       size="small"
+      style="word-break:break-all;"
     >
       <span slot="LogContent" slot-scope="value">
-        <template v-for="item in (value || '').replace(/\r\n/g, '\n').split('\n')">
+        <template v-for="(item,index) in (value || '').replace(/\r\n/g, '\n').split('\n')">
           {{ item }}
-          <br />
+          <br :key="index" />
         </template>
       </span>
     </a-table>
@@ -83,8 +84,8 @@ const columns = [
   { title: '内容', dataIndex: 'LogContent', width: '50%', scopedSlots: { customRender: 'LogContent' } },
   { title: '级别', dataIndex: 'Level', width: '5%' },
   { title: '类别', dataIndex: 'LogType', width: '10%' },
-  { title: '操作人', dataIndex: 'CreatorRealName', width: '10%' },
-  { title: '时间', dataIndex: 'CreateTime', width: '15%' }
+  { title: '操作人', dataIndex: 'CreatorRealName', width: '5%' },
+  { title: '时间', dataIndex: 'CreateTime', width: '10%' }
 ]
 
 export default {

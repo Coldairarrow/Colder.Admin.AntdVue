@@ -2,6 +2,7 @@
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
@@ -16,10 +17,10 @@ namespace Coldairarrow.Business.Base_Manage
         IBase_ActionBusiness _actionBus { get; }
         IBase_UserBusiness _userBus { get; }
 
-        IQueryable<Base_Action> GetIQ(string userId)
+        async Task<IQueryable<Base_Action>> GetIQ(string userId)
         {
             var where = LinqHelper.False<Base_Action>();
-            var theUser = _userBus.GetTheData(userId);
+            var theUser = await _userBus.GetTheDataAsync(userId);
 
             //不需要权限的菜单
             where = where.Or(x => x.NeedAction == false);
@@ -39,18 +40,18 @@ namespace Coldairarrow.Business.Base_Manage
             return GetIQueryable().Where(where);
         }
 
-        public List<Base_ActionDTO> GetUserMenuList(string userId)
+        public async Task<List<Base_ActionDTO>> GetUserMenuListAsync(string userId)
         {
-            var q = GetIQ(userId);
+            var q = await GetIQ(userId);
 
-            return _actionBus.GetTreeDataList(null, new List<int> { 0, 1 }, false, q, true);
+            return await _actionBus.GetTreeDataListAsync(null, new List<int> { 0, 1 }, false, q, true);
         }
 
-        public List<string> GetUserPermissionValues(string userId)
+        public async Task<List<string>> GetUserPermissionValuesAsync(string userId)
         {
-            var q = GetIQ(userId);
-            return _actionBus
-                .GetDataList(new Pagination(), null, null, new List<int> { 2 }, q)
+            var q = await GetIQ(userId);
+            return (await _actionBus
+                .GetDataListAsync(new Pagination(), null, null, new List<int> { 2 }, q))
                 .Select(x => x.Value)
                 .ToList();
         }

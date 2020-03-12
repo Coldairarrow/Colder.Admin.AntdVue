@@ -13,12 +13,27 @@ namespace Coldairarrow.Util
     {
         #region 私有成员
 
-        static JobHelper()
+        private static IScheduler __scheduler;
+        private static object _lock = new object();
+        private static IScheduler _scheduler
         {
-            _scheduler = AsyncHelper.RunSync(() => StdSchedulerFactory.GetDefaultScheduler());
-            AsyncHelper.RunSync(() => _scheduler.Start());
+            get
+            {
+                if (__scheduler == null)
+                {
+                    lock (_lock)
+                    {
+                        if (__scheduler == null)
+                        {
+                            __scheduler = AsyncHelper.RunSync(() => StdSchedulerFactory.GetDefaultScheduler());
+                            AsyncHelper.RunSync(() => __scheduler.Start());
+                        }
+                    }
+                }
+
+                return __scheduler;
+            }
         }
-        private static readonly IScheduler _scheduler;
         static ConcurrentDictionary<string, Action> _jobs { get; }
             = new ConcurrentDictionary<string, Action>();
 
@@ -96,6 +111,30 @@ namespace Coldairarrow.Util
                 .WithIdentity(key)
                 .StartAt(DateTime.Now + delay)
                 .WithSimpleSchedule(x => x.WithRepeatCount(0).WithInterval(TimeSpan.FromSeconds(10)))
+                .Build();
+            AsyncHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
+
+            return key;
+        }
+
+        /// <summary>
+        /// 通过表达式创建任务
+        /// 表达式规则参考:http://www.jsons.cn/quartzcron/
+        /// </summary>
+        /// <param name="action">执行的操作</param>
+        /// <param name="cronExpression">表达式</param>
+        /// <returns></returns>
+        public static string SetCronJob(Action action, string cronExpression)
+        {
+            string key = Guid.NewGuid().ToString();
+            _jobs[key] = action;
+            IJobDetail job = JobBuilder.Create<Job>()
+               .WithIdentity(key)
+               .Build();
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity(key)
+                .StartNow()
+                .WithCronSchedule(cronExpression)
                 .Build();
             AsyncHelper.RunSync(() => _scheduler.ScheduleJob(job, trigger));
 

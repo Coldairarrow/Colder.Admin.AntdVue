@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
@@ -49,7 +50,7 @@ namespace Coldairarrow.Business
 
         #region 外部接口
 
-        public List<Base_Log> GetLogList(
+        public async Task<List<Base_Log>> GetLogListAsync(
             Pagination pagination,
             string logContent,
             string logType,
@@ -79,7 +80,7 @@ namespace Coldairarrow.Business
                 filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).LessThan(endTime)));
 
             SortOrder sortOrder = pagination.SortType.ToLower() == "asc" ? SortOrder.Ascending : SortOrder.Descending;
-            var result = client.Search<Base_Log>(s =>
+            var result = await client.SearchAsync<Base_Log>(s =>
                 s.Query(q =>
                     q.Bool(b => b.Filter(filters.ToArray()))
                 )
@@ -92,7 +93,7 @@ namespace Coldairarrow.Business
             return result.Documents.ToList();
         }
 
-        public void DeleteLog(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
+        public async Task DeleteLogAsync(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
         {
             var client = GetElasticClient();
             var filters = new List<Func<QueryContainerDescriptor<Base_Log>, QueryContainer>>();
@@ -114,7 +115,7 @@ namespace Coldairarrow.Business
             if (!endTime.IsNullOrEmpty())
                 filters.Add(q => q.DateRange(d => d.Field(f => f.CreateTime).LessThan(endTime)));
 
-            client.DeleteByQuery<Base_Log>(s => s.Query(q =>
+            await client.DeleteByQueryAsync<Base_Log>(s => s.Query(q =>
                       q.Bool(b => b.Filter(filters.ToArray()))
                 ));
         }

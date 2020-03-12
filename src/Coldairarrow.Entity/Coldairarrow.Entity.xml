@@ -24,11 +24,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Action.Deleted">
             <summary>
             否已删除
@@ -94,11 +89,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_AppSecret.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_AppSecret.Deleted">
             <summary>
             否已删除
@@ -139,11 +129,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_DbLink.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_DbLink.Deleted">
             <summary>
             否已删除
@@ -182,11 +167,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.CreatorId">
             <summary>
             创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.CreatorRealName">
-            <summary>
-            创建人姓名
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Department.Deleted">
@@ -274,11 +254,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Role.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Role.Deleted">
             <summary>
             否已删除
@@ -307,11 +282,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.CreatorId">
             <summary>
             创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.CreatorRealName">
-            <summary>
-            创建人姓名
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_RoleAction.Deleted">
@@ -374,11 +344,6 @@
             创建人Id
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.Deleted">
             <summary>
             否已删除
@@ -432,11 +397,6 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserRole.CreatorId">
             <summary>
             创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserRole.CreatorRealName">
-            <summary>
-            创建人姓名
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserRole.Deleted">

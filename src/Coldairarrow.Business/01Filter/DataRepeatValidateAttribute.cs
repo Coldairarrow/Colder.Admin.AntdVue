@@ -56,7 +56,7 @@ namespace Coldairarrow.Business
                     .Select(x => x.Value)
                     .ToList();
 
-                invocation.ReturnValue = new ErrorResult($"{string.Join(",", repeatList)}已存在!");
+                throw new BusException($"{string.Join(",", repeatList)}已存在!");
             }
         }
 
