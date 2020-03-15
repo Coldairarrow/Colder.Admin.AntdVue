@@ -43,10 +43,14 @@ namespace Coldairarrow.Business
 
         protected override void Write(LogEventInfo logEvent)
         {
-            using (var db = DbFactory.GetRepository())
+            //后台异步写日志
+            Task.Factory.StartNew(() =>
             {
-                db.Insert(GetBase_SysLogInfo(logEvent));
-            }
+                using (var db = DbFactory.GetRepository())
+                {
+                    db.Insert(GetBase_SysLogInfo(logEvent));
+                }
+            }, TaskCreationOptions.LongRunning);
         }
 
         public async Task DeleteLogAsync(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
