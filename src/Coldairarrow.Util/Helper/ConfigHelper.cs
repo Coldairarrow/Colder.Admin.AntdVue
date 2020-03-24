@@ -8,30 +8,33 @@ namespace Coldairarrow.Util
     /// </summary>
     public static class ConfigHelper
     {
-        static ConfigHelper()
+        private static IConfiguration _config;
+        private static object _lock = new object();
+        public static IConfiguration Configuration
         {
-            IConfiguration config = null;
-            try
+            get
             {
-                config = AutofacHelper.GetScopeService<IConfiguration>();
+                if (_config == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_config == null)
+                        {
+                            var builder = new ConfigurationBuilder()
+                                .SetBasePath(AppContext.BaseDirectory)
+                                .AddJsonFile("appsettings.json");
+                            _config = builder.Build();
+                        }
+                    }
+                }
+
+                return _config;
             }
-            catch
+            set
             {
-
+                _config = value;
             }
-            if (config == null)
-            {
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("appsettings.json");
-
-                config = builder.Build();
-            }
-
-            _config = config;
         }
-
-        private static IConfiguration _config { get; }
 
         /// <summary>
         /// 从AppSettings获取key的值
@@ -40,7 +43,7 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetValue(string key)
         {
-            return _config[key];
+            return Configuration[key];
         }
 
         /// <summary>
@@ -50,7 +53,7 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetConnectionString(string nameOfCon)
         {
-            return _config.GetConnectionString(nameOfCon);
+            return Configuration.GetConnectionString(nameOfCon);
         }
     }
 }

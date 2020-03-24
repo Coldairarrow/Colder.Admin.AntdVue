@@ -26,6 +26,7 @@ namespace Coldairarrow.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConfigHelper.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
