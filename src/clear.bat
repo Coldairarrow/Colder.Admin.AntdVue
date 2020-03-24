@@ -1,4 +1,4 @@
-::删除所有bin与obj下的文件
+::鍒犻櫎鎵�鏈塨in涓巓bj涓嬬殑鏂囦欢
 @echo off
 set nowPath=%cd%
 cd /
