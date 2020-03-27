@@ -35,6 +35,9 @@ namespace Coldairarrow.Api
             _requesTime.TryRemove(HttpContextCore.Current, out _);
 
             var request = filterContext.HttpContext.Request;
+            string contentType = request.ContentType ?? string.Empty;
+            if (!contentType.Contains("json"))
+                return;
             string resContent = string.Empty;
             if (filterContext.Result is ContentResult result)
                 resContent = result.Content;
