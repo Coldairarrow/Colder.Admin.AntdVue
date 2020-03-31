@@ -1,4 +1,6 @@
-﻿namespace Coldairarrow.Util
+﻿using EFCore.Sharding;
+
+namespace Coldairarrow.Util
 {
     /// <summary>
     /// 描述：数据库帮助类工厂

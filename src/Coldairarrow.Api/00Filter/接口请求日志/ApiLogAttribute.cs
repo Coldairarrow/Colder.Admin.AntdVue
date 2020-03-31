@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,12 @@ namespace Coldairarrow.Api
 {
     public class ApiLogAttribute : Attribute, IActionFilter
     {
+        readonly IMyLogger _myLogger;
+        public ApiLogAttribute(IMyLogger myLogger)
+        {
+            _myLogger = myLogger;
+        }
+
         static ConcurrentDictionary<HttpContext, DateTime> _requesTime { get; }
             = new ConcurrentDictionary<HttpContext, DateTime>();
 
@@ -55,11 +60,7 @@ body:{request.Body?.ReadToString(Encoding.UTF8)}
 
 返回:{resContent}
 ";
-            //接口日志
-            using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
-            {
-                lifescope.Resolve<ILogger>().Info(LogType.系统跟踪, log);
-            }
+            _myLogger.Info(LogType.系统跟踪, log);
         }
     }
 }

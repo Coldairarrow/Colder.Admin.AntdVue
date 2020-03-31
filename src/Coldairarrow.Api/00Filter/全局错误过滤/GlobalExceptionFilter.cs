@@ -5,19 +5,18 @@ namespace Coldairarrow.Api
 {
     public class GlobalExceptionFilter : BaseActionFilter, IExceptionFilter
     {
+        readonly IMyLogger _myLogger;
         public void OnException(ExceptionContext context)
         {
-            ILogger logger = AutofacHelper.GetScopeService<ILogger>();
-
             var ex = context.Exception;
             if (ex is BusException busEx)
             {
-                logger.Info(LogType.系统跟踪, busEx.Message);
+                _myLogger.Info(LogType.系统跟踪, busEx.Message);
                 context.Result = Error(busEx.Message, busEx.ErrorCode);
             }
             else
             {
-                logger.Error(ex);
+                _myLogger.Error(ex);
                 context.Result = Error(ex.Message);
             }
         }

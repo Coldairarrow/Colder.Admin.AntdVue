@@ -1,11 +1,5 @@
-﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_Manage;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers
@@ -48,21 +42,22 @@ namespace Coldairarrow.Api.Controllers
         [HttpGet]
         public async Task PressTest2()
         {
-            var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
-            using (var db = DbFactory.GetRepository())
-            {
-                Base_UnitTest data = new Base_UnitTest
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserId = Guid.NewGuid().ToString(),
-                    Age = 10,
-                    UserName = Guid.NewGuid().ToString()
-                };
-                await db.InsertAsync(data);
-                await db.UpdateAsync(data);
-                await db.GetIQueryable<Base_UnitTest>().FirstOrDefaultAsync();
-                await db.DeleteAsync(data);
-            }
+            //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
+            //using (var db = DbFactory.GetRepository())
+            //{
+            //    Base_UnitTest data = new Base_UnitTest
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        UserId = Guid.NewGuid().ToString(),
+            //        Age = 10,
+            //        UserName = Guid.NewGuid().ToString()
+            //    };
+            //    await db.InsertAsync(data);
+            //    await db.UpdateAsync(data);
+            //    await db.GetIQueryable<Base_UnitTest>().FirstOrDefaultAsync();
+            //    await db.DeleteAsync(data);
+            //}
+            await Task.CompletedTask;
         }
     }
 }

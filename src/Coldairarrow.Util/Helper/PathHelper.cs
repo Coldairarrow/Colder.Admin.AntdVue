@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System.IO;
-
-namespace Coldairarrow.Util
+﻿namespace Coldairarrow.Util
 {
     public static class PathHelper
     {
@@ -14,14 +9,14 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetUrl(string virtualUrl)
         {
-            if (!virtualUrl.IsNullOrEmpty())
-            {
-                UrlHelper urlHelper = new UrlHelper(AutofacHelper.GetScopeService<IActionContextAccessor>().ActionContext);
+            //if (!virtualUrl.IsNullOrEmpty())
+            //{
+            //    UrlHelper urlHelper = new UrlHelper(AutofacHelper.GetScopeService<IActionContextAccessor>().ActionContext);
 
-                return urlHelper.Content(virtualUrl);
-            }
-            else
-                return null;
+            //    return urlHelper.Content(virtualUrl);
+            //}
+            //else
+            throw new System.Exception();
         }
 
         /// <summary>
@@ -31,12 +26,14 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetAbsolutePath(string virtualPath)
         {
-            string path = virtualPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-            if (path[0] == '~')
-                path = path.Remove(0, 2);
-            string rootPath = AutofacHelper.GetScopeService<IHostingEnvironment>().WebRootPath;
+            //string path = virtualPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            //if (path[0] == '~')
+            //    path = path.Remove(0, 2);
+            //string rootPath = AutofacHelper.GetScopeService<IHostingEnvironment>().WebRootPath;
 
-            return Path.Combine(rootPath, path);
+            //return Path.Combine(rootPath, path);
+
+            throw new System.Exception();
         }
 
         /// <summary>
@@ -45,7 +42,8 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static string GetProjectRootpath()
         {
-            return AutofacHelper.GetScopeService<IHostingEnvironment>().ContentRootPath;
+            //return AutofacHelper.GetScopeService<IHostingEnvironment>().ContentRootPath;
+            throw new System.Exception();
         }
     }
 }

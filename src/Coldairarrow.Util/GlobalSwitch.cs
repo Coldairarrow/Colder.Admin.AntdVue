@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using EFCore.Sharding;
 using System;
 
 namespace Coldairarrow.Util
@@ -72,7 +72,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 网站文件根路径
         /// </summary>
-        public static string WebRootPath { get => AutofacHelper.GetService<IHostingEnvironment>().WebRootPath; }
+        public static string WebRootPath { get => throw new Exception(); }
 
         #endregion
 

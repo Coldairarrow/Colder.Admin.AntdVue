@@ -446,7 +446,7 @@
             作者：Coldairarrow
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.DbHelper.#ctor(Coldairarrow.Util.DatabaseType,System.String)">
+        <member name="M:Coldairarrow.Util.DbHelper.#ctor(EFCore.Sharding.DatabaseType,System.String)">
             <summary>
             构造函数
             </summary>
@@ -556,7 +556,7 @@
             作者：Coldairarrow
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.DbHelperFactory.GetDbHelper(Coldairarrow.Util.DatabaseType,System.String)">
+        <member name="M:Coldairarrow.Util.DbHelperFactory.GetDbHelper(EFCore.Sharding.DatabaseType,System.String)">
             <summary>
             获取指定的数据库帮助类
             </summary>
@@ -577,35 +577,35 @@
             数据库操作提供源工厂帮助类
             </summary>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbProviderFactory(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbProviderFactory(EFCore.Sharding.DatabaseType)">
             <summary>
             获取提供工厂
             </summary>
             <param name="dbType">数据库类型</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbConnection(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbConnection(EFCore.Sharding.DatabaseType)">
             <summary>
             获取DbConnection
             </summary>
             <param name="dbType">数据库类型</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbCommand(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbCommand(EFCore.Sharding.DatabaseType)">
             <summary>
             获取DbCommand
             </summary>
             <param name="dbType">数据库类型</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbParameter(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbParameter(EFCore.Sharding.DatabaseType)">
             <summary>
             获取DbParameter
             </summary>
             <param name="dbType">数据库类型</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDataAdapter(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDataAdapter(EFCore.Sharding.DatabaseType)">
             <summary>
             获取DataAdapter
             </summary>
@@ -619,7 +619,7 @@
             <param name="dbTypeStr">数据库类型字符串</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.DbTypeToDbTypeStr(Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.DbTypeToDbTypeStr(EFCore.Sharding.DatabaseType)">
             <summary>
             将数据库类型转换为对应的数据库类型字符串
             </summary>
@@ -632,7 +632,7 @@
             <param name="nameOrconStr">连接名或者连接字符串</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbConnection(System.String,Coldairarrow.Util.DatabaseType)">
+        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbConnection(System.String,EFCore.Sharding.DatabaseType)">
             <summary>
             获取数据库连接对象
             </summary>
@@ -784,42 +784,10 @@
             <param name="nameSpace">实体命名空间</param>
             <param name="schemaName">架构（模式）名</param>
         </member>
-        <member name="M:Coldairarrow.Util.AutofacHelper.GetService``1">
-            <summary>
-            获取全局服务
-            警告：此方法使用不当会造成内存溢出,一般开发请勿使用此方法,请使用GetScopeService
-            </summary>
-            <typeparam name="T">接口类型</typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.AutofacHelper.GetScopeService``1">
-            <summary>
-            获取当前请求为生命周期的服务
-            </summary>
-            <typeparam name="T">接口类型</typeparam>
-            <returns></returns>
-        </member>
         <member name="T:Coldairarrow.Util.IDependency">
             <summary>
             注入标记
             </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.IFilter">
-            <summary>
-            过滤器
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.IFilter.OnActionExecuting(Castle.DynamicProxy.IInvocation)">
-            <summary>
-            执行前
-            </summary>
-            <param name="invocation">执行信息</param>
-        </member>
-        <member name="M:Coldairarrow.Util.IFilter.OnActionExecuted(Castle.DynamicProxy.IInvocation)">
-            <summary>
-            执行后
-            </summary>
-            <param name="invocation">执行信息</param>
         </member>
         <member name="T:Coldairarrow.Util.Extention">
             <summary>
@@ -833,16 +801,7 @@
             </summary>
             <summary>
             IQueryable"T"的拓展操作
-            作者：Coldairarrow
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetIQueryable(Microsoft.EntityFrameworkCore.DbContext,System.Type)">
-            <summary>
-            获取IQueryable
-            </summary>
-            <param name="context">上下文</param>
-            <param name="entityType">实体类型</param>
-            <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToString(System.Byte[])">
             <summary>
@@ -1391,109 +1350,6 @@
             <typeparam name="T">数据类型</typeparam>
             <param name="source">数据源</param>
             <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveOrderBy``1(System.Linq.IQueryable{``0})">
-            <summary>
-            删除OrderBy表达式
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveOrderBy(System.Linq.IQueryable)">
-            <summary>
-            删除OrderBy表达式
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveSkip``1(System.Linq.IQueryable{``0})">
-            <summary>
-            删除Skip表达式
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveSkip(System.Linq.IQueryable)">
-            <summary>
-            删除Skip表达式
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveTake``1(System.Linq.IQueryable{``0})">
-            <summary>
-            删除Take表达式
-            </summary>
-            <typeparam name="T">实体类型</typeparam>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.RemoveTake(System.Linq.IQueryable)">
-            <summary>
-            删除Take表达式
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetSkipCount(System.Linq.IQueryable)">
-            <summary>
-            获取Skip数量
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetTakeCount(System.Linq.IQueryable)">
-            <summary>
-            获取Take数量
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetOrderBy(System.Linq.IQueryable)">
-            <summary>
-            获取排序参数
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.ChangeSource(System.Linq.IQueryable,System.Linq.IQueryable)">
-            <summary>
-            切换数据源,保留原数据源中的Expression
-            </summary>
-            <param name="source">原数据源</param>
-            <param name="targetSource">目标数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.GetObjQuery(System.Linq.IQueryable)">
-            <summary>
-            获取ObjectQuery
-            </summary>
-            <param name="source">数据源</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.Extention.ToSql(System.Linq.IQueryable)">
-            <summary>
-            转为SQL语句，包括参数
-            </summary>
-            <param name="query">查询原源</param>
-            <returns></returns>
-        </member>
-        <member name="T:Coldairarrow.Util.Extention.RemoveOrderByVisitor">
-            <summary>
-            删除OrderBy表达式
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.Extention.RemoveSkipVisitor">
-            <summary>
-            删除Skip表达式
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.Extention.RemoveTakeVisitor">
-            <summary>
-            删除Take表达式
-            </summary>
         </member>
         <member name="M:Coldairarrow.Util.Extention.#cctor">
             <summary>
@@ -3374,31 +3230,6 @@
             <param name="message">错误信息</param>
             <param name="errorCode">错误代码</param>
         </member>
-        <member name="T:Coldairarrow.Util.DatabaseType">
-            <summary>
-            数据库类型
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DatabaseType.SqlServer">
-            <summary>
-            SqlServer数据库
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DatabaseType.MySql">
-            <summary>
-            MySql数据库
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DatabaseType.Oracle">
-            <summary>
-            Oracle数据库
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DatabaseType.PostgreSql">
-            <summary>
-            PostgreSql数据库
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Util.DbTableInfo">
             <summary>
             数据库所有表的信息
@@ -3600,37 +3431,6 @@
             孩子节点
             </summary>
         </member>
-        <member name="T:Coldairarrow.Util.UpdateType">
-            <summary>
-            更新模式
-            注:[Field]=[Field] {UpdateType} value
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.UpdateType.Equal">
-            <summary>
-            等,即赋值,[Field]= value
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.UpdateType.Add">
-            <summary>
-            自增,[Field]=[Field] + value
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.UpdateType.Minus">
-            <summary>
-            自减,[Field]=[Field] - value
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.UpdateType.Multiply">
-            <summary>
-            自乘,[Field]=[Field] * value
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.UpdateType.Divide">
-            <summary>
-            自除,[Field]=[Field] / value
-            </summary>
-        </member>
         <member name="T:Microsoft.AspNetCore.Mvc.Filters.Extention">
             <summary>
             拓展类
@@ -3643,20 +3443,6 @@
             <typeparam name="T">过滤器类型</typeparam>
             <param name="actionExecutingContext">上下文</param>
             <returns></returns>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.Extention.Scrpit(Microsoft.AspNetCore.Mvc.IUrlHelper,System.String)">
-            <summary>
-            获取最新的s文件或css文件
-            注：解决缓存问题，只有文件修改后才会获取最新版
-            </summary>
-            <param name="helper"></param>
-            <param name="scriptVirtualPath"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Microsoft.AspNetCore.Http.Extention">
-            <summary>
-            拓展类
-            </summary>
         </member>
     </members>
 </doc>
