@@ -4,6 +4,6 @@ namespace Coldairarrow.Util
 {
     public static class HttpContextCore
     {
-        public static HttpContext Current { get => AutofacHelper.GetService<IHttpContextAccessor>().HttpContext; }
+        public static HttpContext Current { get => /*AutofacHelper.GetService<IHttpContextAccessor>().HttpContext*/throw new System.Exception(); }
     }
 }

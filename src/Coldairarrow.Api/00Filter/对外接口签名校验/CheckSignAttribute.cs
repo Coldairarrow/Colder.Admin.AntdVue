@@ -47,15 +47,20 @@ HttpHelper.SafeSignRequest
     /// </summary>
     public class CheckSignAttribute : BaseActionFilterAsync
     {
+        readonly IBase_AppSecretBusiness _appSecretBus;
+        readonly IMyLogger _myLogger;
+        public CheckSignAttribute(IBase_AppSecretBusiness appSecretBus, IMyLogger myLogger)
+        {
+            _appSecretBus = appSecretBus;
+            _myLogger = myLogger;
+        }
+
         /// <summary>
         /// Action执行之前执行
         /// </summary>
         /// <param name="filterContext"></param>
         public async override Task OnActionExecuting(ActionExecutingContext filterContext)
         {
-            IBase_AppSecretBusiness appSecretBus = AutofacHelper.GetScopeService<IBase_AppSecretBusiness>();
-            ILogger logger = AutofacHelper.GetScopeService<ILogger>();
-
             //若为本地测试，则不需要校验
             if (GlobalSwitch.RunMode == RunMode.LocalTest)
             {
@@ -110,7 +115,7 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string appSecret = await appSecretBus.GetAppSecretAsync(appId);
+            string appSecret = await _appSecretBus.GetAppSecretAsync(appId);
             if (appSecret.IsNullOrEmpty())
             {
                 ReturnError("header:appId无效");
@@ -126,7 +131,7 @@ headers:{request.Headers.ToJson()}
 body:{body}
 正确sign:{newSign}
 ";
-                logger.Error(LogType.系统异常, log);
+                _myLogger.Error(LogType.系统异常, log);
                 ReturnError("header:sign签名错误");
                 return;
             }

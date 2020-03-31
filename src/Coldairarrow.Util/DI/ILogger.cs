@@ -2,7 +2,7 @@
 
 namespace Coldairarrow.Util
 {
-    public interface ILogger
+    public interface IMyLogger
     {
         void Log(LogLevel logLevel, LogType logType, string msg);
         void Log(LogLevel logLevel, LogType logType, string msg, string data);

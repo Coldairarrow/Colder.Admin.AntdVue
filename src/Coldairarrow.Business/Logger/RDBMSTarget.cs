@@ -1,6 +1,6 @@
-﻿using Coldairarrow.DataRepository;
-using Coldairarrow.Entity.Base_Manage;
+﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
@@ -21,7 +21,7 @@ namespace Coldairarrow.Business
             DateTime? startTime,
             DateTime? endTime)
         {
-            using (var db = DbFactory.GetRepository())
+            using (var db = DbFactory.GetRepository("", DatabaseType.MySql))
             {
                 var whereExp = LinqHelper.True<Base_Log>();
                 if (!logContent.IsNullOrEmpty())
@@ -46,7 +46,7 @@ namespace Coldairarrow.Business
             //后台异步写日志
             Task.Factory.StartNew(() =>
             {
-                using (var db = DbFactory.GetRepository())
+                using (var db = DbFactory.GetRepository("", DatabaseType.MySql))
                 {
                     db.Insert(GetBase_SysLogInfo(logEvent));
                 }
@@ -55,7 +55,7 @@ namespace Coldairarrow.Business
 
         public async Task DeleteLogAsync(string logContent, string logType, string level, string opUserName, DateTime? startTime, DateTime? endTime)
         {
-            using (var db = DbFactory.GetRepository())
+            using (var db = DbFactory.GetRepository("", DatabaseType.MySql))
             {
                 var whereExp = LinqHelper.True<Base_Log>();
                 if (!logContent.IsNullOrEmpty())

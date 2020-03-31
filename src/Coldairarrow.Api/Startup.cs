@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Builder;
@@ -194,7 +193,7 @@ namespace Coldairarrow.Api
                 //接口日志
                 using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
                 {
-                    lifescope.Resolve<ILogger>().Info(LogType.系统跟踪, log);
+                    lifescope.Resolve<IMyLogger>().Info(LogType.系统跟踪, log);
                 }
             };
         }

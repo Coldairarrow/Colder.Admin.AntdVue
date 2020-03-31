@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Coldairarrow.Business</RootNamespace>
-    <AssemblyName>Coldairarrow.Business</AssemblyName>
+    <RootNamespace>Coldairarrow.Entity</RootNamespace>
+    <AssemblyName>Coldairarrow.Entity</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -15,19 +15,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <CodeAnalysisRuleSet />
+    <DocumentationFile>Coldairarrow.Entity.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>Coldairarrow.Business.xml</DocumentationFile>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj" />
-    <ProjectReference Include="..\Coldairarrow.IBusiness\03.Coldairarrow.IBusiness.csproj" />
-    <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
+    <PackageReference Include="NEST" Version="7.6.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Coldairarrow.Business.xml">
+    <None Update="Coldairarrow.Entity.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

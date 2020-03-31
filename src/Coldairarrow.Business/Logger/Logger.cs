@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Coldairarrow.Business
 {
-    public class Logger : ILogger, IDependency
+    public class Logger : IMyLogger, IDependency
     {
         /// <summary>
         /// 配置Logger
@@ -62,7 +62,7 @@ namespace Coldairarrow.Business
                 config.AddRuleForAllLevels(target);
             }
         }
-        private IOperator _operator { get => AutofacHelper.GetScopeService<IOperator>(); }
+        private IOperator _operator { get => /*AutofacHelper.GetScopeService<IOperator>()*/throw new Exception(); }
 
         public void Log(LogLevel logLevel, LogType logType, string msg, string data)
         {
