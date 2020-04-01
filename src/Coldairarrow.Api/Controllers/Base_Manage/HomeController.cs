@@ -1,5 +1,5 @@
-﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Business.Base_Manage;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,15 +12,22 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     [Route("/Base_Manage/[controller]/[action]")]
     public class HomeController : BaseApiController
     {
-        public HomeController(IHomeBusiness homeBus, IPermissionBusiness permissionBus, IBase_UserBusiness userBus)
+        readonly IHomeBusiness _homeBus;
+        readonly IPermissionBusiness _permissionBus;
+        readonly IBase_UserBusiness _userBus;
+        readonly IOperator _operator;
+        public HomeController(
+            IHomeBusiness homeBus,
+            IPermissionBusiness permissionBus,
+            IBase_UserBusiness userBus,
+            IOperator @operator
+            )
         {
             _homeBus = homeBus;
             _permissionBus = permissionBus;
             _userBus = userBus;
+            _operator = @operator;
         }
-        IHomeBusiness _homeBus { get; }
-        IPermissionBusiness _permissionBus { get; }
-        IBase_UserBusiness _userBus { get; }
 
         /// <summary>
         /// 用户登录(获取token)
@@ -46,8 +53,8 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public async Task<object> GetOperatorInfo()
         {
-            var theInfo = await _userBus.GetTheDataAsync(Operator.UserId);
-            var permissions = await _permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
+            var theInfo = await _userBus.GetTheDataAsync(_operator.UserId);
+            var permissions = await _permissionBus.GetUserPermissionValuesAsync(_operator.UserId);
             var resObj = new
             {
                 UserInfo = theInfo,
@@ -60,7 +67,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public async Task<List<Base_ActionDTO>> GetOperatorMenuList()
         {
-            return await _permissionBus.GetUserMenuListAsync(Operator.UserId);
+            return await _permissionBus.GetUserMenuListAsync(_operator.UserId);
         }
     }
 }

@@ -1,22 +1,15 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
+using EFCore.Sharding;
 
 namespace Coldairarrow.Api
 {
@@ -25,13 +18,16 @@ namespace Coldairarrow.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ConfigHelper.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFxServices();
+            services.AddAutoMapper();
+            services.UseEFCoreSharding(DatabaseType.SqlServer, Configuration.GetConnectionString("BaseDb"),
+                config => config.SetEntityAssembly(GlobalData.FXASSEMBLY));
             services.AddControllers(options =>
             {
                 options.Filters.Add<GlobalExceptionFilter>();
@@ -41,10 +37,8 @@ namespace Coldairarrow.Api
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
-
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>()
+            services.AddHttpContextAccessor()
             .AddTransient<IActionContextAccessor, ActionContextAccessor>()
-            .AddSingleton(Configuration)
             .AddLogging()
             .Configure<KestrelServerOptions>(options =>
             {
@@ -100,31 +94,6 @@ namespace Coldairarrow.Api
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            // 在这里添加服务注册
-            var baseType = typeof(IDependency);
-
-            //自动注入IDependency接口,支持AOP,生命周期为InstancePerDependency
-            var diTypes = GlobalData.FxAllTypes
-                .Where(x => baseType.IsAssignableFrom(x) && x != baseType)
-                .ToArray();
-            builder.RegisterTypes(diTypes)
-                .AsImplementedInterfaces()
-                .PropertiesAutowired()
-                .InstancePerDependency()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(Interceptor));
-
-            //注册Controller
-            builder.RegisterAssemblyTypes(typeof(Startup).GetTypeInfo().Assembly)
-                .Where(t => typeof(Controller).IsAssignableFrom(t) && t.Name.EndsWith("Controller", StringComparison.Ordinal))
-                .PropertiesAutowired();
-
-            //AOP
-            builder.RegisterType<Interceptor>();
-        }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //Request.Body重用
@@ -153,27 +122,8 @@ namespace Coldairarrow.Api
             {
                 endpoints.MapControllers();
             });
-            AutofacHelper.Container = app.ApplicationServices.GetAutofacRoot();
-            InitAutoMapper();
             InitId();
             ApiLog();
-        }
-
-        private void InitAutoMapper()
-        {
-            List<(Type from, Type target)> maps = new List<(Type from, Type target)>();
-
-            maps.AddRange(GlobalData.FxAllTypes.Where(x => x.GetCustomAttribute<MapToAttribute>() != null)
-                .Select(x => (x, x.GetCustomAttribute<MapToAttribute>().TargetType)));
-            maps.AddRange(GlobalData.FxAllTypes.Where(x => x.GetCustomAttribute<MapFromAttribute>() != null)
-                .Select(x => (x.GetCustomAttribute<MapFromAttribute>().FromType, x)));
-            Mapper.Initialize(cfg =>
-            {
-                maps.ForEach(aMap =>
-                {
-                    cfg.CreateMap(aMap.from, aMap.target);
-                });
-            });
         }
 
         private void InitId()
@@ -188,14 +138,14 @@ namespace Coldairarrow.Api
 
         private void ApiLog()
         {
-            HttpHelper.HandleLog = log =>
-            {
-                //接口日志
-                using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
-                {
-                    lifescope.Resolve<IMyLogger>().Info(LogType.系统跟踪, log);
-                }
-            };
+            //HttpHelper.HandleLog = log =>
+            //{
+            //    //接口日志
+            //    using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
+            //    {
+            //        lifescope.Resolve<IMyLogger>().Info(LogType.系统跟踪, log);
+            //    }
+            //};
         }
     }
 }

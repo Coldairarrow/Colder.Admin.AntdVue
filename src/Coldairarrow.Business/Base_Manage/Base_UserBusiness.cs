@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, IDependency
+    public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, ITransientDependency
     {
         readonly IOperator _operator;
         public Base_UserBusiness(IBase_UserCache userCache,IOperator @operator)

@@ -13,7 +13,6 @@ namespace Coldairarrow.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [CheckJWT]
-        [ApiPermission("aaa")]
         public async Task<AjaxResult> PressTest1()
         {
             //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();

@@ -1,22 +1,23 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coldairarrow.Api
 {
     public class GlobalExceptionFilter : BaseActionFilter, IExceptionFilter
     {
-        readonly IMyLogger _myLogger;
         public void OnException(ExceptionContext context)
         {
+            var logger = context.HttpContext.RequestServices.GetService<IMyLogger>();
             var ex = context.Exception;
             if (ex is BusException busEx)
             {
-                _myLogger.Info(LogType.系统跟踪, busEx.Message);
+                logger.Info(LogType.系统跟踪, busEx.Message);
                 context.Result = Error(busEx.Message, busEx.ErrorCode);
             }
             else
             {
-                _myLogger.Error(ex);
+                logger.Error(ex);
                 context.Result = Error(ex.Message);
             }
         }

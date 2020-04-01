@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Business.Base_Manage;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -11,8 +12,13 @@ namespace Coldairarrow.Api
     /// </summary>
     public class ApiPermissionAttribute : BaseActionFilterAsync
     {
-        public ApiPermissionAttribute(string permissionValue)
+        readonly IPermissionBusiness _permissionBus;
+        readonly IOperator _operator;
+        public ApiPermissionAttribute(IPermissionBusiness permissionBus, IOperator @operator, string permissionValue)
         {
+            _permissionBus = permissionBus;
+            _operator = @operator;
+
             if (permissionValue.IsNullOrEmpty())
                 throw new Exception("permissionValue不能为空");
 
@@ -30,8 +36,7 @@ namespace Coldairarrow.Api
             if (context.ContainsFilter<NoApiPermissionAttribute>())
                 return;
 
-            IPermissionBusiness permissionBus = AutofacHelper.GetScopeService<IPermissionBusiness>();
-            var permissions = await permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
+            var permissions = await _permissionBus.GetUserPermissionValuesAsync(_operator.UserId);
             if (!permissions.Contains(_permissionValue))
                 context.Result = Error("权限不足!");
         }

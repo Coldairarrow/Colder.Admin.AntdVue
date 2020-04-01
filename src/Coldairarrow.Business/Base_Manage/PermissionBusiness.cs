@@ -7,7 +7,7 @@ using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    class PermissionBusiness : BaseBusiness<Base_Action>, IPermissionBusiness, IDependency
+    class PermissionBusiness : BaseBusiness<Base_Action>, IPermissionBusiness, ITransientDependency
     {
         public PermissionBusiness(IBase_ActionBusiness actionBus, IBase_UserBusiness userBus)
         {

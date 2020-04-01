@@ -784,9 +784,19 @@
             <param name="nameSpace">实体命名空间</param>
             <param name="schemaName">架构（模式）名</param>
         </member>
-        <member name="T:Coldairarrow.Util.IDependency">
+        <member name="T:Coldairarrow.Util.IScopeDependency">
             <summary>
-            注入标记
+            注入标记,生命周期为Scope
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.ISingletonDependency">
+            <summary>
+            注入标记,生命周期为Singleton
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.ITransientDependency">
+            <summary>
+            注入标记,生命周期为Transient
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.Extention">
@@ -801,6 +811,9 @@
             </summary>
             <summary>
             IQueryable"T"的拓展操作
+            </summary>
+            <summary>
+            拓展类
             </summary>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToString(System.Byte[])">
@@ -1351,6 +1364,19 @@
             <param name="source">数据源</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.Extention.AddAutoMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            使用AutoMapper自动映射拥有MapFromAttribute或MapToAttribute的类
+            </summary>
+            <param name="services">服务集合</param>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.AddFxServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            自动注入拥有ITransientDependency,IScopeDependency或ISingletonDependency的类
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.Extention.#cctor">
             <summary>
             构造函数
@@ -1817,7 +1843,7 @@
             继承ExpressionVisitor类，实现参数替换统一
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.GlobalData.FxAllTypes">
+        <member name="P:Coldairarrow.Util.GlobalData.AllFxTypes">
             <summary>
             框架所有自定义类
             </summary>

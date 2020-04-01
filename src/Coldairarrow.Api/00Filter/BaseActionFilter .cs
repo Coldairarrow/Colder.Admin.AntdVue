@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -7,8 +6,6 @@ namespace Coldairarrow.Api
 {
     public abstract class BaseActionFilter : Attribute
     {
-        public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
-
         /// <summary>
         /// 返回JSON
         /// </summary>

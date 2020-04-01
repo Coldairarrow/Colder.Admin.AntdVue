@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness, IDependency
+    public class HomeBusiness : BaseBusiness<Base_User>, IHomeBusiness, ITransientDependency
     {
         readonly IOperator _operator;
         readonly IMapper _mapper;
