@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, ITransientDependency
     {
+        public Base_DbLinkBusiness(IRepository repository) : base(repository)
+        {
+        }
+
         #region 外部接口
 
         public async Task<List<Base_DbLink>> GetDataListAsync(Pagination pagination)

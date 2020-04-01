@@ -15,96 +15,26 @@ namespace Coldairarrow.Business
     /// 描述：业务处理基类
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : ITransientDependency where T : class, new()
+    public abstract class BaseBusiness<T> where T : class, new()
     {
-        #region DI
-
-        //public IMyLogger Logger { protected get; set; }
-        //public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
-
-        #endregion
-
         #region 构造函数
 
         /// <summary>
-        /// 无参构造函数
-        /// </summary>
-        public BaseBusiness()
-        {
-
-        }
-
-        /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="conStr">连接名或连接字符串</param>
-        public BaseBusiness(string conStr)
+        /// <param name="repository">注入通用仓储</param>
+        public BaseBusiness(IRepository repository)
         {
-            _conString = conStr;
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="conStr">连接名或连接字符串</param>
-        /// <param name="dbType">数据库类型</param>
-        public BaseBusiness(string conStr, DatabaseType dbType)
-        {
-            _conString = conStr;
-            _dbType = dbType;
+            FullService = repository;
+            Service = new BusRepository(FullService);
         }
 
         #endregion
 
         #region 私有成员
 
-        private string _conString { get; }
-        private DatabaseType? _dbType { get; }
-        private IRepository _service { get; set; }
-        private IRepository _fullService { get; set; }
-        private object _serviceLock = new object();
         protected virtual string _valueField { get; } = "Id";
         protected virtual string _textField { get => throw new Exception("请在子类重写"); }
-        //private SynchronizedCollection<IRepository> _dbs { get; }
-        //    = new SynchronizedCollection<IRepository>();
-        //private IRepository GetBusRepository(string conString, DatabaseType? dbType, bool autoDispose)
-        //{
-        //    var db = new BusRepository(DbFactory.GetRepository(conString, dbType));
-        //    if (autoDispose)
-        //        _dbs.Add(db);
-
-        //    return db;
-        //}
-        //private IRepository GetBusRepository(IRepository fullRepository, bool autoDispose)
-        //{
-        //    var db = new BusRepository(fullRepository);
-        //    if (autoDispose)
-        //        _dbs.Add(db);
-
-        //    return db;
-        //}
-        //private IRepository GetFullRepository(string conString, DatabaseType? dbType, bool autoDispose)
-        //{
-        //    var db = DbFactory.GetRepository(conString, dbType);
-        //    if (autoDispose)
-        //        _dbs.Add(db);
-
-        //    return db;
-        //}
-        //private void InitDb()
-        //{
-        //    if (_service == null) //双if +lock
-        //    {
-        //        lock (_serviceLock)
-        //        {
-        //            if (_service == null)
-        //            {
-        //                _fullService = GetFullRepository(_conString, _dbType, true);
-        //                _service = GetBusRepository(_fullService, true);
-        //            }
-        //        }
-        //    }
-        //}
 
         #endregion
 
@@ -113,78 +43,14 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 业务仓储接口(支持软删除),支持联表操作
         /// 注：仅支持单线程操作
-        /// 注：多线程请使用GetNewService(conString,dbType,false),并且需要手动释放
         /// </summary>
-        public IRepository Service
-        {
-            get
-            {
-                //InitDb();
+        public IRepository Service { get; }
 
-                return _service;
-            }
-        }
-
-        ///// <summary>
-        ///// 获取新的数据仓储
-        ///// 注:支持多线程(每个线程需要单独的IRepository)
-        ///// </summary>
-        ///// <returns></returns>
-        //public IRepository GetNewService()
-        //{
-        //    return GetBusRepository(_conString, _dbType, true);
-        //}
-
-        ///// <summary>
-        ///// 获取新的数据仓储
-        ///// 注:支持多线程(每个线程需要单独的IRepository)
-        ///// </summary>
-        ///// <param name="conString">连接字符串</param>
-        ///// <param name="dbType">数据库类型</param>
-        ///// <param name="autoDispose">自动释放</param>
-        ///// <returns></returns>
-        //public IRepository GetNewService(string conString, DatabaseType dbType, bool autoDispose)
-        //{
-        //    return GetBusRepository(conString, dbType, autoDispose);
-        //}
-
-        ///// <summary>
-        ///// 完整仓储接口(不支持软删除,直接操作数据库),支持联表操作
-        ///// 注：仅支持单线程操作
-        ///// 注：多线程请使用GetNewFullService(conString,dbType,false),并且需要手动释放
-        ///// </summary>
-        //public IRepository FullService
-        //{
-        //    get
-        //    {
-        //        InitDb();
-
-        //        return _fullService;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 获取新的数据仓储
-        ///// 注:支持多线程(每个线程需要单独的IRepository)
-        ///// </summary>
-        ///// <returns></returns>
-        //public IRepository GetNewFullService()
-        //{
-        //    return GetFullRepository(_conString, _dbType, true);
-        //}
-
-        ///// <summary>
-        ///// 获取新的数据仓储
-        ///// 注:支持多线程(每个线程需要单独的IRepository)
-        ///// </summary>
-        ///// <param name="conString">连接字符串</param>
-        ///// <param name="dbType">数据库类型</param>
-        ///// <param name="autoDispose">自动释放</param>
-        ///// <returns></returns>
-        //public IRepository GetNewFullService(string conString, DatabaseType dbType, bool autoDispose)
-        //{
-        //    return GetFullRepository(conString, dbType, autoDispose);
-        //}
+        /// <summary>
+        /// 完整业务仓储接口(不支持软删除),支持联表操作
+        /// 注：仅支持单线程操作
+        /// </summary>
+        public IRepository FullService { get; }
 
         #endregion
 

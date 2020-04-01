@@ -46,10 +46,10 @@ namespace Coldairarrow.Business
             //后台异步写日志
             Task.Factory.StartNew(() =>
             {
-                using (var db = DbFactory.GetRepository("", DatabaseType.MySql))
-                {
-                    db.Insert(GetBase_SysLogInfo(logEvent));
-                }
+                //using (var db = DbFactory.GetRepository("", DatabaseType.MySql))
+                //{
+                //    db.Insert(GetBase_SysLogInfo(logEvent));
+                //}
             }, TaskCreationOptions.LongRunning);
         }
 

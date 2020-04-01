@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_RoleBusiness : BaseBusiness<Base_Role>, IBase_RoleBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_RoleBusiness(IMapper mapper)
+        public Base_RoleBusiness(IRepository repository,IMapper mapper)
+            : base(repository)
         {
             _mapper = mapper;
         }

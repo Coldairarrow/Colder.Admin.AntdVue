@@ -1,15 +1,12 @@
 ﻿using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
-using EFCore.Sharding;
 
 namespace Coldairarrow.Api
 {
@@ -38,16 +35,7 @@ namespace Coldairarrow.Api
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
             services.AddHttpContextAccessor()
-            .AddTransient<IActionContextAccessor, ActionContextAccessor>()
             .AddLogging()
-            .Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            })
-            .Configure<IISServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            })
             .AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -96,14 +84,7 @@ namespace Coldairarrow.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //Request.Body重用
-            app.Use(next => context =>
-            {
-                context.Request.EnableBuffering();
-
-                return next(context);
-            })
-            .UseMiddleware<CorsMiddleware>()//跨域
+            app.UseMiddleware<CorsMiddleware>()//跨域
             .UseDeveloperExceptionPage()
             .UseStaticFiles(new StaticFileOptions
             {
