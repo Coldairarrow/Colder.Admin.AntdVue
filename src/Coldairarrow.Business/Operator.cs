@@ -1,8 +1,7 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Business.Cache;
 using Coldairarrow.Util;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using Microsoft.AspNetCore.Http;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business
@@ -10,47 +9,47 @@ namespace Coldairarrow.Business
     /// <summary>
     /// 操作者
     /// </summary>
-    public class Operator : IOperator, ITransientDependency
+    public class Operator : IOperator, IScopeDependency
     {
-        readonly IServiceProvider _serviceProvider;
-        public Operator(IServiceProvider serviceProvider)
+        readonly IBase_UserCache _userCache;
+        public Operator(IBase_UserCache userCache, IHttpContextAccessor httpContextAccessor)
         {
-            _serviceProvider = serviceProvider;
+            _userCache = userCache;
+            UserId = httpContextAccessor?.HttpContext?.Request.GetJWTPayload()?.UserId;
         }
 
-        #region DI
-
-        private IBase_UserCache _userCache { get => _serviceProvider.GetService<IBase_UserCache>(); }
-        public IMyLogger Logger { get => _serviceProvider.GetService<IMyLogger>(); }
-
-        #endregion
+        private Base_UserDTO _property;
+        private object _lockObj = new object();
 
         /// <summary>
         /// 当前操作者UserId
         /// </summary>
-        public string UserId
+        public string UserId { get; }
+
+        /// <summary>
+        /// 属性
+        /// </summary>
+        public Base_UserDTO Property
         {
             get
             {
-                if (GlobalSwitch.RunMode == RunMode.LocalTest)
-                    return GlobalSwitch.AdminId;
-                else
+                if (UserId.IsNullOrEmpty())
+                    return default;
+
+                if (_property == null)
                 {
-                    try
+                    lock (_lockObj)
                     {
-                        return HttpContextCore.Current.Request.GetJWTPayload()?.UserId;
-                    }
-                    catch
-                    {
-                        return null;
+                        if (_property == null)
+                        {
+                            _property = _userCache.GetCache(UserId);
+                        }
                     }
                 }
+
+                return _property;
             }
         }
-
-        public Base_UserDTO Property { get => _userCache.GetCache(UserId); }
-
-        #region 操作方法
 
         /// <summary>
         /// 判断是否为超级管理员
@@ -64,7 +63,5 @@ namespace Coldairarrow.Business
             else
                 return false;
         }
-
-        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,10 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, ITransientDependency
     {
+        public Base_LogBusiness(IRepository repository) : base(repository)
+        {
+        }
+
         #region 外部接口
 
         /// <summary>

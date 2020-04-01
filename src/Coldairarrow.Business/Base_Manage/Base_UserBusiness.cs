@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, ITransientDependency
     {
         readonly IOperator _operator;
-        public Base_UserBusiness(IBase_UserCache userCache,IOperator @operator)
+        public Base_UserBusiness(IRepository repository, IBase_UserCache userCache, IOperator @operator)
+            : base(repository)
         {
             _userCache = userCache;
             _operator = @operator;

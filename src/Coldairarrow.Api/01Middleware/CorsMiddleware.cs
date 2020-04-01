@@ -13,10 +13,9 @@ namespace Coldairarrow.Api
         /// <summary>
         /// 管道执行到该中间件时候下一个中间件的RequestDelegate请求委托，如果有其它参数，也同样通过注入的方式获得
         /// </summary>
-        /// <param name="next"></param>
+        /// <param name="next">下一个处理者</param>
         public CorsMiddleware(RequestDelegate next)
         {
-            //通过注入方式获得对象
             _next = next;
         }
 

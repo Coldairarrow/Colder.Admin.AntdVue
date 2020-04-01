@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, ITransientDependency
     {
-        public BuildCodeBusiness(IHostingEnvironment evn)
+        public BuildCodeBusiness(IRepository repository, IHostingEnvironment evn)
+            : base(repository)
         {
             var projectPath = evn.ContentRootPath;
             _solutionPath = Directory.GetParent(projectPath).ToString();

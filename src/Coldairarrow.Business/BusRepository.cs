@@ -340,7 +340,6 @@ namespace Coldairarrow.Business
         {
             _db.Dispose();
         }
-
         public Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             return _db.RunTransactionAsync(action, isolationLevel);

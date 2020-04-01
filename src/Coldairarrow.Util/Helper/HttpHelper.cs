@@ -231,6 +231,7 @@ body:{body}
             Dictionary<string, object> allParams = new Dictionary<string, object>();
 
             var request = context.Request;
+            request.EnableBuffering();
             List<string> paramKeys = new List<string>();
             var getParams = request.Query.Keys.ToList();
             var postParams = new List<string>();

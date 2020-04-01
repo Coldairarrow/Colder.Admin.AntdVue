@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +13,11 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_ActionBusiness : BaseBusiness<Base_Action>, IBase_ActionBusiness, ITransientDependency
     {
+        public Base_ActionBusiness(IRepository repository)
+            : base(repository)
+        {
+        }
+
         #region 外部接口
 
         public async Task<List<Base_Action>> GetDataListAsync(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)

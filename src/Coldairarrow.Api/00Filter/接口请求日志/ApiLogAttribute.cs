@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Coldairarrow.Api
 {
-    public class ApiLogAttribute : Attribute, IActionFilter
+    public class ApiLogAttribute : Attribute, IActionFilter, IScopeDependency
     {
         readonly IMyLogger _myLogger;
         public ApiLogAttribute(IMyLogger myLogger)
@@ -27,7 +27,7 @@ namespace Coldairarrow.Api
         /// <param name="filterContext">过滤器上下文</param>
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            _requesTime[HttpContextCore.Current] = DateTime.Now;
+            _requesTime[filterContext.HttpContext] = DateTime.Now;
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace Coldairarrow.Api
         /// <param name="filterContext"></param>
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            var time = DateTime.Now - _requesTime[HttpContextCore.Current];
-            _requesTime.TryRemove(HttpContextCore.Current, out _);
+            var time = DateTime.Now - _requesTime[filterContext.HttpContext];
+            _requesTime.TryRemove(filterContext.HttpContext, out _);
 
             var request = filterContext.HttpContext.Request;
             string resContent = string.Empty;

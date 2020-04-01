@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness, ITransientDependency
     {
+        public Base_AppSecretBusiness(IRepository repository) : base(repository)
+        {
+        }
         #region 外部接口
 
         public async Task<List<Base_AppSecret>> GetDataListAsync(Pagination pagination, string keyword)

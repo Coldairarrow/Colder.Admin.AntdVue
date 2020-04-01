@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     class PermissionBusiness : BaseBusiness<Base_Action>, IPermissionBusiness, ITransientDependency
     {
-        public PermissionBusiness(IBase_ActionBusiness actionBus, IBase_UserBusiness userBus)
+        public PermissionBusiness(IRepository repository, IBase_ActionBusiness actionBus, IBase_UserBusiness userBus)
+            : base(repository)
         {
             _actionBus = actionBus;
             _userBus = userBus;
