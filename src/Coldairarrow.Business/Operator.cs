@@ -10,7 +10,7 @@ namespace Coldairarrow.Business
     /// <summary>
     /// 操作者
     /// </summary>
-    public class Operator : IOperator, IDependency
+    public class Operator : IOperator, ITransientDependency
     {
         readonly IServiceProvider _serviceProvider;
         public Operator(IServiceProvider serviceProvider)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, IDependency
+    public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, ITransientDependency
     {
         #region 外部接口
 

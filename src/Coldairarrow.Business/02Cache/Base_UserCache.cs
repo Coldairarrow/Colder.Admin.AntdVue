@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Coldairarrow.Business.Cache
 {
-    class Base_UserCache : BaseCache<Base_UserDTO>, IBase_UserCache, IDependency
+    class Base_UserCache : BaseCache<Base_UserDTO>, IBase_UserCache, ITransientDependency
     {
         readonly IServiceProvider _serviceProvider;
         public Base_UserCache(IServiceProvider serviceProvider)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness, IDependency
+    public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness, ITransientDependency
     {
         #region 外部接口
 

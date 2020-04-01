@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, IDependency
+    public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, ITransientDependency
     {
         public BuildCodeBusiness(IHostingEnvironment evn)
         {

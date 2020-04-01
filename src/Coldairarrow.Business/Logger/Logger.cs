@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Coldairarrow.Business
 {
-    public class Logger : IMyLogger, IDependency
+    public class Logger : IMyLogger, ITransientDependency
     {
         /// <summary>
         /// 配置Logger

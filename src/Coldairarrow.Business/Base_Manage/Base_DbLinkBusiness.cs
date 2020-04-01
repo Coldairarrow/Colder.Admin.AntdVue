@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, IDependency
+    public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, ITransientDependency
     {
         #region 外部接口
 

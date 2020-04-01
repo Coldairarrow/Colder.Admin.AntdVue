@@ -15,7 +15,7 @@ namespace Coldairarrow.Business
     /// 描述：业务处理基类
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : IDependency where T : class, new()
+    public class BaseBusiness<T> : ITransientDependency where T : class, new()
     {
         #region DI
 
