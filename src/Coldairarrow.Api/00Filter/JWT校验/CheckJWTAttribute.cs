@@ -1,21 +1,18 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
     /// <summary>
     /// JWT校验
     /// </summary>
-    public class CheckJWTAttribute : BaseActionFilter, IActionFilter
+    public class CheckJWTAttribute : BaseActionFilterAsync
     {
         private static readonly int _errorCode = 401;
 
-        /// <summary>
-        /// Action执行之前执行
-        /// </summary>
-        /// <param name="context">过滤器上下文</param>
-        public void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecuting(ActionExecutingContext context)
         {
             try
             {
@@ -42,15 +39,8 @@ namespace Coldairarrow.Api
             {
                 context.Result = Error(ex.Message, _errorCode);
             }
-        }
 
-        /// <summary>
-        /// Action执行完毕之后执行
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-
+            await Task.CompletedTask;
         }
     }
 }

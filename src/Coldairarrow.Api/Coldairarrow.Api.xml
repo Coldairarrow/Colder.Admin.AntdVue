@@ -4,47 +4,47 @@
         <name>Coldairarrow.Api</name>
     </assembly>
     <members>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.JsonContent(System.String)">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.JsonContent(System.String)">
             <summary>
             返回JSON
             </summary>
             <param name="json">json字符串</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Success">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Success">
             <summary>
             返回成功
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Success(System.String)">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Success(System.String)">
             <summary>
             返回成功
             </summary>
             <param name="msg">消息</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Success``1(``0)">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Success``1(``0)">
             <summary>
             返回成功
             </summary>
             <param name="data">返回的数据</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Error">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Error">
             <summary>
             返回错误
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Error(System.String)">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Error(System.String)">
             <summary>
             返回错误
             </summary>
             <param name="msg">错误提示</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Api.BaseActionFilter.Error(System.String,System.Int32)">
+        <member name="M:Coldairarrow.Api.BaseActionFilterAsync.Error(System.String,System.Int32)">
             <summary>
             返回错误
             </summary>
@@ -57,85 +57,25 @@
             Json参数支持
             </summary>
         </member>
-        <member name="M:Coldairarrow.Api.JsonParamterAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.JsonParamterAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
-        </member>
         <member name="T:Coldairarrow.Api.NoJsonParamterAttribute">
             <summary>
             忽略Json参数支持
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Api.NoJsonParamterAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.NoJsonParamterAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
         </member>
         <member name="T:Coldairarrow.Api.CheckJWTAttribute">
             <summary>
             JWT校验
             </summary>
         </member>
-        <member name="M:Coldairarrow.Api.CheckJWTAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.CheckJWTAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
-        </member>
         <member name="T:Coldairarrow.Api.NoCheckJWTAttribute">
             <summary>
             忽略JWT校验
             </summary>
         </member>
-        <member name="M:Coldairarrow.Api.NoCheckJWTAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.NoCheckJWTAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
-        </member>
         <member name="T:Coldairarrow.Api.CheckParamNotEmptyAttribute">
             <summary>
             参数非空校验
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Api.CheckParamNotEmptyAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="filterContext">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.CheckParamNotEmptyAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="filterContext"></param>
         </member>
         <member name="T:Coldairarrow.Api.CheckSignAttribute">
             <summary>
@@ -170,46 +110,10 @@
             忽略接口权限校验
             </summary>
         </member>
-        <member name="M:Coldairarrow.Api.NoApiPermissionAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.NoApiPermissionAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
-        </member>
-        <member name="M:Coldairarrow.Api.ApiLogAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="filterContext">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.ApiLogAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="filterContext"></param>
-        </member>
         <member name="T:Coldairarrow.Api.FormatResponseAttribute">
             <summary>
             若Action返回对象为自定义对象,则将其转为JSON
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Api.FormatResponseAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            Action执行之前执行
-            </summary>
-            <param name="context">过滤器上下文</param>
-        </member>
-        <member name="M:Coldairarrow.Api.FormatResponseAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
-            <summary>
-            Action执行完毕之后执行
-            </summary>
-            <param name="context"></param>
         </member>
         <member name="T:Coldairarrow.Api.NoFormatResponseAttribute">
             <summary>
@@ -237,7 +141,7 @@
             <summary>
             管道执行到该中间件时候下一个中间件的RequestDelegate请求委托，如果有其它参数，也同样通过注入的方式获得
             </summary>
-            <param name="next"></param>
+            <param name="next">下一个处理者</param>
         </member>
         <member name="M:Coldairarrow.Api.CorsMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>

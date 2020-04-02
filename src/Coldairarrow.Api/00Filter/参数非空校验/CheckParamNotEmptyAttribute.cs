@@ -1,16 +1,16 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
     /// <summary>
     /// 参数非空校验
     /// </summary>
-    public class CheckParamNotEmptyAttribute : Attribute, IActionFilter
+    public class CheckParamNotEmptyAttribute : BaseActionFilterAsync
     {
         private List<string> _paramters { get; }
         public CheckParamNotEmptyAttribute(params string[] paramters)
@@ -18,13 +18,9 @@ namespace Coldairarrow.Api
             _paramters = paramters.ToList();
         }
 
-        /// <summary>
-        /// Action执行之前执行
-        /// </summary>
-        /// <param name="filterContext">过滤器上下文</param>
-        public void OnActionExecuting(ActionExecutingContext filterContext)
+        public override async Task OnActionExecuting(ActionExecutingContext context)
         {
-            var allParamters = HttpHelper.GetAllRequestParams(filterContext.HttpContext);
+            var allParamters = await HttpHelper.GetAllRequestParamsAsync(context.HttpContext);
             var needParamters = _paramters.Where(x =>
             {
                 if (!allParamters.ContainsKey(x))
@@ -39,17 +35,8 @@ namespace Coldairarrow.Api
                     Success = false,
                     Msg = $"参数:{string.Join(",", needParamters)}不能为空！"
                 };
-                filterContext.Result = new ContentResult { Content = res.ToJson(), ContentType = "application/json;charset=utf-8" };
+                context.Result = new ContentResult { Content = res.ToJson(), ContentType = "application/json;charset=utf-8" };
             }
-        }
-
-        /// <summary>
-        /// Action执行完毕之后执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-
         }
     }
 }
