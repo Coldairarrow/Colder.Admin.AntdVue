@@ -1516,18 +1516,19 @@
             <param name="stream"></param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.Extention.ReadToString(System.IO.Stream)">
+        <member name="M:Coldairarrow.Util.Extention.ReadToString(System.IO.Stream,System.Text.Encoding)">
             <summary>
             将流读为字符串
             注：默认使用UTF-8编码
             </summary>
             <param name="stream">流</param>
+            <param name="encoding">指定编码</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.Extention.ReadToString(System.IO.Stream,System.Text.Encoding)">
+        <member name="M:Coldairarrow.Util.Extention.ReadToStringAsync(System.IO.Stream,System.Text.Encoding)">
             <summary>
             将流读为字符串
-            注：使用指定编码
+            注：默认使用UTF-8编码
             </summary>
             <param name="stream">流</param>
             <param name="encoding">指定编码</param>
@@ -2500,7 +2501,7 @@
             <param name="cerFile">证书</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.HttpHelper.GetAllRequestParams(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Coldairarrow.Util.HttpHelper.GetAllRequestParamsAsync(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             获取所有请求的参数（包括get参数和post参数）
             </summary>

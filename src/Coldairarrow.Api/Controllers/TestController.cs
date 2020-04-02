@@ -12,7 +12,7 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [CheckJWT]
+        [CheckParamNotEmpty("aa")]
         public async Task<AjaxResult> PressTest1()
         {
             //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();

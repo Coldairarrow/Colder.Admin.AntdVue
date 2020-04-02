@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -47,14 +48,6 @@ HttpHelper.SafeSignRequest
     /// </summary>
     public class CheckSignAttribute : BaseActionFilterAsync
     {
-        readonly IBase_AppSecretBusiness _appSecretBus;
-        readonly IMyLogger _myLogger;
-        public CheckSignAttribute(IBase_AppSecretBusiness appSecretBus, IMyLogger myLogger)
-        {
-            _appSecretBus = appSecretBus;
-            _myLogger = myLogger;
-        }
-
         /// <summary>
         /// Action执行之前执行
         /// </summary>
@@ -70,8 +63,11 @@ HttpHelper.SafeSignRequest
             //判断是否需要签名
             if (filterContext.ContainsFilter<IgnoreSignAttribute>())
                 return;
-
             var request = filterContext.HttpContext.Request;
+            IServiceProvider serviceProvider = filterContext.HttpContext.RequestServices;
+            IBase_AppSecretBusiness appSecretBus = serviceProvider.GetService<IBase_AppSecretBusiness>();
+            IMyLogger myLogger = serviceProvider.GetService<IMyLogger>();
+
             string appId = request.Headers["appId"].ToString();
             if (appId.IsNullOrEmpty())
             {
@@ -115,7 +111,7 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string appSecret = await _appSecretBus.GetAppSecretAsync(appId);
+            string appSecret = await appSecretBus.GetAppSecretAsync(appId);
             if (appSecret.IsNullOrEmpty())
             {
                 ReturnError("header:appId无效");
@@ -131,7 +127,7 @@ headers:{request.Headers.ToJson()}
 body:{body}
 正确sign:{newSign}
 ";
-                _myLogger.Error(LogType.系统异常, log);
+                myLogger.Error(LogType.系统异常, log);
                 ReturnError("header:sign签名错误");
                 return;
             }

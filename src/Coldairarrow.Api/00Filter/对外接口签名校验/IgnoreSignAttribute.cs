@@ -1,21 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-
-namespace Coldairarrow.Api
+﻿namespace Coldairarrow.Api
 {
     /// <summary>
     /// 忽略接口签名校验
     /// </summary>
-    public class IgnoreSignAttribute : Attribute, IActionFilter
+    public class IgnoreSignAttribute : BaseActionFilterAsync
     {
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
 
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-
-        }
     }
 }
