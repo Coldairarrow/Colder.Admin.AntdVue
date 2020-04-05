@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Coldairarrow.Api
 {
@@ -7,6 +8,8 @@ namespace Coldairarrow.Api
     {
         public static void Main(string[] args)
         {
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            Console.WriteLine(path);
             CreateHostBuilder(args).Build().Run();
         }
 

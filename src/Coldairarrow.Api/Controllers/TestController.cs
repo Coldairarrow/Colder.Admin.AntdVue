@@ -1,20 +1,33 @@
 ﻿using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coldairarrow.Api.Controllers
 {
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
+        readonly IRepository _repository;
+        readonly IServiceProvider _serviceProvider;
+        public TestController(IRepository repository, IServiceProvider serviceProvider)
+        {
+            _repository = repository;
+            _serviceProvider = serviceProvider;
+        }
+
         /// <summary>
         /// 压力测试
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [CheckParamNotEmpty("aa")]
         public async Task<AjaxResult> PressTest1()
         {
+            var newRepository = _serviceProvider.GetService<IRepository>();
+            var newRepository2 = _serviceProvider.CreateScope().ServiceProvider.GetService<IRepository>();
+            bool equal = newRepository == newRepository2;
             //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
             //using (var db = DbFactory.GetRepository())
             //{
