@@ -107,12 +107,6 @@ namespace Coldairarrow.Util
         #region 日志相关
 
         /// <summary>
-        /// 日志记录方式
-        /// 注:可用位运算,LoggerType.RDBMS | LoggerType.File表示同时记录到数据库和文件
-        /// </summary>
-        public static readonly LoggerType LoggerType = LoggerType.RDBMS;
-
-        /// <summary>
         /// ElasticSearch服务器配置
         /// </summary>
         public static readonly Uri[] ElasticSearchNodes = new Uri[] { new Uri("http://localhost:9200/") };

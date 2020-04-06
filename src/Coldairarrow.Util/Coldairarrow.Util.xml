@@ -1914,12 +1914,6 @@
             Redis配置字符串
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.LoggerType">
-            <summary>
-            日志记录方式
-            注:可用位运算,LoggerType.RDBMS | LoggerType.File表示同时记录到数据库和文件
-            </summary>
-        </member>
         <member name="F:Coldairarrow.Util.GlobalSwitch.ElasticSearchNodes">
             <summary>
             ElasticSearch服务器配置
@@ -3318,32 +3312,7 @@
             文件字节
             </summary>
         </member>
-        <member name="T:Coldairarrow.Util.LoggerType">
-            <summary>
-            日志记录类型
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.LoggerType.Console">
-            <summary>
-            输出到控制台
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.LoggerType.File">
-            <summary>
-            使用txt文件记录日志,默认存放目录为/A_Logs/yyy-MM/yyyy-MM-dd.txt
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.LoggerType.RDBMS">
-            <summary>
-            使用关系型数据库记录日志,例如SQlServer、MySQL、Oracle等
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.LoggerType.ElasticSearch">
-            <summary>
-            使用ElasticSearch记录日志
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.LogType">
+        <member name="T:Coldairarrow.Util.UserLogTypeEnum">
             <summary>
             系统日志类型
             </summary>

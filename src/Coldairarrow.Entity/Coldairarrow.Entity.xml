@@ -199,39 +199,14 @@
             创建时间
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorId">
-            <summary>
-            创建人Id
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.CreatorRealName">
-            <summary>
-            创建人姓名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Deleted">
-            <summary>
-            否已删除
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Level">
             <summary>
             日志级别
             </summary>
         </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogType">
-            <summary>
-            日志类型
-            </summary>
-        </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.LogContent">
             <summary>
             日志内容
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_Log.Data">
-            <summary>
-            数据备份（转为JSON字符串）
             </summary>
         </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_Role">
@@ -377,6 +352,41 @@
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.DepartmentId">
             <summary>
             所属部门Id
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Entity.Base_Manage.Base_UserLog">
+            <summary>
+            操作记录表
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.Id">
+            <summary>
+            自然主键
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.CreatorId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.CreatorRealName">
+            <summary>
+            创建人姓名
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UserLog.LogContent">
+            <summary>
+            日志内容
             </summary>
         </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_UserRole">

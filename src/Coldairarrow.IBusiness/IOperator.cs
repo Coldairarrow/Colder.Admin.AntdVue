@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Util;
 
 namespace Coldairarrow.Business
 {
@@ -21,6 +22,13 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <returns></returns>
         bool IsAdmin();
+
+        /// <summary>
+        /// 记录操作日志
+        /// </summary>
+        /// <param name="userLogType">用户日志类型</param>
+        /// <param name="msg">内容</param>
+        void WriteUserLog(UserLogTypeEnum userLogType, string msg);
 
         #endregion
     }

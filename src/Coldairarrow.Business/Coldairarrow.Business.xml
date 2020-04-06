@@ -359,13 +359,12 @@
             更新数据
             </summary>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_LogBusiness.GetLogListAsync(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Coldairarrow.Business.Base_Manage.Base_UserLogBusiness.GetLogListAsync(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             获取日志列表
             </summary>
             <param name="logContent">日志内容</param>
             <param name="logType">日志类型</param>
-            <param name="level">日志级别</param>
             <param name="opUserName">操作人用户名</param>
             <param name="startTime">开始时间</param>
             <param name="endTime">结束时间</param>
@@ -390,11 +389,6 @@
             业务仓储类,全局控制业务相关操作
             软删除:查询:获取Deleted=false,删除:更新Deleted=true
             其它:按照具体业务修改
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.Logger.#cctor">
-            <summary>
-            配置Logger
             </summary>
         </member>
         <member name="T:Coldairarrow.Business.Operator">
