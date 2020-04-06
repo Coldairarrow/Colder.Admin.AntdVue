@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -50,8 +51,8 @@ body:{request.Body?.ReadToString(Encoding.UTF8)}
 
 返回:{resContent}
 ";
-            var myLogger = context.HttpContext.RequestServices.GetService<IMyLogger>();
-            myLogger.Info(LogType.系统跟踪, log);
+            var logger = context.HttpContext.RequestServices.GetService<ILogger>();
+            logger.LogInformation(log);
 
             await Task.CompletedTask;
         }

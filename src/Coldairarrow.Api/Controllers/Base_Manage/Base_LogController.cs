@@ -13,30 +13,29 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     {
         #region DI
 
-        public Base_LogController(IBase_LogBusiness logBus)
+        public Base_LogController(IBase_UserLogBusiness logBus)
         {
             _logBus = logBus;
         }
 
-        IBase_LogBusiness _logBus { get; }
+        IBase_UserLogBusiness _logBus { get; }
 
         #endregion
 
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_Log>>> GetLogList(
+        public async Task<AjaxResult<List<Base_UserLog>>> GetLogList(
             Pagination pagination,
             string logContent,
             string logType,
-            string level,
             string opUserName,
             DateTime? startTime,
             DateTime? endTime)
         {
             pagination.SortField = "CreateTime";
             pagination.SortType = "desc";
-            var list = await _logBus.GetLogListAsync(pagination, logContent, logType, level, opUserName, startTime, endTime);
+            var list = await _logBus.GetLogListAsync(pagination, logContent, logType, opUserName, startTime, endTime);
 
             return DataTable(list, pagination);
         }
@@ -44,13 +43,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public List<SelectOption> GetLogTypeList()
         {
-            return EnumHelper.ToOptionList(typeof(LogType));
-        }
-
-        [HttpPost]
-        public List<SelectOption> GetLoglevelList()
-        {
-            return EnumHelper.ToOptionList(typeof(LogLevel));
+            return EnumHelper.ToOptionList(typeof(UserLogTypeEnum));
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -66,7 +67,7 @@ HttpHelper.SafeSignRequest
             var request = filterContext.HttpContext.Request;
             IServiceProvider serviceProvider = filterContext.HttpContext.RequestServices;
             IBase_AppSecretBusiness appSecretBus = serviceProvider.GetService<IBase_AppSecretBusiness>();
-            IMyLogger myLogger = serviceProvider.GetService<IMyLogger>();
+            ILogger logger = serviceProvider.GetService<ILogger>();
 
             string appId = request.Headers["appId"].ToString();
             if (appId.IsNullOrEmpty())
@@ -122,12 +123,12 @@ HttpHelper.SafeSignRequest
             if (sign != newSign)
             {
                 string log =
-$@"header:sign签名错误!
+$@"sign签名错误!
 headers:{request.Headers.ToJson()}
 body:{body}
 正确sign:{newSign}
 ";
-                myLogger.Error(LogType.系统异常, log);
+                logger.LogWarning(log);
                 ReturnError("header:sign签名错误");
                 return;
             }

@@ -1,7 +1,12 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Business.Cache;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business
@@ -12,8 +17,10 @@ namespace Coldairarrow.Business
     public class Operator : IOperator, IScopeDependency
     {
         readonly IBase_UserCache _userCache;
-        public Operator(IBase_UserCache userCache, IHttpContextAccessor httpContextAccessor)
+        readonly IServiceProvider _serviceProvider;
+        public Operator(IBase_UserCache userCache, IHttpContextAccessor httpContextAccessor, IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _userCache = userCache;
             UserId = httpContextAccessor?.HttpContext?.Request.GetJWTPayload()?.UserId;
         }
@@ -62,6 +69,28 @@ namespace Coldairarrow.Business
                 return true;
             else
                 return false;
+        }
+
+        public void WriteUserLog(UserLogTypeEnum userLogType, string msg)
+        {
+            var log = new Base_UserLog
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                CreatorId = UserId,
+                CreatorRealName = Property.RealName,
+                LogContent = msg,
+                LogType = userLogType.ToString()
+            };
+
+            Task.Factory.StartNew(async () =>
+            {
+                using (var scop = _serviceProvider.CreateScope())
+                {
+                    var db = scop.ServiceProvider.GetService<IRepository>();
+                    await db.InsertAsync(log);
+                }
+            }, TaskCreationOptions.LongRunning);
         }
     }
 }
