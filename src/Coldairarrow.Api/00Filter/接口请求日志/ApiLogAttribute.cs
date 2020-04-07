@@ -51,7 +51,7 @@ body:{request.Body?.ReadToString(Encoding.UTF8)}
 
 返回:{resContent}
 ";
-            var logger = context.HttpContext.RequestServices.GetService<ILogger>();
+            var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiLogAttribute>>();
             logger.LogInformation(log);
 
             await Task.CompletedTask;

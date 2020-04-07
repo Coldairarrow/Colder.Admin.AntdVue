@@ -67,7 +67,7 @@ HttpHelper.SafeSignRequest
             var request = filterContext.HttpContext.Request;
             IServiceProvider serviceProvider = filterContext.HttpContext.RequestServices;
             IBase_AppSecretBusiness appSecretBus = serviceProvider.GetService<IBase_AppSecretBusiness>();
-            ILogger logger = serviceProvider.GetService<ILogger>();
+            ILogger logger = serviceProvider.GetService<ILogger<CheckSignAttribute>>();
 
             string appId = request.Headers["appId"].ToString();
             if (appId.IsNullOrEmpty())

@@ -8,7 +8,7 @@ namespace Coldairarrow.Api
     public class GlobalExceptionFilter : BaseActionFilterAsync, IAsyncExceptionFilter
     {
         readonly ILogger _logger;
-        public GlobalExceptionFilter(ILogger logger)
+        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
             _logger = logger;
         }
