@@ -810,6 +810,9 @@
             拓展类
             </summary>
             <summary>
+            拓展类
+            </summary>
+            <summary>
             IQueryable"T"的拓展操作
             </summary>
             <summary>
@@ -1297,6 +1300,13 @@
             <typeparam name="T">泛型</typeparam>
             <param name="iEnumberable">数据源</param>
             <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.UseLog(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            配置日志
+            </summary>
+            <param name="hostBuilder">建造者</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToAscllStr(System.Int32)">

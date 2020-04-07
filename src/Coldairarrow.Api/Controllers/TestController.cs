@@ -1,21 +1,18 @@
-﻿using Coldairarrow.Util;
-using EFCore.Sharding;
+﻿using EFCore.Sharding;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Coldairarrow.Api.Controllers
 {
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
-        readonly IRepository _repository;
-        readonly IServiceProvider _serviceProvider;
-        public TestController(IRepository repository, IServiceProvider serviceProvider)
+        readonly ILogger _logger;
+        public TestController(ILogger<TestController> logger)
         {
-            _repository = repository;
-            _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         /// <summary>
@@ -23,11 +20,9 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<AjaxResult> PressTest1()
+        public async Task PressTest1()
         {
-            var newRepository = _serviceProvider.GetService<IRepository>();
-            var newRepository2 = _serviceProvider.CreateScope().ServiceProvider.GetService<IRepository>();
-            bool equal = newRepository == newRepository2;
+            _logger.LogInformation("666666666");
             //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
             //using (var db = DbFactory.GetRepository())
             //{
@@ -44,7 +39,7 @@ namespace Coldairarrow.Api.Controllers
             //    db.Delete(data);
             //}
 
-            return await Task.FromResult(new AjaxResult { Success = true });
+            await Task.CompletedTask;
         }
 
         /// <summary>
