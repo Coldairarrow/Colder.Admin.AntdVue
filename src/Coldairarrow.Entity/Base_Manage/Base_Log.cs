@@ -24,7 +24,7 @@ namespace Coldairarrow.Entity.Base_Manage
         /// <summary>
         /// 日志级别
         /// </summary>
-        public String Level { get; set; }
+        public int Level { get; set; }
 
         /// <summary>
         /// 日志内容

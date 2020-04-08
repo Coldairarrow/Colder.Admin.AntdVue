@@ -1,17 +1,17 @@
-﻿using EFCore.Sharding;
+﻿using Coldairarrow.Entity.Base_Manage;
+using EFCore.Sharding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Parsing;
 using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -30,30 +30,35 @@ namespace Coldairarrow.Util
             var rootPath = AppDomain.CurrentDomain.BaseDirectory;
             var path = Path.Combine(rootPath, "logs", "log.txt");
 
-            return hostBuilder.UseSerilog((hostingContext, loggerConfiguration) =>
+            return hostBuilder.UseSerilog((hostingContext, serilogConfig) =>
             {
-                loggerConfiguration
+                var envConfig = hostingContext.Configuration;
+
+                serilogConfig
                     .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning);
 
-                var configStr = hostingContext.Configuration.GetSection("log");
-
                 LogConfig logConfig = new LogConfig();
-                hostingContext.Configuration.GetSection("log").Bind(logConfig);
+                envConfig.GetSection("log").Bind(logConfig);
 
-                loggerConfiguration.MinimumLevel.Is((LogEventLevel)logConfig.minlevel);
+                serilogConfig.MinimumLevel.Is((LogEventLevel)logConfig.minlevel);
                 if (logConfig.console.enabled)
-                    loggerConfiguration.WriteTo.Console();
+                    serilogConfig.WriteTo.Console();
                 if (logConfig.debug.enabled)
-                    loggerConfiguration.WriteTo.Debug();
+                    serilogConfig.WriteTo.Debug();
                 if (logConfig.file.enabled)
-                    loggerConfiguration.WriteTo.File(path, rollingInterval: RollingInterval.Day, shared: true);
+                    serilogConfig.WriteTo.File(path, rollingInterval: RollingInterval.Day, shared: true);
                 if (logConfig.database.enabled)
-                    loggerConfiguration.WriteTo.Database(DatabaseType.SqlServer, "");
+                {
+                    DatabaseType dbType = envConfig["DatabaseType"].ToEnum<DatabaseType>();
+                    string conName = envConfig["ConnectionName"];
+                    string conString = envConfig.GetConnectionString(conName);
+                    serilogConfig.WriteTo.Database(dbType, conString);
+                }
                 if (logConfig.elasticsearch.enabled)
                 {
                     var uris = logConfig.elasticsearch.nodes.Select(x => new Uri(x)).ToList();
 
-                    loggerConfiguration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(uris)
+                    serilogConfig.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(uris)
                     {
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
@@ -93,7 +98,20 @@ namespace Coldairarrow.Util
 
         public void Emit(LogEvent logEvent)
         {
-            
+            Base_Log base_Log = new Base_Log
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                Level = (int)logEvent.Level,
+                LogContent = logEvent.RenderMessage(_formatProvider)
+            };
+            Task.Factory.StartNew(async () =>
+            {
+                using (var db = DbFactory.GetRepository(_conString, _databaseType))
+                {
+                    await db.InsertAsync(base_Log);
+                }
+            }, TaskCreationOptions.LongRunning);
         }
     }
 
