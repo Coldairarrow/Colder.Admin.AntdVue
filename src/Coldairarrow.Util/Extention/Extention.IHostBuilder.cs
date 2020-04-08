@@ -93,26 +93,7 @@ namespace Coldairarrow.Util
 
         public void Emit(LogEvent logEvent)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            logEvent.MessageTemplate.Tokens.ForEach(aToken =>
-            {
-                if (aToken is TextToken textToken)
-                    stringBuilder.Append(textToken.Text);
-                else if (aToken is PropertyToken proppertyToken)
-                {
-                    var value = logEvent.Properties[proppertyToken.PropertyName];
-                    if (value is ScalarValue scalarValue)
-                    {
-                        if (scalarValue.Value is string)
-                            stringBuilder.Append(scalarValue.Value);
-                        else
-                            stringBuilder.Append(scalarValue.Value.ToJson());
-
-                        stringBuilder.Append("\r\n");
-                    }
-                }
-            });
-            Console.WriteLine(DateTimeOffset.Now.ToString() + " " + stringBuilder.ToString());
+            
         }
     }
 
