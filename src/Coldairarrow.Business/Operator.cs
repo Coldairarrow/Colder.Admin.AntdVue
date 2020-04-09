@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Business.Cache;
+﻿using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;

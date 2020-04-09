@@ -19,6 +19,8 @@ namespace Coldairarrow.Business.Base_Manage
             _operator = @operator;
             _mapper = mapper;
         }
+
+        [Transaction]
         public async Task<string> SubmitLoginAsync(string userName, string password)
         {
             if (userName.IsNullOrEmpty() || password.IsNullOrEmpty())

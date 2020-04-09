@@ -111,7 +111,7 @@ namespace Coldairarrow.Api
         {
             new IdHelperBootstrapper()
                 //设置WorkerId
-                .SetWorkderId(ConfigHelper.GetValue("WorkerId").ToLong())
+                .SetWorkderId(Configuration["WorkerId"].ToLong())
                 //使用Zookeeper
                 //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
                 .Boot();

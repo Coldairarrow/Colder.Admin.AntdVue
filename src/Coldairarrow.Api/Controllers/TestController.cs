@@ -1,5 +1,5 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
-using EFCore.Sharding.Util;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -20,7 +20,8 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task PressTest1()
+        [Transaction]
+        public virtual async Task PressTest1()
         {
             _logger.LogInformation("name:{name} body:{body}", "小明", new Base_User().ToJson());
             //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();

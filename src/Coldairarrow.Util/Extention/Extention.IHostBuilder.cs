@@ -62,6 +62,7 @@ namespace Coldairarrow.Util
 
                     serilogConfig.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(uris)
                     {
+                        IndexFormat = logConfig.elasticsearch.indexformat,
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
                     });
@@ -84,6 +85,7 @@ namespace Coldairarrow.Util
         {
             public bool enabled { get; set; }
             public List<string> nodes { get; set; } = new List<string>();
+            public string indexformat { get; set; }
         }
 
         class OverrideConfig

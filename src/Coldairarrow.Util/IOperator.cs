@@ -1,7 +1,4 @@
-﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Util;
-
-namespace Coldairarrow.Business
+﻿namespace Coldairarrow.Util
 {
     /// <summary>
     /// 操作者

@@ -67,8 +67,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             var actionList = actionsJson?.ToList<string>();
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
-
                 await _roleBus.AddDataAsync(theData, actionList);
             }
             else

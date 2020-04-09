@@ -4,6 +4,11 @@
         <name>Coldairarrow.Util</name>
     </assembly>
     <members>
+        <member name="T:Coldairarrow.Util.InitEntityAttribute">
+            <summary>
+            初始化实体必要信息
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.CacheHelper">
             <summary>
             缓存帮助类
@@ -3196,6 +3201,29 @@
             </summary>
             <param name="obj">对象</param>
             <returns></returns>
+        </member>
+        <member name="T:Coldairarrow.Util.IOperator">
+            <summary>
+            操作者
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Util.IOperator.UserId">
+            <summary>
+            当前操作者UserId
+            </summary>
+        </member>
+        <member name="M:Coldairarrow.Util.IOperator.IsAdmin">
+            <summary>
+            判断是否为超级管理员
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.IOperator.WriteUserLog(Coldairarrow.Util.UserLogTypeEnum,System.String)">
+            <summary>
+            记录操作日志
+            </summary>
+            <param name="userLogType">用户日志类型</param>
+            <param name="msg">内容</param>
         </member>
         <member name="T:Coldairarrow.Util.AjaxResult">
             <summary>

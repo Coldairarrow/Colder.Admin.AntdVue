@@ -56,8 +56,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             var roleIds = roleIdsJson?.ToList<string>() ?? new List<string>();
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
-
                 await _userBus.AddDataAsync(theData, roleIds);
             }
             else
