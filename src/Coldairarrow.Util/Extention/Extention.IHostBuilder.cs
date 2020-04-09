@@ -34,13 +34,15 @@ namespace Coldairarrow.Util
             {
                 var envConfig = hostingContext.Configuration;
 
-                serilogConfig
-                    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning);
-
                 LogConfig logConfig = new LogConfig();
                 envConfig.GetSection("log").Bind(logConfig);
 
-                serilogConfig.MinimumLevel.Is((LogEventLevel)logConfig.minlevel);
+                logConfig.overrides.ForEach(aOverride =>
+                {
+                    serilogConfig.MinimumLevel.Override(aOverride.source, aOverride.minlevel.ToEnum<LogEventLevel>());
+                });
+
+                serilogConfig.MinimumLevel.Is(logConfig.minlevel.ToEnum<LogEventLevel>());
                 if (logConfig.console.enabled)
                     serilogConfig.WriteTo.Console();
                 if (logConfig.debug.enabled)
@@ -69,18 +71,25 @@ namespace Coldairarrow.Util
 
         class LogConfig
         {
-            public int minlevel { get; set; }
+            public string minlevel { get; set; }
             public Option console { get; set; } = new Option();
             public Option debug { get; set; } = new Option();
             public Option file { get; set; } = new Option();
             public Option database { get; set; } = new Option();
             public Option elasticsearch { get; set; } = new Option();
+            public List<OverrideConfig> overrides { get; set; } = new List<OverrideConfig>();
         }
 
         class Option
         {
             public bool enabled { get; set; }
             public List<string> nodes { get; set; } = new List<string>();
+        }
+
+        class OverrideConfig
+        {
+            public string source { get; set; }
+            public string minlevel { get; set; }
         }
     }
 
@@ -98,9 +107,18 @@ namespace Coldairarrow.Util
 
         public void Emit(LogEvent logEvent)
         {
+            string id = string.Empty;
+            try
+            {
+                id = IdHelper.GetId();
+            }
+            catch
+            {
+                id = Guid.NewGuid().ToString();
+            }
             Base_Log base_Log = new Base_Log
             {
-                Id = IdHelper.GetId(),
+                Id = id,
                 CreateTime = DateTime.Now,
                 Level = (int)logEvent.Level,
                 LogContent = logEvent.RenderMessage(_formatProvider)
