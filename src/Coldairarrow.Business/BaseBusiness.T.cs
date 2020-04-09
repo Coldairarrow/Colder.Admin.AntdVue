@@ -73,6 +73,7 @@ namespace Coldairarrow.Business
         /// 添加数据
         /// </summary>
         /// <param name="entity">实体对象</param>
+        [InitEntity]
         public int Insert(T entity)
         {
             return Service.Insert(entity);
@@ -82,7 +83,8 @@ namespace Coldairarrow.Business
         /// 添加数据
         /// </summary>
         /// <param name="entity">实体对象</param>
-        public async Task<int> InsertAsync(T entity)
+        [InitEntity]
+        public virtual async Task<int> InsertAsync(T entity)
         {
             return await Service.InsertAsync(entity);
         }

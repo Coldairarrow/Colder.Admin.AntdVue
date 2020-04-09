@@ -84,7 +84,8 @@ namespace Coldairarrow.Business.Base_Manage
                 return (await GetDataListAsync(new Pagination(), true, id)).FirstOrDefault();
         }
 
-        //[DataAddLog(LogType.系统用户管理, "RealName", "用户")]
+        [InitEntity]
+        [DataAddLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
         //[DataRepeatValidate(
         //    new string[] { "UserName" },
         //    new string[] { "用户名" })]

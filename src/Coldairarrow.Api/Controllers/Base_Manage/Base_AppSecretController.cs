@@ -65,8 +65,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
-
                 await _appSecretBus.AddDataAsync(theData);
             }
             else

@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Util;
+﻿using AspectCore.Extensions.Hosting;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -16,6 +17,7 @@ namespace Coldairarrow.Api
                         .UseStartup<Startup>();
                 })
                 .UseLog()
+                .UseDynamicProxy()
                 .Build()
                 .Run();
         }
