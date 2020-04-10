@@ -86,9 +86,9 @@ namespace Coldairarrow.Business.Base_Manage
 
         [InitEntity]
         [DataAddLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
-        //[DataRepeatValidate(
-        //    new string[] { "UserName" },
-        //    new string[] { "用户名" })]
+        [DataRepeatValidate(
+            new string[] { "UserName" },
+            new string[] { "用户名" })]
         public async Task AddDataAsync(Base_User newData, List<string> roleIds)
         {
             var res = await RunTransactionAsync(async () =>
@@ -100,10 +100,10 @@ namespace Coldairarrow.Business.Base_Manage
                 throw new Exception("系统异常", res.ex);
         }
 
-        //[DataEditLog(LogType.系统用户管理, "RealName", "用户")]
-        //[DataRepeatValidate(
-        //    new string[] { "UserName" },
-        //    new string[] { "用户名" })]
+        [DataEditLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
+        [DataRepeatValidate(
+            new string[] { "UserName" },
+            new string[] { "用户名" })]
         public async Task UpdateDataAsync(Base_User theData, List<string> roleIds)
         {
             if (theData.Id == GlobalSwitch.AdminId && _operator?.UserId != theData.Id)
@@ -122,7 +122,7 @@ namespace Coldairarrow.Business.Base_Manage
                 throw new Exception("系统异常", res.ex);
         }
 
-        //[DataDeleteLog(LogType.系统用户管理, "RealName", "用户")]
+        [DataDeleteLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             if (ids.Contains(GlobalSwitch.AdminId))

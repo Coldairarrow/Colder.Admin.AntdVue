@@ -22,19 +22,24 @@
             </a-form-item>
           </a-col>
           <a-col :md="3" :sm="24">
-            <a-form-item label="级别">
-              <a-select v-model="queryParam.level" allowClear>
-                <a-select-option v-for="item in LoglevelList" :key="item.value">{{ item.text }}</a-select-option>
+            <a-form-item label="类别">
+              <a-select v-model="queryParam.logType" allowClear>
+                <a-select-option v-for="item in LogTypeList" :key="item.text">{{ item.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="10" :sm="24">
+          <a-col :md="3" :sm="24">
+            <a-form-item label="操作人">
+              <a-input v-model="queryParam.opUserName" placeholder />
+            </a-form-item>
+          </a-col>
+          <a-col :md="7" :sm="24">
             <a-form-item label="时间">
               <a-date-picker v-model="queryParam.startTime" showTime format="YYYY-MM-DD HH:mm:ss" />~
               <a-date-picker v-model="queryParam.endTime" showTime format="YYYY-MM-DD HH:mm:ss" />
             </a-form-item>
           </a-col>
-          <a-col :md="5" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-button type="primary" @click="getDataList">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
           </a-col>
@@ -51,7 +56,6 @@
       :loading="loading"
       @change="handleTableChange"
       :bordered="true"
-      :rowClassName="rowClassName"
       size="small"
       style="word-break:break-all;"
     >
@@ -69,8 +73,9 @@
 import moment from 'moment'
 
 const columns = [
-  { title: '内容', dataIndex: 'LogContent', width: '60%', scopedSlots: { customRender: 'LogContent' } },
-  { title: '级别', dataIndex: 'Level', width: '5%' },
+  { title: '内容', dataIndex: 'LogContent', width: '50%', scopedSlots: { customRender: 'LogContent' } },
+  { title: '类别', dataIndex: 'LogType', width: '10%' },
+  { title: '操作人', dataIndex: 'CreatorRealName', width: '5%' },
   { title: '时间', dataIndex: 'CreateTime', width: '10%' }
 ]
 
@@ -93,8 +98,7 @@ export default {
       columns,
       queryParam: {},
       visible: false,
-      LogTypeList: [],
-      LoglevelList: []
+      LogTypeList: []
     }
   },
   methods: {
@@ -105,14 +109,14 @@ export default {
       this.getDataList()
     },
     init() {
-      this.$http.post('/Base_Manage/Base_Log/GetLoglevelList').then(resJson => {
-        this.LoglevelList = resJson.Data
+      this.$http.post('/Base_Manage/Base_UserLog/GetLogTypeList').then(resJson => {
+        this.LogTypeList = resJson.Data
       })
     },
     getDataList() {
       this.loading = true
       this.$http
-        .post('/Base_Manage/Base_Log/GetLogList', {
+        .post('/Base_Manage/Base_UserLog/GetLogList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: 'CreateTime',
@@ -127,23 +131,7 @@ export default {
           pagination.total = resJson.Total
           this.pagination = pagination
         })
-    },
-    rowClassName(row, index) {
-      var level = row['Level']
-      if (level == 'Warn') {
-        return 'yellow'
-      } else if (level == 'Error' || level == 'Fatal') {
-        return 'red'
-      }
     }
   }
 }
 </script>
-<style>
-.yellow {
-  color: #ff7f00;
-}
-.red {
-  color: #ed5565;
-}
-</style>

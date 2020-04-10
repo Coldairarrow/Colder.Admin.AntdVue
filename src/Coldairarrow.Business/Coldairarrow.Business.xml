@@ -316,20 +316,6 @@
             <param name="source">指定数据源</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_ActionBusiness.GetTheDataAsync(System.String)">
-            <summary>
-            获取指定的单条数据
-            </summary>
-            <param name="id">主键</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.GetTheDataAsync(System.String)">
-            <summary>
-            获取指定的单条数据
-            </summary>
-            <param name="id">主键</param>
-            <returns></returns>
-        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
             <summary>
             添加数据
@@ -340,36 +326,6 @@
             <summary>
             更新数据
             </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.GetTheDataAsync(System.String)">
-            <summary>
-            获取指定的单条数据
-            </summary>
-            <param name="id">主键</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
-            <summary>
-            添加数据
-            </summary>
-            <param name="newData">数据</param>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_DbLinkBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_DbLink)">
-            <summary>
-            更新数据
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_UserLogBusiness.GetLogListAsync(Coldairarrow.Util.Pagination,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
-            <summary>
-            获取日志列表
-            </summary>
-            <param name="logContent">日志内容</param>
-            <param name="logType">日志类型</param>
-            <param name="opUserName">操作人用户名</param>
-            <param name="startTime">开始时间</param>
-            <param name="endTime">结束时间</param>
-            <param name="pagination">分页参数</param>
-            <returns></returns>
         </member>
         <member name="M:Coldairarrow.Business.Base_Manage.BuildCodeBusiness.GetAllDbLink">
             <summary>
