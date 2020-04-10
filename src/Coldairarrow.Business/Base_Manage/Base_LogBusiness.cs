@@ -9,28 +9,25 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
-    public class Base_UserLogBusiness : BaseBusiness<Base_UserLog>, IBase_UserLogBusiness, ITransientDependency
+    public class Base_LogBusiness : BaseBusiness<Base_Log>, IBase_LogBusiness, ITransientDependency
     {
-        public Base_UserLogBusiness(IRepository repository)
+        public Base_LogBusiness(IRepository repository)
             : base(repository)
         {
         }
 
-        public async Task<List<Base_UserLog>> GetLogListAsync(
+        public async Task<List<Base_Log>> GetLogListAsync(
             Pagination pagination,
+            int? level,
             string logContent,
-            string logType,
-            string opUserName,
             DateTime? startTime,
             DateTime? endTime)
         {
-            var whereExp = LinqHelper.True<Base_UserLog>();
+            var whereExp = LinqHelper.True<Base_Log>();
+            if (!level.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.Level == level);
             if (!logContent.IsNullOrEmpty())
                 whereExp = whereExp.And(x => x.LogContent.Contains(logContent));
-            if (!logType.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.LogType == logType);
-            if (!opUserName.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreatorRealName.Contains(opUserName));
             if (!startTime.IsNullOrEmpty())
                 whereExp = whereExp.And(x => x.CreateTime >= startTime);
             if (!endTime.IsNullOrEmpty())

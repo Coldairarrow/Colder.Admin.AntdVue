@@ -274,31 +274,6 @@
             权限Id
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.Base_UnitTest">
-            <summary>
-            单元测试表
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UnitTest.Id">
-            <summary>
-            代理主键
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UnitTest.UserId">
-            <summary>
-            UserId
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UnitTest.UserName">
-            <summary>
-            UserName
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Entity.Base_Manage.Base_UnitTest.Age">
-            <summary>
-            Age
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Entity.Base_Manage.Base_User">
             <summary>
             系统用户表

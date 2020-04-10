@@ -30,11 +30,6 @@ namespace Coldairarrow.Business.Base_Manage
             return await q.Where(where).GetPagination(pagination).ToListAsync();
         }
 
-        /// <summary>
-        /// 获取指定的单条数据
-        /// </summary>
-        /// <param name="id">主键</param>
-        /// <returns></returns>
         public async Task<Base_AppSecret> GetTheDataAsync(string id)
         {
             return await GetEntityAsync(id);
@@ -51,9 +46,10 @@ namespace Coldairarrow.Business.Base_Manage
         /// 添加数据
         /// </summary>
         /// <param name="newData">数据</param>
-        //[DataRepeatValidate(new string[] { "AppId" },
-        //    new string[] { "应用Id" })]
-        //[DataAddLog(LogType.接口密钥管理, "AppId", "应用Id")]
+        [DataRepeatValidate(new string[] { "AppId" },
+            new string[] { "应用Id" })]
+        [DataAddLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
+        [InitEntity]
         public async Task AddDataAsync(Base_AppSecret newData)
         {
             await InsertAsync(newData);
@@ -62,15 +58,15 @@ namespace Coldairarrow.Business.Base_Manage
         /// <summary>
         /// 更新数据
         /// </summary>
-        //[DataRepeatValidate(new string[] { "AppId" },
-        //    new string[] { "应用Id" })]
-        //[DataEditLog(LogType.接口密钥管理, "AppId", "应用Id")]
+        [DataRepeatValidate(new string[] { "AppId" },
+            new string[] { "应用Id" })]
+        [DataEditLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
         public async Task UpdateDataAsync(Base_AppSecret theData)
         {
             await UpdateAsync(theData);
         }
 
-        //[DataDeleteLog(LogType.接口密钥管理, "AppId", "应用Id")]
+        [DataDeleteLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);

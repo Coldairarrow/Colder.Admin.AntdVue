@@ -1,24 +1,23 @@
-﻿//using Castle.DynamicProxy;
-//using Coldairarrow.Util;
+﻿using AspectCore.DynamicProxy;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
-//namespace Coldairarrow.Business
-//{
-//    class DataEditLogAttribute : WriteDataLogAttribute
-//    {
-//        public DataEditLogAttribute(LogType logType, string nameField, string dataName)
-//            : base(logType, nameField, dataName)
-//        {
-//        }
+namespace Coldairarrow.Util
+{
+    public class DataEditLogAttribute : WriteDataLogAttribute
+    {
+        public DataEditLogAttribute(UserLogTypeEnum logType, string nameField, string dataName)
+            : base(logType, nameField, dataName)
+        {
+        }
 
-//        public override void OnActionExecuting(IInvocation invocation)
-//        {
+        public override async Task Invoke(AspectContext context, AspectDelegate next)
+        {
+            await next(context);
 
-//        }
-
-//        public override void OnActionExecuted(IInvocation invocation)
-//        {
-//            var obj = invocation.Arguments[0];
-//            Logger.Info(_logType, $"修改{_dataName}:{obj.GetPropertyValue(_nameField)?.ToString()}");
-//        }
-//    }
-//}
+            var op = context.ServiceProvider.GetService<IOperator>();
+            var obj = context.Parameters[0];
+            op.WriteUserLog(_logType, $"修改{_dataName}:{obj.GetPropertyValue(_nameField)?.ToString()}");
+        }
+    }
+}

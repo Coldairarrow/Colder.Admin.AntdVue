@@ -1,31 +1,31 @@
-﻿//using Castle.DynamicProxy;
-//using Coldairarrow.Util;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Linq.Dynamic.Core;
+﻿using AspectCore.DynamicProxy;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
-//namespace Coldairarrow.Business
-//{
-//    public class DataDeleteLogAttribute : WriteDataLogAttribute
-//    {
-//        public DataDeleteLogAttribute(LogType logType, string nameField, string dataName)
-//            : base(logType, nameField, dataName)
-//        {
-//        }
+namespace Coldairarrow.Util
+{
+    public class DataDeleteLogAttribute : WriteDataLogAttribute
+    {
+        public DataDeleteLogAttribute(UserLogTypeEnum logType, string nameField, string dataName)
+            : base(logType, nameField, dataName)
+        {
+        }
 
-//        private List<object> _deleteList { get; set; }
+        public override async Task Invoke(AspectContext context, AspectDelegate next)
+        {
+            var op = context.ServiceProvider.GetService<IOperator>();
 
-//        public override void OnActionExecuting(IInvocation invocation)
-//        {
-//            List<string> ids = invocation.Arguments[0] as List<string>;
-//            var q = invocation.InvocationTarget.GetType().GetMethod("GetIQueryable").Invoke(invocation.InvocationTarget, new object[] { }) as IQueryable;
-//            _deleteList = q.Where("@0.Contains(Id)", ids).CastToList<object>();
-//        }
+            List<string> ids = context.Parameters[0] as List<string>;
+            var q = context.Proxy.GetType().GetMethod("GetIQueryable").Invoke(context.Proxy, new object[] { }) as IQueryable;
+            var deleteList = q.Where("@0.Contains(Id)", ids).CastToList<object>();
 
-//        public override void OnActionExecuted(IInvocation invocation)
-//        {
-//            string names = string.Join(",", _deleteList.Select(x => x.GetPropertyValue(_nameField)?.ToString()));
-//            Logger.Info(_logType, $"删除{_dataName}:{names}", _deleteList.ToJson());
-//        }
-//    }
-//}
+            await next(context);
+
+            string names = string.Join(",", deleteList.Select(x => x.GetPropertyValue(_nameField)?.ToString()));
+            op.WriteUserLog(_logType, $"删除{_dataName}:{names}");
+        }
+    }
+}

@@ -2,12 +2,10 @@
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
 {
@@ -84,16 +82,12 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
 
-        /// <summary>
-        /// 获取指定的单条数据
-        /// </summary>
-        /// <param name="id">主键</param>
-        /// <returns></returns>
         public async Task<Base_Action> GetTheDataAsync(string id)
         {
             return await GetEntityAsync(id);
         }
 
+        [InitEntity]
         public async Task AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
         {
             var res = await RunTransactionAsync(async () =>

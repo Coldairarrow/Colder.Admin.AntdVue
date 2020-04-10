@@ -64,8 +64,9 @@ namespace Coldairarrow.Business.Base_Manage
             return (await GetDataListAsync(new Pagination(), id)).FirstOrDefault();
         }
 
-        //[DataAddLog(LogType.系统角色管理, "RoleName", "角色")]
-        //[DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
+        [DataAddLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
+        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
+        [InitEntity]
         public async Task AddDataAsync(Base_Role newData, List<string> actions)
         {
             var res = await RunTransactionAsync(async () =>
@@ -77,8 +78,8 @@ namespace Coldairarrow.Business.Base_Manage
                 throw new Exception("系统异常,请重试", res.ex);
         }
 
-        //[DataEditLog(LogType.系统角色管理, "RoleName", "角色")]
-        //[DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
+        [DataEditLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
+        [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
         public async Task UpdateDataAsync(Base_Role theData, List<string> actions)
         {
             var res = await RunTransactionAsync(async () =>
@@ -90,7 +91,7 @@ namespace Coldairarrow.Business.Base_Manage
                 throw new Exception("系统异常,请重试", res.ex);
         }
 
-        //[DataDeleteLog(LogType.系统角色管理, "RoleName", "角色")]
+        [DataDeleteLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             var res = await RunTransactionAsync(async () =>
