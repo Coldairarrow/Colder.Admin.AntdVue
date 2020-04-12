@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Util;
 using EFCore.Sharding;
+using ImpromptuInterface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,8 @@ namespace Coldairarrow.Api
             services.AddAutoMapper();
             services.UseEFCoreSharding(DatabaseType.SqlServer, Configuration.GetConnectionString("BaseDb"),
                 config => config.SetEntityAssembly(GlobalData.FXASSEMBLY));
+            services.AddScoped(_ =>
+                DbFactory.GetRepository(Configuration.GetConnectionString("BaseDb"), DatabaseType.SqlServer).ActLike<IMyRepository>());
             services.AddControllers(options =>
             {
                 options.Filters.Add<GlobalExceptionFilter>();

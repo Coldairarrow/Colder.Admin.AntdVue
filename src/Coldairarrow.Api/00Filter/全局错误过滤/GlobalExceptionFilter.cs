@@ -1,6 +1,8 @@
-﻿using Coldairarrow.Util;
+﻿using AspectCore.DynamicProxy;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
@@ -15,7 +17,10 @@ namespace Coldairarrow.Api
 
         public async Task OnExceptionAsync(ExceptionContext context)
         {
-            var ex = context.Exception;
+            Exception ex = context.Exception;
+            if (ex is AspectInvocationException aspectEx)
+                ex = aspectEx.InnerException;
+
             if (ex is BusException busEx)
             {
                 _logger.LogInformation(busEx.Message);
@@ -23,7 +28,7 @@ namespace Coldairarrow.Api
             }
             else
             {
-                _logger.LogError("", ex);
+                _logger.LogError(ex, "");
                 context.Result = Error(ex.Message);
             }
 
