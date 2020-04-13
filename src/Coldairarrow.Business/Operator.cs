@@ -64,7 +64,7 @@ namespace Coldairarrow.Business
         public bool IsAdmin()
         {
             var role = Property.RoleType;
-            if (UserId == GlobalSwitch.AdminId || role.HasFlag(RoleTypeEnum.超级管理员))
+            if (UserId == GlobalSwitch.AdminId || role.HasFlag(RoleTypes.超级管理员))
                 return true;
             else
                 return false;

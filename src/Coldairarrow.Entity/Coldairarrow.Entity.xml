@@ -404,12 +404,12 @@
             枚举类型
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.RoleTypeEnum">
+        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.RoleTypes">
             <summary>
             系统角色类型
             </summary>
         </member>
-        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.ActionTypeEnum">
+        <member name="T:Coldairarrow.Entity.Base_Manage.EnumType.ActionType">
             <summary>
             类型,菜单=0,页面=1,权限=2
             </summary>

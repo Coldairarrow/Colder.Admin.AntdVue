@@ -13,23 +13,24 @@ namespace Coldairarrow.Util
     public static partial class Extention
     {
         /// <summary>
-        /// 使用AutoMapper自动映射拥有MapFromAttribute或MapToAttribute的类
+        /// 使用AutoMapper自动映射拥有MapAttribute的类
         /// </summary>
         /// <param name="services">服务集合</param>
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)
         {
-            List<(Type from, Type target)> maps = new List<(Type from, Type target)>();
+            List<(Type from, Type[] targets)> maps = new List<(Type from, Type[] targets)>();
 
-            maps.AddRange(GlobalData.AllFxTypes.Where(x => x.GetCustomAttribute<MapToAttribute>() != null)
-                .Select(x => (x, x.GetCustomAttribute<MapToAttribute>().TargetType)));
-            maps.AddRange(GlobalData.AllFxTypes.Where(x => x.GetCustomAttribute<MapFromAttribute>() != null)
-                .Select(x => (x.GetCustomAttribute<MapFromAttribute>().FromType, x)));
+            maps.AddRange(GlobalData.AllFxTypes.Where(x => x.GetCustomAttribute<MapAttribute>() != null)
+                .Select(x => (x, x.GetCustomAttribute<MapAttribute>().TargetTypes)));
 
             var configuration = new MapperConfiguration(cfg =>
             {
                 maps.ForEach(aMap =>
                 {
-                    cfg.CreateMap(aMap.from, aMap.target);
+                    aMap.targets.ForEach(aTarget =>
+                    {
+                        cfg.CreateMap(aMap.from, aTarget);
+                    });
                 });
             });
 
