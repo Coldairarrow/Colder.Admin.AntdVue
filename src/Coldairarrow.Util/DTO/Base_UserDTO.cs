@@ -27,7 +27,7 @@ namespace Coldairarrow.Util
             }
         }
         public string DepartmentName { get; set; }
-        public string SexText { get => Sex == 1 ? "男" : "女"; }
+        public string SexText { get => Sex.GetDescription(); }
         public string BirthdayText { get => Birthday?.ToString("yyyy-MM-dd"); }
     }
 }

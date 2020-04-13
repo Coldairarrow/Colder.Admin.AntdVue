@@ -818,6 +818,9 @@
             拓展类
             </summary>
             <summary>
+            拓展类
+            </summary>
+            <summary>
             IQueryable"T"的拓展操作
             </summary>
             <summary>
@@ -1004,6 +1007,13 @@
             </summary>
             <param name="firstFunc">第一个方法</param>
             <param name="next">下一个方法</param>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.GetDescription(System.Enum)">
+            <summary>
+            获取枚举描述
+            </summary>
+            <param name="value">枚举值</param>
+            <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.AddProperty(System.Dynamic.ExpandoObject,System.String,System.Object)">
             <summary>
