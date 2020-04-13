@@ -38,7 +38,7 @@ namespace Coldairarrow.Business.Base_Manage
         /// </summary>
         public bool NeedAction { get; set; }
 
-        public string TypeText { get => ((ActionTypeEnum)Type).ToString(); }
+        public string TypeText { get => ((ActionType)Type).ToString(); }
         public string NeedActionText { get => NeedAction ? "是" : "否"; }
         public object children { get => Children; }
 

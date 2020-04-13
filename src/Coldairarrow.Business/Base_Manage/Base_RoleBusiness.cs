@@ -51,7 +51,7 @@ namespace Coldairarrow.Business.Base_Manage
                     .ToListAsync();
                 _list.ForEach(aData =>
                 {
-                    if (aData.RoleName == RoleTypeEnum.超级管理员.ToString())
+                    if (aData.RoleName == RoleTypes.超级管理员.ToString())
                         aData.Actions = allActionIds;
                     else
                         aData.Actions = roleActions.Where(x => x.RoleId == aData.Id).Select(x => x.ActionId).ToList();

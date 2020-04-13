@@ -15,10 +15,10 @@ namespace Coldairarrow.Business.Base_Manage
         Task DeleteDataAsync(List<string> ids);
     }
 
-    [MapFrom(typeof(Base_Role))]
+    [Map(typeof(Base_Role))]
     public class Base_RoleDTO : Base_Role
     {
-        public RoleTypeEnum? RoleType { get => RoleName?.ToEnum<RoleTypeEnum>(); }
+        public RoleTypes? RoleType { get => RoleName?.ToEnum<RoleTypes>(); }
         public List<string> Actions { get; set; } = new List<string>();
     }
 }

@@ -1391,7 +1391,7 @@
         </member>
         <member name="M:Coldairarrow.Util.Extention.AddAutoMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            使用AutoMapper自动映射拥有MapFromAttribute或MapToAttribute的类
+            使用AutoMapper自动映射拥有MapAttribute的类
             </summary>
             <param name="services">服务集合</param>
         </member>
