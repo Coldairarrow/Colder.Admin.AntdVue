@@ -316,7 +316,7 @@
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.Sex">
             <summary>
-            性别(1为男，0为女)
+            性别
             </summary>
         </member>
         <member name="P:Coldairarrow.Entity.Base_Manage.Base_User.Birthday">
