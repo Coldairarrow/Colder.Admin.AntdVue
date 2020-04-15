@@ -43,7 +43,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public List<SelectOption> GetLogTypeList()
         {
-            return EnumHelper.ToOptionList(typeof(UserLogTypeEnum));
+            return EnumHelper.ToOptionList(typeof(UserLogType));
         }
 
         #endregion

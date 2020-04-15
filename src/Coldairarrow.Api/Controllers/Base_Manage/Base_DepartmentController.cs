@@ -44,6 +44,8 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             if (theData.Id.IsNullOrEmpty())
             {
+                InitEntity(theData);
+
                 await _departmentBus.AddDataAsync(theData);
             }
             else

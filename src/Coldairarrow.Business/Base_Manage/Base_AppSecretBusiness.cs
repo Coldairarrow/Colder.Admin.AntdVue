@@ -13,6 +13,7 @@ namespace Coldairarrow.Business.Base_Manage
         public Base_AppSecretBusiness(IRepository repository) : base(repository)
         {
         }
+
         #region 外部接口
 
         public async Task<List<Base_AppSecret>> GetDataListAsync(Pagination pagination, string keyword)
@@ -42,31 +43,23 @@ namespace Coldairarrow.Business.Base_Manage
             return theData?.AppSecret;
         }
 
-        /// <summary>
-        /// 添加数据
-        /// </summary>
-        /// <param name="newData">数据</param>
         [DataRepeatValidate(new string[] { "AppId" },
             new string[] { "应用Id" })]
-        [DataAddLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
-        [InitEntity]
+        [DataAddLog(UserLogType.接口密钥管理, "AppId", "应用Id")]
         public async Task AddDataAsync(Base_AppSecret newData)
         {
             await InsertAsync(newData);
         }
 
-        /// <summary>
-        /// 更新数据
-        /// </summary>
         [DataRepeatValidate(new string[] { "AppId" },
             new string[] { "应用Id" })]
-        [DataEditLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
+        [DataEditLog(UserLogType.接口密钥管理, "AppId", "应用Id")]
         public async Task UpdateDataAsync(Base_AppSecret theData)
         {
             await UpdateAsync(theData);
         }
 
-        [DataDeleteLog(UserLogTypeEnum.接口密钥管理, "AppId", "应用Id")]
+        [DataDeleteLog(UserLogType.接口密钥管理, "AppId", "应用Id")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
@@ -75,10 +68,6 @@ namespace Coldairarrow.Business.Base_Manage
         #endregion
 
         #region 私有成员
-
-        #endregion
-
-        #region 数据模型
 
         #endregion
     }

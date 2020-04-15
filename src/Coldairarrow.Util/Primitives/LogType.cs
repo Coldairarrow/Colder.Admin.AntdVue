@@ -3,7 +3,7 @@
     /// <summary>
     /// 系统日志类型
     /// </summary>
-    public enum UserLogTypeEnum
+    public enum UserLogType
     {
         系统异常,
         系统用户管理,

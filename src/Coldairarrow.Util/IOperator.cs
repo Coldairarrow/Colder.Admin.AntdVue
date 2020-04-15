@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="userLogType">用户日志类型</param>
         /// <param name="msg">内容</param>
-        void WriteUserLog(UserLogTypeEnum userLogType, string msg);
+        void WriteUserLog(UserLogType userLogType, string msg);
 
         #endregion
     }

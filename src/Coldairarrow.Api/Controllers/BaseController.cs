@@ -1,5 +1,7 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,10 +11,22 @@ namespace Coldairarrow.Api
     /// 基控制器
     /// </summary>
     [JsonParamter]
-    //[TypeFilter(typeof(ApiLogAttribute))]
     [FormatResponse]
     public class BaseController : ControllerBase
     {
+        protected void InitEntity(object obj)
+        {
+            var op = HttpContext.RequestServices.GetService<IOperator>();
+            if (obj.ContainsProperty("Id"))
+                obj.SetPropertyValue("Id", IdHelper.GetId());
+            if (obj.ContainsProperty("CreateTime"))
+                obj.SetPropertyValue("CreateTime", DateTime.Now);
+            if (obj.ContainsProperty("CreatorId"))
+                obj.SetPropertyValue("CreatorId", op?.UserId);
+            if (obj.ContainsProperty("CreatorRealName"))
+                obj.SetPropertyValue("CreatorRealName", op?.Property?.RealName);
+        }
+
         /// <summary>
         /// 返回JSON
         /// </summary>

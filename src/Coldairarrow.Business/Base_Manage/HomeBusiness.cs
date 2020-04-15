@@ -13,7 +13,7 @@ namespace Coldairarrow.Business.Base_Manage
     {
         readonly IOperator _operator;
         readonly IMapper _mapper;
-        public HomeBusiness(IMyRepository repository, IOperator @operator, IMapper mapper)
+        public HomeBusiness(IRepository repository, IOperator @operator, IMapper mapper)
             : base(repository)
         {
             _operator = @operator;

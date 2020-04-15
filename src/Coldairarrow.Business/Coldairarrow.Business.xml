@@ -316,17 +316,6 @@
             <param name="source">指定数据源</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.AddDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
-            <summary>
-            添加数据
-            </summary>
-            <param name="newData">数据</param>
-        </member>
-        <member name="M:Coldairarrow.Business.Base_Manage.Base_AppSecretBusiness.UpdateDataAsync(Coldairarrow.Entity.Base_Manage.Base_AppSecret)">
-            <summary>
-            更新数据
-            </summary>
-        </member>
         <member name="M:Coldairarrow.Business.Base_Manage.BuildCodeBusiness.GetAllDbLink">
             <summary>
             获取所有数据库连接

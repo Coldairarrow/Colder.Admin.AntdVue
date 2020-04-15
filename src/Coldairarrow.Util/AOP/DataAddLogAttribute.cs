@@ -6,7 +6,7 @@ namespace Coldairarrow.Util
 {
     public class DataAddLogAttribute : WriteDataLogAttribute
     {
-        public DataAddLogAttribute(UserLogTypeEnum logType, string nameField, string dataName)
+        public DataAddLogAttribute(UserLogType logType, string nameField, string dataName)
             : base(logType, nameField, dataName)
         {
         }

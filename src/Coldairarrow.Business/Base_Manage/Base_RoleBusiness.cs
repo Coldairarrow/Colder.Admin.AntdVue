@@ -14,7 +14,7 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_RoleBusiness : BaseBusiness<Base_Role>, IBase_RoleBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_RoleBusiness(IRepository repository,IMapper mapper)
+        public Base_RoleBusiness(IRepository repository, IMapper mapper)
             : base(repository)
         {
             _mapper = mapper;
@@ -64,43 +64,29 @@ namespace Coldairarrow.Business.Base_Manage
             return (await GetDataListAsync(new Pagination(), id)).FirstOrDefault();
         }
 
-        [DataAddLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
+        [DataAddLog(UserLogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
-        [InitEntity]
         public async Task AddDataAsync(Base_Role newData, List<string> actions)
         {
-            var res = await RunTransactionAsync(async () =>
-            {
-                await InsertAsync(newData);
-                await SetRoleActionAsync(newData.Id, actions);
-            });
-            if (!res.Success)
-                throw new Exception("系统异常,请重试", res.ex);
+            await InsertAsync(newData);
+            await SetRoleActionAsync(newData.Id, actions);
         }
 
-        [DataEditLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
+        [DataEditLog(UserLogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
+        [Transactional]
         public async Task UpdateDataAsync(Base_Role theData, List<string> actions)
         {
-            var res = await RunTransactionAsync(async () =>
-            {
-                await UpdateAsync(theData);
-                await SetRoleActionAsync(theData.Id, actions);
-            });
-            if (!res.Success)
-                throw new Exception("系统异常,请重试", res.ex);
+            await UpdateAsync(theData);
+            await SetRoleActionAsync(theData.Id, actions);
         }
 
-        [DataDeleteLog(UserLogTypeEnum.系统角色管理, "RoleName", "角色")]
+        [DataDeleteLog(UserLogType.系统角色管理, "RoleName", "角色")]
+        [Transactional]
         public async Task DeleteDataAsync(List<string> ids)
         {
-            var res = await RunTransactionAsync(async () =>
-            {
-                await DeleteAsync(ids);
-                await Service.Delete_SqlAsync<Base_RoleAction>(x => ids.Contains(x.Id));
-            });
-            if (!res.Success)
-                throw new Exception("系统异常,请重试", res.ex);
+            await DeleteAsync(ids);
+            await Service.Delete_SqlAsync<Base_RoleAction>(x => ids.Contains(x.Id));
         }
 
         #endregion

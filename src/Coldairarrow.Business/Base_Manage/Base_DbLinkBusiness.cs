@@ -25,7 +25,6 @@ namespace Coldairarrow.Business.Base_Manage
             return await GetEntityAsync(id);
         }
 
-        [InitEntity]
         public async Task AddDataAsync(Base_DbLink newData)
         {
             await InsertAsync(newData);

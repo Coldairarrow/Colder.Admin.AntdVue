@@ -84,45 +84,34 @@ namespace Coldairarrow.Business.Base_Manage
                 return (await GetDataListAsync(new Pagination(), true, id)).FirstOrDefault();
         }
 
-        [InitEntity]
-        [DataAddLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
+        [DataAddLog(UserLogType.系统用户管理, "RealName", "用户")]
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
+        [Transactional]
         public async Task AddDataAsync(Base_User newData, List<string> roleIds)
         {
-            var res = await RunTransactionAsync(async () =>
-            {
-                await InsertAsync(newData);
-                await SetUserRoleAsync(newData.Id, roleIds);
-            });
-            if (!res.Success)
-                throw new Exception("系统异常", res.ex);
+            await InsertAsync(newData);
+            await SetUserRoleAsync(newData.Id, roleIds);
         }
 
-        [DataEditLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
+        [DataEditLog(UserLogType.系统用户管理, "RealName", "用户")]
         [DataRepeatValidate(
             new string[] { "UserName" },
             new string[] { "用户名" })]
+        [Transactional]
         public async Task UpdateDataAsync(Base_User theData, List<string> roleIds)
         {
             if (theData.Id == GlobalSwitch.AdminId && _operator?.UserId != theData.Id)
                 throw new BusException("禁止更改超级管理员！");
 
-            var res = await RunTransactionAsync(async () =>
-            {
-                await UpdateAsync(theData);
-                await SetUserRoleAsync(theData.Id, roleIds);
-            });
-            if (res.Success)
-            {
-                _userCache.UpdateCache(theData.Id);
-            }
-            else
-                throw new Exception("系统异常", res.ex);
+            await UpdateAsync(theData);
+            await SetUserRoleAsync(theData.Id, roleIds);
+            _userCache.UpdateCache(theData.Id);
         }
 
-        [DataDeleteLog(UserLogTypeEnum.系统用户管理, "RealName", "用户")]
+        [DataDeleteLog(UserLogType.系统用户管理, "RealName", "用户")]
+        [Transactional]
         public async Task DeleteDataAsync(List<string> ids)
         {
             if (ids.Contains(GlobalSwitch.AdminId))
@@ -150,10 +139,6 @@ namespace Coldairarrow.Business.Base_Manage
             await Service.Delete_SqlAsync<Base_UserRole>(x => x.UserId == userId);
             await Service.InsertAsync(userRoleList);
         }
-
-        #endregion
-
-        #region 数据模型
 
         #endregion
     }
