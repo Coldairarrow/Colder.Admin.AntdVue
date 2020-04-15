@@ -2,7 +2,7 @@
 
 namespace Coldairarrow.Util
 {
-    public interface IMyRepository:IRepository
+    public interface IMyRepository : IRepository
     {
 
     }

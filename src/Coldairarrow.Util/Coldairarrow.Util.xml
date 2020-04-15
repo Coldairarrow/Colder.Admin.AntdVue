@@ -1510,6 +1510,14 @@
             <param name="value">值</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.Extention.GetMethod(System.Object,System.String)">
+            <summary>
+            获取某字段值
+            </summary>
+            <param name="obj">对象</param>
+            <param name="methodName">方法名</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.Extention.ChangeType(System.Object,System.Type)">
             <summary>
             改变实体类型
