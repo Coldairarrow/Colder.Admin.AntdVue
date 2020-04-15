@@ -20,7 +20,7 @@ namespace Coldairarrow.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Transaction]
+        [Transactional]
         public virtual async Task PressTest1()
         {
             _logger.LogInformation("name:{name} body:{body}", "小明", new Base_User().ToJson());
