@@ -70,6 +70,26 @@ namespace Coldairarrow.Util
             });
         }
 
+        /// <summary>
+        /// 使用IdHelper
+        /// </summary>
+        /// <param name="hostBuilder">建造者</param>
+        /// <returns></returns>
+        public static IHostBuilder UseIdHelper(this IHostBuilder hostBuilder)
+        {
+            hostBuilder.ConfigureServices((buidler, services) =>
+            {
+                new IdHelperBootstrapper()
+                    //设置WorkerId
+                    .SetWorkderId(buidler.Configuration["WorkerId"].ToLong())
+                    //使用Zookeeper
+                    //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
+                    .Boot();
+            });
+
+            return hostBuilder;
+        }
+
         class LogConfig
         {
             public string minlevel { get; set; }
@@ -123,7 +143,7 @@ namespace Coldairarrow.Util
                 Id = id,
                 CreateTime = DateTime.Now,
                 Level = (int)logEvent.Level,
-                LogContent = logEvent.RenderMessage(_formatProvider)
+                LogContent = logEvent.RenderMessage(_formatProvider) + logEvent.Exception
             };
             Task.Factory.StartNew(async () =>
             {

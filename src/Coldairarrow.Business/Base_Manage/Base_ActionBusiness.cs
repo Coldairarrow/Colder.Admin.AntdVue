@@ -87,27 +87,18 @@ namespace Coldairarrow.Business.Base_Manage
             return await GetEntityAsync(id);
         }
 
-        [InitEntity]
+        [Transactional]
         public async Task AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
         {
-            var res = await RunTransactionAsync(async () =>
-            {
-                await InsertAsync(newData);
-                await SavePermissionAsync(newData.Id, permissionList);
-            });
-            if (!res.Success)
-                throw res.ex;
+            await InsertAsync(newData);
+            await SavePermissionAsync(newData.Id, permissionList);
         }
 
+        [Transactional]
         public async Task UpdateDataAsync(Base_Action theData, List<Base_Action> permissionList)
         {
-            var res = await RunTransactionAsync(async () =>
-             {
-                 await UpdateAsync(theData);
-                 await SavePermissionAsync(theData.Id, permissionList);
-             });
-            if (!res.Success)
-                throw res.ex;
+            await UpdateAsync(theData);
+            await SavePermissionAsync(theData.Id, permissionList);
         }
 
         public async Task DeleteDataAsync(List<string> ids)
@@ -143,10 +134,6 @@ namespace Coldairarrow.Business.Base_Manage
         #endregion
 
         #region 私有成员
-
-        #endregion
-
-        #region 数据模型
 
         #endregion
     }

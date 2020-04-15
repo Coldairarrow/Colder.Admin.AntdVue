@@ -61,21 +61,20 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         [DataRepeatValidate(new string[] { "Name" }, new string[] { "部门名" })]
-        [DataAddLog(UserLogTypeEnum.部门管理, "Name", "部门名")]
-        [InitEntity]
+        [DataAddLog(UserLogType.部门管理, "Name", "部门名")]
         public async Task AddDataAsync(Base_Department newData)
         {
             await InsertAsync(newData);
         }
 
         [DataRepeatValidate(new string[] { "Name" }, new string[] { "部门名" })]
-        [DataEditLog(UserLogTypeEnum.部门管理, "Name", "部门名")]
+        [DataEditLog(UserLogType.部门管理, "Name", "部门名")]
         public async Task UpdateDataAsync(Base_Department theData)
         {
             await UpdateAsync(theData);
         }
 
-        [DataDeleteLog(UserLogTypeEnum.部门管理, "Name", "部门名")]
+        [DataDeleteLog(UserLogType.部门管理, "Name", "部门名")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             if (await GetIQueryable().AnyAsync(x => ids.Contains(x.ParentId)))

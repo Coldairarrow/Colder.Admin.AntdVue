@@ -10,14 +10,15 @@ namespace Coldairarrow.Api
         public static void Main(string[] args)
         {
             Host.CreateDefaultBuilder(args)
+                .UseIdHelper()
+                .UseLog()
+                .UseDynamicProxy()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
                         .UseUrls("http://*:5000")
                         .UseStartup<Startup>();
                 })
-                .UseLog()
-                .UseDynamicProxy()
                 .Build()
                 .Run();
         }

@@ -70,7 +70,7 @@ namespace Coldairarrow.Business
                 return false;
         }
 
-        public void WriteUserLog(UserLogTypeEnum userLogType, string msg)
+        public void WriteUserLog(UserLogType userLogType, string msg)
         {
             var log = new Base_UserLog
             {

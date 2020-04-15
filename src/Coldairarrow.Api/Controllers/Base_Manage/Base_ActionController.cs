@@ -87,6 +87,8 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
             var permissionList = permissionListJson?.ToList<Base_Action>();
             if (theData.Id.IsNullOrEmpty())
             {
+                InitEntity(theData);
+
                 await _actionBus.AddDataAsync(theData, permissionList);
             }
             else

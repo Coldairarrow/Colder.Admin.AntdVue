@@ -44,7 +44,7 @@ namespace Coldairarrow.Business
                 q = repository.GetIQueryable(entityType);
             }
             else
-                q = context.Proxy.GetType().GetMethod("GetIQueryable").Invoke(context.Proxy, new object[] { }) as IQueryable;
+                q = context.Implementation.GetType().GetMethod("GetIQueryable").Invoke(context.Implementation, new object[] { }) as IQueryable;
             q = q.Where("Id != @0", data.GetPropertyValue("Id"));
             q = q.Where(
                 string.Join("||", whereList),

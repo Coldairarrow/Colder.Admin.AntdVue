@@ -27,7 +27,6 @@ namespace Coldairarrow.Api
             {
                 string conName = Configuration["ConnectionName"];
                 config.UseDatabase(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
-                config.UseDatabase<IMyRepository>(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
                 config.SetEntityAssembly(GlobalData.FXASSEMBLY);
             });
             services.AddControllers(options =>
@@ -108,18 +107,7 @@ namespace Coldairarrow.Api
             {
                 endpoints.MapControllers();
             });
-            InitId();
             ApiLog();
-        }
-
-        private void InitId()
-        {
-            new IdHelperBootstrapper()
-                //设置WorkerId
-                .SetWorkderId(Configuration["WorkerId"].ToLong())
-                //使用Zookeeper
-                //.UseZookeeper("127.0.0.1:2181", 200, GlobalSwitch.ProjectName)
-                .Boot();
         }
 
         private void ApiLog()

@@ -4,9 +4,9 @@
         <name>Coldairarrow.Util</name>
     </assembly>
     <members>
-        <member name="T:Coldairarrow.Util.InitEntityAttribute">
+        <member name="T:Coldairarrow.Util.TransactionalAttribute">
             <summary>
-            初始化实体必要信息
+            开始事务
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.CacheHelper">
@@ -1320,6 +1320,13 @@
         <member name="M:Coldairarrow.Util.Extention.UseLog(Microsoft.Extensions.Hosting.IHostBuilder)">
             <summary>
             配置日志
+            </summary>
+            <param name="hostBuilder">建造者</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.UseIdHelper(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            使用IdHelper
             </summary>
             <param name="hostBuilder">建造者</param>
             <returns></returns>
@@ -3236,7 +3243,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.IOperator.WriteUserLog(Coldairarrow.Util.UserLogTypeEnum,System.String)">
+        <member name="M:Coldairarrow.Util.IOperator.WriteUserLog(Coldairarrow.Util.UserLogType,System.String)">
             <summary>
             记录操作日志
             </summary>
@@ -3368,7 +3375,7 @@
             文件字节
             </summary>
         </member>
-        <member name="T:Coldairarrow.Util.UserLogTypeEnum">
+        <member name="T:Coldairarrow.Util.UserLogType">
             <summary>
             系统日志类型
             </summary>

@@ -9,7 +9,7 @@ namespace Coldairarrow.Util
 {
     public class DataDeleteLogAttribute : WriteDataLogAttribute
     {
-        public DataDeleteLogAttribute(UserLogTypeEnum logType, string nameField, string dataName)
+        public DataDeleteLogAttribute(UserLogType logType, string nameField, string dataName)
             : base(logType, nameField, dataName)
         {
         }
@@ -19,7 +19,7 @@ namespace Coldairarrow.Util
             var op = context.ServiceProvider.GetService<IOperator>();
 
             List<string> ids = context.Parameters[0] as List<string>;
-            var q = context.Proxy.GetType().GetMethod("GetIQueryable").Invoke(context.Proxy, new object[] { }) as IQueryable;
+            var q = context.Implementation.GetType().GetMethod("GetIQueryable").Invoke(context.Implementation, new object[] { }) as IQueryable;
             var deleteList = q.Where("@0.Contains(Id)", ids).CastToList<object>();
 
             await next(context);
