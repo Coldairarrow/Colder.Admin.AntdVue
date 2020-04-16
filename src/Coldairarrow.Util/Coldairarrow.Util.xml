@@ -9,139 +9,6 @@
             开始事务
             </summary>
         </member>
-        <member name="T:Coldairarrow.Util.CacheHelper">
-            <summary>
-            缓存帮助类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.CacheHelper.#cctor">
-            <summary>
-            静态构造函数，初始化缓存类型
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.CacheHelper.Cache">
-            <summary>
-            默认缓存
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.CacheHelper.SystemCache">
-            <summary>
-            系统缓存
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.CacheHelper.RedisCache">
-            <summary>
-            Redis缓存
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.ICache">
-            <summary>
-            缓存操作接口类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.SetCache(System.String,System.Object)">
-            <summary>
-            设置缓存
-            </summary>
-            <param name="key">主键</param>
-            <param name="value">值</param>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.SetCache(System.String,System.Object,System.TimeSpan)">
-            <summary>
-            设置缓存
-            注：默认过期类型为绝对过期
-            </summary>
-            <param name="key">主键</param>
-            <param name="value">值</param>
-            <param name="timeout">过期时间间隔</param>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.SetCache(System.String,System.Object,System.TimeSpan,Coldairarrow.Util.ExpireType)">
-            <summary>
-            设置缓存
-            注：默认过期类型为绝对过期
-            </summary>
-            <param name="key">主键</param>
-            <param name="value">值</param>
-            <param name="timeout">过期时间间隔</param>
-            <param name="expireType">过期类型</param>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.SetKeyExpire(System.String,System.TimeSpan)">
-            <summary>
-            设置键失效时间
-            </summary>
-            <param name="key">键值</param>
-            <param name="expire">从现在起时间间隔</param>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.GetCache(System.String)">
-            <summary>
-            获取缓存
-            </summary>
-            <param name="key">主键</param>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.GetCache``1(System.String)">
-            <summary>
-            获取缓存
-            </summary>
-            <param name="key">主键</param>
-            <typeparam name="T">数据类型</typeparam>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.ContainsKey(System.String)">
-            <summary>
-            是否存在键值
-            </summary>
-            <param name="key">主键</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.ICache.RemoveCache(System.String)">
-            <summary>
-            清除缓存
-            </summary>
-            <param name="key">主键</param>
-        </member>
-        <member name="T:Coldairarrow.Util.ValueInfoEntry">
-            <summary>
-            值信息
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.ExpireType">
-            <summary>
-            过期类型
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.ExpireType.Absolute">
-            <summary>
-            绝对过期
-            注：即自创建一段时间后就过期
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.ExpireType.Relative">
-            <summary>
-            相对过期
-            注：即该键未被访问后一段时间后过期，若此键一直被访问则过期时间自动延长
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.IRedisCache">
-            <summary>
-            Redis缓存
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.RedisCache">
-            <summary>
-            Redis缓存
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.RedisCache.#ctor(System.String)">
-            <summary>
-            构造函数
-            注意：请以单例使用
-            </summary>
-            <param name="config">配置字符串</param>
-        </member>
-        <member name="T:Coldairarrow.Util.SystemCache">
-            <summary>
-            系统缓存帮助类
-            </summary>
-        </member>
         <member name="T:Coldairarrow.Util.BloomFilter`1">
             <summary>
             一个布隆过滤器
@@ -456,14 +323,14 @@
             构造函数
             </summary>
             <param name="dbType">数据库类型</param>
-            <param name="conStr">连接名或连接字符串</param>
+            <param name="conString">完整连接字符串</param>
         </member>
         <member name="F:Coldairarrow.Util.DbHelper._dbType">
             <summary>
             数据库类型
             </summary>
         </member>
-        <member name="F:Coldairarrow.Util.DbHelper._conStr">
+        <member name="F:Coldairarrow.Util.DbHelper._conString">
             <summary>
             连接字符串
             </summary>
@@ -557,8 +424,7 @@
         </member>
         <member name="T:Coldairarrow.Util.DbHelperFactory">
             <summary>
-            描述：数据库帮助类工厂
-            作者：Coldairarrow
+            数据库帮助类工厂
             </summary>
         </member>
         <member name="M:Coldairarrow.Util.DbHelperFactory.GetDbHelper(EFCore.Sharding.DatabaseType,System.String)">
@@ -566,15 +432,7 @@
             获取指定的数据库帮助类
             </summary>
             <param name="dbType">数据库类型</param>
-            <param name="conStr">连接字符串</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.DbHelperFactory.GetDbHelper(System.String,System.String)">
-            <summary>
-            获取指定的数据库帮助类
-            </summary>
-            <param name="dbTypeStr"></param>
-            <param name="conStr">连接字符串</param>
+            <param name="conString">连接字符串</param>
             <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.DbProviderFactoryHelper">
@@ -630,21 +488,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetFullConString(System.String)">
-            <summary>
-            通过连接名或连接字符串获取连接字符串
-            </summary>
-            <param name="nameOrconStr">连接名或者连接字符串</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.DbProviderFactoryHelper.GetDbConnection(System.String,EFCore.Sharding.DatabaseType)">
-            <summary>
-            获取数据库连接对象
-            </summary>
-            <param name="conStr">连接字符串</param>
-            <param name="dbType">数据库类型</param>
-            <returns></returns>
-        </member>
         <member name="T:Coldairarrow.Util.MySqlHelper">
             <summary>
             MySql数据库操作帮助类
@@ -654,7 +497,7 @@
             <summary>
             构造函数
             </summary>
-            <param name="nameOrConStr">数据库连接名或连接字符串</param>
+            <param name="conString">完整连接字符串</param>
         </member>
         <member name="M:Coldairarrow.Util.MySqlHelper.GetDbAllTables(System.String)">
             <summary>
@@ -690,7 +533,7 @@
             <summary>
             构造函数
             </summary>
-            <param name="nameOrConStr">数据库连接名或连接字符串</param>
+            <param name="conString">完整连接字符串</param>
         </member>
         <member name="M:Coldairarrow.Util.OracleHelper.GetDbAllTables(System.String)">
             <summary>
@@ -726,7 +569,7 @@
             <summary>
             构造函数
             </summary>
-            <param name="nameOrConStr">数据库连接名或连接字符串</param>
+            <param name="conString">完整连接字符串</param>
         </member>
         <member name="M:Coldairarrow.Util.PostgreSqlHelper.GetDbAllTables(System.String)">
             <summary>
@@ -762,7 +605,7 @@
             <summary>
             构造函数
             </summary>
-            <param name="nameOrConStr">数据库连接名或连接字符串</param>
+            <param name="conString">完整连接字符串</param>
         </member>
         <member name="M:Coldairarrow.Util.SqlServerHelper.GetDbAllTables(System.String)">
             <summary>
@@ -802,6 +645,31 @@
         <member name="T:Coldairarrow.Util.ITransientDependency">
             <summary>
             注入标记,生命周期为Transient
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.PageInputDTO">
+            <summary>
+            分页查询DTO基类
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Util.PageInputDTO.PageIndex">
+            <summary>
+            当前页码
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Util.PageInputDTO.PageRows">
+            <summary>
+            每页行数
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Util.PageInputDTO.SortField">
+            <summary>
+            排序列
+            </summary>
+        </member>
+        <member name="P:Coldairarrow.Util.PageInputDTO.SortType">
+            <summary>
+            排序类型
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.Extention">
@@ -1331,6 +1199,13 @@
             <param name="hostBuilder">建造者</param>
             <returns></returns>
         </member>
+        <member name="M:Coldairarrow.Util.Extention.UseCache(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            使用缓存
+            </summary>
+            <param name="hostBuilder">建造者</param>
+            <returns></returns>
+        </member>
         <member name="M:Coldairarrow.Util.Extention.ToAscllStr(System.Int32)">
             <summary>
             int转Ascll字符
@@ -1406,7 +1281,7 @@
             <summary>
             自动注入拥有ITransientDependency,IScopeDependency或ISingletonDependency的类
             </summary>
-            <param name="services"></param>
+            <param name="services">服务集合</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.#cctor">
@@ -1572,6 +1447,13 @@
             </summary>
             <param name="stream">流</param>
             <param name="encoding">指定编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Coldairarrow.Util.Extention.ToBool(System.String)">
+            <summary>
+            转为bool
+            </summary>
+            <param name="str">字符串</param>
             <returns></returns>
         </member>
         <member name="M:Coldairarrow.Util.Extention.ToBytes_FromBase64Str(System.String)">
@@ -1887,121 +1769,6 @@
         <member name="P:Coldairarrow.Util.GlobalData.AllFxTypes">
             <summary>
             框架所有自定义类
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.GlobalSwitch">
-            <summary>
-            全局控制
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.AdminId">
-            <summary>
-            超级管理员Id
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.ProjectName">
-            <summary>
-            项目名
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.WebRootUrl">
-            <summary>
-            网站根地址
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.PublishRootUrl">
-            <summary>
-            发布后网站根地址
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.localRootUrl">
-            <summary>
-            本地调试根地址
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.DeleteMode">
-            <summary>
-            数据删除模式,默认逻辑删除
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.RunMode">
-            <summary>
-            运行模式
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Util.GlobalSwitch.WebRootPath">
-            <summary>
-            网站文件根路径
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.DatabaseType">
-            <summary>
-            默认数据库类型
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.DefaultDbConName">
-            <summary>
-            默认数据库连接名
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.CacheType">
-            <summary>
-            默认缓存
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.RedisConfig">
-            <summary>
-            Redis配置字符串
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.GlobalSwitch.ElasticSearchNodes">
-            <summary>
-            ElasticSearch服务器配置
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.RunMode">
-            <summary>
-            运行模式
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.RunMode.LocalTest">
-            <summary>
-            本地测试模式，默认Admin账户，不需要登录
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.RunMode.Publish">
-            <summary>
-            发布模式
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.CacheType">
-            <summary>
-            默认缓存类型
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.CacheType.SystemCache">
-            <summary>
-            系统缓存
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.CacheType.RedisCache">
-            <summary>
-            Redis缓存
-            </summary>
-        </member>
-        <member name="T:Coldairarrow.Util.DeleteMode">
-            <summary>
-            删除模式
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DeleteMode.Physic">
-            <summary>
-            物理删除,即直接从数据库删除
-            </summary>
-        </member>
-        <member name="F:Coldairarrow.Util.DeleteMode.Logic">
-            <summary>
-            逻辑删除,即仅将Deleted字段置为true
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.AsposeOfficeHelper">
@@ -2682,13 +2449,6 @@
             <param name="base64UrlStr">带前缀的base64图片字符串</param>
             <returns></returns>
         </member>
-        <member name="M:Coldairarrow.Util.ImgHelper.GetImgUrl(System.String)">
-            <summary>
-            将图片的URL或者Base64字符串转为图片并上传到服务器，返回上传后的完整图片URL
-            </summary>
-            <param name="imgBase64OrUrl">URL地址或者Base64字符串</param>
-            <returns></returns>
-        </member>
         <member name="M:Coldairarrow.Util.ImgVerifyCodeHelper.BuildVerifyCode(System.Int32)">
             <summary>
             生成图片验证码
@@ -2736,75 +2496,6 @@
             得到验证码的高度     
             </summary>     
             <returns></returns>     
-        </member>
-        <member name="T:Coldairarrow.Util.IocHelper">
-            <summary>
-            Ioc容器帮助类
-            </summary>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.RegisterType``2">
-            <summary>
-            注册类型
-            </summary>
-            <typeparam name="TFrom">定义类型</typeparam>
-            <typeparam name="TTo">实现类型</typeparam>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.RegisterType``2(System.String)">
-            <summary>
-            注册类型
-            </summary>
-            <param name="name">注册名</param>
-            <typeparam name="TFrom">定义类型</typeparam>
-            <typeparam name="TTo">实现类型</typeparam>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.RegisterType(System.Type,System.Type,System.String)">
-            <summary>
-            注册类型
-            </summary>
-            <param name="typeFrom">定义类型</param>
-            <param name="typeTo">实现类型</param>
-            <param name="name">注册名</param>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.Resolve``1">
-            <summary>
-            获取对象
-            </summary>
-            <typeparam name="T">对象类型</typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.Resolve``1(System.Object[])">
-            <summary>
-            获取对象
-            </summary>
-            <typeparam name="T">对象类型</typeparam>
-            <param name="paramters">构造参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.Resolve``1(System.String)">
-            <summary>
-            获取对象
-            </summary>
-            <typeparam name="T">对象类型</typeparam>
-            <param name="name">注册名</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.Resolve``1(System.String,System.Object[])">
-            <summary>
-            获取对象
-            </summary>
-            <typeparam name="T">对象类型</typeparam>
-            <param name="name">注册名</param>
-            <param name="paramters">构造参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Coldairarrow.Util.IocHelper.Resolve(System.Type,System.String,System.Object[])">
-            <summary>
-            获取对象
-            </summary>
-            <param name="typeFrom">对象类型</param>
-            <param name="name">注册名</param>
-            <param name="paramters">构造参数</param>
-            <returns></returns>
         </member>
         <member name="T:Coldairarrow.Util.IpHelper">
             <summary>
@@ -3314,6 +3005,21 @@
             <param name="message">错误信息</param>
             <param name="errorCode">错误代码</param>
         </member>
+        <member name="T:Coldairarrow.Util.CacheType">
+            <summary>
+            缓存类型
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.CacheType.Memory">
+            <summary>
+            使用内存缓存(不支持分布式)
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.CacheType.Redis">
+            <summary>
+            使用Redis缓存(支持分布式)
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.DbTableInfo">
             <summary>
             数据库所有表的信息
@@ -3327,6 +3033,21 @@
         <member name="P:Coldairarrow.Util.DbTableInfo.Description">
             <summary>
             表描述说明
+            </summary>
+        </member>
+        <member name="T:Coldairarrow.Util.DeleteMode">
+            <summary>
+            删除模式
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.DeleteMode.Physic">
+            <summary>
+            物理删除,即直接从数据库删除
+            </summary>
+        </member>
+        <member name="F:Coldairarrow.Util.DeleteMode.Logic">
+            <summary>
+            逻辑删除,即仅将Deleted字段置为true
             </summary>
         </member>
         <member name="T:Coldairarrow.Util.DynamicModel">

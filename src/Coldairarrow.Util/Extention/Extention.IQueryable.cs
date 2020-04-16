@@ -129,6 +129,5 @@ namespace Coldairarrow.Util
         {
             return LinqKit.Extensions.AsExpandable(source);
         }
-
     }
 }

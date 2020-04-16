@@ -9,6 +9,7 @@ namespace Coldairarrow.Util
     public static class GlobalData
     {
         public const string FXASSEMBLY = "Coldairarrow";
+        public const string ADMINID = "Admin";
 
         private static List<Type> _allFxTypes;
         private static object _lock = new object();

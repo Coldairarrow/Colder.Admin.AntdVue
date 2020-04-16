@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -55,12 +56,6 @@ HttpHelper.SafeSignRequest
         /// <param name="filterContext"></param>
         public async override Task OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //若为本地测试，则不需要校验
-            if (GlobalSwitch.RunMode == RunMode.LocalTest)
-            {
-                return;
-            }
-
             //判断是否需要签名
             if (filterContext.ContainsFilter<IgnoreSignAttribute>())
                 return;
@@ -68,6 +63,7 @@ HttpHelper.SafeSignRequest
             IServiceProvider serviceProvider = filterContext.HttpContext.RequestServices;
             IBase_AppSecretBusiness appSecretBus = serviceProvider.GetService<IBase_AppSecretBusiness>();
             ILogger logger = serviceProvider.GetService<ILogger<CheckSignAttribute>>();
+            var cache = serviceProvider.GetService<IDistributedCache>();
 
             string appId = request.Headers["appId"].ToString();
             if (appId.IsNullOrEmpty())
@@ -94,9 +90,12 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string guidKey = $"{GlobalSwitch.ProjectName}_apiGuid_{guid}";
-            if (CacheHelper.Cache.GetCache(guidKey).IsNullOrEmpty())
-                CacheHelper.Cache.SetCache(guidKey, "1", new TimeSpan(0, 10, 0));
+            string guidKey = $"ApiGuid_{guid}";
+            if (cache.GetString(guidKey).IsNullOrEmpty())
+                cache.SetString(guidKey, "1", new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+                });
             else
             {
                 ReturnError("禁止重复调用!");

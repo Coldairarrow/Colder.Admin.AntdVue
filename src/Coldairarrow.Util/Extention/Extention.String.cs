@@ -17,6 +17,16 @@ namespace Coldairarrow.Util
     public static partial class Extention
     {
         /// <summary>
+        /// 转为bool
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns></returns>
+        public static bool ToBool(this string str)
+        {
+            return bool.Parse(str);
+        }
+
+        /// <summary>
         /// 转为字节数组
         /// </summary>
         /// <param name="base64Str">base64字符串</param>

@@ -42,7 +42,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 自动注入拥有ITransientDependency,IScopeDependency或ISingletonDependency的类
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services">服务集合</param>
         /// <returns></returns>
         public static IServiceCollection AddFxServices(this IServiceCollection services)
         {

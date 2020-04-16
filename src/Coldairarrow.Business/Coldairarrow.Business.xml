@@ -19,12 +19,7 @@
         <member name="P:Coldairarrow.Business.BaseBusiness`1.Service">
             <summary>
             业务仓储接口(支持软删除),支持联表操作
-            注：仅支持单线程操作
-            </summary>
-        </member>
-        <member name="P:Coldairarrow.Business.BaseBusiness`1.FullService">
-            <summary>
-            完整业务仓储接口(不支持软删除),支持联表操作
+            注：若需要访问逻辑删除的数据,请使用IRepository.FullRepository
             注：仅支持单线程操作
             </summary>
         </member>
@@ -328,13 +323,6 @@
             </summary>
             <param name="linkId">数据库连接Id</param>
             <returns></returns>
-        </member>
-        <member name="T:Coldairarrow.Business.BusRepository">
-            <summary>
-            业务仓储类,全局控制业务相关操作
-            软删除:查询:获取Deleted=false,删除:更新Deleted=true
-            其它:按照具体业务修改
-            </summary>
         </member>
         <member name="T:Coldairarrow.Business.Operator">
             <summary>

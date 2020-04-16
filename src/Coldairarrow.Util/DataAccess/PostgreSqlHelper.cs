@@ -20,9 +20,9 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
-        public PostgreSqlHelper(string nameOrConStr)
-            : base(DatabaseType.PostgreSql, nameOrConStr)
+        /// <param name="conString">完整连接字符串</param>
+        public PostgreSqlHelper(string conString)
+            : base(DatabaseType.PostgreSql, conString)
         {
             _extraUsingNamespace =
 $@"using NpgsqlTypes;

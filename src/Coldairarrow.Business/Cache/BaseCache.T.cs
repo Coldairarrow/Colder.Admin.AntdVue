@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Util;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,49 +7,52 @@ namespace Coldairarrow.Business.Cache
 {
     public abstract class BaseCache<T> : IBaseCache<T> where T : class
     {
-        public BaseCache()
+        readonly IDistributedCache _cache;
+        public BaseCache(IDistributedCache cache)
         {
-            _moduleKey = GetType().FullName;
+            _cache = cache;
         }
 
         #region 私有成员
 
-        protected string _moduleKey { get; }
-        protected abstract T GetDbData(string key);
+        protected abstract Task<T> GetDbDataAsync(string key);
         protected string BuildKey(string idKey)
         {
-            return $"{GlobalSwitch.ProjectName}_Cache_{_moduleKey}_{idKey}";
+            return $"Cache_{GetType().FullName}_{idKey}";
         }
 
         #endregion
 
         #region 外部接口
 
-        public T GetCache(string idKey)
+        public async Task<T> GetCacheAsync(string idKey)
         {
             if (idKey.IsNullOrEmpty())
                 return null;
 
             string cacheKey = BuildKey(idKey);
-            var cache = CacheHelper.Cache.GetCache<T>(cacheKey);
+            var cache = (await _cache.GetStringAsync(cacheKey))?.ToObject<T>();
             if (cache == null)
             {
-                cache = GetDbData(idKey);
+                cache = await GetDbDataAsync(idKey);
                 if (cache != null)
-                    CacheHelper.Cache.SetCache(cacheKey, cache);
+                    await _cache.SetStringAsync(cacheKey, cache.ToJson());
             }
 
             return cache;
         }
 
-        public void UpdateCache(string idKey)
+        public async Task UpdateCacheAsync(string idKey)
         {
-            CacheHelper.Cache.RemoveCache(BuildKey(idKey));
+            await _cache.RemoveAsync(BuildKey(idKey));
         }
 
-        public void UpdateCache(List<string> idKeys)
+        public async Task UpdateCacheAsync(List<string> idKeys)
         {
-            idKeys.ForEach(x => UpdateCache(x));
+            foreach (var aKey in idKeys)
+            {
+                await UpdateCacheAsync(aKey);
+            }
         }
 
         #endregion

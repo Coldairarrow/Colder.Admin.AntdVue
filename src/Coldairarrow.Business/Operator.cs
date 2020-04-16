@@ -48,7 +48,7 @@ namespace Coldairarrow.Business
                     {
                         if (_property == null)
                         {
-                            _property = _userCache.GetCache(UserId);
+                            _property = AsyncHelper.RunSync(() => _userCache.GetCacheAsync(UserId));
                         }
                     }
                 }
@@ -64,7 +64,7 @@ namespace Coldairarrow.Business
         public bool IsAdmin()
         {
             var role = Property.RoleType;
-            if (UserId == GlobalSwitch.AdminId || role.HasFlag(RoleTypes.超级管理员))
+            if (UserId == GlobalData.ADMINID || role.HasFlag(RoleTypes.超级管理员))
                 return true;
             else
                 return false;
