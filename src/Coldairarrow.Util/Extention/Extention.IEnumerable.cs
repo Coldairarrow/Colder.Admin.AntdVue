@@ -86,7 +86,11 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static IEnumerable<T> GetPagination<T>(this IEnumerable<T> iEnumberable, Pagination pagination)
         {
-            return iEnumberable.AsQueryable().OrderBy($@"{pagination.SortField} {pagination.SortType}").Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows).ToList();
+            return iEnumberable.AsQueryable()
+                .OrderBy($@"{pagination.SortField} {pagination.SortType}")
+                .Skip((pagination.PageIndex - 1) * pagination.PageRows)
+                .Take(pagination.PageRows)
+                .ToList();
         }
     }
 }

@@ -647,6 +647,11 @@
             注入标记,生命周期为Transient
             </summary>
         </member>
+        <member name="T:Coldairarrow.Util.ConditionPageInputDTO">
+            <summary>
+            通用条件分页查询DTO
+            </summary>
+        </member>
         <member name="T:Coldairarrow.Util.PageInputDTO">
             <summary>
             分页查询DTO基类
