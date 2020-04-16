@@ -111,6 +111,7 @@ export default {
     },
     getDataList() {
       this.loading = true
+
       this.$http
         .post('/Base_Manage/Base_Log/GetLogList', {
           PageIndex: this.pagination.current,

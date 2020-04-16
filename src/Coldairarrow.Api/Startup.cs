@@ -26,6 +26,8 @@ namespace Coldairarrow.Api
             services.UseEFCoreSharding(config =>
             {
                 string conName = Configuration["ConnectionName"];
+                if (Configuration["LogicDelete"].ToBool())
+                    config.UseLogicDelete();
                 config.UseDatabase(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
                 config.SetEntityAssembly(GlobalData.FXASSEMBLY);
             });

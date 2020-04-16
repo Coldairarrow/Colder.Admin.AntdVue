@@ -180,7 +180,7 @@ $@"        <a-form-item label=""{aField.Description}"" :labelCol=""labelCol"" :w
         private DbHelper GetTheDbHelper(string linkId)
         {
             var theLink = GetTheLink(linkId);
-            DbHelper dbHelper = DbHelperFactory.GetDbHelper(theLink.DbType, theLink.ConnectionStr);
+            DbHelper dbHelper = DbHelperFactory.GetDbHelper(theLink.DbType.ToEnum<DatabaseType>(), theLink.ConnectionStr);
 
             return dbHelper;
         }

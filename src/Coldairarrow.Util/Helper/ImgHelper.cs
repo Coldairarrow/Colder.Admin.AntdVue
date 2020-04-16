@@ -144,27 +144,27 @@ namespace Coldairarrow.Util
             return base64UrlStr;
         }
 
-        /// <summary>
-        /// 将图片的URL或者Base64字符串转为图片并上传到服务器，返回上传后的完整图片URL
-        /// </summary>
-        /// <param name="imgBase64OrUrl">URL地址或者Base64字符串</param>
-        /// <returns></returns>
-        public static string GetImgUrl(string imgBase64OrUrl)
-        {
-            if (imgBase64OrUrl.Contains("data:image"))
-            {
-                Image img = ImgHelper.GetImgFromBase64Url(imgBase64OrUrl);
-                string fileName = $"{GuidHelper.GenerateKey()}.jpg";
+        ///// <summary>
+        ///// 将图片的URL或者Base64字符串转为图片并上传到服务器，返回上传后的完整图片URL
+        ///// </summary>
+        ///// <param name="imgBase64OrUrl">URL地址或者Base64字符串</param>
+        ///// <returns></returns>
+        //public static string GetImgUrl(string imgBase64OrUrl)
+        //{
+        //    if (imgBase64OrUrl.Contains("data:image"))
+        //    {
+        //        Image img = ImgHelper.GetImgFromBase64Url(imgBase64OrUrl);
+        //        string fileName = $"{GuidHelper.GenerateKey()}.jpg";
 
-                string dir = Path.Combine(GlobalSwitch.WebRootPath, "Upload", "Img");
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-                img.Save(Path.Combine(dir, fileName));
+        //        string dir = Path.Combine(GlobalSwitch.WebRootPath, "Upload", "Img");
+        //        if (!Directory.Exists(dir))
+        //            Directory.CreateDirectory(dir);
+        //        img.Save(Path.Combine(dir, fileName));
 
-                return $"{GlobalSwitch.WebRootUrl}/Upload/Img/{fileName}";
-            }
-            else
-                return imgBase64OrUrl;
-        }
+        //        return $"{GlobalSwitch.WebRootUrl}/Upload/Img/{fileName}";
+        //    }
+        //    else
+        //        return imgBase64OrUrl;
+        //}
     }
 }

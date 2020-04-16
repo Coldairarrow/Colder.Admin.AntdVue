@@ -14,11 +14,11 @@ namespace Coldairarrow.Api
 
         public override async Task OnActionExecuting(ActionExecutingContext context)
         {
+            if (context.ContainsFilter<NoCheckJWTAttribute>())
+                return;
+
             try
             {
-                if (context.ContainsFilter<NoCheckJWTAttribute>() || GlobalSwitch.RunMode == RunMode.LocalTest)
-                    return;
-
                 var req = context.HttpContext.Request;
 
                 string token = req.GetToken();

@@ -1,6 +1,10 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
+using CSRedis;
 using EFCore.Sharding;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Configuration;
@@ -88,6 +92,39 @@ namespace Coldairarrow.Util
             });
 
             return hostBuilder;
+        }
+
+        /// <summary>
+        /// 使用缓存
+        /// </summary>
+        /// <param name="hostBuilder">建造者</param>
+        /// <returns></returns>
+        public static IHostBuilder UseCache(this IHostBuilder hostBuilder)
+        {
+            hostBuilder.ConfigureServices((buidlerContext, services) =>
+            {
+                var cacheOption = buidlerContext.Configuration.GetSection("Cache").Get<CacheOption>();
+                switch (cacheOption.CacheType)
+                {
+                    case CacheType.Memory: services.AddDistributedMemoryCache(); break;
+                    case CacheType.Redis:
+                        {
+                            var csredis = new CSRedisClient(cacheOption.RedisEndpoint);
+                            RedisHelper.Initialization(csredis);
+                            services.AddSingleton(csredis);
+                            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance));
+                        }; break;
+                    default: throw new Exception("缓存类型无效");
+                }
+            });
+
+            return hostBuilder;
+        }
+
+        class CacheOption
+        {
+            public CacheType CacheType { get; set; }
+            public string RedisEndpoint { get; set; }
         }
 
         class LogConfig

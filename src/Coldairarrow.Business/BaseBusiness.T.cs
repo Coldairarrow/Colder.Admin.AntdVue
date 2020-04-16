@@ -25,8 +25,7 @@ namespace Coldairarrow.Business
         /// <param name="repository">注入通用仓储</param>
         public BaseBusiness(IRepository repository)
         {
-            FullService = repository;
-            Service = new BusRepository(FullService);
+            Service = repository;
         }
 
         #endregion
@@ -42,15 +41,10 @@ namespace Coldairarrow.Business
 
         /// <summary>
         /// 业务仓储接口(支持软删除),支持联表操作
+        /// 注：若需要访问逻辑删除的数据,请使用IRepository.FullRepository
         /// 注：仅支持单线程操作
         /// </summary>
         public IRepository Service { get; }
-
-        /// <summary>
-        /// 完整业务仓储接口(不支持软删除),支持联表操作
-        /// 注：仅支持单线程操作
-        /// </summary>
-        public IRepository FullService { get; }
 
         #endregion
 

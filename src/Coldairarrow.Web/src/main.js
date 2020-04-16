@@ -17,6 +17,9 @@ import './permission' // permission control
 import './utils/filter' // global filter
 import operatorPlugin from './utils/plugin/operator-plugin'
 
+import moment from 'moment'
+moment.prototype.toJSON = function () { return moment(this).format("YYYY-MM-DD HH:mm:ss") }
+
 Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http

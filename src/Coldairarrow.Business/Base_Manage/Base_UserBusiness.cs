@@ -102,25 +102,25 @@ namespace Coldairarrow.Business.Base_Manage
         [Transactional]
         public async Task UpdateDataAsync(Base_User theData, List<string> roleIds)
         {
-            if (theData.Id == GlobalSwitch.AdminId && _operator?.UserId != theData.Id)
+            if (theData.Id == GlobalData.ADMINID && _operator?.UserId != theData.Id)
                 throw new BusException("禁止更改超级管理员！");
 
             await UpdateAsync(theData);
             await SetUserRoleAsync(theData.Id, roleIds);
-            _userCache.UpdateCache(theData.Id);
+            await _userCache.UpdateCacheAsync(theData.Id);
         }
 
         [DataDeleteLog(UserLogType.系统用户管理, "RealName", "用户")]
         [Transactional]
         public async Task DeleteDataAsync(List<string> ids)
         {
-            if (ids.Contains(GlobalSwitch.AdminId))
+            if (ids.Contains(GlobalData.ADMINID))
                 throw new BusException("超级管理员是内置账号,禁止删除！");
             var userIds = await GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToListAsync();
 
             await DeleteAsync(ids);
 
-            _userCache.UpdateCache(ids);
+            await _userCache.UpdateCacheAsync(ids);
         }
 
         #endregion

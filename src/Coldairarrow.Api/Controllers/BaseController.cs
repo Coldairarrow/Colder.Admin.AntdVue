@@ -1,8 +1,10 @@
 ﻿using Coldairarrow.Util;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Coldairarrow.Api
@@ -25,6 +27,16 @@ namespace Coldairarrow.Api
                 obj.SetPropertyValue("CreatorId", op?.UserId);
             if (obj.ContainsProperty("CreatorRealName"))
                 obj.SetPropertyValue("CreatorRealName", op?.Property?.RealName);
+        }
+
+        protected string GetAbsolutePath(string virtualPath)
+        {
+            string path = virtualPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            if (path[0] == '~')
+                path = path.Remove(0, 2);
+            string rootPath = HttpContext.RequestServices.GetService<IWebHostEnvironment>().WebRootPath;
+
+            return Path.Combine(rootPath, path);
         }
 
         /// <summary>

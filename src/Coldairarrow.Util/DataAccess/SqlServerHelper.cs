@@ -16,9 +16,9 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
-        public SqlServerHelper(string nameOrConStr)
-            : base(DatabaseType.SqlServer, nameOrConStr)
+        /// <param name="conString">完整连接字符串</param>
+        public SqlServerHelper(string conString)
+            : base(DatabaseType.SqlServer, conString)
         {
         }
 
