@@ -8,7 +8,7 @@
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
 
         /// <summary>
         /// 错误代码
