@@ -33,7 +33,7 @@ namespace Coldairarrow.Business.Base_Manage
             if (!input.parentId.IsNullOrEmpty())
                 where = where.And(x => x.ParentId == input.parentId);
             if (input.types?.Count > 0)
-                where = where.And(x => input.types.Contains(x.Type));
+                where = where.And(x => input.types.Contains((int)x.Type));
 
             return await q.Where(where).OrderBy(x => x.Sort).ToListAsync();
         }
@@ -42,7 +42,7 @@ namespace Coldairarrow.Business.Base_Manage
         {
             var where = LinqHelper.True<Base_Action>();
             if (!input.types.IsNullOrEmpty())
-                where = where.And(x => input.types.Contains(x.Type));
+                where = where.And(x => input.types.Contains((int)x.Type));
             var qList = await (input.q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToListAsync();
 
             var treeList = qList.Select(x => new Base_ActionDTO
@@ -51,7 +51,7 @@ namespace Coldairarrow.Business.Base_Manage
                 NeedAction = x.NeedAction,
                 Text = x.Name,
                 ParentId = x.ParentId,
-                Type = x.Type,
+                Type = (int)x.Type,
                 Url = x.Url,
                 Value = x.Id,
                 Icon = x.Icon,
@@ -71,7 +71,7 @@ namespace Coldairarrow.Business.Base_Manage
             {
                 var ids = _list.Select(x => x.Id).ToList();
                 var allPermissions = await GetIQueryable()
-                    .Where(x => ids.Contains(x.ParentId) && x.Type == 2)
+                    .Where(x => ids.Contains(x.ParentId) && (int)x.Type == 2)
                     .ToListAsync();
 
                 _list.ForEach(aData =>
@@ -121,7 +121,7 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.NeedAction = true;
             });
             //删除原来
-            await Delete_SqlAsync(x => x.ParentId == parentId && x.Type == 2);
+            await Delete_SqlAsync(x => x.ParentId == parentId && (int)x.Type == 2);
             //新增
             await InsertAsync(permissionList);
 

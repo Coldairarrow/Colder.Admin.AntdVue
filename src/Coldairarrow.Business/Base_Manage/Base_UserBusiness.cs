@@ -34,27 +34,28 @@ namespace Coldairarrow.Business.Base_Manage
 
         #region 外部接口
 
-        public async Task<PageResult<Base_UserDTO>> GetDataListAsync(Base_UsersInputDTO input)
+        public async Task<PageResult<Base_UserDTO>> GetDataListAsync(PageInput<Base_UsersInputDTO> input)
         {
             Expression<Func<Base_User, Base_Department, Base_UserDTO>> select = (a, b) => new Base_UserDTO
             {
                 DepartmentName = b.Name
             };
+            var search = input.Search;
             select = select.BuildExtendSelectExpre();
-            var q_User = input.all ? Service.GetIQueryable<Base_User>() : GetIQueryable();
+            var q_User = search.all ? Service.GetIQueryable<Base_User>() : GetIQueryable();
             var q = from a in q_User.AsExpandable()
                     join b in Service.GetIQueryable<Base_Department>() on a.DepartmentId equals b.Id into ab
                     from b in ab.DefaultIfEmpty()
                     select @select.Invoke(a, b);
 
             var where = LinqHelper.True<Base_UserDTO>();
-            if (!input.userId.IsNullOrEmpty())
-                where = PredicateBuilder.And(where, x => x.Id == input.userId);
-            if (!input.keyword.IsNullOrEmpty())
+            if (!search.userId.IsNullOrEmpty())
+                where = PredicateBuilder.And(where, x => x.Id == search.userId);
+            if (!search.keyword.IsNullOrEmpty())
             {
                 where = where.And(x =>
-                    EF.Functions.Like(x.UserName, input.keyword)
-                    || EF.Functions.Like(x.RealName, input.keyword));
+                    EF.Functions.Like(x.UserName, search.keyword)
+                    || EF.Functions.Like(x.RealName, search.keyword));
             }
 
             var list = await q.Where(where).GetPageResultAsync(input);
@@ -90,7 +91,17 @@ namespace Coldairarrow.Business.Base_Manage
             if (id.IsNullOrEmpty())
                 return null;
             else
-                return (await GetDataListAsync(new Base_UsersInputDTO { all = true, userId = id })).Data.FirstOrDefault();
+            {
+                PageInput<Base_UsersInputDTO> input = new PageInput<Base_UsersInputDTO>
+                {
+                    Search = new Base_UsersInputDTO
+                    {
+                        all = true,
+                        userId = id
+                    }
+                };
+                return (await GetDataListAsync(input)).Data.FirstOrDefault();
+            }
         }
 
         [DataAddLog(UserLogType.系统用户管理, "RealName", "用户")]
@@ -138,6 +149,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         private async Task SetUserRoleAsync(string userId, List<string> roleIds)
         {
+            roleIds = roleIds ?? new List<string>();
             var userRoleList = roleIds.Select(x => new Base_UserRole
             {
                 Id = IdHelper.GetId(),

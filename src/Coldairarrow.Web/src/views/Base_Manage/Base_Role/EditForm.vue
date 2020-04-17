@@ -128,12 +128,12 @@ export default {
       this.checkedKeys.checked = []
     },
     init() {
-      this.$http.post('/Base_Manage/Base_Action/GetActionTreeList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Action/GetActionTreeList', {}).then(resJson => {
         if (resJson.Success) {
           this.actionsTreeData = resJson.Data
         }
       })
-      this.$http.post('/Base_Manage/Base_Action/GetAllActionList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Action/GetAllActionList', {}).then(resJson => {
         if (resJson.Success) {
           this.allActionList = resJson.Data
         }

@@ -40,7 +40,7 @@ namespace Coldairarrow.Entity.Base_Manage
         /// <summary>
         /// 类型,菜单=0,页面=1,权限=2
         /// </summary>
-        public Int32 Type { get; set; }
+        public ActionType Type { get; set; }
 
         /// <summary>
         /// 权限名/菜单名
@@ -71,5 +71,15 @@ namespace Coldairarrow.Entity.Base_Manage
         /// 排序
         /// </summary>
         public int Sort { get; set; }
+    }
+
+    /// <summary>
+    /// 类型,菜单=0,页面=1,权限=2
+    /// </summary>
+    public enum ActionType
+    {
+        菜单 = 0,
+        页面 = 1,
+        权限 = 2
     }
 }

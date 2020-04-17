@@ -2,6 +2,7 @@
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -31,6 +32,7 @@ namespace Coldairarrow.Api
                 config.UseDatabase(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
                 config.SetEntityAssembly(GlobalData.FXASSEMBLY);
             });
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
             services.AddControllers(options =>
             {
                 options.Filters.Add<ValidFilterAttribute>();

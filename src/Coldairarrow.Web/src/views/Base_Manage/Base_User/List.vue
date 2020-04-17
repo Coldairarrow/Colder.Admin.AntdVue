@@ -9,8 +9,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-        >删除</a-button
-      >
+      >删除</a-button>
     </div>
 
     <div class="table-page-search-wrapper">
@@ -145,7 +144,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_User/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_User/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {

@@ -2,7 +2,6 @@
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business.Base_Manage
 {

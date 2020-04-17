@@ -48,7 +48,11 @@
           ></a-tree-select>
         </a-form-item>
         <a-form-item label="角色" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select allowClear mode="multiple" v-decorator="['RoleIdList', { rules: [{ required: false }] }]">
+          <a-select
+            allowClear
+            mode="multiple"
+            v-decorator="['roleIds', { rules: [{ required: false }] }]"
+          >
             <a-select-option v-for="item in RoleOptionList" :key="item.Id">{{ item.RoleName }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -101,6 +105,7 @@ export default {
           if (setData['Birthday']) {
             setData['Birthday'] = moment(setData['Birthday'])
           }
+          setData['roleIds'] = resJson.Data['RoleIdList']
           this.form.setFieldsValue(setData)
           this.init()
         })
@@ -111,10 +116,6 @@ export default {
         //校验成功
         if (!errors) {
           this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-          this.entity['roleIdsJson'] = JSON.stringify(this.entity['RoleIdList'])
-          if (this.entity['Birthday']) {
-            this.entity['Birthday'] = this.entity['Birthday'].format('YYYY-MM-DD')
-          }
           this.confirmLoading = true
           this.$http.post('/Base_Manage/Base_User/SaveData', this.entity).then(resJson => {
             this.confirmLoading = false
@@ -134,12 +135,12 @@ export default {
       this.visible = false
     },
     init() {
-      this.$http.post('/Base_Manage/Base_Department/GetTreeDataList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Department/GetTreeDataList', {}).then(resJson => {
         if (resJson.Success) {
           this.DepartmentIdTreeData = resJson.Data
         }
       })
-      this.$http.post('/Base_Manage/Base_Role/GetDataList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Role/GetDataList', {}).then(resJson => {
         if (resJson.Success) {
           this.RoleOptionList = resJson.Data
         }

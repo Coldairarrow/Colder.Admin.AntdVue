@@ -45,8 +45,12 @@ namespace Coldairarrow.Business.Base_Manage
                 return GetTheDbHelper(linkId).GetDbAllTables();
         }
 
-        public void Build(string linkId, string areaName, List<string> tables, List<int> buildTypes)
+        public void Build(BuildInputDTO input)
         {
+            string linkId = input.linkId;
+            string areaName = input.areaName;
+            List<string> tables = input.tables;
+            List<int> buildTypes = input.buildTypes;
             _areaName = areaName;
             //内部成员初始化
             _dbHelper = GetTheDbHelper(linkId);

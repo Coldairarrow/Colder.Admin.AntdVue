@@ -30,6 +30,7 @@ namespace Coldairarrow.Util
                     aMap.targets.ForEach(aTarget =>
                     {
                         cfg.CreateMap(aMap.from, aTarget);
+                        cfg.CreateMap(aTarget, aMap.from);
                     });
                 });
             });

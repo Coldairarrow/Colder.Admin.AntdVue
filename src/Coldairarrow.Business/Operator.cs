@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using static Coldairarrow.Entity.Base_Manage.EnumType;
 
 namespace Coldairarrow.Business
 {

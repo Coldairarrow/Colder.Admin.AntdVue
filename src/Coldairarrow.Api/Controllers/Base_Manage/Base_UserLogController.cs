@@ -24,7 +24,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<Base_UserLog>> GetLogList(UserLogsInputDTO input)
+        public async Task<PageResult<Base_UserLog>> GetLogList(PageInput<UserLogsInputDTO> input)
         {
             input.SortField = "CreateTime";
             input.SortType = "desc";
