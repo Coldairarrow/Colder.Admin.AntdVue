@@ -32,22 +32,18 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// <summary>
         /// 用户登录(获取token)
         /// </summary>
-        /// <param name="userName">账号</param>
-        /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpPost]
-        [CheckParamNotEmpty("userName", "password")]
         [NoCheckJWT]
-        public async Task<string> SubmitLogin(string userName, string password)
+        public async Task<string> SubmitLogin(LoginInputDTO input)
         {
-            return await _homeBus.SubmitLoginAsync(userName, password);
+            return await _homeBus.SubmitLoginAsync(input);
         }
 
         [HttpPost]
-        [CheckParamNotEmpty("oldPwd", "newPwd")]
-        public async Task ChangePwd(string oldPwd, string newPwd)
+        public async Task ChangePwd(ChangePwdInputDTO input)
         {
-            await _homeBus.ChangePwdAsync(oldPwd, newPwd);
+            await _homeBus.ChangePwdAsync(input);
         }
 
         [HttpPost]

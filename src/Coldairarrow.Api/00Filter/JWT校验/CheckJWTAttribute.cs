@@ -22,6 +22,12 @@ namespace Coldairarrow.Api
                 var req = context.HttpContext.Request;
 
                 string token = req.GetToken();
+                if (token.IsNullOrEmpty())
+                {
+                    context.Result = Error("缺少token", _errorCode);
+                    return;
+                }
+
                 if (!JWTHelper.CheckToken(token, JWTHelper.JWTSecret))
                 {
                     context.Result = Error("token校验失败!", _errorCode);

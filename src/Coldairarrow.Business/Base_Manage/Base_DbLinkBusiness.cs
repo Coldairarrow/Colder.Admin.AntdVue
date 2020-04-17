@@ -1,7 +1,6 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,9 +14,9 @@ namespace Coldairarrow.Business.Base_Manage
 
         #region 外部接口
 
-        public async Task<List<Base_DbLink>> GetDataListAsync(Pagination pagination)
+        public async Task<PageResult<Base_DbLink>> GetDataListAsync(PageInput input)
         {
-            return await GetIQueryable().GetPagination(pagination).ToListAsync();
+            return await GetIQueryable().GetPageResultAsync(input);
         }
 
         public async Task<Base_DbLink> GetTheDataAsync(string id)

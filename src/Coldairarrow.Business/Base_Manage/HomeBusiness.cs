@@ -20,12 +20,12 @@ namespace Coldairarrow.Business.Base_Manage
             _mapper = mapper;
         }
 
-        public async Task<string> SubmitLoginAsync(string userName, string password)
+        public async Task<string> SubmitLoginAsync(LoginInputDTO input)
         {
-            if (userName.IsNullOrEmpty() || password.IsNullOrEmpty())
-                throw new BusException("账号或密码不能为空！");
-            password = password.ToMD5String();
-            var theUser = await GetIQueryable().Where(x => x.UserName == userName && x.Password == password).FirstOrDefaultAsync();
+            input.password = input.password.ToMD5String();
+            var theUser = await GetIQueryable()
+                .Where(x => x.UserName == input.userName && x.Password == input.password)
+                .FirstOrDefaultAsync();
 
             if (theUser.IsNullOrEmpty())
                 throw new BusException("账号或密码不正确！");
@@ -41,13 +41,13 @@ namespace Coldairarrow.Business.Base_Manage
             return token;
         }
 
-        public async Task ChangePwdAsync(string oldPwd, string newPwd)
+        public async Task ChangePwdAsync(ChangePwdInputDTO input)
         {
             var theUser = _operator.Property;
-            if (theUser.Password != oldPwd?.ToMD5String())
+            if (theUser.Password != input.oldPwd?.ToMD5String())
                 throw new BusException("原密码错误!");
 
-            theUser.Password = newPwd.ToMD5String();
+            theUser.Password = input.newPwd.ToMD5String();
             await UpdateAsync(_mapper.Map<Base_User>(theUser));
         }
     }

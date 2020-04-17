@@ -383,45 +383,6 @@ namespace Coldairarrow.Business
             return Service.GetIQueryable<T>();
         }
 
-        /// <summary>
-        /// 获取分页后的数据
-        /// </summary>
-        /// <typeparam name="U">实体类型</typeparam>
-        /// <param name="query">数据源IQueryable</param>
-        /// <param name="pagination">分页参数</param>
-        /// <returns></returns>
-        public List<U> GetPagination<U>(IQueryable<U> query, Pagination pagination)
-        {
-            return query.GetPagination(pagination).ToList();
-        }
-
-        /// <summary>
-        /// 获取分页后的数据
-        /// </summary>
-        /// <typeparam name="U">实体参数</typeparam>
-        /// <param name="query">IQueryable数据源</param>
-        /// <param name="pageIndex">当前页</param>
-        /// <param name="pageRows">每页行数</param>
-        /// <param name="orderColumn">排序列</param>
-        /// <param name="orderType">排序类型</param>
-        /// <param name="count">总记录数</param>
-        /// <param name="pages">总页数</param>
-        /// <returns></returns>
-        public List<U> GetPagination<U>(IQueryable<U> query, int pageIndex, int pageRows, string orderColumn, string orderType, ref int count, ref int pages)
-        {
-            Pagination pagination = new Pagination
-            {
-                PageIndex = pageIndex,
-                PageRows = pageRows,
-                SortType = orderType,
-                SortField = orderColumn
-            };
-            count = pagination.Total = query.Count();
-            pages = pagination.PageCount;
-
-            return query.GetPagination(pagination).ToList();
-        }
-
         #endregion
 
         #region 执行Sql语句
@@ -514,33 +475,31 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 构建前端Select远程搜索数据
         /// </summary>
-        /// <param name="selectedValueJson">已选择的项，JSON数组</param>
-        /// <param name="q">查询关键字</param>
+        /// <param name="input">查询参数</param>
         /// <returns></returns>
-        public async Task<List<SelectOption>> GetOptionListAsync(string selectedValueJson, string q)
+        public async Task<List<SelectOption>> GetOptionListAsync(OptionListInputDTO input)
         {
-            return await GetOptionListAsync(selectedValueJson, q, _textField, _valueField, null);
+            return await GetOptionListAsync(input, _textField, _valueField, null);
         }
 
         /// <summary>
         /// 构建前端Select远程搜索数据
         /// </summary>
-        /// <param name="selectedValueJson">已选择的项，JSON数组</param>
-        /// <param name="q">查询关键字</param>
+        /// <param name="input">查询参数</param>
         /// <param name="textFiled">文本字段</param>
         /// <param name="valueField">值字段</param>
         /// <param name="source">指定数据源</param>
         /// <returns></returns>
-        public async Task<List<SelectOption>> GetOptionListAsync(string selectedValueJson, string q, string textFiled, string valueField, IQueryable<T> source = null)
+        public async Task<List<SelectOption>> GetOptionListAsync(OptionListInputDTO input, string textFiled, string valueField, IQueryable<T> source = null)
         {
-            Pagination pagination = new Pagination
+            PageInput pageInput = new PageInput
             {
                 PageRows = 10
             };
 
             List<T> selectedList = new List<T>();
             string where = " 1=1 ";
-            List<string> ids = selectedValueJson?.ToList<string>() ?? new List<string>();
+            List<string> ids = input.selectedValues;
             if (ids.Count > 0)
             {
                 selectedList = await GetNewQ().Where($"@0.Contains({valueField})", ids).ToListAsync();
@@ -548,11 +507,11 @@ namespace Coldairarrow.Business
                 where += $" && !@0.Contains({valueField})";
             }
 
-            if (!q.IsNullOrEmpty())
+            if (!input.q.IsNullOrEmpty())
             {
                 where += $" && it.{textFiled}.Contains(@1)";
             }
-            List<T> newQList = await GetNewQ().Where(where, ids, q).GetPagination(pagination).ToListAsync();
+            List<T> newQList = await GetNewQ().Where(where, ids, input.q).GetPageListAsync(pageInput);
 
             var resList = selectedList.Concat(newQList).Select(x => new SelectOption
             {

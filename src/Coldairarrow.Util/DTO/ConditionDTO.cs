@@ -1,9 +1,9 @@
 ﻿namespace Coldairarrow.Util
 {
     /// <summary>
-    /// 通用条件分页查询DTO
+    /// 通用条件查询DTO
     /// </summary>
-    public class CommonPageInputDTO : PageInputDTO
+    public class ConditionDTO
     {
         public string Condition { get; set; }
         public string Keyword { get; set; }

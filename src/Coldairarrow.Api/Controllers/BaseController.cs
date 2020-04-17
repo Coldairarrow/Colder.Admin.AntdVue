@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -12,7 +11,6 @@ namespace Coldairarrow.Api
     /// <summary>
     /// 基控制器
     /// </summary>
-    [JsonParamter]
     [FormatResponse]
     public class BaseController : ControllerBase
     {
@@ -138,29 +136,6 @@ namespace Coldairarrow.Api
             };
 
             return res;
-        }
-
-        /// <summary>
-        /// 返回表格数据
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="list">数据列表</param>
-        /// <returns></returns>
-        protected AjaxResult<List<T>> DataTable<T>(List<T> list)
-        {
-            return DataTable(list, new Pagination());
-        }
-
-        /// <summary>
-        /// 返回表格数据
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="list">数据列表</param>
-        /// <param name="pagination">分页参数</param>
-        /// <returns></returns>
-        protected AjaxResult<List<T>> DataTable<T>(List<T> list, Pagination pagination)
-        {
-            return pagination.BuildTableResult_AntdVue(list);
         }
     }
 }

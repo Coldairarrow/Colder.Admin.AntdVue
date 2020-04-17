@@ -2,7 +2,6 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,19 +24,12 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_UserLog>>> GetLogList(
-            Pagination pagination,
-            string logContent,
-            string logType,
-            string opUserName,
-            DateTime? startTime,
-            DateTime? endTime)
+        public async Task<PageResult<Base_UserLog>> GetLogList(UserLogsInputDTO input)
         {
-            pagination.SortField = "CreateTime";
-            pagination.SortType = "desc";
-            var list = await _logBus.GetLogListAsync(pagination, logContent, logType, opUserName, startTime, endTime);
+            input.SortField = "CreateTime";
+            input.SortType = "desc";
 
-            return DataTable(list, pagination);
+            return await _logBus.GetLogListAsync(input);
         }
 
         [HttpPost]

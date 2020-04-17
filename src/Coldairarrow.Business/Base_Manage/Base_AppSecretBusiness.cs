@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,20 @@ namespace Coldairarrow.Business.Base_Manage
 
         #region 外部接口
 
-        public async Task<List<Base_AppSecret>> GetDataListAsync(Pagination pagination, string keyword)
+        public async Task<PageResult<Base_AppSecret>> GetDataListAsync(PageInput<AppSecretsInputDTO> input)
         {
             var q = GetIQueryable();
             var where = LinqHelper.True<Base_AppSecret>();
-            if (!keyword.IsNullOrEmpty())
+            var search = input.Search;
+            if (!search.keyword.IsNullOrEmpty())
             {
                 where = where.And(x =>
-                    x.AppId.Contains(keyword)
-                    || x.AppSecret.Contains(keyword)
-                    || x.AppName.Contains(keyword));
+                    x.AppId.Contains(search.keyword)
+                    || x.AppSecret.Contains(search.keyword)
+                    || x.AppName.Contains(search.keyword));
             }
 
-            return await q.Where(where).GetPagination(pagination).ToListAsync();
+            return await q.Where(where).GetPageResultAsync(input);
         }
 
         public async Task<Base_AppSecret> GetTheDataAsync(string id)

@@ -5,8 +5,8 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 分页返回结果
     /// </summary>
-    /// <typeparam name="U"></typeparam>
-    public class PageResult<U> : AjaxResult<List<U>>
+    /// <typeparam name="T"></typeparam>
+    public class PageResult<T> : AjaxResult<List<T>>
     {
         /// <summary>
         /// 总记录数

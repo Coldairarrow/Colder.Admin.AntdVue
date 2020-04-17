@@ -1,9 +1,9 @@
 ﻿namespace Coldairarrow.Util
 {
     /// <summary>
-    /// 分页查询DTO基类
+    /// 分页查询基类
     /// </summary>
-    public class PageInputDTO
+    public class PageInput
     {
         private string _sortType { get; set; } = "asc";
 

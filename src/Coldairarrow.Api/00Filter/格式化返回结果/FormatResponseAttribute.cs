@@ -12,7 +12,7 @@ namespace Coldairarrow.Api
     {
         public override async Task OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.ContainsFilter<NoJsonParamterAttribute>())
+            if (context.ContainsFilter<NoFormatResponseAttribute>())
                 return;
 
             if (context.Result is EmptyResult)
