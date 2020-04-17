@@ -28,7 +28,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<Base_AppSecret>> GetDataList(AppSecretsInputDTO input)
+        public async Task<PageResult<Base_AppSecret>> GetDataList(PageInput<AppSecretsInputDTO> input)
         {
             return await _appSecretBus.GetDataListAsync(input);
         }

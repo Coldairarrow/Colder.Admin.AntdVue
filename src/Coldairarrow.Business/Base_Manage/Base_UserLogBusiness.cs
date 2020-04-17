@@ -14,19 +14,20 @@ namespace Coldairarrow.Business.Base_Manage
         {
         }
 
-        public async Task<PageResult<Base_UserLog>> GetLogListAsync(UserLogsInputDTO input)
+        public async Task<PageResult<Base_UserLog>> GetLogListAsync(PageInput<UserLogsInputDTO> input)
         {
             var whereExp = LinqHelper.True<Base_UserLog>();
-            if (!input.logContent.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.LogContent.Contains(input.logContent));
-            if (!input.logType.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.LogType == input.logType);
-            if (!input.opUserName.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreatorRealName.Contains(input.opUserName));
-            if (!input.startTime.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreateTime >= input.startTime);
-            if (!input.endTime.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreateTime <= input.endTime);
+            var search = input.Search;
+            if (!search.logContent.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.LogContent.Contains(search.logContent));
+            if (!search.logType.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.LogType == search.logType);
+            if (!search.opUserName.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.CreatorRealName.Contains(search.opUserName));
+            if (!search.startTime.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.CreateTime >= search.startTime);
+            if (!search.endTime.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.CreateTime <= search.endTime);
 
             return await GetIQueryable().Where(whereExp).GetPageResultAsync(input);
         }

@@ -24,15 +24,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<Base_UserDTO>> GetDataList(Base_UsersInputDTO input)
+        public async Task<PageResult<Base_UserDTO>> GetDataList(PageInput<Base_UsersInputDTO> input)
         {
             return await _userBus.GetDataListAsync(input);
         }
 
         [HttpPost]
-        public async Task<Base_UserDTO> GetTheData(string id)
+        public async Task<Base_UserDTO> GetTheData(IdInputDTO input)
         {
-            return await _userBus.GetTheDataAsync(id) ?? new Base_UserDTO();
+            return await _userBus.GetTheDataAsync(input.id) ?? new Base_UserDTO();
         }
 
         [HttpPost]

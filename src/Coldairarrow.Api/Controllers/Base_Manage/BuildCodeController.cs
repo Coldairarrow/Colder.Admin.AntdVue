@@ -33,9 +33,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public void Build(string linkId, string areaName, string tablesJson, string buildTypesJson)
+        public void Build(BuildInputDTO input)
         {
-            _buildCodeBus.Build(linkId, areaName, tablesJson?.ToList<string>(), buildTypesJson?.ToList<int>());
+            _buildCodeBus.Build(input);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<Base_RoleOutputDTO>> GetDataList(RolesInputDTO input)
+        public async Task<PageResult<Base_RoleOutputDTO>> GetDataList(PageInput<RolesInputDTO> input)
         {
             return await _roleBus.GetDataListAsync(input);
         }

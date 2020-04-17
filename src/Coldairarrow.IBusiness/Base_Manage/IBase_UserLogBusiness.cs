@@ -7,10 +7,10 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_UserLogBusiness
     {
-        Task<PageResult<Base_UserLog>> GetLogListAsync(UserLogsInputDTO input);
+        Task<PageResult<Base_UserLog>> GetLogListAsync(PageInput<UserLogsInputDTO> input);
     }
 
-    public class UserLogsInputDTO : PageInput
+    public class UserLogsInputDTO
     {
         public string logContent { get; set; }
         public string logType { get; set; }

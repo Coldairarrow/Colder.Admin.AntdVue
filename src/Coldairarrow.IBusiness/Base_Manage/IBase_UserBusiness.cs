@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_UserBusiness
     {
-        Task<PageResult<Base_UserDTO>> GetDataListAsync(Base_UsersInputDTO input);
+        Task<PageResult<Base_UserDTO>> GetDataListAsync(PageInput<Base_UsersInputDTO> input);
         Task<List<SelectOption>> GetOptionListAsync(OptionListInputDTO input);
         Task<Base_UserDTO> GetTheDataAsync(string id);
         Task AddDataAsync(UserEditInputDTO input);
@@ -22,7 +22,7 @@ namespace Coldairarrow.Business.Base_Manage
         public List<string> roleIds { get; set; }
     }
 
-    public class Base_UsersInputDTO : PageInput
+    public class Base_UsersInputDTO
     {
         public bool all { get; set; }
         public string userId { get; set; }

@@ -9,20 +9,20 @@ namespace Coldairarrow.Util
         public string RoleNames { get => string.Join(",", RoleNameList ?? new List<string>()); }
         public List<string> RoleIdList { get; set; }
         public List<string> RoleNameList { get; set; }
-        public EnumType.RoleTypes RoleType
+        public RoleTypes RoleType
         {
             get
             {
                 int type = 0;
 
-                var values = typeof(EnumType.RoleTypes).GetEnumValues();
+                var values = typeof(RoleTypes).GetEnumValues();
                 foreach (var aValue in values)
                 {
                     if (RoleNames.Contains(aValue.ToString()))
                         type += (int)aValue;
                 }
 
-                return (EnumType.RoleTypes)type;
+                return (RoleTypes)type;
             }
         }
         public string DepartmentName { get; set; }
