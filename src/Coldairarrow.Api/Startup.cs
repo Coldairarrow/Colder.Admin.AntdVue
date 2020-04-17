@@ -33,6 +33,7 @@ namespace Coldairarrow.Api
             });
             services.AddControllers(options =>
             {
+                options.Filters.Add<ValidFilterAttribute>();
                 options.Filters.Add<GlobalExceptionFilter>();
             })
             .AddControllersAsServices()
@@ -62,7 +63,9 @@ namespace Coldairarrow.Api
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme{Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
@@ -72,19 +75,14 @@ namespace Coldairarrow.Api
                     }
                 });
                 // 为 Swagger JSON and UI设置xml文档注释路径
-                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//获取应用程序所在目录（绝对，不受工作目录影响，建议采用此方法获取路径）
+                //获取应用程序所在目录（绝对，不受工作目录影响，建议采用此方法获取路径）
+                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
 
-                //基础层
-                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Util.xml"));
-
-                //实体层
-                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Entity.xml"));
-
-                //业务逻辑层
-                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Business.xml"));
-
-                //控制器层
-                c.IncludeXmlComments(Path.Combine(basePath, "Coldairarrow.Api.xml"), true);
+                var xmls = Directory.GetFiles(basePath, "*.xml");
+                xmls.ForEach(aXml =>
+                {
+                    c.IncludeXmlComments(aXml);
+                });
             });
         }
 

@@ -1,5 +1,4 @@
 ﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -25,11 +24,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_UserDTO>>> GetDataList(Pagination pagination, string keyword)
+        public async Task<PageResult<Base_UserDTO>> GetDataList(Base_UsersInputDTO input)
         {
-            var dataList = await _userBus.GetDataListAsync(pagination, false, null, keyword);
-
-            return DataTable(dataList, pagination);
+            return await _userBus.GetDataListAsync(input);
         }
 
         [HttpPost]
@@ -39,9 +36,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public async Task<List<SelectOption>> GetOptionList(string selectedValueJson, string q)
+        public async Task<List<SelectOption>> GetOptionList(OptionListInputDTO input)
         {
-            return await _userBus.GetOptionListAsync(selectedValueJson, q);
+            return await _userBus.GetOptionListAsync(input);
         }
 
         #endregion
@@ -49,27 +46,26 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task SaveData(Base_User theData, string newPwd, string roleIdsJson)
+        public async Task SaveData(UserEditInputDTO input)
         {
-            if (!newPwd.IsNullOrEmpty())
-                theData.Password = newPwd.ToMD5String();
-            var roleIds = roleIdsJson?.ToList<string>() ?? new List<string>();
-            if (theData.Id.IsNullOrEmpty())
+            if (!input.newPwd.IsNullOrEmpty())
+                input.Password = input.newPwd.ToMD5String();
+            if (input.Id.IsNullOrEmpty())
             {
-                InitEntity(theData);
+                InitEntity(input);
 
-                await _userBus.AddDataAsync(theData, roleIds);
+                await _userBus.AddDataAsync(input);
             }
             else
             {
-                await _userBus.UpdateDataAsync(theData, roleIds);
+                await _userBus.UpdateDataAsync(input);
             }
         }
 
         [HttpPost]
-        public async Task DeleteData(string ids)
+        public async Task DeleteData(List<string> ids)
         {
-            await _userBus.DeleteDataAsync(ids.ToList<string>());
+            await _userBus.DeleteDataAsync(ids);
         }
 
         #endregion

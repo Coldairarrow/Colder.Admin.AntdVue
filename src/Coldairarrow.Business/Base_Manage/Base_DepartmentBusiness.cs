@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,18 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DepartmentBusiness : BaseBusiness<Base_Department>, IBase_DepartmentBusiness, ITransientDependency
     {
-        public Base_DepartmentBusiness(IRepository repository) 
+        public Base_DepartmentBusiness(IRepository repository)
             : base(repository)
         {
         }
 
         #region 外部接口
 
-        public async Task<List<Base_DepartmentTreeDTO>> GetTreeDataListAsync(string parentId = null)
+        public async Task<List<Base_DepartmentTreeDTO>> GetTreeDataListAsync(DepartmentsTreeInputDTO input)
         {
             var where = LinqHelper.True<Base_Department>();
-            if (!parentId.IsNullOrEmpty())
-                where = where.And(x => x.ParentId == parentId);
-
+            if (!input.parentId.IsNullOrEmpty())
+                where = where.And(x => x.ParentId == input.parentId);
 
             var list = await GetIQueryable().Where(where).ToListAsync();
             var treeList = list
@@ -84,10 +84,5 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         #endregion
-
-        #region 私有成员
-
-        #endregion
     }
-
 }

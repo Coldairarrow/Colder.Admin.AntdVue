@@ -1,7 +1,9 @@
-﻿using Coldairarrow.Business.Cache;
+﻿using AutoMapper;
+using Coldairarrow.Business.Cache;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,43 +16,50 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_UserBusiness : BaseBusiness<Base_User>, IBase_UserBusiness, ITransientDependency
     {
         readonly IOperator _operator;
-        public Base_UserBusiness(IRepository repository, IBase_UserCache userCache, IOperator @operator)
+        readonly IMapper _mapper;
+        public Base_UserBusiness(
+            IRepository repository,
+            IBase_UserCache userCache,
+            IOperator @operator,
+            IMapper mapper
+            )
             : base(repository)
         {
             _userCache = userCache;
             _operator = @operator;
+            _mapper = mapper;
         }
         IBase_UserCache _userCache { get; }
         protected override string _textField => "RealName";
 
         #region 外部接口
 
-        public async Task<List<Base_UserDTO>> GetDataListAsync(Pagination pagination, bool all, string userId = null, string keyword = null)
+        public async Task<PageResult<Base_UserDTO>> GetDataListAsync(Base_UsersInputDTO input)
         {
             Expression<Func<Base_User, Base_Department, Base_UserDTO>> select = (a, b) => new Base_UserDTO
             {
                 DepartmentName = b.Name
             };
             select = select.BuildExtendSelectExpre();
-            var q_User = all ? Service.GetIQueryable<Base_User>() : GetIQueryable();
+            var q_User = input.all ? Service.GetIQueryable<Base_User>() : GetIQueryable();
             var q = from a in q_User.AsExpandable()
                     join b in Service.GetIQueryable<Base_Department>() on a.DepartmentId equals b.Id into ab
                     from b in ab.DefaultIfEmpty()
                     select @select.Invoke(a, b);
 
             var where = LinqHelper.True<Base_UserDTO>();
-            if (!userId.IsNullOrEmpty())
-                where = where.And(x => x.Id == userId);
-            if (!keyword.IsNullOrEmpty())
+            if (!input.userId.IsNullOrEmpty())
+                where = PredicateBuilder.And(where, x => x.Id == input.userId);
+            if (!input.keyword.IsNullOrEmpty())
             {
                 where = where.And(x =>
-                    EF.Functions.Like(x.UserName, keyword)
-                    || EF.Functions.Like(x.RealName, keyword));
+                    EF.Functions.Like(x.UserName, input.keyword)
+                    || EF.Functions.Like(x.RealName, input.keyword));
             }
 
-            var list = await q.Where(where).GetPagination(pagination).ToListAsync();
+            var list = await q.Where(where).GetPageResultAsync(input);
 
-            await SetProperty(list);
+            await SetProperty(list.Data);
 
             return list;
 
@@ -81,7 +90,7 @@ namespace Coldairarrow.Business.Base_Manage
             if (id.IsNullOrEmpty())
                 return null;
             else
-                return (await GetDataListAsync(new Pagination(), true, id)).FirstOrDefault();
+                return (await GetDataListAsync(new Base_UsersInputDTO { all = true, userId = id })).Data.FirstOrDefault();
         }
 
         [DataAddLog(UserLogType.系统用户管理, "RealName", "用户")]
@@ -89,10 +98,10 @@ namespace Coldairarrow.Business.Base_Manage
             new string[] { "UserName" },
             new string[] { "用户名" })]
         [Transactional]
-        public async Task AddDataAsync(Base_User newData, List<string> roleIds)
+        public async Task AddDataAsync(UserEditInputDTO input)
         {
-            await InsertAsync(newData);
-            await SetUserRoleAsync(newData.Id, roleIds);
+            await InsertAsync(_mapper.Map<Base_User>(input));
+            await SetUserRoleAsync(input.Id, input.roleIds);
         }
 
         [DataEditLog(UserLogType.系统用户管理, "RealName", "用户")]
@@ -100,14 +109,14 @@ namespace Coldairarrow.Business.Base_Manage
             new string[] { "UserName" },
             new string[] { "用户名" })]
         [Transactional]
-        public async Task UpdateDataAsync(Base_User theData, List<string> roleIds)
+        public async Task UpdateDataAsync(UserEditInputDTO input)
         {
-            if (theData.Id == GlobalData.ADMINID && _operator?.UserId != theData.Id)
+            if (input.Id == GlobalData.ADMINID && _operator?.UserId != input.Id)
                 throw new BusException("禁止更改超级管理员！");
 
-            await UpdateAsync(theData);
-            await SetUserRoleAsync(theData.Id, roleIds);
-            await _userCache.UpdateCacheAsync(theData.Id);
+            await UpdateAsync(_mapper.Map<Base_User>(input));
+            await SetUserRoleAsync(input.Id, input.roleIds);
+            await _userCache.UpdateCacheAsync(input.Id);
         }
 
         [DataDeleteLog(UserLogType.系统用户管理, "RealName", "用户")]

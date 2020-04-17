@@ -10,26 +10,23 @@
     <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0</DefineConstants>
     <Optimize>false</Optimize>
     <CodeAnalysisRuleSet />
+    <OutputPath>bin\Release</OutputPath>
+    <DocumentationFile>bin\Release\Coldairarrow.Business.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <CodeAnalysisRuleSet />
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>Coldairarrow.Business.xml</DocumentationFile>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\Debug</OutputPath>
+    <DocumentationFile>bin\Debug\Coldairarrow.Business.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj" />
     <ProjectReference Include="..\Coldairarrow.IBusiness\03.Coldairarrow.IBusiness.csproj" />
     <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Coldairarrow.Business.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

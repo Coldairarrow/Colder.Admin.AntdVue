@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -12,51 +14,6 @@ namespace Coldairarrow.Util
     /// </summary>
     public static partial class Extention
     {
-        /// <summary>
-        /// 获取分页后的数据
-        /// </summary>
-        /// <typeparam name="T">实体参数</typeparam>
-        /// <param name="source">IQueryable数据源</param>
-        /// <param name="pageIndex">当前页</param>
-        /// <param name="pageRows">每页行数</param>
-        /// <param name="orderColumn">排序列</param>
-        /// <param name="orderType">排序类型</param>
-        /// <param name="count">总记录数</param>
-        /// <param name="pages">总页数</param>
-        /// <returns></returns>
-        public static IQueryable<T> GetPagination<T>(this IQueryable<T> source, int pageIndex, int pageRows, string orderColumn, string orderType, ref int count, ref int pages)
-        {
-            Pagination pagination = new Pagination
-            {
-                PageIndex = pageIndex,
-                PageRows = pageRows,
-                SortType = orderType,
-                SortField = orderColumn
-            };
-
-            return source.GetPagination(pagination);
-        }
-
-        /// <summary>
-        /// 获取分页后的数据
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="source">数据源IQueryable</param>
-        /// <param name="pagination">分页参数</param>
-        /// <param name="thenOrderBy">再排序</param>
-        /// <returns></returns>
-        public static IQueryable<T> GetPagination<T>(this IQueryable<T> source, Pagination pagination, params (string SortField, string SortType)[] thenOrderBy)
-        {
-            pagination.Total = source.Count();
-            var orderSource = source.OrderBy(pagination.SortField, pagination.SortType);
-
-            thenOrderBy?.ForEach(aOrder =>
-            {
-                orderSource = orderSource.ThenBy($"{aOrder.SortField} {aOrder.SortType}");
-            });
-            return orderSource.Skip((pagination.PageIndex - 1) * pagination.PageRows).Take(pagination.PageRows);
-        }
-
         /// <summary>
         /// 动态排序法
         /// </summary>
@@ -120,14 +77,86 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
-        /// 拓展IQueryable"T"方法操作
+        /// 获取分页数据(包括总数量)
         /// </summary>
-        /// <typeparam name="T">数据类型</typeparam>
+        /// <typeparam name="T">泛型</typeparam>
         /// <param name="source">数据源</param>
+        /// <param name="pageInput">分页参数</param>
         /// <returns></returns>
-        public static IQueryable<T> AsExpandable<T>(this IQueryable<T> source)
+        public static PageResult<T> GetPageResult<T>(this IQueryable<T> source, PageInput pageInput)
         {
-            return LinqKit.Extensions.AsExpandable(source);
+            int count = source.Count();
+
+            var list = source.OrderBy($@"{pageInput.SortField} {pageInput.SortType}")
+                .Skip((pageInput.PageIndex - 1) * pageInput.PageRows)
+                .Take(pageInput.PageRows)
+                .ToList();
+
+            return new PageResult<T> { Data = list, Total = count };
         }
+
+        /// <summary>
+        /// 获取分页数据(包括总数量)
+        /// </summary>
+        /// <typeparam name="T">泛型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="pageInput">分页参数</param>
+        /// <returns></returns>
+        public static async Task<PageResult<T>> GetPageResultAsync<T>(this IQueryable<T> source, PageInput pageInput)
+        {
+            int count = await source.CountAsync();
+
+            var list = await source.OrderBy($@"{pageInput.SortField} {pageInput.SortType}")
+                .Skip((pageInput.PageIndex - 1) * pageInput.PageRows)
+                .Take(pageInput.PageRows)
+                .ToListAsync();
+
+            return new PageResult<T> { Data = list, Total = count };
+        }
+
+        /// <summary>
+        /// 获取分页数据(仅获取列表,不获取总数量)
+        /// </summary>
+        /// <typeparam name="T">泛型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="pageInput">分页参数</param>
+        /// <returns></returns>
+        public static List<T> GetPageList<T>(this IQueryable<T> source, PageInput pageInput)
+        {
+            var list = source.OrderBy($@"{pageInput.SortField} {pageInput.SortType}")
+                .Skip((pageInput.PageIndex - 1) * pageInput.PageRows)
+                .Take(pageInput.PageRows)
+                .ToList();
+
+            return list;
+        }
+
+        /// <summary>
+        /// 获取分页数据(仅获取列表,不获取总数量)
+        /// </summary>
+        /// <typeparam name="T">泛型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="pageInput">分页参数</param>
+        /// <returns></returns>
+        public static async Task<List<T>> GetPageListAsync<T>(this IQueryable<T> source, PageInput pageInput)
+        {
+            var list = await source.OrderBy($@"{pageInput.SortField} {pageInput.SortType}")
+                .Skip((pageInput.PageIndex - 1) * pageInput.PageRows)
+                .Take(pageInput.PageRows)
+                .ToListAsync();
+
+            return list;
+        }
+
+        ///// <summary>
+        ///// 拓展IQueryable"T"方法操作
+        ///// </summary>
+        ///// <typeparam name="T">数据类型</typeparam>
+        ///// <param name="source">数据源</param>
+        ///// <returns></returns>
+        //public static IQueryable<T> AsExpandable<T>(this IQueryable<T> source)
+        //{
+        //    return LinqKit.Extensions.AsExpandable(source);
+        //}
     }
 }

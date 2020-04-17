@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Coldairarrow.Util
 {
     /// <summary>
-    /// 开始事务
+    /// 使用事务包裹
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class TransactionalAttribute : AbstractInterceptorAttribute

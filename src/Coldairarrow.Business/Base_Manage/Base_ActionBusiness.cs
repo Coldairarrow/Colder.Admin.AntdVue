@@ -1,6 +1,8 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using AutoMapper;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,35 +13,37 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_ActionBusiness : BaseBusiness<Base_Action>, IBase_ActionBusiness, ITransientDependency
     {
-        public Base_ActionBusiness(IRepository repository)
+        readonly IMapper _mapper;
+        public Base_ActionBusiness(IRepository repository, IMapper mapper)
             : base(repository)
         {
+            _mapper = mapper;
         }
 
         #region 外部接口
 
-        public async Task<List<Base_Action>> GetDataListAsync(Pagination pagination, string keyword = null, string parentId = null, List<int> types = null, IQueryable<Base_Action> q = null)
+        public async Task<List<Base_Action>> GetDataListAsync(Base_ActionsInputDTO input)
         {
-            q = q ?? GetIQueryable();
+            var q = input.q ?? GetIQueryable();
             var where = LinqHelper.True<Base_Action>();
-            if (!keyword.IsNullOrEmpty())
+            if (!input.keyword.IsNullOrEmpty())
             {
-                where = where.And(x => EF.Functions.Like(x.Name, $"%{keyword}%"));
+                where = where.And(x => EF.Functions.Like(x.Name, $"%{input.keyword}%"));
             }
-            if (!parentId.IsNullOrEmpty())
-                where = where.And(x => x.ParentId == parentId);
-            if (types?.Count > 0)
-                where = where.And(x => types.Contains(x.Type));
+            if (!input.parentId.IsNullOrEmpty())
+                where = where.And(x => x.ParentId == input.parentId);
+            if (input.types?.Count > 0)
+                where = where.And(x => input.types.Contains(x.Type));
 
-            return await q.Where(where).GetPagination(pagination).ToListAsync();
+            return await q.Where(where).OrderBy(x => x.Sort).ToListAsync();
         }
 
-        public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(string keyword, List<int> types, bool selectable, IQueryable<Base_Action> q = null, bool checkEmptyChildren = false)
+        public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsTreeInputDTO input)
         {
             var where = LinqHelper.True<Base_Action>();
-            if (!types.IsNullOrEmpty())
-                where = where.And(x => types.Contains(x.Type));
-            var qList = await (q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToListAsync();
+            if (!input.types.IsNullOrEmpty())
+                where = where.And(x => input.types.Contains(x.Type));
+            var qList = await (input.q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToListAsync();
 
             var treeList = qList.Select(x => new Base_ActionDTO
             {
@@ -52,11 +56,11 @@ namespace Coldairarrow.Business.Base_Manage
                 Value = x.Id,
                 Icon = x.Icon,
                 Sort = x.Sort,
-                selectable = selectable
+                selectable = input.selectable
             }).ToList();
 
             //菜单节点中,若子节点为空则移除父节点
-            if (checkEmptyChildren)
+            if (input.checkEmptyChildren)
                 treeList = treeList.Where(x => x.Type != 0 || TreeHelper.GetChildren(treeList, x, false).Count > 0).ToList();
 
             await SetProperty(treeList);
@@ -88,17 +92,17 @@ namespace Coldairarrow.Business.Base_Manage
         }
 
         [Transactional]
-        public async Task AddDataAsync(Base_Action newData, List<Base_Action> permissionList)
+        public async Task AddDataAsync(ActionEditInputDTO input)
         {
-            await InsertAsync(newData);
-            await SavePermissionAsync(newData.Id, permissionList);
+            await InsertAsync(_mapper.Map<Base_Action>(input));
+            await SavePermissionAsync(input.Id, input.permissionList);
         }
 
         [Transactional]
-        public async Task UpdateDataAsync(Base_Action theData, List<Base_Action> permissionList)
+        public async Task UpdateDataAsync(ActionEditInputDTO input)
         {
-            await UpdateAsync(theData);
-            await SavePermissionAsync(theData.Id, permissionList);
+            await InsertAsync(_mapper.Map<Base_Action>(input));
+            await SavePermissionAsync(input.Id, input.permissionList);
         }
 
         public async Task DeleteDataAsync(List<string> ids)

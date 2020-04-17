@@ -1,9 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using LinqKit;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,24 +14,20 @@ namespace Coldairarrow.Business.Base_Manage
         {
         }
 
-        public async Task<List<Base_Log>> GetLogListAsync(
-            Pagination pagination,
-            int? level,
-            string logContent,
-            DateTime? startTime,
-            DateTime? endTime)
+        public async Task<PageResult<Base_Log>> GetLogListAsync(PageInput<LogsInputDTO> input)
         {
             var whereExp = LinqHelper.True<Base_Log>();
-            if (!level.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.Level == level);
-            if (!logContent.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.LogContent.Contains(logContent));
-            if (!startTime.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreateTime >= startTime);
-            if (!endTime.IsNullOrEmpty())
-                whereExp = whereExp.And(x => x.CreateTime <= endTime);
+            var search = input.Search;
+            if (!search.level.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.Level == search.level);
+            if (!search.logContent.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.LogContent.Contains(search.logContent));
+            if (!search.startTime.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.CreateTime >= search.startTime);
+            if (!search.endTime.IsNullOrEmpty())
+                whereExp = whereExp.And(x => x.CreateTime <= search.endTime);
 
-            return await GetIQueryable().Where(whereExp).GetPagination(pagination).ToListAsync();
+            return await GetIQueryable().Where(whereExp).GetPageResultAsync(input);
         }
     }
 }

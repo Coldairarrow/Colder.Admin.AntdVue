@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using LinqKit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,15 +46,23 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task<List<Base_ActionDTO>> GetUserMenuListAsync(string userId)
         {
             var q = await GetIQ(userId);
-
-            return await _actionBus.GetTreeDataListAsync(null, new List<int> { 0, 1 }, false, q, true);
+            return await _actionBus.GetTreeDataListAsync(new Base_ActionsTreeInputDTO
+            {
+                types = new List<int> { 0, 1 },
+                q = q,
+                checkEmptyChildren = true
+            });
         }
 
         public async Task<List<string>> GetUserPermissionValuesAsync(string userId)
         {
             var q = await GetIQ(userId);
             return (await _actionBus
-                .GetDataListAsync(new Pagination(), null, null, new List<int> { 2 }, q))
+                .GetDataListAsync(new Base_ActionsInputDTO
+                {
+                    types = new List<int> { 2 },
+                    q = q
+                }))
                 .Select(x => x.Value)
                 .ToList();
         }

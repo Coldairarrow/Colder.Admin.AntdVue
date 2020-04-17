@@ -19,9 +19,9 @@ namespace Coldairarrow.Business.Cache
 
         protected override async Task<Base_UserDTO> GetDbDataAsync(string key)
         {
-            var list = await _serviceProvider.GetService<IBase_UserBusiness>().GetDataListAsync(new Pagination(), true, key);
+            var list = await _serviceProvider.GetService<IBase_UserBusiness>().GetDataListAsync(new Base_UsersInputDTO { all = true, userId = key });
 
-            return list.FirstOrDefault();
+            return list.Data.FirstOrDefault();
         }
     }
 }

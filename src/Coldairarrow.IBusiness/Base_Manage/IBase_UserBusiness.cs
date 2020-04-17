@@ -7,11 +7,25 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_UserBusiness
     {
-        Task<List<Base_UserDTO>> GetDataListAsync(Pagination pagination, bool all, string userId = null, string keyword = null);
-        Task<List<SelectOption>> GetOptionListAsync(string selectedValueJson, string q);
+        Task<PageResult<Base_UserDTO>> GetDataListAsync(Base_UsersInputDTO input);
+        Task<List<SelectOption>> GetOptionListAsync(OptionListInputDTO input);
         Task<Base_UserDTO> GetTheDataAsync(string id);
-        Task AddDataAsync(Base_User newData, List<string> roleIds);
-        Task UpdateDataAsync(Base_User theData, List<string> roleIds);
+        Task AddDataAsync(UserEditInputDTO input);
+        Task UpdateDataAsync(UserEditInputDTO input);
         Task DeleteDataAsync(List<string> ids);
+    }
+
+    [Map(typeof(Base_User))]
+    public class UserEditInputDTO : Base_User
+    {
+        public string newPwd { get; set; }
+        public List<string> roleIds { get; set; }
+    }
+
+    public class Base_UsersInputDTO : PageInput
+    {
+        public bool all { get; set; }
+        public string userId { get; set; }
+        public string keyword { get; set; }
     }
 }

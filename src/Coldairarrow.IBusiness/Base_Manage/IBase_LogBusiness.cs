@@ -1,18 +1,20 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_LogBusiness
     {
-        Task<List<Base_Log>> GetLogListAsync(
-           Pagination pagination,
-           int? level,
-           string logContent,
-           DateTime? startTime,
-           DateTime? endTime);
+        Task<PageResult<Base_Log>> GetLogListAsync(PageInput<LogsInputDTO> input);
+    }
+
+    public class LogsInputDTO
+    {
+        public int? level { get; set; }
+        public string logContent { get; set; }
+        public DateTime? startTime { get; set; }
+        public DateTime? endTime { get; set; }
     }
 }
