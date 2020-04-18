@@ -24,13 +24,7 @@ namespace Coldairarrow.Util
         public PostgreSqlHelper(string conString)
             : base(DatabaseType.PostgreSql, conString)
         {
-            _extraUsingNamespace =
-$@"using NpgsqlTypes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-";
+
         }
 
         #endregion
@@ -53,13 +47,13 @@ using System.Net.NetworkInformation;
             { "json", typeof(string) },
             { "jsonb", typeof(string) },
             { "xml", typeof(string) },
-            { "point", typeof(NpgsqlPoint) },
-            { "lseg", typeof(NpgsqlLSeg) },
-            { "path", typeof(NpgsqlPath) },
-            { "polygon", typeof(NpgsqlPolygon) },
-            { "line", typeof(NpgsqlLine) },
-            { "circle", typeof(NpgsqlCircle) },
-            { "box", typeof(NpgsqlBox) },
+            //{ "point", typeof(NpgsqlPoint) },
+            //{ "lseg", typeof(NpgsqlLSeg) },
+            //{ "path", typeof(NpgsqlPath) },
+            //{ "polygon", typeof(NpgsqlPolygon) },
+            //{ "line", typeof(NpgsqlLine) },
+            //{ "circle", typeof(NpgsqlCircle) },
+            //{ "box", typeof(NpgsqlBox) },
             { "bit(1)", typeof(bool) },
             { "bit(n)", typeof(BitArray) },
             { "varbit", typeof(BitArray) },

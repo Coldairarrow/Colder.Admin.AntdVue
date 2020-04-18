@@ -23,6 +23,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lib\LinqKit.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspectCore.Core" Version="2.1.0" />
     <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.1.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />

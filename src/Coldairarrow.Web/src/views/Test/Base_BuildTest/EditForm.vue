@@ -9,7 +9,21 @@
   >
     <a-spin :spinning="loading">
       <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
-%formColumns%
+        <a-form-model-item label="列1" prop="Column1">
+          <a-input v-model="entity.Column1" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="列2" prop="Column2">
+          <a-input v-model="entity.Column2" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="列3" prop="Column3">
+          <a-input v-model="entity.Column3" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="列4" prop="Column4">
+          <a-input v-model="entity.Column4" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="列5" prop="Column5">
+          <a-input v-model="entity.Column5" autocomplete="off" />
+        </a-form-model-item>
       </a-form-model>
     </a-spin>
   </a-modal>
@@ -24,7 +38,7 @@ export default {
     return {
       layout: {
         labelCol: { span: 5 },
-        wrapperCol: { span: 18 }
+        wrapperCol: { span: 15 }
       },
       visible: false,
       loading: false,
@@ -46,7 +60,7 @@ export default {
 
       if (id) {
         this.loading = true
-        this.$http.post('/%areaName%/%entityName%/GetTheData', { id: id }).then(resJson => {
+        this.$http.post('/Test/Base_BuildTest/GetTheData', { id: id }).then(resJson => {
           this.loading = false
 
           this.entity = resJson.Data
@@ -59,7 +73,7 @@ export default {
           return
         }
         this.loading = true
-        this.$http.post('/%areaName%/%entityName%/SaveData', this.entity).then(resJson => {
+        this.$http.post('/Test/Base_BuildTest/SaveData', this.entity).then(resJson => {
           this.loading = false
 
           if (resJson.Success) {
