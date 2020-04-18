@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <a-card :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
@@ -18,7 +18,11 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="查询类别">
               <a-select allowClear v-model="queryParam.condition">
-%selectOptions%
+                <a-select-option key="Column1">列1</a-select-option>
+                <a-select-option key="Column2">列2</a-select-option>
+                <a-select-option key="Column3">列3</a-select-option>
+                <a-select-option key="Column4">列4</a-select-option>
+                <a-select-option key="Column5">列5</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -64,7 +68,11 @@
 import EditForm from './EditForm'
 
 const columns = [
-%listColumns%
+  { title: '列1', dataIndex: 'Column1', width: '10%' },
+  { title: '列2', dataIndex: 'Column2', width: '10%' },
+  { title: '列3', dataIndex: 'Column3', width: '10%' },
+  { title: '列4', dataIndex: 'Column4', width: '10%' },
+  { title: '列5', dataIndex: 'Column5', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
@@ -103,7 +111,7 @@ export default {
 
       this.loading = true
       this.$http
-        .post('/%areaName%/%entityName%/GetDataList', {
+        .post('/Test/Base_BuildTest/GetDataList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
@@ -137,7 +145,7 @@ export default {
         title: '确认删除吗?',
         onOk() {
           return new Promise((resolve, reject) => {
-            thisObj.$http.post('/%areaName%/%entityName%/DeleteData', ids).then(resJson => {
+            thisObj.$http.post('/Test/Base_BuildTest/DeleteData', ids).then(resJson => {
               resolve()
 
               if (resJson.Success) {

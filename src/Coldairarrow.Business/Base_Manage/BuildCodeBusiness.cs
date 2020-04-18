@@ -80,9 +80,9 @@ $"                <a-select-option key=\"{aField.Name}\">{aField.Description}</a
                     listColumnsList.Add(
 $"  {{ title: '{aField.Description}', dataIndex: '{aField.Name}', width: '10%' }},");
                     formColumnsList.Add(
-$@"        <a-form-item label=""{aField.Description}"" :labelCol=""labelCol"" :wrapperCol=""wrapperCol"">
-          <a-input v-decorator=""['{aField.Name}', {{ rules: [{{ required: true, message: '必填' }}] }}]"" />
-        </a-form-item>");
+$@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name}"">
+          <a-input v-model=""entity.{aField.Name}"" autocomplete=""off"" />
+        </a-form-model-item>");
                     Dictionary<string, string> renderParamters = new Dictionary<string, string>
                     {
                         {$"%{nameof(areaName)}%",areaName },
@@ -109,8 +109,7 @@ $@"        <a-form-item label=""{aField.Description}"" :labelCol=""labelCol"" :w
                         tmpFileName = "IBusiness.txt";
                         savePath = Path.Combine(
                             _solutionPath,
-                            "Coldairarrow.Business",
-                            "03IBusiness",
+                            "Coldairarrow.IBusiness",
                             areaName,
                             $"I{entityName}Business.cs");
                         WriteCode(renderParamters, tmpFileName, savePath);
@@ -120,7 +119,6 @@ $@"        <a-form-item label=""{aField.Description}"" :labelCol=""labelCol"" :w
                         savePath = Path.Combine(
                             _solutionPath,
                             "Coldairarrow.Business",
-                            "04Business",
                             areaName,
                             $"{entityName}Business.cs");
                         WriteCode(renderParamters, tmpFileName, savePath);
