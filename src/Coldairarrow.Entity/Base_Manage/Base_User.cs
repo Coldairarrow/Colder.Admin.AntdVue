@@ -67,9 +67,9 @@ namespace Coldairarrow.Entity.Base_Manage
     public enum Sex
     {
         [Description("男人")]
-        Man,
+        Man = 1,
 
         [Description("女人")]
-        Woman
+        Woman = 0
     }
 }

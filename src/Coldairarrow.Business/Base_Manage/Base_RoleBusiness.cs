@@ -83,7 +83,7 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
-            await Service.Delete_SqlAsync<Base_RoleAction>(x => ids.Contains(x.Id));
+            await Service.DeleteAsync<Base_RoleAction>(x => ids.Contains(x.RoleId));
         }
 
         #endregion

@@ -1,31 +1,31 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
+  <a-config-provider :locale="zhCN">
     <div id="app">
-      <router-view/>
+      <router-view />
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>
-  import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
-  import moment from 'moment';
-  import 'moment/locale/zh-cn';
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
+
 import { AppDeviceEnquire } from '@/utils/mixin'
 
 export default {
   mixins: [AppDeviceEnquire],
-  data () {
+  data() {
     return {
-      zh_CN
+      zhCN
     }
   },
-  mounted () {
-
-  }
+  mounted() {}
 }
 </script>
 <style>
-  #app {
-    height: 100%;
-  }
+#app {
+  height: 100%;
+}
 </style>

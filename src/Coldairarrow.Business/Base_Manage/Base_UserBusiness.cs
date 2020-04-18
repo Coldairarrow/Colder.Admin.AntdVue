@@ -49,13 +49,15 @@ namespace Coldairarrow.Business.Base_Manage
                     select @select.Invoke(a, b);
 
             var where = LinqHelper.True<Base_UserDTO>();
+
             if (!search.userId.IsNullOrEmpty())
-                where = PredicateBuilder.And(where, x => x.Id == search.userId);
+                where = where.And(x => x.Id == search.userId);
             if (!search.keyword.IsNullOrEmpty())
             {
-                where = where.And(x =>
-                    EF.Functions.Like(x.UserName, search.keyword)
-                    || EF.Functions.Like(x.RealName, search.keyword));
+                var keyword = $"%{search.keyword}%";
+                q = q.Where(x =>
+                      EF.Functions.Like(x.UserName, keyword)
+                      || EF.Functions.Like(x.RealName, keyword));
             }
 
             var list = await q.Where(where).GetPageResultAsync(input);
@@ -112,7 +114,7 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task AddDataAsync(UserEditInputDTO input)
         {
             await InsertAsync(_mapper.Map<Base_User>(input));
-            await SetUserRoleAsync(input.Id, input.roleIds);
+            await SetUserRoleAsync(input.Id, input.RoleIdList);
         }
 
         [DataEditLog(UserLogType.系统用户管理, "RealName", "用户")]
@@ -126,7 +128,7 @@ namespace Coldairarrow.Business.Base_Manage
                 throw new BusException("禁止更改超级管理员！");
 
             await UpdateAsync(_mapper.Map<Base_User>(input));
-            await SetUserRoleAsync(input.Id, input.roleIds);
+            await SetUserRoleAsync(input.Id, input.RoleIdList);
             await _userCache.UpdateCacheAsync(input.Id);
         }
 
@@ -136,7 +138,6 @@ namespace Coldairarrow.Business.Base_Manage
         {
             if (ids.Contains(GlobalData.ADMINID))
                 throw new BusException("超级管理员是内置账号,禁止删除！");
-            var userIds = await GetIQueryable().Where(x => ids.Contains(x.Id)).Select(x => x.Id).ToListAsync();
 
             await DeleteAsync(ids);
 

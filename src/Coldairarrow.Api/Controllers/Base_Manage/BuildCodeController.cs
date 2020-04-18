@@ -27,9 +27,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public List<DbTableInfo> GetDbTableList(string linkId)
+        public List<DbTableInfo> GetDbTableList(DbTablesInputDTO input)
         {
-            return _buildCodeBus.GetDbTableList(linkId);
+            return _buildCodeBus.GetDbTableList(input.linkId);
         }
 
         [HttpPost]

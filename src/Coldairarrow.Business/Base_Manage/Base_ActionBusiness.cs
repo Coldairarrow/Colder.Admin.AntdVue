@@ -101,7 +101,7 @@ namespace Coldairarrow.Business.Base_Manage
         [Transactional]
         public async Task UpdateDataAsync(ActionEditInputDTO input)
         {
-            await InsertAsync(_mapper.Map<Base_Action>(input));
+            await UpdateAsync(_mapper.Map<Base_Action>(input));
             await SavePermissionAsync(input.Id, input.permissionList);
         }
 

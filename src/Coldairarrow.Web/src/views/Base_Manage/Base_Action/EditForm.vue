@@ -5,49 +5,47 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
-    @cancel="handleCancel"
+    @cancel="()=>{this.visible=false}"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item label="菜单名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Name', { rules: [{ required: true, message: '请输入菜单名' }] }]" />
-        </a-form-item>
-        <a-form-item label="上级菜单" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
+        <a-form-model-item label="菜单名" prop="Name">
+          <a-input v-model="entity.Name" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="上级菜单" prop="ParentId">
           <a-tree-select
-            style="width: 300px"
+            v-model="entity.ParentId"
             allowClear
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
             :treeData="ParentIdTreeData"
             placeholder="请选择上级菜单"
             treeDefaultExpandAll
-            v-decorator="['ParentId', { rules: [{ required: false }] }]"
           ></a-tree-select>
-        </a-form-item>
-        <a-form-item label="类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-radio-group v-decorator="['Type', { rules: [{ required: false }], initialValue: 0 }]">
+        </a-form-model-item>
+        <a-form-model-item label="类型" prop="Type">
+          <a-radio-group v-model="entity.Type">
             <a-radio :value="0">菜单</a-radio>
             <a-radio :value="1">页面</a-radio>
           </a-radio-group>
-        </a-form-item>
-        <a-form-item label="路径(页面必须配置)" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Url', { rules: [{ required: false, message: '请输入路径' }] }]" />
-        </a-form-item>
-        <a-form-item label="是否需权限" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-radio-group v-decorator="['NeedAction', { rules: [{ required: false }], initialValue: false }]">
+        </a-form-model-item>
+        <a-form-model-item label="路径" prop="Url">
+          <a-input v-model="entity.Url" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="是否需要权限" prop="NeedAction">
+          <a-radio-group v-model="entity.NeedAction">
             <a-radio :value="false">否</a-radio>
             <a-radio :value="true">是</a-radio>
           </a-radio-group>
-        </a-form-item>
-        <a-form-item label="图标" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Icon', { rules: [{ required: false, message: '请输入图标' }] }]" />
-        </a-form-item>
-        <a-form-item label="排序" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['Sort', { rules: [{ required: false, message: '请输入排序' }] }]" />
-        </a-form-item>
+        </a-form-model-item>
+        <a-form-model-item label="图标" prop="Icon">
+          <a-input v-model="entity.Icon" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="排序" prop="Sort">
+          <a-input v-model="entity.Sort" type="number" autocomplete="off" />
+        </a-form-model-item>
         <a-card title="页面权限" :bordered="false">
           <Permission-List ref="permissionList" :parentObj="this"></Permission-List>
         </a-card>
-      </a-form>
+      </a-form-model>
     </a-spin>
   </a-modal>
 </template>
@@ -67,73 +65,63 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      layout: {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 18 }
+      },
       visible: false,
       confirmLoading: false,
-      formFields: {},
       entity: {},
-      ParentIdTreeData: []
+      ParentIdTreeData: [],
+      rules: {
+        Name: [{ required: true, message: '必填' }],
+        Type: [{ required: true, message: '必填' }],
+        NeedAction: [{ required: true, message: '必填' }]
+      }
     }
   },
   methods: {
-    add() {
+    init(id) {
+      this.visible = true
       this.entity = {}
-      this.visible = true
-      this.form.resetFields()
-      this.init()
-      this.$refs.permissionList.init()
-    },
-    edit(id) {
-      this.visible = true
-
       this.$nextTick(() => {
-        this.formFields = this.form.getFieldsValue()
-
-        this.$http.post('/Base_Manage/Base_Action/GetTheData', { id: id }).then(resJson => {
-          this.entity = resJson.Data
-          var setData = {}
-          Object.keys(this.formFields).forEach(item => {
-            setData[item] = this.entity[item]
-          })
-          this.form.setFieldsValue(setData)
-
-          this.init()
-          this.$refs.permissionList.init(id)
-        })
+        this.$refs.permissionList.init(id)
+        this.$refs['form'].clearValidate()
       })
-    },
-    handleSubmit() {
-      this.form.validateFields((errors, values) => {
-        //校验成功
-        if (!errors) {
-          this.entity = Object.assign(this.entity, this.form.getFieldsValue())
 
-          this.confirmLoading = true
-          this.entity.permissionListJson = JSON.stringify(this.$refs.permissionList.getPermissionList())
-          this.$http.post('/Base_Manage/Base_Action/SaveData', this.entity).then(resJson => {
-            this.confirmLoading = false
-
-            if (resJson.Success) {
-              this.$message.success('操作成功!')
-              this.afterSubmit()
-              this.visible = false
-            } else {
-              this.$message.error(resJson.Msg)
-            }
-          })
-        }
-      })
-    },
-    handleCancel() {
-      this.visible = false
-    },
-    init() {
-      this.$http.post('/Base_Manage/Base_Action/GetMenuTreeList').then(resJson => {
+      this.$http.post('/Base_Manage/Base_Action/GetMenuTreeList', {}).then(resJson => {
         if (resJson.Success) {
           this.ParentIdTreeData = resJson.Data
         }
+      })
+    },
+    openForm(id) {
+      this.init(id)
+
+      if (id) {
+        this.$http.post('/Base_Manage/Base_Action/GetTheData', { id: id }).then(resJson => {
+          this.entity = resJson.Data
+        })
+      }
+    },
+    handleSubmit() {
+      this.$refs['form'].validate(valid => {
+        if (!valid) {
+          return
+        }
+        this.confirmLoading = true
+        this.entity.permissionList = this.$refs.permissionList.getPermissionList()
+        this.$http.post('/Base_Manage/Base_Action/SaveData', this.entity).then(resJson => {
+          this.confirmLoading = false
+
+          if (resJson.Success) {
+            this.$message.success('操作成功!')
+            this.afterSubmit()
+            this.visible = false
+          } else {
+            this.$message.error(resJson.Msg)
+          }
+        })
       })
     }
   }

@@ -19,7 +19,7 @@ namespace Coldairarrow.Business.Base_Manage
     public class UserEditInputDTO : Base_User
     {
         public string newPwd { get; set; }
-        public List<string> roleIds { get; set; }
+        public List<string> RoleIdList { get; set; }
     }
 
     public class Base_UsersInputDTO
