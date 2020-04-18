@@ -118,7 +118,7 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: 'CreateTime',
           SortType: 'desc',
-          ...this.queryParam,
+          Search: this.queryParam,
           ...this.filters
         })
         .then(resJson => {

@@ -74,7 +74,7 @@ export default {
   methods: {
     init() {
       this.$http
-        .post('/Base_Manage/BuildCode/GetAllDbLink')
+        .post('/Base_Manage/BuildCode/GetAllDbLink', {})
         .then(resJson => {
           this.dbs = resJson.Data
           if (this.dbs && this.dbs.length > 0) {

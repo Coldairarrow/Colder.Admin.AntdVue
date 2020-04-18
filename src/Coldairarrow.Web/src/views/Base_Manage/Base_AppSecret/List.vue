@@ -103,8 +103,8 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
-          ...this.queryParam,
-          ...this.filters
+          ...this.filters,
+          Search: this.queryParam
         })
         .then(resJson => {
           this.loading = false
@@ -121,10 +121,10 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     hanldleAdd() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.openForm()
     },
     handleEdit(id) {
-      this.$refs.editForm.edit(id)
+      this.$refs.editForm.openForm(id)
     },
     handleDelete(ids) {
       var thisObj = this
@@ -138,7 +138,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_AppSecret/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_AppSecret/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {

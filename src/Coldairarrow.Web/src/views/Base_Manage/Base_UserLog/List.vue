@@ -16,24 +16,26 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="20">
-          <a-col :md="6" :sm="24">
+          <a-col :md="5" :sm="24">
             <a-form-item label="内容">
               <a-input v-model="queryParam.logContent" placeholder />
             </a-form-item>
           </a-col>
-          <a-col :md="3" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="类别">
               <a-select v-model="queryParam.logType" allowClear>
                 <a-select-option v-for="item in LogTypeList" :key="item.text">{{ item.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="3" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="操作人">
               <a-input v-model="queryParam.opUserName" placeholder />
             </a-form-item>
           </a-col>
-          <a-col :md="7" :sm="24">
+        </a-row>
+        <a-row :gutter="20">
+          <a-col :md="10" :sm="24">
             <a-form-item label="时间">
               <a-date-picker v-model="queryParam.startTime" showTime format="YYYY-MM-DD HH:mm:ss" />~
               <a-date-picker v-model="queryParam.endTime" showTime format="YYYY-MM-DD HH:mm:ss" />
@@ -121,8 +123,8 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: 'CreateTime',
           SortType: 'desc',
-          ...this.queryParam,
-          ...this.filters
+          ...this.filters,
+          Search: this.queryParam
         })
         .then(resJson => {
           this.loading = false

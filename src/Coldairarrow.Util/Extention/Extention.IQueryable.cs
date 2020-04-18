@@ -147,16 +147,5 @@ namespace Coldairarrow.Util
 
             return list;
         }
-
-        ///// <summary>
-        ///// 拓展IQueryable"T"方法操作
-        ///// </summary>
-        ///// <typeparam name="T">数据类型</typeparam>
-        ///// <param name="source">数据源</param>
-        ///// <returns></returns>
-        //public static IQueryable<T> AsExpandable<T>(this IQueryable<T> source)
-        //{
-        //    return LinqKit.Extensions.AsExpandable(source);
-        //}
     }
 }
