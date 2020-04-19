@@ -100,7 +100,7 @@ namespace Coldairarrow.Business.Base_Manage
                     CreateTime = DateTime.Now,
                     RoleId = roleId
                 }).ToList();
-            await Service.Delete_SqlAsync<Base_RoleAction>(x => x.RoleId == roleId);
+            await Service.DeleteAsync<Base_RoleAction>(x => x.RoleId == roleId);
             await Service.InsertAsync(roleActions);
         }
 
