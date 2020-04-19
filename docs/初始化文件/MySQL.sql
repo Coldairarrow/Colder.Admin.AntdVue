@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2020-03-15 23:50:00
+Date: 2020-04-19 16:44:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -18,6 +18,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for Base_Action
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_Action`;
 CREATE TABLE `Base_Action` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -43,12 +44,13 @@ COMMENT='系统权限表'
 -- Records of Base_Action
 -- ----------------------------
 BEGIN;
-INSERT INTO `Base_Action` VALUES ('1178957405992521728', '2019-10-01 16:58:44', null, '0', null, '0', '系统管理', '', null, '1', 'setting', '1'), ('1178957553778823168', '2019-10-01 16:59:19', null, '0', '1178957405992521728', '1', '权限管理', '/Base_Manage/Base_Action/List', null, '1', null, '20'), ('1179018395304071168', '2019-10-01 21:01:05', null, '0', '1178957405992521728', '1', '密钥管理', '/Base_Manage/Base_AppSecret/List', null, '1', null, '15'), ('1182652266117599232', '2019-10-11 21:40:47', null, '0', '1178957405992521728', '1', '用户管理', '/Base_Manage/Base_User/List', null, '1', null, '0'), ('1182652367447789568', '2019-10-11 21:41:11', null, '0', '1178957405992521728', '1', '角色管理', '/Base_Manage/Base_Role/List', null, '1', null, '5'), ('1182652433302556672', '2019-10-11 21:41:27', null, '0', '1178957405992521728', '1', '部门管理', '/Base_Manage/Base_Department/List', null, '1', null, '10'), ('1182652599069839360', '2019-10-11 21:42:06', null, '0', '1178957405992521728', '1', '系统日志', '/Base_Manage/Base_Log/List', null, '1', null, '25'), ('1188800845714558976', '2019-10-28 20:53:03', null, '1', '1182652266117599232', '2', '增', null, 'Base_User.Add', '1', null, '0'), ('1188800845714558977', '2019-10-28 20:53:03', null, '1', '1182652266117599232', '2', '改', null, 'Base_User.Edit', '1', null, '0'), ('1188800845714558978', '2019-10-28 20:53:03', null, '1', '1182652266117599232', '2', '删', null, 'Base_User.Delete', '1', null, '0'), ('1188801057778569216', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '增', null, 'Base_Role.Add', '1', null, '0'), ('1188801057778569217', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '改', null, 'Base_Role.Edit', '1', null, '0'), ('1188801057778569218', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '删', null, 'Base_Role.Delete', '1', null, '0'), ('1188801109783744512', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '增', null, 'Base_Department.Add', '1', null, '0'), ('1188801109783744513', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '改', null, 'Base_Department.Edit', '1', null, '0'), ('1188801109783744514', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '删', null, 'Base_Department.Delete', '1', null, '0'), ('1188801273885888512', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '增', null, 'Base_AppSecret.Add', '1', null, '0'), ('1188801273885888513', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '改', null, 'Base_AppSecret.Edit', '1', null, '0'), ('1188801273885888514', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '删', null, 'Base_AppSecret.Delete', '1', null, '0'), ('1188801341661646848', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '增', null, 'Base_Action.Add', '1', null, '0'), ('1188801341661646849', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '改', null, 'Base_Action.Edit', '1', null, '0'), ('1188801341661646850', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '删', null, 'Base_Action.Delete', '1', null, '0'), ('1193158266167758848', '2019-11-09 21:27:53', 'Admin', '0', null, '0', '首页', null, null, '1', 'home', '0'), ('1193158630615027712', '2019-11-09 21:29:20', 'Admin', '0', '1193158266167758848', '1', '框架介绍', '/Home/Introduce', null, '0', null, '0'), ('1193158780011941888', '2019-11-09 21:29:55', 'Admin', '0', '1193158266167758848', '1', '运营统计', '/Home/Statis', null, '0', null, '0'), ('1193527101521661952', '2019-11-10 21:53:30', null, '0', '1182652266117599232', '2', '增', null, 'Base_User.Add', '1', null, '0'), ('1193527101521661953', '2019-11-10 21:53:30', null, '0', '1182652266117599232', '2', '改', null, 'Base_User.Edit', '1', null, '0'), ('1193527101521661954', '2019-11-10 21:53:30', null, '0', '1182652266117599232', '2', '删', null, 'Base_User.Delete', '1', null, '0');
+INSERT INTO `Base_Action` VALUES ('1178957405992521728', '2019-10-01 16:58:44', null, '0', null, '0', '系统管理', '', null, '1', 'setting', '1'), ('1178957553778823168', '2019-10-01 16:59:19', null, '0', '1178957405992521728', '1', '权限管理', '/Base_Manage/Base_Action/List', null, '1', null, '20'), ('1179018395304071168', '2019-10-01 21:01:05', null, '0', '1178957405992521728', '1', '密钥管理', '/Base_Manage/Base_AppSecret/List', null, '1', null, '15'), ('1182652266117599232', '2019-10-11 21:40:47', null, '0', '1178957405992521728', '1', '用户管理', '/Base_Manage/Base_User/List', null, '1', null, '0'), ('1182652367447789568', '2019-10-11 21:41:11', null, '0', '1178957405992521728', '1', '角色管理', '/Base_Manage/Base_Role/List', null, '1', null, '5'), ('1182652433302556672', '2019-10-11 21:41:27', null, '0', '1178957405992521728', '1', '部门管理', '/Base_Manage/Base_Department/List', null, '1', null, '10'), ('1182652599069839360', '2019-10-11 21:42:06', null, '0', '1178957405992521728', '1', '系统日志', '/Base_Manage/Base_Log/List', null, '1', null, '25'), ('1188801057778569216', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '增', null, 'Base_Role.Add', '1', null, '0'), ('1188801057778569217', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '改', null, 'Base_Role.Edit', '1', null, '0'), ('1188801057778569218', '2019-10-28 20:53:53', null, '0', '1182652367447789568', '2', '删', null, 'Base_Role.Delete', '1', null, '0'), ('1188801109783744512', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '增', null, 'Base_Department.Add', '1', null, '0'), ('1188801109783744513', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '改', null, 'Base_Department.Edit', '1', null, '0'), ('1188801109783744514', '2019-10-28 20:54:06', null, '0', '1182652433302556672', '2', '删', null, 'Base_Department.Delete', '1', null, '0'), ('1188801273885888512', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '增', null, 'Base_AppSecret.Add', '1', null, '0'), ('1188801273885888513', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '改', null, 'Base_AppSecret.Edit', '1', null, '0'), ('1188801273885888514', '2019-10-28 20:54:45', null, '0', '1179018395304071168', '2', '删', null, 'Base_AppSecret.Delete', '1', null, '0'), ('1188801341661646848', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '增', null, 'Base_Action.Add', '1', null, '0'), ('1188801341661646849', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '改', null, 'Base_Action.Edit', '1', null, '0'), ('1188801341661646850', '2019-10-28 20:55:01', null, '0', '1178957553778823168', '2', '删', null, 'Base_Action.Delete', '1', null, '0'), ('1193158266167758848', '2019-11-09 21:27:53', 'Admin', '0', null, '0', '首页', null, null, '1', 'home', '0'), ('1193158630615027712', '2019-11-09 21:29:20', 'Admin', '0', '1193158266167758848', '1', '框架介绍', '/Home/Introduce', null, '0', null, '0'), ('1193158780011941888', '2019-11-09 21:29:55', 'Admin', '0', '1193158266167758848', '1', '运营统计', '/Home/Statis', null, '0', null, '0'), ('1251792477787000832', '2020-04-19 16:39:19', null, '0', '1182652266117599232', '2', '增', null, 'Base_User.Add', '1', null, '0'), ('1251792477787000833', '2020-04-19 16:39:19', null, '0', '1182652266117599232', '2', '改', null, 'Base_User.Edit', '1', null, '0'), ('1251792477787000834', '2020-04-19 16:39:19', null, '0', '1182652266117599232', '2', '删', null, 'Base_User.Delete', '1', null, '0'), ('1251792721769664512', '2020-04-19 16:40:17', 'Admin', '0', '1178957405992521728', '1', '操作日志', '/Base_Manage/Base_UserLog/List', null, '0', null, '23');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for Base_AppSecret
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_AppSecret`;
 CREATE TABLE `Base_AppSecret` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -75,6 +77,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_BuildTest
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_BuildTest`;
 CREATE TABLE `Base_BuildTest` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -102,6 +105,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_DbLink
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_DbLink`;
 CREATE TABLE `Base_DbLink` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -128,6 +132,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_Department
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_Department`;
 CREATE TABLE `Base_Department` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -153,16 +158,12 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_Log
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_Log`;
 CREATE TABLE `Base_Log` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
-`CreatorId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人Id' ,
-`CreatorRealName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人姓名' ,
-`Deleted`  tinyint(4) NOT NULL COMMENT '否已删除' ,
-`Level`  varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志级别' ,
-`LogType`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志类型' ,
+`Level`  int(200) NOT NULL DEFAULT 0 COMMENT '日志级别' ,
 `LogContent`  longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '日志内容' ,
-`Data`  longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '数据备份（转为JSON字符串）' ,
 PRIMARY KEY (`Id`)
 )
 ENGINE=InnoDB
@@ -180,6 +181,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_Role
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_Role`;
 CREATE TABLE `Base_Role` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -204,6 +206,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for Base_RoleAction
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_RoleAction`;
 CREATE TABLE `Base_RoleAction` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -227,96 +230,9 @@ INSERT INTO `Base_RoleAction` VALUES ('1188801858282459136', '2019-10-28 20:57:0
 COMMIT;
 
 -- ----------------------------
--- Table structure for Base_UnitTest
--- ----------------------------
-CREATE TABLE `Base_UnitTest` (
-`Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
-`UserId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id' ,
-`UserName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
-`Age`  int(11) NULL DEFAULT NULL COMMENT '年龄' ,
-PRIMARY KEY (`Id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-COMMENT='单元测试表'
-
-;
-
--- ----------------------------
--- Records of Base_UnitTest
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for Base_UnitTest_0
--- ----------------------------
-CREATE TABLE `Base_UnitTest_0` (
-`Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
-`UserId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id' ,
-`UserName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
-`Age`  int(11) NULL DEFAULT NULL COMMENT '年龄' ,
-PRIMARY KEY (`Id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-COMMENT='单元测试表'
-
-;
-
--- ----------------------------
--- Records of Base_UnitTest_0
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for Base_UnitTest_1
--- ----------------------------
-CREATE TABLE `Base_UnitTest_1` (
-`Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
-`UserId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id' ,
-`UserName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
-`Age`  int(11) NULL DEFAULT NULL COMMENT '年龄' ,
-PRIMARY KEY (`Id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-COMMENT='单元测试表'
-
-;
-
--- ----------------------------
--- Records of Base_UnitTest_1
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for Base_UnitTest_2
--- ----------------------------
-CREATE TABLE `Base_UnitTest_2` (
-`Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
-`UserId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id' ,
-`UserName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
-`Age`  int(11) NULL DEFAULT NULL COMMENT '年龄' ,
-PRIMARY KEY (`Id`)
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-COMMENT='单元测试表'
-
-;
-
--- ----------------------------
--- Records of Base_UnitTest_2
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for Base_User
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_User`;
 CREATE TABLE `Base_User` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -344,8 +260,34 @@ INSERT INTO `Base_User` VALUES ('1181928860648738816', '2019-10-09 21:46:14', nu
 COMMIT;
 
 -- ----------------------------
+-- Table structure for Base_UserLog
+-- ----------------------------
+DROP TABLE IF EXISTS `Base_UserLog`;
+CREATE TABLE `Base_UserLog` (
+`Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '自然主键' ,
+`CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
+`CreatorId`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人Id' ,
+`CreatorRealName`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人姓名' ,
+`LogType`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志类型' ,
+`LogContent`  longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '日志内容' ,
+PRIMARY KEY (`Id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+COMMENT='系统日志表'
+
+;
+
+-- ----------------------------
+-- Records of Base_UserLog
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
 -- Table structure for Base_UserRole
 -- ----------------------------
+DROP TABLE IF EXISTS `Base_UserRole`;
 CREATE TABLE `Base_UserRole` (
 `Id`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键' ,
 `CreateTime`  datetime NOT NULL COMMENT '创建时间' ,
@@ -365,5 +307,5 @@ COMMENT='用户角色表'
 -- Records of Base_UserRole
 -- ----------------------------
 BEGIN;
-INSERT INTO `Base_UserRole` VALUES ('1181927367719784448', '2019-10-09 21:40:18', null, '0', '1181922344629702656', '1180819481383931904'), ('1181927367719784449', '2019-10-09 21:40:18', null, '0', '1181922344629702656', '1180486275199668224'), ('1181927783786352640', '2019-10-09 21:41:57', null, '0', '1181927783727632384', '1180819481383931904'), ('1188802049190400000', '2019-10-28 20:57:50', null, '0', '1181928860648738816', '1180819481383931904');
+INSERT INTO `Base_UserRole` VALUES ('1181927367719784448', '2019-10-09 21:40:18', null, '0', '1181922344629702656', '1180819481383931904'), ('1181927367719784449', '2019-10-09 21:40:18', null, '0', '1181922344629702656', '1180486275199668224'), ('1181927783786352640', '2019-10-09 21:41:57', null, '0', '1181927783727632384', '1180819481383931904'), ('1251792318642524160', '2020-04-19 16:38:41', null, '0', '1181928860648738816', '1180819481383931904');
 COMMIT;

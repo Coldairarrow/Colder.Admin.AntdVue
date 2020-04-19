@@ -158,7 +158,7 @@ namespace Coldairarrow.Business.Base_Manage
                 UserId = userId,
                 RoleId = x
             }).ToList();
-            await Service.Delete_SqlAsync<Base_UserRole>(x => x.UserId == userId);
+            await Service.DeleteAsync<Base_UserRole>(x => x.UserId == userId);
             await Service.InsertAsync(userRoleList);
         }
 

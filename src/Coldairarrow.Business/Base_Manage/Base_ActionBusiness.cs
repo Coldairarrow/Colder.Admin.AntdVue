@@ -121,7 +121,7 @@ namespace Coldairarrow.Business.Base_Manage
                 aData.NeedAction = true;
             });
             //删除原来
-            await Delete_SqlAsync(x => x.ParentId == parentId && (int)x.Type == 2);
+            await DeleteAsync(x => x.ParentId == parentId && (int)x.Type == 2);
             //新增
             await InsertAsync(permissionList);
 
