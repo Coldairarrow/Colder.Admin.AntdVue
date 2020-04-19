@@ -1,6 +1,9 @@
 ﻿using Coldairarrow.Util;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 using System.Text;
 
 namespace Coldairarrow.Api
@@ -8,11 +11,32 @@ namespace Coldairarrow.Api
     /// <summary>
     /// 基控制器
     /// </summary>
-    [JsonParamter]
-    [ApiLog]
     [FormatResponse]
     public class BaseController : ControllerBase
     {
+        protected void InitEntity(object obj)
+        {
+            var op = HttpContext.RequestServices.GetService<IOperator>();
+            if (obj.ContainsProperty("Id"))
+                obj.SetPropertyValue("Id", IdHelper.GetId());
+            if (obj.ContainsProperty("CreateTime"))
+                obj.SetPropertyValue("CreateTime", DateTime.Now);
+            if (obj.ContainsProperty("CreatorId"))
+                obj.SetPropertyValue("CreatorId", op?.UserId);
+            if (obj.ContainsProperty("CreatorRealName"))
+                obj.SetPropertyValue("CreatorRealName", op?.Property?.RealName);
+        }
+
+        protected string GetAbsolutePath(string virtualPath)
+        {
+            string path = virtualPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            if (path[0] == '~')
+                path = path.Remove(0, 2);
+            string rootPath = HttpContext.RequestServices.GetService<IWebHostEnvironment>().WebRootPath;
+
+            return Path.Combine(rootPath, path);
+        }
+
         /// <summary>
         /// 返回JSON
         /// </summary>
@@ -112,29 +136,6 @@ namespace Coldairarrow.Api
             };
 
             return res;
-        }
-
-        /// <summary>
-        /// 返回表格数据
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="list">数据列表</param>
-        /// <returns></returns>
-        protected AjaxResult<List<T>> DataTable<T>(List<T> list)
-        {
-            return DataTable(list, new Pagination());
-        }
-
-        /// <summary>
-        /// 返回表格数据
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="list">数据列表</param>
-        /// <param name="pagination">分页参数</param>
-        /// <returns></returns>
-        protected AjaxResult<List<T>> DataTable<T>(List<T> list, Pagination pagination)
-        {
-            return pagination.BuildTableResult_AntdVue(list);
         }
     }
 }

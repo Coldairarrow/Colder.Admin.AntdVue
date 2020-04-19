@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using EFCore.Sharding;
+using Npgsql;
 using NpgsqlTypes;
 using System;
 using System.Collections;
@@ -19,17 +20,11 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
-        public PostgreSqlHelper(string nameOrConStr)
-            : base(DatabaseType.PostgreSql, nameOrConStr)
+        /// <param name="conString">完整连接字符串</param>
+        public PostgreSqlHelper(string conString)
+            : base(DatabaseType.PostgreSql, conString)
         {
-            _extraUsingNamespace =
-$@"using NpgsqlTypes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-";
+
         }
 
         #endregion
@@ -52,13 +47,13 @@ using System.Net.NetworkInformation;
             { "json", typeof(string) },
             { "jsonb", typeof(string) },
             { "xml", typeof(string) },
-            { "point", typeof(NpgsqlPoint) },
-            { "lseg", typeof(NpgsqlLSeg) },
-            { "path", typeof(NpgsqlPath) },
-            { "polygon", typeof(NpgsqlPolygon) },
-            { "line", typeof(NpgsqlLine) },
-            { "circle", typeof(NpgsqlCircle) },
-            { "box", typeof(NpgsqlBox) },
+            //{ "point", typeof(NpgsqlPoint) },
+            //{ "lseg", typeof(NpgsqlLSeg) },
+            //{ "path", typeof(NpgsqlPath) },
+            //{ "polygon", typeof(NpgsqlPolygon) },
+            //{ "line", typeof(NpgsqlLine) },
+            //{ "circle", typeof(NpgsqlCircle) },
+            //{ "box", typeof(NpgsqlBox) },
             { "bit(1)", typeof(bool) },
             { "bit(n)", typeof(BitArray) },
             { "varbit", typeof(BitArray) },

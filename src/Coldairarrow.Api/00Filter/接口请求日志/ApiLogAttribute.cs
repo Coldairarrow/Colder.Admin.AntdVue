@@ -1,45 +1,38 @@
-﻿using Autofac;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
-    public class ApiLogAttribute : Attribute, IActionFilter
+    public class ApiLogAttribute : BaseActionFilterAsync
     {
         static ConcurrentDictionary<HttpContext, DateTime> _requesTime { get; }
             = new ConcurrentDictionary<HttpContext, DateTime>();
 
-        /// <summary>
-        /// Action执行之前执行
-        /// </summary>
-        /// <param name="filterContext">过滤器上下文</param>
-        public void OnActionExecuting(ActionExecutingContext filterContext)
+        public override async Task OnActionExecuting(ActionExecutingContext context)
         {
-            _requesTime[HttpContextCore.Current] = DateTime.Now;
+            _requesTime[context.HttpContext] = DateTime.Now;
+
+            await Task.CompletedTask;
         }
 
-        /// <summary>
-        /// Action执行完毕之后执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public void OnActionExecuted(ActionExecutedContext filterContext)
+        public override async Task OnActionExecuted(ActionExecutedContext context)
         {
-            var time = DateTime.Now - _requesTime[HttpContextCore.Current];
-            _requesTime.TryRemove(HttpContextCore.Current, out _);
+            var time = DateTime.Now - _requesTime[context.HttpContext];
+            _requesTime.TryRemove(context.HttpContext, out _);
 
-            var request = filterContext.HttpContext.Request;
-            string contentType = request.ContentType ?? string.Empty;
-            if (!contentType.Contains("json"))
-                return;
+            var request = context.HttpContext.Request;
             string resContent = string.Empty;
-            if (filterContext.Result is ContentResult result)
+            if (context.Result is ContentResult result)
                 resContent = result.Content;
 
             if (resContent?.Length > 1000)
@@ -58,11 +51,10 @@ body:{request.Body?.ReadToString(Encoding.UTF8)}
 
 返回:{resContent}
 ";
-            //接口日志
-            using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
-            {
-                lifescope.Resolve<ILogger>().Info(LogType.系统跟踪, log);
-            }
+            var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiLogAttribute>>();
+            logger.LogInformation(log);
+
+            await Task.CompletedTask;
         }
     }
 }

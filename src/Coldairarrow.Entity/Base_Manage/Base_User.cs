@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -48,9 +49,9 @@ namespace Coldairarrow.Entity.Base_Manage
         public String RealName { get; set; }
 
         /// <summary>
-        /// 性别(1为男，0为女)
+        /// 性别
         /// </summary>
-        public Int32 Sex { get; set; }
+        public Sex Sex { get; set; }
 
         /// <summary>
         /// 出生日期
@@ -61,6 +62,14 @@ namespace Coldairarrow.Entity.Base_Manage
         /// 所属部门Id
         /// </summary>
         public String DepartmentId { get; set; }
+    }
 
+    public enum Sex
+    {
+        [Description("男人")]
+        Man = 1,
+
+        [Description("女人")]
+        Woman = 0
     }
 }

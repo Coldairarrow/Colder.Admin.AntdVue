@@ -1,4 +1,5 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using AspectCore.Extensions.Hosting;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -8,17 +9,19 @@ namespace Coldairarrow.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .UseIdHelper()
+                .UseLog()
+                .UseCache()
+                .UseDynamicProxy()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
                         .UseUrls("http://*:5000")
                         .UseStartup<Startup>();
-                });
+                })
+                .Build()
+                .Run();
+        }
     }
 }

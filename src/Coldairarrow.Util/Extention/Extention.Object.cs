@@ -205,6 +205,17 @@ namespace Coldairarrow.Util
         }
 
         /// <summary>
+        /// 获取某字段值
+        /// </summary>
+        /// <param name="obj">对象</param>
+        /// <param name="methodName">方法名</param>
+        /// <returns></returns>
+        public static MethodInfo GetMethod(this object obj, string methodName)
+        {
+            return obj.GetType().GetMethod(methodName, _bindingFlags);
+        }
+
+        /// <summary>
         /// 改变实体类型
         /// </summary>
         /// <param name="obj">对象</param>

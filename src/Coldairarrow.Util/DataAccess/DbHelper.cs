@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFCore.Sharding;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -18,11 +19,11 @@ namespace Coldairarrow.Util
         /// 构造函数
         /// </summary>
         /// <param name="dbType">数据库类型</param>
-        /// <param name="conStr">连接名或连接字符串</param>
-        public DbHelper(DatabaseType dbType, string conStr)
+        /// <param name="conString">完整连接字符串</param>
+        public DbHelper(DatabaseType dbType, string conString)
         {
             _dbType = dbType;
-            _conStr = DbProviderFactoryHelper.GetFullConString(conStr);
+            _conString = conString;
         }
 
         #endregion
@@ -37,7 +38,7 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 连接字符串
         /// </summary>
-        protected string _conStr;
+        protected string _conString;
 
         /// <summary>
         /// 实体需要引用的额外命名空间
@@ -63,7 +64,7 @@ namespace Coldairarrow.Util
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conStr;
+                conn.ConnectionString = _conString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -95,7 +96,7 @@ namespace Coldairarrow.Util
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conStr;
+                conn.ConnectionString = _conString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -103,7 +104,7 @@ namespace Coldairarrow.Util
 
                 using (DbCommand cmd = conn.CreateCommand())
                 {
-                    
+
                     cmd.Connection = conn;
                     cmd.CommandText = sql;
                     if (parameters != null && parameters.Count > 0)
@@ -113,7 +114,7 @@ namespace Coldairarrow.Util
                             cmd.Parameters.Add(item);
                         }
                     }
-                    
+
                     DbDataAdapter adapter = dbProviderFactory.CreateDataAdapter();
                     adapter.SelectCommand = cmd;
                     DataSet table = new DataSet();
@@ -158,7 +159,7 @@ namespace Coldairarrow.Util
             DbProviderFactory dbProviderFactory = DbProviderFactoryHelper.GetDbProviderFactory(_dbType);
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conStr;
+                conn.ConnectionString = _conString;
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();

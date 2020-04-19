@@ -28,17 +28,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_DbLink>>> GetDataList(Pagination pagination)
+        public async Task<AjaxResult<List<Base_DbLink>>> GetDataList(PageInput input)
         {
-            var dataList = await _dbLinkBus.GetDataListAsync(pagination);
-
-            return DataTable(dataList, pagination);
+            return await _dbLinkBus.GetDataListAsync(input);
         }
 
         [HttpPost]
-        public async Task<Base_DbLink> GetTheData(string id)
+        public async Task<Base_DbLink> GetTheData(IdInputDTO input)
         {
-            return await _dbLinkBus.GetTheDataAsync(id) ?? new Base_DbLink();
+            return await _dbLinkBus.GetTheDataAsync(input.id) ?? new Base_DbLink();
         }
 
         #endregion
@@ -54,7 +52,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
+                InitEntity(theData);
 
                 await _dbLinkBus.AddDataAsync(theData);
             }
@@ -69,9 +67,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task DeleteData(string ids)
+        public async Task DeleteData(List<string> ids)
         {
-            await _dbLinkBus.DeleteDataAsync(ids.ToList<string>());
+            await _dbLinkBus.DeleteDataAsync(ids);
         }
 
         #endregion

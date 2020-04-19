@@ -27,29 +27,16 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #region 获取
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="pagination">分页参数</param>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<List<Base_AppSecret>>> GetDataList(Pagination pagination, string keyword)
+        public async Task<PageResult<Base_AppSecret>> GetDataList(PageInput<AppSecretsInputDTO> input)
         {
-            var dataList = await _appSecretBus.GetDataListAsync(pagination, keyword);
-
-            return DataTable(dataList, pagination);
+            return await _appSecretBus.GetDataListAsync(input);
         }
 
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="id">id主键</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<Base_AppSecret> GetTheData(string id)
+        public async Task<Base_AppSecret> GetTheData(IdInputDTO input)
         {
-            return await _appSecretBus.GetTheDataAsync(id) ?? new Base_AppSecret();
+            return await _appSecretBus.GetTheDataAsync(input.id) ?? new Base_AppSecret();
         }
 
         #endregion
@@ -65,7 +52,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             if (theData.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
+                InitEntity(theData);
 
                 await _appSecretBus.AddDataAsync(theData);
             }
@@ -80,9 +67,9 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task DeleteData(string ids)
+        public async Task DeleteData(List<string> ids)
         {
-            await _appSecretBus.DeleteDataAsync(ids.ToList<string>());
+            await _appSecretBus.DeleteDataAsync(ids);
         }
 
         #endregion

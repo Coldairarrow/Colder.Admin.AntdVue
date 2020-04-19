@@ -39,6 +39,9 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static T GetPayload<T>(string token)
         {
+            if (token.IsNullOrEmpty())
+                return default;
+
             return token.Split('.')[1].Base64UrlDecode().ToObject<T>();
         }
 

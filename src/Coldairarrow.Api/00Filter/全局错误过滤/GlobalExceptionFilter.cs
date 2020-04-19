@@ -1,25 +1,38 @@
-﻿using Coldairarrow.Util;
+﻿using AspectCore.DynamicProxy;
+using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Api
 {
-    public class GlobalExceptionFilter : BaseActionFilter, IExceptionFilter
+    public class GlobalExceptionFilter : BaseActionFilterAsync, IAsyncExceptionFilter
     {
-        public void OnException(ExceptionContext context)
+        readonly ILogger _logger;
+        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
-            ILogger logger = AutofacHelper.GetScopeService<ILogger>();
+            _logger = logger;
+        }
 
-            var ex = context.Exception;
+        public async Task OnExceptionAsync(ExceptionContext context)
+        {
+            Exception ex = context.Exception;
+            if (ex is AspectInvocationException aspectEx)
+                ex = aspectEx.InnerException;
+
             if (ex is BusException busEx)
             {
-                logger.Info(LogType.系统跟踪, busEx.Message);
+                _logger.LogInformation(busEx.Message);
                 context.Result = Error(busEx.Message, busEx.ErrorCode);
             }
             else
             {
-                logger.Error(ex);
+                _logger.LogError(ex, "");
                 context.Result = Error(ex.Message);
             }
+
+            await Task.CompletedTask;
         }
     }
 }

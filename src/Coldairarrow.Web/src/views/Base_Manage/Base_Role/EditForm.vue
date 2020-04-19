@@ -5,33 +5,34 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
-    @cancel="handleCancel"
+    @cancel="()=>{this.visible=false}"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item label="角色名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['RoleName', { rules: [{ required: true, message: '请输入角色名' }] }]" />
-        </a-form-item>
-        <a-form-item label="权限" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
+        <a-form-model-item label="角色名" prop="RoleName">
+          <a-input v-model="entity.RoleName" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="权限" prop="AppSecret">
           <a-tree
             showLine
             v-if="actionsTreeData && actionsTreeData.length"
             checkable
             @check="onCheck"
-            :autoExpandParent="autoExpandParent"
+            :autoExpandParent="true"
             v-model="checkedKeys"
             :treeData="actionsTreeData"
             :defaultExpandAll="true"
             :checkStrictly="true"
           />
-        </a-form-item>
-      </a-form>
+        </a-form-model-item>
+      </a-form-model>
     </a-spin>
   </a-modal>
 </template>
 
 <script>
 import TreeHelper from '@/utils/helper/TreeHelper'
+
 export default {
   props: {
     afterSubmit: {
@@ -41,20 +42,51 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      layout: {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 18 }
+      },
       visible: false,
       confirmLoading: false,
-      formFields: {},
       entity: {},
       actionsTreeData: [],
       allActionList: [],
-      autoExpandParent: true,
-      checkedKeys: { checked: [] }
+      checkedKeys: { checked: [] },
+      rules: {
+        RoleName: [{ required: true, message: '必填' }]
+      }
     }
   },
   methods: {
+    init() {
+      this.visible = true
+      this.entity = {}
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
+
+      this.$http.post('/Base_Manage/Base_Action/GetActionTreeList', {}).then(resJson => {
+        if (resJson.Success) {
+          this.actionsTreeData = resJson.Data
+        }
+      })
+      this.$http.post('/Base_Manage/Base_Action/GetAllActionList', {}).then(resJson => {
+        if (resJson.Success) {
+          this.allActionList = resJson.Data
+        }
+      })
+    },
+    openForm(id) {
+      this.init()
+
+      if (id) {
+        this.$http.post('/Base_Manage/Base_Role/GetTheData', { id: id }).then(resJson => {
+          this.entity = resJson.Data
+
+          this.checkedKeys = { checked: this.entity['Actions'] }
+        })
+      }
+    },
     onCheck(checkedKeys, e) {
       // console.log('勾选')
       // console.log(checkedKeys)
@@ -76,67 +108,24 @@ export default {
 
       this.checkedKeys = { checked: newChecked }
     },
-    add() {
-      this.entity = {}
-      this.visible = true
-      this.form.resetFields()
-      this.init()
-    },
-    edit(id) {
-      this.visible = true
-
-      this.$nextTick(() => {
-        this.formFields = this.form.getFieldsValue()
-
-        this.$http.post('/Base_Manage/Base_Role/GetTheData', { id: id }).then(resJson => {
-          this.entity = resJson.Data
-          var setData = {}
-          Object.keys(this.formFields).forEach(item => {
-            setData[item] = this.entity[item]
-          })
-          this.form.setFieldsValue(setData)
-          this.checkedKeys = { checked: this.entity['Actions'] }
-
-          this.init()
-        })
-      })
-    },
     handleSubmit() {
-      this.form.validateFields((errors, values) => {
-        //校验成功
-        if (!errors) {
-          this.entity = Object.assign(this.entity, this.form.getFieldsValue())
+      this.$refs['form'].validate(valid => {
+        if (!valid) {
+          return
+        }
+        this.confirmLoading = true
+        this.entity['actions'] = this.checkedKeys.checked
+        this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
+          this.confirmLoading = false
 
-          this.entity['actionsJson'] = JSON.stringify(this.checkedKeys.checked)
-          this.confirmLoading = true
-          this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
-            this.confirmLoading = false
-
-            if (resJson.Success) {
-              this.$message.success('操作成功!')
-              this.afterSubmit()
-              this.visible = false
-            } else {
-              this.$message.error(resJson.Msg)
-            }
-          })
-        }
-      })
-    },
-    handleCancel() {
-      this.visible = false
-      this.checkedKeys.checked = []
-    },
-    init() {
-      this.$http.post('/Base_Manage/Base_Action/GetActionTreeList').then(resJson => {
-        if (resJson.Success) {
-          this.actionsTreeData = resJson.Data
-        }
-      })
-      this.$http.post('/Base_Manage/Base_Action/GetAllActionList').then(resJson => {
-        if (resJson.Success) {
-          this.allActionList = resJson.Data
-        }
+          if (resJson.Success) {
+            this.$message.success('操作成功!')
+            this.afterSubmit()
+            this.visible = false
+          } else {
+            this.$message.error(resJson.Msg)
+          }
+        })
       })
     }
   }

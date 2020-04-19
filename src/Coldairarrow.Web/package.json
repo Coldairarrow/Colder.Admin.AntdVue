@@ -12,7 +12,7 @@
     "postinstall": "opencollective-postinstall"
   },
   "dependencies": {
-    "ant-design-vue": "~1.3.9",
+    "ant-design-vue": "1.5.3",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "enquire.js": "^2.1.6",
@@ -21,6 +21,7 @@
     "lodash.pick": "^4.4.0",
     "md5": "^2.2.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
     "node-uuid": "^1.4.8",
     "nprogress": "^0.2.0",
     "vue": "^2.5.22",

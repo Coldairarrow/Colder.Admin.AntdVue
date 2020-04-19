@@ -17,6 +17,16 @@ namespace Coldairarrow.Util
     public static partial class Extention
     {
         /// <summary>
+        /// 转为bool
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns></returns>
+        public static bool ToBool(this string str)
+        {
+            return bool.Parse(str);
+        }
+
+        /// <summary>
         /// 转为字节数组
         /// </summary>
         /// <param name="base64Str">base64字符串</param>
@@ -543,13 +553,14 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 将枚举类型的文本转为枚举类型
         /// </summary>
-        /// <typeparam name="T">枚举类型</typeparam>
+        /// <typeparam name="TEnum">枚举类型</typeparam>
         /// <param name="enumText">枚举文本</param>
         /// <returns></returns>
-        public static T ToEnum<T>(this string enumText)
+        public static TEnum ToEnum<TEnum>(this string enumText) where TEnum : struct
         {
-            var values = typeof(T).GetEnumValues().CastToList<T>();
-            return values.Where(x => x.ToString() == enumText).FirstOrDefault();
+            Enum.TryParse(enumText, out TEnum value);
+
+            return value;
         }
 
         /// <summary>

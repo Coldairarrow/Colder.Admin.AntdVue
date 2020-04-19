@@ -1,5 +1,5 @@
 <template>
-  <a-card title="菜单及页面" :bordered="false">
+  <a-card :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="hanldleAdd()">新建</a-button>
       <a-button
@@ -8,9 +8,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >
-        删除
-      </a-button>
+      >删除</a-button>
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
@@ -28,7 +26,7 @@
               </a-col>
             </a-row>
           </a-form>
-        </div> -->
+    </div>-->
 
     <a-table
       v-if="data && data.length"
@@ -52,7 +50,6 @@
         </template>
       </span>
     </a-table>
-
     <edit-form ref="editForm" :afterSubmit="getDataList"></edit-form>
   </a-card>
 </template>
@@ -104,7 +101,6 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order,
-          ...this.queryParam,
           ...this.filters
         })
         .then(resJson => {
@@ -122,10 +118,10 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     hanldleAdd() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.openForm()
     },
     handleEdit(id) {
-      this.$refs.editForm.edit(id)
+      this.$refs.editForm.openForm(id)
     },
     handleDelete(ids) {
       var thisObj = this
@@ -139,7 +135,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_Department/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_Department/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {

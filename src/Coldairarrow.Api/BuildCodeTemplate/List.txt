@@ -108,7 +108,7 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order,
-          ...this.queryParam,
+          Search: this.queryParam,
           ...this.filters
         })
         .then(resJson => {
@@ -137,7 +137,7 @@ export default {
         title: '确认删除吗?',
         onOk() {
           return new Promise((resolve, reject) => {
-            thisObj.$http.post('/%areaName%/%entityName%/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+            thisObj.$http.post('/%areaName%/%entityName%/DeleteData', ids).then(resJson => {
               resolve()
 
               if (resJson.Success) {

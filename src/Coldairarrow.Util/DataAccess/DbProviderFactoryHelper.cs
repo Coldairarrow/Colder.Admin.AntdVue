@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using EFCore.Sharding;
+using MySql.Data.MySqlClient;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -119,52 +120,6 @@ namespace Coldairarrow.Util
                     default: throw new Exception("请输入合法的数据库类型！");
                 }
             }
-        }
-
-        /// <summary>
-        /// 通过连接名或连接字符串获取连接字符串
-        /// </summary>
-        /// <param name="nameOrconStr">连接名或者连接字符串</param>
-        /// <returns></returns>
-        public static string GetFullConString(string nameOrconStr)
-        {
-            string conStr = string.Empty;
-            string nameOfDbcon = string.Empty;
-            //若为连接字符串
-            if (nameOrconStr.Contains(";"))
-                conStr = nameOrconStr;
-            //若为"name=BaseDb"形式
-            else if (nameOrconStr.Contains("name="))
-            {
-                var strArray = nameOrconStr.Split("=".ToArray());
-                nameOfDbcon = strArray[1];
-            }
-            //为连接名
-            else
-                nameOfDbcon = nameOrconStr;
-
-            if (!nameOfDbcon.IsNullOrEmpty())
-            {
-                conStr = ConfigHelper.GetConnectionString(nameOfDbcon);
-            }
-
-            return conStr;
-        }
-
-        /// <summary>
-        /// 获取数据库连接对象
-        /// </summary>
-        /// <param name="conStr">连接字符串</param>
-        /// <param name="dbType">数据库类型</param>
-        /// <returns></returns>
-        public static DbConnection GetDbConnection(string conStr, DatabaseType dbType)
-        {
-            if (conStr.IsNullOrEmpty())
-                conStr = GlobalSwitch.DefaultDbConName;
-            DbConnection dbConnection = GetDbConnection(dbType);
-            dbConnection.ConnectionString = GetFullConString(conStr);
-
-            return dbConnection;
         }
 
         #endregion

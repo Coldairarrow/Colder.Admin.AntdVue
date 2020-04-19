@@ -2,7 +2,7 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,30 +25,16 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<AjaxResult<List<Base_Log>>> GetLogList(
-            Pagination pagination,
-            string logContent,
-            string logType,
-            string level,
-            string opUserName,
-            DateTime? startTime,
-            DateTime? endTime)
+        public async Task<PageResult<Base_Log>> GetLogList(PageInput<LogsInputDTO> input)
         {
-            pagination.SortField = "CreateTime";
-            pagination.SortType = "desc";
-            var list = await _logBus.GetLogListAsync(pagination, logContent, logType, level, opUserName, startTime, endTime);
+            input.SortField = "CreateTime";
+            input.SortType = "desc";
 
-            return DataTable(list, pagination);
+            return await _logBus.GetLogListAsync(input);
         }
 
         [HttpPost]
-        public List<SelectOption> GetLogTypeList()
-        {
-            return EnumHelper.ToOptionList(typeof(LogType));
-        }
-
-        [HttpPost]
-        public List<SelectOption> GetLoglevelList()
+        public List<SelectOption> GetLogLevelList()
         {
             return EnumHelper.ToOptionList(typeof(LogLevel));
         }

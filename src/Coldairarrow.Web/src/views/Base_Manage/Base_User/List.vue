@@ -9,8 +9,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-        >删除</a-button
-      >
+      >删除</a-button>
     </div>
 
     <div class="table-page-search-wrapper">
@@ -110,7 +109,7 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order,
-          ...this.queryParam,
+          Search: this.queryParam,
           ...this.filters
         })
         .then(resJson => {
@@ -128,10 +127,10 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     hanldleAdd() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.openForm()
     },
     handleEdit(id) {
-      this.$refs.editForm.edit(id)
+      this.$refs.editForm.openForm(id)
     },
     handleDelete(ids) {
       var thisObj = this
@@ -145,7 +144,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_User/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_User/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {

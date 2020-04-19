@@ -10,8 +10,7 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-        >删除</a-button
-      >
+      >删除</a-button>
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
@@ -114,7 +113,6 @@ export default {
       sorter: { field: 'Id', order: 'asc' },
       loading: false,
       columns,
-      queryParam: {},
       visible: false,
       selectedRowKeys: [],
       menuName: ''
@@ -137,7 +135,6 @@ export default {
           PageRows: this.pagination.pageSize,
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order == 'ascend' ? 'asc' : 'desc',
-          ...this.queryParam,
           ...this.filters
         })
         .then(resJson => {
@@ -155,10 +152,10 @@ export default {
       return this.selectedRowKeys.length > 0
     },
     hanldleAdd() {
-      this.$refs.editForm.add()
+      this.$refs.editForm.openForm()
     },
     handleEdit(id) {
-      this.$refs.editForm.edit(id)
+      this.$refs.editForm.openForm(id)
     },
     handleDelete(ids) {
       var thisObj = this
@@ -172,7 +169,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_Action/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_Action/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {

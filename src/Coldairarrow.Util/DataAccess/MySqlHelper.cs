@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using EFCore.Sharding;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -15,9 +16,9 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
-        public MySqlHelper(string nameOrConStr)
-            : base(DatabaseType.MySql, nameOrConStr)
+        /// <param name="conString">完整连接字符串</param>
+        public MySqlHelper(string conString)
+            : base(DatabaseType.MySql, conString)
         {
         }
 
@@ -65,7 +66,7 @@ namespace Coldairarrow.Util
             string dbName = string.Empty;
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conStr;
+                conn.ConnectionString = _conString;
                 dbName = conn.Database;
             }
             string sql = @"SELECT TABLE_NAME as TableName,table_comment as Description 
@@ -85,7 +86,7 @@ WHERE TABLE_SCHEMA = @dbName";
             string dbName = string.Empty;
             using (DbConnection conn = dbProviderFactory.CreateConnection())
             {
-                conn.ConnectionString = _conStr;
+                conn.ConnectionString = _conString;
                 dbName = conn.Database;
             }
 

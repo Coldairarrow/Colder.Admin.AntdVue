@@ -5,25 +5,25 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
-    @cancel="handleCancel"
+    @cancel="()=>{this.visible=false}"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item label="连接名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['LinkName', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="连接字符串" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-textarea autosize v-decorator="['ConnectionStr', { rules: [{ required: true, message: '必填' }] }]" />
-        </a-form-item>
-        <a-form-item label="数据库类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="['DbType', { rules: [{ required: true }], initialValue: 'SqlServer' }]">
+      <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
+        <a-form-model-item label="连接名" prop="LinkName">
+          <a-input v-model="entity.LinkName" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="连接字符串" prop="ConnectionStr">
+          <a-input v-model="entity.ConnectionStr" type="textarea" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="数据库类型" prop="DbType">
+          <a-select v-model="entity.DbType">
             <a-select-option key="SqlServer">SqlServer</a-select-option>
             <a-select-option key="MySql">MySql</a-select-option>
             <a-select-option key="Oracle">Oracle</a-select-option>
             <a-select-option key="PostgreSql">PostgreSql</a-select-option>
           </a-select>
-        </a-form-item>
-      </a-form>
+        </a-form-model-item>
+      </a-form-model>
     </a-spin>
   </a-modal>
 </template>
@@ -38,60 +38,55 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      layout: {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 18 }
+      },
       visible: false,
       confirmLoading: false,
-      formFields: {},
-      entity: {}
+      entity: {},
+      rules: {
+        LinkName: [{ required: true, message: '必填' }],
+        ConnectionStr: [{ required: true, message: '必填' }],
+        DbType: [{ required: true, message: '必填' }]
+      }
     }
   },
   methods: {
-    add() {
+    init() {
+      this.visible = true
       this.entity = {}
-      this.visible = true
-      this.form.resetFields()
-    },
-    edit(id) {
-      this.visible = true
-
       this.$nextTick(() => {
-        this.formFields = this.form.getFieldsValue()
+        this.$refs['form'].clearValidate()
+      })
+    },
+    openForm(id) {
+      this.init()
 
+      if (id) {
         this.$http.post('/Base_Manage/Base_DbLink/GetTheData', { id: id }).then(resJson => {
           this.entity = resJson.Data
-          var setData = {}
-          Object.keys(this.formFields).forEach(item => {
-            setData[item] = this.entity[item]
-          })
-          this.form.setFieldsValue(setData)
         })
-      })
+      }
     },
     handleSubmit() {
-      this.form.validateFields((errors, values) => {
-        //校验成功
-        if (!errors) {
-          this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-
-          this.confirmLoading = true
-          this.$http.post('/Base_Manage/Base_DbLink/SaveData', this.entity).then(resJson => {
-            this.confirmLoading = false
-
-            if (resJson.Success) {
-              this.$message.success('操作成功!')
-              this.afterSubmit()
-              this.visible = false
-            } else {
-              this.$message.error(resJson.Msg)
-            }
-          })
+      this.$refs['form'].validate(valid => {
+        if (!valid) {
+          return
         }
+        this.confirmLoading = true
+        this.$http.post('/Base_Manage/Base_DbLink/SaveData', this.entity).then(resJson => {
+          this.confirmLoading = false
+
+          if (resJson.Success) {
+            this.$message.success('操作成功!')
+            this.afterSubmit()
+            this.visible = false
+          } else {
+            this.$message.error(resJson.Msg)
+          }
+        })
       })
-    },
-    handleCancel() {
-      this.visible = false
     }
   }
 }

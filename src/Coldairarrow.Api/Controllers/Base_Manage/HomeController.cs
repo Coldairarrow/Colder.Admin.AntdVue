@@ -12,42 +12,45 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     [Route("/Base_Manage/[controller]/[action]")]
     public class HomeController : BaseApiController
     {
-        public HomeController(IHomeBusiness homeBus, IPermissionBusiness permissionBus, IBase_UserBusiness userBus)
+        readonly IHomeBusiness _homeBus;
+        readonly IPermissionBusiness _permissionBus;
+        readonly IBase_UserBusiness _userBus;
+        readonly IOperator _operator;
+        public HomeController(
+            IHomeBusiness homeBus,
+            IPermissionBusiness permissionBus,
+            IBase_UserBusiness userBus,
+            IOperator @operator
+            )
         {
             _homeBus = homeBus;
             _permissionBus = permissionBus;
             _userBus = userBus;
+            _operator = @operator;
         }
-        IHomeBusiness _homeBus { get; }
-        IPermissionBusiness _permissionBus { get; }
-        IBase_UserBusiness _userBus { get; }
 
         /// <summary>
         /// 用户登录(获取token)
         /// </summary>
-        /// <param name="userName">账号</param>
-        /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpPost]
-        [CheckParamNotEmpty("userName", "password")]
         [NoCheckJWT]
-        public async Task<string> SubmitLogin(string userName, string password)
+        public async Task<string> SubmitLogin(LoginInputDTO input)
         {
-            return await _homeBus.SubmitLoginAsync(userName, password);
+            return await _homeBus.SubmitLoginAsync(input);
         }
 
         [HttpPost]
-        [CheckParamNotEmpty("oldPwd", "newPwd")]
-        public async Task ChangePwd(string oldPwd, string newPwd)
+        public async Task ChangePwd(ChangePwdInputDTO input)
         {
-            await _homeBus.ChangePwdAsync(oldPwd, newPwd);
+            await _homeBus.ChangePwdAsync(input);
         }
 
         [HttpPost]
         public async Task<object> GetOperatorInfo()
         {
-            var theInfo = await _userBus.GetTheDataAsync(Operator.UserId);
-            var permissions = await _permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
+            var theInfo = await _userBus.GetTheDataAsync(_operator.UserId);
+            var permissions = await _permissionBus.GetUserPermissionValuesAsync(_operator.UserId);
             var resObj = new
             {
                 UserInfo = theInfo,
@@ -60,7 +63,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public async Task<List<Base_ActionDTO>> GetOperatorMenuList()
         {
-            return await _permissionBus.GetUserMenuListAsync(Operator.UserId);
+            return await _permissionBus.GetUserMenuListAsync(_operator.UserId);
         }
     }
 }
