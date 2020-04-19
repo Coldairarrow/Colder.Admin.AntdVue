@@ -1,7 +1,9 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
-using Coldairarrow.Util;
+using EFCore.Sharding;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers
@@ -9,63 +11,32 @@ namespace Coldairarrow.Api.Controllers
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
-        readonly ILogger _logger;
-        public TestController(ILogger<TestController> logger)
+        readonly IRepository _repository;
+        public TestController(IRepository repository)
         {
-            _logger = logger;
+            _repository = repository;
         }
 
-        /// <summary>
-        /// 压力测试
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        [Transactional]
-        public virtual async Task PressTest1()
+        public async Task PressTest()
         {
-            _logger.LogInformation("name:{name} body:{body}", "小明", new Base_User().ToJson());
-            //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
-            //using (var db = DbFactory.GetRepository())
-            //{
-            //    Base_UnitTest data = new Base_UnitTest
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        UserId = Guid.NewGuid().ToString(),
-            //        Age = 10,
-            //        UserName = Guid.NewGuid().ToString()
-            //    };
-            //    await db.InsertAsync(data);
-            //    db.Update(data);
-            //    db.GetIQueryable<Base_UnitTest>().FirstOrDefault();
-            //    db.Delete(data);
-            //}
+            Base_User base_User = new Base_User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Birthday = DateTime.Now,
+                CreateTime = DateTime.Now,
+                CreatorId = Guid.NewGuid().ToString(),
+                DepartmentId = Guid.NewGuid().ToString(),
+                Password = Guid.NewGuid().ToString(),
+                RealName = Guid.NewGuid().ToString(),
+                Sex = Sex.Man,
+                UserName = Guid.NewGuid().ToString()
+            };
 
-            await Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// 压力测试
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task PressTest2()
-        {
-            //var bus = AutofacHelper.GetScopeService<IBase_UserBusiness>();
-            //using (var db = DbFactory.GetRepository())
-            //{
-            //    Base_UnitTest data = new Base_UnitTest
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        UserId = Guid.NewGuid().ToString(),
-            //        Age = 10,
-            //        UserName = Guid.NewGuid().ToString()
-            //    };
-            //    await db.InsertAsync(data);
-            //    await db.UpdateAsync(data);
-            //    await db.GetIQueryable<Base_UnitTest>().FirstOrDefaultAsync();
-            //    await db.DeleteAsync(data);
-            //}
-            await Task.CompletedTask;
+            await _repository.InsertAsync(base_User);
+            await _repository.UpdateAsync(base_User);
+            await _repository.GetIQueryable<Base_User>().Where(x => x.Id == base_User.Id).FirstOrDefaultAsync();
+            await _repository.DeleteAsync(base_User);
         }
     }
 }
