@@ -1,6 +1,8 @@
-﻿using Coldairarrow.Business.Base_Manage;
+﻿using Coldairarrow.Business;
+using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -29,9 +31,11 @@ namespace Coldairarrow.Api
         {
             if (context.ContainsFilter<NoApiPermissionAttribute>())
                 return;
+            IServiceProvider serviceProvider = context.HttpContext.RequestServices;
+            IPermissionBusiness _permissionBus = serviceProvider.GetService<IPermissionBusiness>();
+            IOperator _operator = serviceProvider.GetService<IOperator>();
 
-            IPermissionBusiness permissionBus = AutofacHelper.GetScopeService<IPermissionBusiness>();
-            var permissions = await permissionBus.GetUserPermissionValuesAsync(Operator.UserId);
+            var permissions = await _permissionBus.GetUserPermissionValuesAsync(_operator.UserId);
             if (!permissions.Contains(_permissionValue))
                 context.Result = Error("权限不足!");
         }

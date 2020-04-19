@@ -189,125 +189,106 @@ namespace Coldairarrow.Util
 
         #region 拓展And和Or方法
 
-        /// <summary>
-        /// 连接表达式与运算
-        /// </summary>
-        /// <typeparam name="T">参数</typeparam>
-        /// <param name="one">原表达式</param>
-        /// <param name="another">新的表达式</param>
-        /// <returns></returns>
-        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
-        {
-            //创建新参数
-            var newParameter = Expression.Parameter(typeof(T), "parameter");
+        ///// <summary>
+        ///// 连接表达式与运算
+        ///// </summary>
+        ///// <typeparam name="T">参数</typeparam>
+        ///// <param name="one">原表达式</param>
+        ///// <param name="another">新的表达式</param>
+        ///// <returns></returns>
+        //public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
+        //{
+        //    //创建新参数
+        //    var newParameter = Expression.Parameter(typeof(T), "parameter");
 
-            var parameterReplacer = new ParameterReplaceVisitor(newParameter);
-            var left = parameterReplacer.Visit(one.Body);
-            var right = parameterReplacer.Visit(another.Body);
-            var body = Expression.And(left, right);
+        //    var parameterReplacer = new ParameterReplaceVisitor(newParameter);
+        //    var left = parameterReplacer.Visit(one.Body);
+        //    var right = parameterReplacer.Visit(another.Body);
+        //    var body = Expression.And(left, right);
 
-            return Expression.Lambda<Func<T, bool>>(body, newParameter);
-        }
+        //    return Expression.Lambda<Func<T, bool>>(body, newParameter);
+        //}
 
-        /// <summary>
-        /// 连接表达式或运算
-        /// </summary>
-        /// <typeparam name="T">参数</typeparam>
-        /// <param name="one">原表达式</param>
-        /// <param name="another">新表达式</param>
-        /// <returns></returns>
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
-        {
-            //创建新参数
-            var newParameter = Expression.Parameter(typeof(T), "parameter");
+        ///// <summary>
+        ///// 连接表达式或运算
+        ///// </summary>
+        ///// <typeparam name="T">参数</typeparam>
+        ///// <param name="one">原表达式</param>
+        ///// <param name="another">新表达式</param>
+        ///// <returns></returns>
+        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
+        //{
+        //    //创建新参数
+        //    var newParameter = Expression.Parameter(typeof(T), "parameter");
 
-            var parameterReplacer = new ParameterReplaceVisitor(newParameter);
-            var left = parameterReplacer.Visit(one.Body);
-            var right = parameterReplacer.Visit(another.Body);
-            var body = Expression.Or(left, right);
+        //    var parameterReplacer = new ParameterReplaceVisitor(newParameter);
+        //    var left = parameterReplacer.Visit(one.Body);
+        //    var right = parameterReplacer.Visit(another.Body);
+        //    var body = Expression.Or(left, right);
 
-            return Expression.Lambda<Func<T, bool>>(body, newParameter);
-        }
+        //    return Expression.Lambda<Func<T, bool>>(body, newParameter);
+        //}
 
         #endregion
 
         #region 拓展Expression的Invoke方法
 
-        public static TResult Invoke<TResult>(this Expression<Func<TResult>> expression)
-        {
-            return expression.Compile().Invoke();
-        }
+        //public static TResult Invoke<TResult>(this Expression<Func<TResult>> expression)
+        //{
+        //    return expression.Compile().Invoke();
+        //}
 
-        public static TResult Invoke<T1, TResult>(this Expression<Func<T1, TResult>> expression, T1 arg1)
-        {
-            return expression.Compile().Invoke(arg1);
-        }
+        //public static TResult Invoke<T1, TResult>(this Expression<Func<T1, TResult>> expression, T1 arg1)
+        //{
+        //    return expression.Compile().Invoke(arg1);
+        //}
 
-        public static TResult Invoke<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, T1 arg1, T2 arg2)
-        {
-            return expression.Compile().Invoke(arg1, arg2);
-        }
+        //public static TResult Invoke<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, T1 arg1, T2 arg2)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, T1 arg1, T2 arg2, T3 arg3)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3);
-        }
+        //public static TResult Invoke<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, T1 arg1, T2 arg2, T3 arg3)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+        //}
 
-        public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
-        {
-            return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-        }
+        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
+        //{
+        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+        //}
 
         #endregion
-
-        /// <summary>
-        /// 获取表达式中的固定值
-        /// </summary>
-        /// <param name="expression">表达式</param>
-        /// <returns></returns>
-        public static object GetConstantValue(this Expression expression)
-        {
-            var visitor = new GetConstantValueVisitor();
-            visitor.Visit(expression);
-            return visitor.ConstantValue;
-        }
-
-        public static object GetMemberValue(this Expression expression)
-        {
-            var visitor = new GetMemberValueVisitor();
-            visitor.Visit(expression);
-            return visitor.Value;
-        }
 
         #region 私有成员
 
@@ -364,43 +345,6 @@ namespace Coldairarrow.Util
                 return _parameter;
             else
                 return p;
-        }
-    }
-
-    class GetConstantValueVisitor : ExpressionVisitor
-    {
-        public object ConstantValue { get; set; }
-        protected override Expression VisitConstant(ConstantExpression node)
-        {
-            ConstantValue = node.Value;
-
-            return base.VisitConstant(node);
-        }
-    }
-
-    class GetMemberValueVisitor : ExpressionVisitor
-    {
-        public object Value { get; set; }
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            //静态成员
-            if (node.Expression == null)
-            {
-                if (node.Member.MemberType == MemberTypes.Property)
-                    Value = node.Type.GetProperty(node.Member.Name, BindingFlags.Static | BindingFlags.Public)?.GetValue(null);
-                else if (node.Member.MemberType == MemberTypes.Field)
-                    Value = node.Type.GetField(node.Member.Name, BindingFlags.Static | BindingFlags.Public)?.GetValue(null);
-            }
-            else//对象成员
-            {
-                var obj = (node.Expression as ConstantExpression).Value;
-                if (obj.ContainsField(node.Member.Name))
-                    Value = obj.GetGetFieldValue(node.Member.Name);
-                else if (obj.ContainsProperty(node.Member.Name))
-                    Value = obj.GetPropertyValue(node.Member.Name);
-            }
-
-            return base.VisitMember(node);
         }
     }
 }

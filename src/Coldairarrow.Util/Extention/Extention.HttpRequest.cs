@@ -50,7 +50,7 @@ namespace Coldairarrow.Util
         {
             string tokenHeader = req.Headers["Authorization"].ToString();
             if (tokenHeader.IsNullOrEmpty())
-                throw new Exception("缺少token!");
+                return null;
 
             string pattern = "^Bearer (.*?)$";
             if (!Regex.IsMatch(tokenHeader, pattern))

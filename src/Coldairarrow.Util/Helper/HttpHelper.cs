@@ -10,6 +10,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -226,11 +227,12 @@ body:{body}
         /// </summary>
         /// <param name="context">请求上下文</param>
         /// <returns></returns>
-        public static Dictionary<string, object> GetAllRequestParams(HttpContext context)
+        public async static Task<Dictionary<string, object>> GetAllRequestParamsAsync(HttpContext context)
         {
             Dictionary<string, object> allParams = new Dictionary<string, object>();
 
             var request = context.Request;
+            request.EnableBuffering();
             List<string> paramKeys = new List<string>();
             var getParams = request.Query.Keys.ToList();
             var postParams = new List<string>();
@@ -262,11 +264,10 @@ body:{body}
             //若为POST的application/json
             if (contentType.Contains("application/json"))
             {
-                var stream = request.Body;
-                string str = stream.ReadToString(Encoding.UTF8);
-                if (!str.IsNullOrEmpty())
+                if (request.Body != null)
                 {
-                    var obj = str.ToJObject();
+                    string body = await request.Body.ReadToStringAsync();
+                    var obj = body.ToJObject();
                     foreach (var aProperty in obj)
                     {
                         allParams[aProperty.Key] = aProperty.Value;

@@ -1,9 +1,9 @@
 /*
 Navicat SQL Server Data Transfer
 
-Source Server         : .@SQLServer
-Source Server Version : 105000
-Source Host           : .:1433
+Source Server         : 127.0.0.1
+Source Server Version : 150000
+Source Host           : 127.0.0.1:1433
 Source Database       : Colder.Admin.AntdVue
 Source Schema         : dbo
 
@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2020-01-15 20:32:51
+Date: 2020-04-19 15:03:39
 */
 
 
@@ -221,7 +221,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), (N'1182652599069839360', N'2019-10-11 21:42:06.000', null, N'0', N'1178957405992521728', N'1', N'系统日志', N'/Base_Manage/Base_Log/List', null, N'1', null, N'25'), (N'1188800845714558976', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1188800845714558977', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1188800845714558978', N'2019-10-28 20:53:03.127', null, N'1', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1194606035118067712', N'2019-11-13 21:20:48.137', N'Admin', N'1', N'1193158266167758848', N'1', N'生成测试', N'/TestManage/Base_BuildTest/List', null, N'0', null, N'0'), (N'1217067513028808704', N'2020-01-14 20:54:41.787', N'Admin', N'1', N'1193158266167758848', N'1', N'测试菜单', N'/TestManage/Base_BuildTest/List', null, N'0', null, N'0')
+INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), (N'1182652599069839360', N'2019-10-11 21:42:06.000', null, N'0', N'1178957405992521728', N'1', N'系统日志', N'/Base_Manage/Base_Log/List', null, N'1', null, N'25'), (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1248570020770877440', N'2020-04-10 19:14:24.000', N'Admin', N'0', N'1178957405992521728', N'1', N'操作日志', N'/Base_Manage/Base_UserLog/List', null, N'0', null, N'22')
 GO
 GO
 COMMIT TRANSACTION
@@ -525,7 +525,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_BuildTest] ([Id], [CreateTime], [CreatorId], [Deleted], [Column1], [Column2], [Column3], [Column4], [Column5]) VALUES (N'1194606447787249664', N'2019-11-13 21:22:26.000', N'Admin', N'1', N'1', N'1', N'1', N'1', N'1')
+INSERT INTO [Base_BuildTest] ([Id], [CreateTime], [CreatorId], [Deleted], [Column1], [Column2], [Column3], [Column4], [Column5]) VALUES (N'1251534328014311424', N'2020-04-18 23:33:30.000', N'Admin', N'0', N'asdas', N'sadsa', N'sad', N'sadsa', N'sadsad')
 GO
 GO
 COMMIT TRANSACTION
@@ -796,13 +796,8 @@ GO
 CREATE TABLE [Base_Log] (
 [Id] varchar(50) NOT NULL ,
 [CreateTime] datetime NOT NULL ,
-[CreatorId] varchar(50) NULL ,
-[CreatorRealName] nvarchar(50) NULL ,
-[Deleted] bit NOT NULL DEFAULT ('false') ,
-[Level] varchar(200) NULL ,
-[LogType] varchar(50) NULL ,
-[LogContent] varchar(MAX) NULL ,
-[Data] nvarchar(MAX) NULL 
+[Level] int NOT NULL DEFAULT ((0)) ,
+[LogContent] varchar(MAX) NULL 
 )
 
 
@@ -850,48 +845,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_Log', 
-'COLUMN', N'CreatorId')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreatorId'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreatorId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'CreatorRealName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'Deleted')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'否已删除'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Deleted'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'否已删除'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Deleted'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
 'COLUMN', N'Level')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志级别'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -906,20 +859,6 @@ GO
 IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
 'SCHEMA', N'dbo', 
 'TABLE', N'Base_Log', 
-'COLUMN', N'LogType')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志类型'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'LogType'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志类型'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'LogType'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
 'COLUMN', N'LogContent')) > 0) 
 EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志内容'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
@@ -930,20 +869,6 @@ EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志内容'
 , @level0type = 'SCHEMA', @level0name = N'dbo'
 , @level1type = 'TABLE', @level1name = N'Base_Log'
 , @level2type = 'COLUMN', @level2name = N'LogContent'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'Data')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'数据备份（转为JSON字符串）'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Data'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'数据备份（转为JSON字符串）'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Data'
 GO
 
 -- ----------------------------
@@ -1054,6 +979,9 @@ GO
 -- Records of Base_Role
 -- ----------------------------
 BEGIN TRANSACTION
+GO
+INSERT INTO [Base_Role] ([Id], [CreateTime], [CreatorId], [Deleted], [RoleName]) VALUES (N'1251144116734005248', N'2020-04-17 21:42:57.220', N'Admin', N'0', N'超级管理员'), (N'1251145272742907904', N'2020-04-17 21:47:32.833', N'Admin', N'0', N'部门管理员')
+GO
 GO
 COMMIT TRANSACTION
 GO
@@ -1176,362 +1104,6 @@ BEGIN TRANSACTION
 GO
 INSERT INTO [Base_RoleAction] ([Id], [CreateTime], [CreatorId], [Deleted], [RoleId], [ActionId]) VALUES (N'1188801858282459136', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1182654049414025216'), (N'1188801858282459137', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1182654208411701248'), (N'1188801858282459138', N'2019-10-28 20:57:04.543', null, N'0', N'1180486275199668224', N'1183370665412005888'), (N'1188801984434540544', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188044797802188800'), (N'1188801984434540545', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188044797802188801'), (N'1188801984434540546', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652433302556672'), (N'1188801984434540547', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1178957405992521728'), (N'1188801984434540548', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744512'), (N'1188801984434540549', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744513'), (N'1188801984434540550', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801109783744514'), (N'1188801984434540551', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652266117599232'), (N'1188801984434540552', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558976'), (N'1188801984434540553', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558977'), (N'1188801984434540554', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188800845714558978'), (N'1188801984434540555', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1182652367447789568'), (N'1188801984434540556', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569216'), (N'1188801984434540557', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569217'), (N'1188801984434540558', N'2019-10-28 20:57:34.620', null, N'0', N'1180819481383931904', N'1188801057778569218')
 GO
-GO
-COMMIT TRANSACTION
-GO
-
--- ----------------------------
--- Table structure for Base_UnitTest
--- ----------------------------
-CREATE TABLE [Base_UnitTest] (
-[Id] varchar(50) NOT NULL ,
-[UserId] varchar(50) NULL ,
-[UserName] varchar(50) NULL ,
-[Age] int NULL 
-)
-
-
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest', 
-NULL, NULL)) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest', 
-'COLUMN', N'Id')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'Id'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'Id'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest', 
-'COLUMN', N'UserId')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest', 
-'COLUMN', N'UserName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest', 
-'COLUMN', N'Age')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'Age'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest'
-, @level2type = 'COLUMN', @level2name = N'Age'
-GO
-
--- ----------------------------
--- Records of Base_UnitTest
--- ----------------------------
-BEGIN TRANSACTION
-GO
-COMMIT TRANSACTION
-GO
-
--- ----------------------------
--- Table structure for Base_UnitTest_0
--- ----------------------------
-CREATE TABLE [Base_UnitTest_0] (
-[Id] varchar(50) NOT NULL ,
-[UserId] varchar(50) NULL ,
-[UserName] varchar(50) NULL ,
-[Age] int NULL 
-)
-
-
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_0', 
-NULL, NULL)) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_0', 
-'COLUMN', N'Id')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'Id'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'Id'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_0', 
-'COLUMN', N'UserId')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_0', 
-'COLUMN', N'UserName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_0', 
-'COLUMN', N'Age')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'Age'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_0'
-, @level2type = 'COLUMN', @level2name = N'Age'
-GO
-
--- ----------------------------
--- Records of Base_UnitTest_0
--- ----------------------------
-BEGIN TRANSACTION
-GO
-COMMIT TRANSACTION
-GO
-
--- ----------------------------
--- Table structure for Base_UnitTest_1
--- ----------------------------
-CREATE TABLE [Base_UnitTest_1] (
-[Id] varchar(50) NOT NULL ,
-[UserId] varchar(50) NULL ,
-[UserName] varchar(50) NULL ,
-[Age] int NULL 
-)
-
-
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_1', 
-NULL, NULL)) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_1', 
-'COLUMN', N'Id')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'Id'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'Id'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_1', 
-'COLUMN', N'UserId')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_1', 
-'COLUMN', N'UserName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_1', 
-'COLUMN', N'Age')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'Age'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_1'
-, @level2type = 'COLUMN', @level2name = N'Age'
-GO
-
--- ----------------------------
--- Records of Base_UnitTest_1
--- ----------------------------
-BEGIN TRANSACTION
-GO
-COMMIT TRANSACTION
-GO
-
--- ----------------------------
--- Table structure for Base_UnitTest_2
--- ----------------------------
-CREATE TABLE [Base_UnitTest_2] (
-[Id] varchar(50) NOT NULL ,
-[UserId] varchar(50) NULL ,
-[UserName] varchar(50) NULL ,
-[Age] int NULL 
-)
-
-
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_2', 
-NULL, NULL)) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'单元测试表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_2', 
-'COLUMN', N'Id')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'Id'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'Id'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_2', 
-'COLUMN', N'UserId')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户Id'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'UserId'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_2', 
-'COLUMN', N'UserName')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'用户名'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'UserName'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_UnitTest_2', 
-'COLUMN', N'Age')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'Age'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'年龄'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_UnitTest_2'
-, @level2type = 'COLUMN', @level2name = N'Age'
-GO
-
--- ----------------------------
--- Records of Base_UnitTest_2
--- ----------------------------
-BEGIN TRANSACTION
 GO
 COMMIT TRANSACTION
 GO
@@ -1712,8 +1284,127 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_User] ([Id], [CreateTime], [CreatorId], [Deleted], [UserName], [Password], [RealName], [Sex], [Birthday], [DepartmentId]) VALUES (N'1181928860648738816', N'2019-10-09 21:46:14.000', null, N'0', N'xiaohua', N'e10adc3949ba59abbe56e057f20f883e', N'小花', N'0', null, null), (N'1183363221872971776', N'2019-10-13 20:45:52.577', N'Admin', N'1', N'aa', null, N'aaa', N'0', null, null), (N'Admin', N'2019-09-13 21:10:03.000', N'Admin', N'0', N'Admin', N'e10adc3949ba59abbe56e057f20f883e', N'超级管理员', N'1', N'2019-09-13', null)
+INSERT INTO [Base_User] ([Id], [CreateTime], [CreatorId], [Deleted], [UserName], [Password], [RealName], [Sex], [Birthday], [DepartmentId]) VALUES (N'Admin', N'2019-09-13 21:10:03.000', N'Admin', N'0', N'Admin', N'e10adc3949ba59abbe56e057f20f883e', N'超级管理员', N'1', N'2019-09-13', N'1181175685528424448')
 GO
+GO
+COMMIT TRANSACTION
+GO
+
+-- ----------------------------
+-- Table structure for Base_UserLog
+-- ----------------------------
+CREATE TABLE [Base_UserLog] (
+[Id] varchar(50) NOT NULL ,
+[CreateTime] datetime NOT NULL ,
+[CreatorId] varchar(50) NULL ,
+[CreatorRealName] nvarchar(50) NULL ,
+[LogType] varchar(50) NULL ,
+[LogContent] varchar(MAX) NULL 
+)
+
+
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+NULL, NULL)) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'系统日志表'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'系统日志表'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'Id')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'Id'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'Id'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'CreateTime')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建时间'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreateTime'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建时间'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreateTime'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'CreatorId')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人Id'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreatorId'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人Id'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreatorId'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'CreatorRealName')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建人姓名'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'CreatorRealName'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'LogType')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志类型'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'LogType'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志类型'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'LogType'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'Base_UserLog', 
+'COLUMN', N'LogContent')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志内容'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'LogContent'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志内容'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'Base_UserLog'
+, @level2type = 'COLUMN', @level2name = N'LogContent'
+GO
+
+-- ----------------------------
+-- Records of Base_UserLog
+-- ----------------------------
+BEGIN TRANSACTION
 GO
 COMMIT TRANSACTION
 GO
@@ -1834,7 +1525,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_UserRole] ([Id], [CreateTime], [CreatorId], [Deleted], [UserId], [RoleId]) VALUES (N'1181927367719784448', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180819481383931904'), (N'1181927367719784449', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180486275199668224'), (N'1181927783786352640', N'2019-10-09 21:41:57.470', null, N'0', N'1181927783727632384', N'1180819481383931904'), (N'1188802049190400000', N'2019-10-28 20:57:50.057', null, N'0', N'1181928860648738816', N'1180819481383931904')
+INSERT INTO [Base_UserRole] ([Id], [CreateTime], [CreatorId], [Deleted], [UserId], [RoleId]) VALUES (N'1181927367719784448', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180819481383931904'), (N'1181927367719784449', N'2019-10-09 21:40:18.270', null, N'0', N'1181922344629702656', N'1180486275199668224'), (N'1181927783786352640', N'2019-10-09 21:41:57.470', null, N'0', N'1181927783727632384', N'1180819481383931904'), (N'1188802049190400000', N'2019-10-28 20:57:50.057', null, N'0', N'1181928860648738816', N'1180819481383931904'), (N'1251386547933024256', N'2020-04-18 13:46:17.323', null, N'0', N'1251386547391959040', N'1251144116734005248'), (N'1251423773970665472', N'2020-04-18 16:14:12.703', null, N'0', N'1251390402238353408', N'1251145272742907904'), (N'1251423773970665473', N'2020-04-18 16:14:12.703', null, N'0', N'1251390402238353408', N'1251144116734005248'), (N'1251518746514690048', N'2020-04-18 22:31:35.920', null, N'0', N'Admin', N'1251144116734005248')
 GO
 GO
 COMMIT TRANSACTION
@@ -1921,46 +1612,6 @@ ALTER TABLE [Base_RoleAction] ADD PRIMARY KEY ([Id])
 GO
 
 -- ----------------------------
--- Indexes structure for table Base_UnitTest
--- ----------------------------
-
--- ----------------------------
--- Primary Key structure for table Base_UnitTest
--- ----------------------------
-ALTER TABLE [Base_UnitTest] ADD PRIMARY KEY ([Id])
-GO
-
--- ----------------------------
--- Indexes structure for table Base_UnitTest_0
--- ----------------------------
-
--- ----------------------------
--- Primary Key structure for table Base_UnitTest_0
--- ----------------------------
-ALTER TABLE [Base_UnitTest_0] ADD PRIMARY KEY ([Id])
-GO
-
--- ----------------------------
--- Indexes structure for table Base_UnitTest_1
--- ----------------------------
-
--- ----------------------------
--- Primary Key structure for table Base_UnitTest_1
--- ----------------------------
-ALTER TABLE [Base_UnitTest_1] ADD PRIMARY KEY ([Id])
-GO
-
--- ----------------------------
--- Indexes structure for table Base_UnitTest_2
--- ----------------------------
-
--- ----------------------------
--- Primary Key structure for table Base_UnitTest_2
--- ----------------------------
-ALTER TABLE [Base_UnitTest_2] ADD PRIMARY KEY ([Id])
-GO
-
--- ----------------------------
 -- Indexes structure for table Base_User
 -- ----------------------------
 
@@ -1968,6 +1619,16 @@ GO
 -- Primary Key structure for table Base_User
 -- ----------------------------
 ALTER TABLE [Base_User] ADD PRIMARY KEY ([Id])
+GO
+
+-- ----------------------------
+-- Indexes structure for table Base_UserLog
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table Base_UserLog
+-- ----------------------------
+ALTER TABLE [Base_UserLog] ADD PRIMARY KEY ([Id])
 GO
 
 -- ----------------------------

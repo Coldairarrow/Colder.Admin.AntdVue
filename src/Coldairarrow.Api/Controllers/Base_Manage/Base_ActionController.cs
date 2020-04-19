@@ -27,54 +27,44 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #region 获取
 
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="id">id主键</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<Base_Action> GetTheData(string id)
+        public async Task<Base_Action> GetTheData(IdInputDTO input)
         {
-            return (await _actionBus.GetTheDataAsync(id)) ?? new Base_Action();
+            return (await _actionBus.GetTheDataAsync(input.id)) ?? new Base_Action();
         }
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="parentId">父级Id</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<List<Base_Action>> GetPermissionList(string parentId)
+        public async Task<List<Base_Action>> GetPermissionList(Base_ActionsInputDTO input)
         {
-            return await _actionBus.GetDataListAsync(new Pagination(), null, parentId, new List<int> { 2 });
+            input.types = new List<int> { 2 };
+
+            return await _actionBus.GetDataListAsync(input);
         }
 
         [HttpPost]
         public async Task<List<Base_Action>> GetAllActionList()
         {
-            return await _actionBus.GetDataListAsync(new Pagination(), null, null, new List<int> { 0, 1, 2 });
+            return await _actionBus.GetDataListAsync(new Base_ActionsInputDTO
+            {
+                types = new List<int> { 0, 1, 2 }
+            });
         }
 
-        /// <summary>
-        /// 获取菜单树列表
-        /// </summary>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<List<Base_ActionDTO>> GetMenuTreeList(string keyword)
+        public async Task<List<Base_ActionDTO>> GetMenuTreeList(Base_ActionsTreeInputDTO input)
         {
-            return await _actionBus.GetTreeDataListAsync(keyword, new List<int> { 0, 1 }, true);
+            input.selectable = true;
+            input.types = new List<int> { 0, 1 };
+
+            return await _actionBus.GetTreeDataListAsync(input);
         }
 
-        /// <summary>
-        /// 获取权限树列表
-        /// </summary>
-        /// <param name="keyword">关键字</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<List<Base_ActionDTO>> GetActionTreeList(string keyword)
+        public async Task<List<Base_ActionDTO>> GetActionTreeList(Base_ActionsTreeInputDTO input)
         {
-            return await _actionBus.GetTreeDataListAsync(keyword, null, false);
+            input.selectable = false;
+
+            return await _actionBus.GetTreeDataListAsync(input);
         }
 
         #endregion
@@ -82,29 +72,24 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task SaveData(Base_Action theData, string permissionListJson)
+        public async Task SaveData(ActionEditInputDTO input)
         {
-            var permissionList = permissionListJson?.ToList<Base_Action>();
-            if (theData.Id.IsNullOrEmpty())
+            if (input.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
+                InitEntity(input);
 
-                await _actionBus.AddDataAsync(theData, permissionList);
+                await _actionBus.AddDataAsync(input);
             }
             else
             {
-                await _actionBus.UpdateDataAsync(theData, permissionList);
+                await _actionBus.UpdateDataAsync(input);
             }
         }
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task DeleteData(string ids)
+        public async Task DeleteData(List<string> ids)
         {
-            await _actionBus.DeleteDataAsync(ids.ToList<string>());
+            await _actionBus.DeleteDataAsync(ids);
         }
 
         #endregion

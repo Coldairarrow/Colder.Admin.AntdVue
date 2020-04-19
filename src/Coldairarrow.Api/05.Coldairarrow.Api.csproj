@@ -8,10 +8,18 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>Coldairarrow.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <OutputPath>bin\Debug</OutputPath>
+    <DocumentationFile>bin\Debug\Coldairarrow.Api.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <OutputPath>bin\Release</OutputPath>
+    <DocumentationFile>bin\Release\Coldairarrow.Api.xml</DocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Remove="wwwroot\Upload\_.txt" />
   </ItemGroup>
@@ -27,16 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj" />
-    <ProjectReference Include="..\Coldairarrow.DataRepository\02.Coldairarrow.DataRepository.csproj" />
-    <ProjectReference Include="..\Coldairarrow.Entity\03.Coldairarrow.Entity.csproj" />
+    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj" />
     <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
   </ItemGroup>
 
@@ -69,10 +74,9 @@
     <None Update="BuildCodeTemplate\List.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Coldairarrow.Api.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/asmdef" /></VisualStudio></ProjectExtensions>
 
 
 </Project>

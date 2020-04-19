@@ -7,7 +7,7 @@ namespace Coldairarrow.Business.%areaName%
 {
     public interface I%entityName%Business
     {
-        Task<List<%entityName%>> GetDataListAsync(Pagination pagination, string condition, string keyword);
+        Task<PageResult<%entityName%>> GetDataListAsync(PageInput<ConditionDTO> input);
         Task<%entityName%> GetTheDataAsync(string id);
         Task AddDataAsync(%entityName% data);
         Task UpdateDataAsync(%entityName% data);

@@ -1,5 +1,4 @@
 ﻿using Coldairarrow.Business.Base_Manage;
-using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -27,64 +26,41 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
         #region 获取
 
-        /// <summary>
-        /// 获取数据列表
-        /// </summary>
-        /// <param name="pagination">分页参数</param>
-        /// <param name="roleName">角色名</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<AjaxResult<List<Base_RoleDTO>>> GetDataList(Pagination pagination, string roleName)
+        public async Task<PageResult<Base_RoleOutputDTO>> GetDataList(PageInput<RolesInputDTO> input)
         {
-            var dataList = await _roleBus.GetDataListAsync(pagination, null, roleName);
-
-            return DataTable(dataList, pagination);
+            return await _roleBus.GetDataListAsync(input);
         }
 
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="id">id主键</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<Base_RoleDTO> GetTheData(string id)
+        public async Task<Base_RoleOutputDTO> GetTheData(IdInputDTO input)
         {
-            return await _roleBus.GetTheDataAsync(id) ?? new Base_RoleDTO();
+            return await _roleBus.GetTheDataAsync(input.id) ?? new Base_RoleOutputDTO();
         }
 
         #endregion
 
         #region 提交
 
-        /// <summary>
-        /// 保存
-        /// </summary>
-        /// <param name="theData">保存的数据</param>
-        /// <param name="actionsJson">权限值JSON</param>
         [HttpPost]
-        public async Task SaveData(Base_Role theData, string actionsJson)
+        public async Task SaveData(RoleEditInputDTO input)
         {
-            var actionList = actionsJson?.ToList<string>();
-            if (theData.Id.IsNullOrEmpty())
+            if (input.Id.IsNullOrEmpty())
             {
-                theData.InitEntity();
+                InitEntity(input);
 
-                await _roleBus.AddDataAsync(theData, actionList);
+                await _roleBus.AddDataAsync(input);
             }
             else
             {
-                await _roleBus.UpdateDataAsync(theData, actionList);
+                await _roleBus.UpdateDataAsync(input);
             }
         }
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="ids">id数组,JSON数组</param>
         [HttpPost]
-        public async Task DeleteData(string ids)
+        public async Task DeleteData(List<string> ids)
         {
-            await _roleBus.DeleteDataAsync(ids.ToList<string>());
+            await _roleBus.DeleteDataAsync(ids);
         }
 
         #endregion

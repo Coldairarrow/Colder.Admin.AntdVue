@@ -5,20 +5,20 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
-    @cancel="handleCancel"
+    @cancel="()=>{this.visible=false}"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item label="应用Id" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['AppId', { rules: [{ required: true, message: '请输入应用Id' }] }]" />
-        </a-form-item>
-        <a-form-item label="密钥" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['AppSecret', { rules: [{ required: true, message: '请输入密钥' }] }]" />
-        </a-form-item>
-        <a-form-item label="应用名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['AppName', { rules: [{ required: true, message: '请输入应用名' }] }]" />
-        </a-form-item>
-      </a-form>
+      <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
+        <a-form-model-item label="应用Id" prop="AppId">
+          <a-input v-model="entity.AppId" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="密钥" prop="AppSecret">
+          <a-input v-model="entity.AppSecret" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item label="应用名" prop="AppName">
+          <a-input v-model="entity.AppName" autocomplete="off" />
+        </a-form-model-item>
+      </a-form-model>
     </a-spin>
   </a-modal>
 </template>
@@ -33,60 +33,58 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this),
-      labelCol: { xs: { span: 24 }, sm: { span: 7 } },
-      wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
+      layout: {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 18 }
+      },
       visible: false,
       confirmLoading: false,
-      formFields: {},
-      entity: {}
+      entity: {},
+      rules: {
+        AppId: [{ required: true, message: '必填' }],
+        AppSecret: [{ required: true, message: '必填' }],
+        AppName: [{ required: true, message: '必填' }]
+      }
     }
   },
   methods: {
-    add() {
+    init() {
+      this.visible = true
       this.entity = {}
-      this.visible = true
-      this.form.resetFields()
-    },
-    edit(id) {
-      this.visible = true
-
       this.$nextTick(() => {
-        this.formFields = this.form.getFieldsValue()
+        this.$refs['form'].clearValidate()
+      })
+    },
+    openForm(id) {
+      this.init()
 
+      if (id) {
         this.$http.post('/Base_Manage/Base_AppSecret/GetTheData', { id: id }).then(resJson => {
           this.entity = resJson.Data
-          var setData = {}
-          Object.keys(this.formFields).forEach(item => {
-            setData[item] = this.entity[item]
-          })
-          this.form.setFieldsValue(setData)
+          if (this.entity['Birthday']) {
+            this.entity['Birthday'] = moment(this.entity['Birthday'])
+          }
         })
-      })
+      }
     },
     handleSubmit() {
-      this.form.validateFields((errors, values) => {
-        //校验成功
-        if (!errors) {
-          this.entity = Object.assign(this.entity, this.form.getFieldsValue())
-
-          this.confirmLoading = true
-          this.$http.post('/Base_Manage/Base_AppSecret/SaveData', this.entity).then(resJson => {
-            this.confirmLoading = false
-
-            if (resJson.Success) {
-              this.$message.success('操作成功!')
-              this.afterSubmit()
-              this.visible = false
-            } else {
-              this.$message.error(resJson.Msg)
-            }
-          })
+      this.$refs['form'].validate(valid => {
+        if (!valid) {
+          return
         }
+        this.confirmLoading = true
+        this.$http.post('/Base_Manage/Base_AppSecret/SaveData', this.entity).then(resJson => {
+          this.confirmLoading = false
+
+          if (resJson.Success) {
+            this.$message.success('操作成功!')
+            this.afterSubmit()
+            this.visible = false
+          } else {
+            this.$message.error(resJson.Msg)
+          }
+        })
       })
-    },
-    handleCancel() {
-      this.visible = false
     }
   }
 }

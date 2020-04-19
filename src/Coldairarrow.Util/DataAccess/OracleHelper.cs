@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using EFCore.Sharding;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -15,9 +16,9 @@ namespace Coldairarrow.Util
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="nameOrConStr">数据库连接名或连接字符串</param>
-        public OracleHelper(string nameOrConStr)
-            : base(DatabaseType.Oracle, nameOrConStr)
+        /// <param name="conString">完整连接字符串</param>
+        public OracleHelper(string conString)
+            : base(DatabaseType.Oracle, conString)
         {
         }
 

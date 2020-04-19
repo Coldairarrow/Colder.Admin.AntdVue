@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business;
-using Coldairarrow.Util;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Coldairarrow.Api
 {
@@ -7,8 +6,9 @@ namespace Coldairarrow.Api
     /// Mvc对外接口基控制器
     /// </summary>
     [CheckJWT]
+    [ApiController]
     public class BaseApiController : BaseController
     {
-        public IOperator Operator { get => AutofacHelper.GetScopeService<IOperator>(); }
+
     }
 }

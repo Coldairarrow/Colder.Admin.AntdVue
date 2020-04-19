@@ -24,20 +24,8 @@
           <a-col :md="3" :sm="24">
             <a-form-item label="级别">
               <a-select v-model="queryParam.level" allowClear>
-                <a-select-option v-for="item in LoglevelList" :key="item.text">{{ item.text }}</a-select-option>
+                <a-select-option v-for="item in LoglevelList" :key="item.value">{{ item.text }}</a-select-option>
               </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="4" :sm="24">
-            <a-form-item label="类别">
-              <a-select v-model="queryParam.logType" allowClear>
-                <a-select-option v-for="item in LogTypeList" :key="item.text">{{ item.text }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="4" :sm="24">
-            <a-form-item label="操作人">
-              <a-input v-model="queryParam.opUserName" placeholder />
             </a-form-item>
           </a-col>
           <a-col :md="10" :sm="24">
@@ -46,7 +34,7 @@
               <a-date-picker v-model="queryParam.endTime" showTime format="YYYY-MM-DD HH:mm:ss" />
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="24">
+          <a-col :md="5" :sm="24">
             <a-button type="primary" @click="getDataList">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
           </a-col>
@@ -81,10 +69,8 @@
 import moment from 'moment'
 
 const columns = [
-  { title: '内容', dataIndex: 'LogContent', width: '50%', scopedSlots: { customRender: 'LogContent' } },
+  { title: '内容', dataIndex: 'LogContent', width: '60%', scopedSlots: { customRender: 'LogContent' } },
   { title: '级别', dataIndex: 'Level', width: '5%' },
-  { title: '类别', dataIndex: 'LogType', width: '10%' },
-  { title: '操作人', dataIndex: 'CreatorRealName', width: '5%' },
   { title: '时间', dataIndex: 'CreateTime', width: '10%' }
 ]
 
@@ -119,22 +105,20 @@ export default {
       this.getDataList()
     },
     init() {
-      this.$http.post('/Base_Manage/Base_Log/GetLogTypeList').then(resJson => {
-        this.LogTypeList = resJson.Data
-      })
       this.$http.post('/Base_Manage/Base_Log/GetLoglevelList').then(resJson => {
         this.LoglevelList = resJson.Data
       })
     },
     getDataList() {
       this.loading = true
+
       this.$http
         .post('/Base_Manage/Base_Log/GetLogList', {
           PageIndex: this.pagination.current,
           PageRows: this.pagination.pageSize,
           SortField: 'CreateTime',
           SortType: 'desc',
-          ...this.queryParam,
+          Search: this.queryParam,
           ...this.filters
         })
         .then(resJson => {

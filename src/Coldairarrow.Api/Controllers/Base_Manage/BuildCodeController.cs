@@ -27,15 +27,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public List<DbTableInfo> GetDbTableList(string linkId)
+        public List<DbTableInfo> GetDbTableList(DbTablesInputDTO input)
         {
-            return _buildCodeBus.GetDbTableList(linkId);
+            return _buildCodeBus.GetDbTableList(input.linkId);
         }
 
         [HttpPost]
-        public void Build(string linkId, string areaName, string tablesJson, string buildTypesJson)
+        public void Build(BuildInputDTO input)
         {
-            _buildCodeBus.Build(linkId, areaName, tablesJson?.ToList<string>(), buildTypesJson?.ToList<int>());
+            _buildCodeBus.Build(input);
         }
     }
 }
