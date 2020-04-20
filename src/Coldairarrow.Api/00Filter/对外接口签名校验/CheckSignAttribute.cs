@@ -102,7 +102,7 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string body = request.Body.ReadToString();
+            string body = await request.Body.ReadToStringAsync();
 
             string sign = request.Headers["sign"].ToString();
             if (sign.IsNullOrEmpty())
