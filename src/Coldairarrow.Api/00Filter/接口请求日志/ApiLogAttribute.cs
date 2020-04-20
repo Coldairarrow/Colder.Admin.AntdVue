@@ -41,6 +41,7 @@ namespace Coldairarrow.Api
                 resContent += "......";
             }
 
+            request.EnableBuffering();
             string log =
 $@"方向:请求本系统
 url:{request.GetDisplayUrl()}
