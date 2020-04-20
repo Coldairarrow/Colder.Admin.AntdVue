@@ -232,7 +232,7 @@ body:{body}
             Dictionary<string, object> allParams = new Dictionary<string, object>();
 
             var request = context.Request;
-            request.EnableBuffering();
+            
             List<string> paramKeys = new List<string>();
             var getParams = request.Query.Keys.ToList();
             var postParams = new List<string>();
@@ -266,6 +266,7 @@ body:{body}
             {
                 if (request.Body != null)
                 {
+                    request.EnableBuffering();
                     string body = await request.Body.ReadToStringAsync();
                     var obj = body.ToJObject();
                     foreach (var aProperty in obj)
