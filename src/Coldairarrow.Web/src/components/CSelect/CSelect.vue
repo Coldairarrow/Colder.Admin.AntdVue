@@ -93,7 +93,7 @@ export default {
         this.$http
           .post(this.url, {
             q: q || '',
-            selectedValueJson: JSON.stringify(selected || [])
+            selectedValues: selected || []
           })
           .then(resJson => {
             if (resJson.Success && q == qGlobal) {
