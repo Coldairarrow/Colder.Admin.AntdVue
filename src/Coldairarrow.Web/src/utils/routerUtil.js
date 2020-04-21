@@ -145,6 +145,7 @@ const generator = (routerMap, parent) => {
       component = () => import(`@/views${item.path}`)
     }
     let currentRouter = {
+      path: '',
       // 路由名称，建议唯一
       name: uuid.v4(),
       // 该路由对应页面的 组件
