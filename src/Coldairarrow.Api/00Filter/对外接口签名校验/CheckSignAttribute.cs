@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
@@ -102,7 +103,8 @@ HttpHelper.SafeSignRequest
                 return;
             }
 
-            string body = request.Body.ReadToString();
+            request.EnableBuffering();
+            string body = await request.Body.ReadToStringAsync();
 
             string sign = request.Headers["sign"].ToString();
             if (sign.IsNullOrEmpty())

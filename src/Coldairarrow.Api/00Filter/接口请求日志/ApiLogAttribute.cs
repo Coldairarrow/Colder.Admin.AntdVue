@@ -41,12 +41,13 @@ namespace Coldairarrow.Api
                 resContent += "......";
             }
 
+            request.EnableBuffering();
             string log =
 $@"方向:请求本系统
 url:{request.GetDisplayUrl()}
 method:{request.Method}
 contentType:{request.ContentType}
-body:{request.Body?.ReadToString(Encoding.UTF8)}
+body:{await request.Body?.ReadToStringAsync(Encoding.UTF8)}
 耗时:{(int)time.TotalMilliseconds}ms
 
 返回:{resContent}

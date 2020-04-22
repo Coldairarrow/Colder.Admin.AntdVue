@@ -48,7 +48,18 @@
       >
         <multi-tab v-if="multiTab"></multi-tab>
         <transition name="page-transition">
-          <route-view />
+          <!-- <route-view /> -->
+          <div class="content">
+            <div class="page-header-index-wide">
+              <slot>
+                <!-- keep-alive  -->
+                <keep-alive v-if="multiTab">
+                  <router-view ref="content" />
+                </keep-alive>
+                <router-view v-else ref="content" />
+              </slot>
+            </div>
+          </div>
         </transition>
       </a-layout-content>
 
@@ -85,7 +96,7 @@ export default {
     MultiTab,
     SideMenu,
     GlobalHeader,
-    GlobalFooter,
+    GlobalFooter
     // SettingDrawer
   },
   data() {
@@ -142,7 +153,7 @@ export default {
       if (this.sidebarOpened) {
         left = this.isDesktop() ? '200px' : '80px'
       } else {
-        left = (this.isMobile() && '0') || ((this.fixSidebar && '80px') || '0')
+        left = (this.isMobile() && '0') || (this.fixSidebar && '80px') || '0'
       }
       return left
     },
@@ -182,5 +193,61 @@ export default {
 .page-transition-leave-active .page-transition-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.content {
+  margin: 24px 0px 0;
+  .link {
+    margin-top: 16px;
+    &:not(:empty) {
+      margin-bottom: 16px;
+    }
+    a {
+      margin-right: 32px;
+      height: 24px;
+      line-height: 24px;
+      display: inline-block;
+      i {
+        font-size: 24px;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      span {
+        height: 24px;
+        line-height: 24px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+.page-menu-search {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.page-menu-tabs {
+  margin-top: 48px;
+}
+
+.extra-img {
+  margin-top: -60px;
+  text-align: center;
+  width: 195px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.mobile {
+  .extra-img {
+    margin-top: 0;
+    text-align: center;
+    width: 96px;
+
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>
