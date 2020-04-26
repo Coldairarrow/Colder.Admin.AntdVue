@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFCore.Sharding;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,8 @@ namespace Coldairarrow.Util
 
                                     }
                                 });
+
+                            _allFxTypes.Add(typeof(IRepository));
                         }
                     }
                 }
