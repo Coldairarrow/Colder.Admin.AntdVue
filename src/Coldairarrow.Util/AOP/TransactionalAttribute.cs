@@ -45,10 +45,15 @@ namespace Coldairarrow.Util
         {
             _distributedTransaction = DistributedTransactionFactory.GetDistributedTransaction();
 
-            var repositories = GlobalData.AllFxTypes.Where(x =>
-                  typeof(IRepository).IsAssignableFrom(x)
-                  && x.IsInterface
-                ).Select(x => serviceProvider.GetService(x) as IRepository)
+            var allRepositoryInterfaces = GlobalData.AllFxTypes.Where(x =>
+                    typeof(IRepository).IsAssignableFrom(x)
+                    && x.IsInterface
+                    && x != typeof(IRepository)
+                ).ToList();
+            allRepositoryInterfaces.Add(typeof(IRepository));
+
+            var repositories = allRepositoryInterfaces
+                .Select(x => serviceProvider.GetService(x) as IRepository)
                 .ToArray();
 
             _distributedTransaction.AddRepository(repositories);
