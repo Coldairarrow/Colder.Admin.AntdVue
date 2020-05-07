@@ -1,5 +1,4 @@
-﻿using Coldairarrow.Business;
-using Coldairarrow.Business.Base_Manage;
+﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +10,7 @@ namespace Coldairarrow.Api
     /// <summary>
     /// 接口权限校验
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class ApiPermissionAttribute : BaseActionFilterAsync
     {
         public ApiPermissionAttribute(string permissionValue)
