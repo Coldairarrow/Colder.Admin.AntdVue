@@ -1,13 +1,57 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Coldairarrow.Util
 {
     public static partial class Extention
     {
+        #region 拓展AndIf与AndOr
+
+        /// <summary>
+        /// 符合条件则And
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="left">原表达式</param>
+        /// <param name="need">是否符合条件</param>
+        /// <param name="right">新表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> AndIf<T>(this Expression<Func<T, bool>> left, bool need, Expression<Func<T, bool>> right)
+        {
+            if (need)
+            {
+                return left.And(right);
+            }
+            else
+            {
+                return left;
+            }
+        }
+
+        /// <summary>
+        /// 符合条件则Or
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="left">原表达式</param>
+        /// <param name="need">是否符合条件</param>
+        /// <param name="right">新表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> left, bool need, Expression<Func<T, bool>> right)
+        {
+            if (need)
+            {
+                return left.Or(right);
+            }
+            else
+            {
+                return left;
+            }
+        }
+
+        #endregion
+
         #region 拓展BuildExtendSelectExpre方法
 
         /// <summary>
@@ -18,7 +62,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, TResult>> BuildExtendSelectExpre<TBase, TResult>(this Expression<Func<TBase, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, TResult>> BuildExtendSelectExpre<TBase, TResult>(this Expression<Func<TBase, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, TResult>>(expression);
         }
@@ -32,7 +76,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, TResult>> BuildExtendSelectExpre<TBase, T1, TResult>(this Expression<Func<TBase, T1, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, TResult>> BuildExtendSelectExpre<TBase, T1, TResult>(this Expression<Func<TBase, T1, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, TResult>>(expression);
         }
@@ -47,7 +91,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, TResult>> BuildExtendSelectExpre<TBase, T1, T2, TResult>(this Expression<Func<TBase, T1, T2, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, TResult>> BuildExtendSelectExpre<TBase, T1, T2, TResult>(this Expression<Func<TBase, T1, T2, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, TResult>>(expression);
         }
@@ -63,7 +107,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, TResult>(this Expression<Func<TBase, T1, T2, T3, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, TResult>(this Expression<Func<TBase, T1, T2, T3, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, TResult>>(expression);
         }
@@ -80,7 +124,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, TResult>>(expression);
         }
@@ -98,7 +142,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, T5, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, T5, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, T5, TResult>>(expression);
         }
@@ -117,7 +161,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, T5, T6, TResult>>(expression);
         }
@@ -137,7 +181,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, T5, T6, T7, TResult>>(expression);
         }
@@ -158,7 +202,7 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, TResult>>(expression);
         }
@@ -180,113 +224,10 @@ namespace Coldairarrow.Util
         /// <typeparam name="TResult">返回类型</typeparam>
         /// <param name="expression">拓展表达式</param>
         /// <returns></returns>
-        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression) where TResult : TBase
+        public static Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> BuildExtendSelectExpre<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression)
         {
             return GetExtendSelectExpre<TBase, TResult, Func<TBase, T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>>(expression);
         }
-
-        #endregion
-
-        #region 拓展And和Or方法
-
-        ///// <summary>
-        ///// 连接表达式与运算
-        ///// </summary>
-        ///// <typeparam name="T">参数</typeparam>
-        ///// <param name="one">原表达式</param>
-        ///// <param name="another">新的表达式</param>
-        ///// <returns></returns>
-        //public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
-        //{
-        //    //创建新参数
-        //    var newParameter = Expression.Parameter(typeof(T), "parameter");
-
-        //    var parameterReplacer = new ParameterReplaceVisitor(newParameter);
-        //    var left = parameterReplacer.Visit(one.Body);
-        //    var right = parameterReplacer.Visit(another.Body);
-        //    var body = Expression.And(left, right);
-
-        //    return Expression.Lambda<Func<T, bool>>(body, newParameter);
-        //}
-
-        ///// <summary>
-        ///// 连接表达式或运算
-        ///// </summary>
-        ///// <typeparam name="T">参数</typeparam>
-        ///// <param name="one">原表达式</param>
-        ///// <param name="another">新表达式</param>
-        ///// <returns></returns>
-        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
-        //{
-        //    //创建新参数
-        //    var newParameter = Expression.Parameter(typeof(T), "parameter");
-
-        //    var parameterReplacer = new ParameterReplaceVisitor(newParameter);
-        //    var left = parameterReplacer.Visit(one.Body);
-        //    var right = parameterReplacer.Visit(another.Body);
-        //    var body = Expression.Or(left, right);
-
-        //    return Expression.Lambda<Func<T, bool>>(body, newParameter);
-        //}
-
-        #endregion
-
-        #region 拓展Expression的Invoke方法
-
-        //public static TResult Invoke<TResult>(this Expression<Func<TResult>> expression)
-        //{
-        //    return expression.Compile().Invoke();
-        //}
-
-        //public static TResult Invoke<T1, TResult>(this Expression<Func<T1, TResult>> expression, T1 arg1)
-        //{
-        //    return expression.Compile().Invoke(arg1);
-        //}
-
-        //public static TResult Invoke<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, T1 arg1, T2 arg2)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, T1 arg1, T2 arg2, T3 arg3)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-        //}
-
-        //public static TResult Invoke<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
-        //{
-        //    return expression.Compile().Invoke(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-        //}
 
         #endregion
 
@@ -299,18 +240,17 @@ namespace Coldairarrow.Util
 
             ParameterExpression[] oldParamters = expression.Parameters.ToArray();
             List<string> existsProperties = new List<string>();
-            oldExpression.Bindings.ForEach(aBinding =>
+            oldExpression.Bindings.ToList().ForEach(aBinding =>
             {
                 existsProperties.Add(aBinding.Member.Name);
             });
 
             List<MemberBinding> newBindings = new List<MemberBinding>();
-            typeof(TResult).GetProperties().Where(x => !existsProperties.Contains(x.Name)).ForEach(aProperty =>
+            typeof(TResult).GetProperties().Where(x => !existsProperties.Contains(x.Name)).ToList().ForEach(aProperty =>
             {
                 if (typeof(TBase).GetMembers().Any(x => x.Name == aProperty.Name))
                 {
-                    MemberInfo newMember = typeof(TBase).GetMember(aProperty.Name)[0];
-                    MemberBinding newMemberBinding = Expression.Bind(newMember, Expression.Property(oldParamters[0], aProperty.Name));
+                    MemberBinding newMemberBinding = Expression.Bind(aProperty, Expression.Property(oldParamters[0], aProperty.Name));
                     newBindings.Add(newMemberBinding);
                 }
             });
@@ -329,7 +269,7 @@ namespace Coldairarrow.Util
     /// <summary>
     /// 继承ExpressionVisitor类，实现参数替换统一
     /// </summary>
-    class ParameterReplaceVisitor : ExpressionVisitor
+    internal class ParameterReplaceVisitor : System.Linq.Expressions.ExpressionVisitor
     {
         public ParameterReplaceVisitor(ParameterExpression paramExpr)
         {
@@ -337,14 +277,19 @@ namespace Coldairarrow.Util
         }
 
         //新的表达式参数
-        private ParameterExpression _parameter { get; set; }
+        private readonly ParameterExpression _parameter;
 
         protected override Expression VisitParameter(ParameterExpression p)
         {
             if (p.Type == _parameter.Type)
+            {
                 return _parameter;
+            }
+
             else
+            {
                 return p;
+            }
         }
     }
 }
