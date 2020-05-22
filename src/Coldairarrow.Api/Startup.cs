@@ -41,6 +41,8 @@ namespace Coldairarrow.Api
             .AddControllersAsServices()
             .AddNewtonsoftJson(options =>
             {
+                //Json序列化时忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
             services.AddHttpContextAccessor()
