@@ -12,7 +12,7 @@ namespace Coldairarrow.Business
     /// <summary>
     /// 操作者
     /// </summary>
-    public class Operator : IOperator, IScopeDependency
+    public class Operator : IOperator, IScopedDependency
     {
         readonly IBase_UserCache _userCache;
         readonly IServiceProvider _serviceProvider;

@@ -1,5 +1,4 @@
-﻿using AspectCore.Extensions.Hosting;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -13,7 +12,6 @@ namespace Coldairarrow.Api
                 .UseIdHelper()
                 .UseLog()
                 .UseCache()
-                .UseDynamicProxy()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
