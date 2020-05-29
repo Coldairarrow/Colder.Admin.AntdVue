@@ -27,5 +27,7 @@ namespace Coldairarrow.Util
         public object ReturnValue { get => _invocation.ReturnValue; set => _invocation.ReturnValue = value; }
 
         public Type TargetType { get => _invocation.TargetType; }
+
+        public object InvocationTarget => _invocation.InvocationTarget;
     }
 }

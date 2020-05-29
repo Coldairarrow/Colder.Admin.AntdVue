@@ -13,5 +13,6 @@ namespace Coldairarrow.Util
         object Proxy { get; }
         object ReturnValue { get; set; }
         Type TargetType { get; }
+        object InvocationTarget { get; }
     }
 }
