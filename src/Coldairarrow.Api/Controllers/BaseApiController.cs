@@ -7,6 +7,7 @@ namespace Coldairarrow.Api
     /// </summary>
     [CheckJWT]
     [ApiController]
+    [ApiLog]
     public class BaseApiController : BaseController
     {
 

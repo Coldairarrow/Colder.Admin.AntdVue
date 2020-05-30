@@ -1,5 +1,4 @@
-﻿using AspectCore.DynamicProxy;
-using Coldairarrow.Util;
+﻿using Coldairarrow.Util;
 using EFCore.Sharding;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Business
 {
-    public class DataRepeatValidateAttribute : AbstractInterceptorAttribute
+    public class DataRepeatValidateAttribute : BaseAOPAttribute
     {
         public DataRepeatValidateAttribute(string[] validateFields, string[] validateFieldNames, bool allData = false)
         {
@@ -25,10 +24,10 @@ namespace Coldairarrow.Business
         private bool _allData { get; }
         private Dictionary<string, string> _validateFields { get; } = new Dictionary<string, string>();
 
-        public override async Task Invoke(AspectContext context, AspectDelegate next)
+        public override async Task Befor(IAOPContext context)
         {
-            Type entityType = context.Parameters[0].GetType();
-            var data = context.Parameters[0];
+            Type entityType = context.Arguments[0].GetType();
+            var data = context.Arguments[0];
             List<string> whereList = new List<string>();
             var properties = _validateFields
                 .Where(x => !data.GetPropertyValue(x.Key).IsNullOrEmpty())
@@ -44,7 +43,7 @@ namespace Coldairarrow.Business
                 q = repository.GetIQueryable(entityType);
             }
             else
-                q = context.Implementation.GetType().GetMethod("GetIQueryable").Invoke(context.Implementation, new object[] { }) as IQueryable;
+                q = context.InvocationTarget.GetType().GetMethod("GetIQueryable").Invoke(context.InvocationTarget, new object[] { }) as IQueryable;
             q = q.Where("Id != @0", data.GetPropertyValue("Id"));
             q = q.Where(
                 string.Join("||", whereList),
@@ -60,7 +59,7 @@ namespace Coldairarrow.Business
                 throw new BusException($"{string.Join(",", repeatList)}已存在!");
             }
 
-            await next(context);
+            await Task.CompletedTask;
         }
     }
 }

@@ -52,7 +52,11 @@ namespace Coldairarrow.Util
                 if (logConfig.debug.enabled)
                     serilogConfig.WriteTo.Debug();
                 if (logConfig.file.enabled)
-                    serilogConfig.WriteTo.File(path, rollingInterval: RollingInterval.Day, shared: true);
+                {
+                    string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3} {SourceContext:l}] {Message:lj}{NewLine}{Exception}";
+
+                    serilogConfig.WriteTo.File(path, outputTemplate: template, rollingInterval: RollingInterval.Day, shared: true);
+                }
                 if (logConfig.database.enabled)
                 {
                     DatabaseType dbType = envConfig["DatabaseType"].ToEnum<DatabaseType>();

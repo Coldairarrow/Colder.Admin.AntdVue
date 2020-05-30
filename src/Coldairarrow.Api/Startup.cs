@@ -2,6 +2,7 @@
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,7 +91,13 @@ namespace Coldairarrow.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware<CorsMiddleware>()//跨域
+            //允许body重用
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            })
+            .UseMiddleware<CorsMiddleware>()//跨域
             .UseDeveloperExceptionPage()
             .UseStaticFiles(new StaticFileOptions
             {

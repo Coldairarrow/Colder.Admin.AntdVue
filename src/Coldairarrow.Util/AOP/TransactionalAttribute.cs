@@ -9,7 +9,6 @@ namespace Coldairarrow.Util
 {
     /// <summary>
     /// 使用事务包裹
-    /// 注:只能用于接口和虚方法
     /// </summary>
     public class TransactionalAttribute : BaseAOPAttribute
     {

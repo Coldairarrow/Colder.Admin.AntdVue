@@ -1,5 +1,4 @@
-﻿using AspectCore.DynamicProxy;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
@@ -11,13 +10,13 @@ namespace Coldairarrow.Util
         {
         }
 
-        public override async Task Invoke(AspectContext context, AspectDelegate next)
+        public override async Task After(IAOPContext context)
         {
-            await next(context);
-
             var op = context.ServiceProvider.GetService<IOperator>();
-            var obj = context.Parameters[0];
+            var obj = context.Arguments[0];
             op.WriteUserLog(_logType, $"添加{_dataName}:{obj.GetPropertyValue(_nameField)?.ToString()}");
+
+            await Task.CompletedTask;
         }
     }
 }
