@@ -30,9 +30,10 @@ namespace Coldairarrow.Util
                             _allFxTypes = new List<Type>();
 
                             Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-                                .Where(x => x.Contains(FXASSEMBLY))
+                                .Where(x => new FileInfo(x).Name.Contains(FXASSEMBLY))
                                 .Select(x => Assembly.LoadFrom(x))
                                 .Where(x => !x.IsDynamic)
+                                .ToList()
                                 .ForEach(aAssembly =>
                                 {
                                     try
