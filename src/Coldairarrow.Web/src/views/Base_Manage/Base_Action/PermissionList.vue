@@ -76,7 +76,7 @@ export default {
       if (target) {
         delete target.editable
         this.data = newData
-        this.cacheData = newData.map(item => ({ ...item }))
+        this.resetCache(newData)
       }
     },
     cancel(key) {
@@ -122,6 +122,9 @@ export default {
           }
         })
     },
+    resetCache(dataSource) {
+        this.cacheData = dataSource.map(item => ({ ...item }))
+    },
     getDataList() {
       this.loading = true
       this.$http
@@ -132,6 +135,7 @@ export default {
           this.loading = false
           resJson.Data.forEach(x => (x['key'] = uuid.v4()))
           this.data = resJson.Data
+          this.resetCache(this.data)
         })
     },
     init(parentId) {
