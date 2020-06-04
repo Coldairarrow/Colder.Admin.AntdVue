@@ -246,11 +246,20 @@ namespace Coldairarrow.Util
             });
 
             List<MemberBinding> newBindings = new List<MemberBinding>();
-            typeof(TResult).GetProperties().Where(x => !existsProperties.Contains(x.Name)).ToList().ForEach(aProperty =>
+            typeof(TBase).GetProperties().Where(x => !existsProperties.Contains(x.Name)).ToList().ForEach(aProperty =>
             {
-                if (typeof(TBase).GetMembers().Any(x => x.Name == aProperty.Name))
+                if (typeof(TResult).GetMembers().Any(x => x.Name == aProperty.Name))
                 {
-                    MemberBinding newMemberBinding = Expression.Bind(aProperty, Expression.Property(oldParamters[0], aProperty.Name));
+                    MemberBinding newMemberBinding = null;
+                    var valueExpre = Expression.Property(oldParamters[0], aProperty.Name);
+                    if (typeof(TBase).IsAssignableFrom(typeof(TResult)))
+                    {
+                        newMemberBinding = Expression.Bind(aProperty, valueExpre);
+                    }
+                    else
+                    {
+                        newMemberBinding = Expression.Bind(typeof(TResult).GetProperty(aProperty.Name), valueExpre);
+                    }
                     newBindings.Add(newMemberBinding);
                 }
             });

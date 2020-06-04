@@ -1,6 +1,5 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,21 +50,21 @@ namespace Coldairarrow.Api
             string log =
 @"方向:请求本系统
 Url:{Url}
+Time:{Time}ms
 Method:{Method}
 ContentType:{ContentType}
 Body:{Body}
-Time:{Time}ms
 
 Response:{Response}
 ";
             var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiLogAttribute>>();
             logger.LogInformation(
                 log,
-                request.GetDisplayUrl(),
+                request.Path,
+                (int)time.TotalMilliseconds,
                 request.Method,
                 request.ContentType,
                 body,
-                (int)time.TotalMilliseconds,
                 resContent
                 );
 
