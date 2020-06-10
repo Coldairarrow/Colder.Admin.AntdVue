@@ -55,7 +55,14 @@ namespace Coldairarrow.Util
                 {
                     string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3} {SourceContext:l}] {Message:lj}{NewLine}{Exception}";
 
-                    serilogConfig.WriteTo.File(path, outputTemplate: template, rollingInterval: RollingInterval.Day, shared: true);
+                    serilogConfig.WriteTo.File(
+                        path,
+                        outputTemplate: template,
+                        rollingInterval: RollingInterval.Day,
+                        shared: true,
+                        fileSizeLimitBytes: 10 * 1024 * 1024,
+                        rollOnFileSizeLimit: true
+                        );
                 }
                 if (logConfig.database.enabled)
                 {
