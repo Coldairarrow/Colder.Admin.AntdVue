@@ -108,6 +108,7 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
+            await DeleteAsync(x => ids.Contains(x.ParentId));
         }
 
         public async Task SavePermissionAsync(string parentId, List<Base_Action> permissionList)

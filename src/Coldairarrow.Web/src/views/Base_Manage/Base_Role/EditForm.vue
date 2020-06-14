@@ -114,7 +114,7 @@ export default {
           return
         }
         this.confirmLoading = true
-        this.entity['actions'] = this.checkedKeys.checked
+        this.entity['Actions'] = this.checkedKeys.checked
         this.$http.post('/Base_Manage/Base_Role/SaveData', this.entity).then(resJson => {
           this.confirmLoading = false
 

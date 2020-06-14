@@ -69,9 +69,6 @@ export default {
       if (id) {
         this.$http.post('/Base_Manage/Base_Department/GetTheData', { id: id }).then(resJson => {
           this.entity = resJson.Data
-          if (this.entity['Birthday']) {
-            this.entity['Birthday'] = moment(this.entity['Birthday'])
-          }
         })
       }
     },

@@ -27,15 +27,15 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<Base_RoleOutputDTO>> GetDataList(PageInput<RolesInputDTO> input)
+        public async Task<PageResult<Base_RoleInfoDTO>> GetDataList(PageInput<RolesInputDTO> input)
         {
             return await _roleBus.GetDataListAsync(input);
         }
 
         [HttpPost]
-        public async Task<Base_RoleOutputDTO> GetTheData(IdInputDTO input)
+        public async Task<Base_RoleInfoDTO> GetTheData(IdInputDTO input)
         {
-            return await _roleBus.GetTheDataAsync(input.id) ?? new Base_RoleOutputDTO();
+            return await _roleBus.GetTheDataAsync(input.id) ?? new Base_RoleInfoDTO();
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         #region 提交
 
         [HttpPost]
-        public async Task SaveData(RoleEditInputDTO input)
+        public async Task SaveData(Base_RoleInfoDTO input)
         {
             if (input.Id.IsNullOrEmpty())
             {

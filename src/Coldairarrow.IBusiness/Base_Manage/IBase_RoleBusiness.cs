@@ -7,17 +7,11 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public interface IBase_RoleBusiness
     {
-        Task<PageResult<Base_RoleOutputDTO>> GetDataListAsync(PageInput<RolesInputDTO> input);
-        Task<Base_RoleOutputDTO> GetTheDataAsync(string id);
-        Task AddDataAsync(RoleEditInputDTO input);
-        Task UpdateDataAsync(RoleEditInputDTO input);
+        Task<PageResult<Base_RoleInfoDTO>> GetDataListAsync(PageInput<RolesInputDTO> input);
+        Task<Base_RoleInfoDTO> GetTheDataAsync(string id);
+        Task AddDataAsync(Base_RoleInfoDTO input);
+        Task UpdateDataAsync(Base_RoleInfoDTO input);
         Task DeleteDataAsync(List<string> ids);
-    }
-
-    [Map(typeof(Base_Role))]
-    public class RoleEditInputDTO : Base_Role
-    {
-        public List<string> actions { get; set; }
     }
 
     public class RolesInputDTO
@@ -27,7 +21,7 @@ namespace Coldairarrow.Business.Base_Manage
     }
 
     [Map(typeof(Base_Role))]
-    public class Base_RoleOutputDTO : Base_Role
+    public class Base_RoleInfoDTO : Base_Role
     {
         public RoleTypes? RoleType { get => RoleName?.ToEnum<RoleTypes>(); }
         public List<string> Actions { get; set; } = new List<string>();

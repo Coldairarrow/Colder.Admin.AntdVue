@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
@@ -22,7 +23,7 @@ namespace Coldairarrow.Business.Base_Manage
 
         #region 外部接口
 
-        public async Task<PageResult<Base_RoleOutputDTO>> GetDataListAsync(PageInput<RolesInputDTO> input)
+        public async Task<PageResult<Base_RoleInfoDTO>> GetDataListAsync(PageInput<RolesInputDTO> input)
         {
             var where = LinqHelper.True<Base_Role>();
             var search = input.Search;
@@ -31,14 +32,16 @@ namespace Coldairarrow.Business.Base_Manage
             if (!search.roleName.IsNullOrEmpty())
                 where = where.And(x => x.RoleName.Contains(search.roleName));
 
-            var list = await GetIQueryable().Where(where).GetPageResultAsync(input);
-            var dtoList = list.Data.Select(x => _mapper.Map<Base_RoleOutputDTO>(x)).ToList();
+            var page = await GetIQueryable()
+                .Where(where)
+                .ProjectTo<Base_RoleInfoDTO>(_mapper.ConfigurationProvider)
+                .GetPageResultAsync(input);
 
-            await SetProperty(dtoList);
+            await SetProperty(page.Data);
 
-            return new PageResult<Base_RoleOutputDTO> { Data = dtoList, Total = list.Total };
+            return page;
 
-            async Task SetProperty(List<Base_RoleOutputDTO> _list)
+            async Task SetProperty(List<Base_RoleInfoDTO> _list)
             {
                 var allActionIds = await Service.GetIQueryable<Base_Action>().Select(x => x.Id).ToListAsync();
 
@@ -56,26 +59,26 @@ namespace Coldairarrow.Business.Base_Manage
             }
         }
 
-        public async Task<Base_RoleOutputDTO> GetTheDataAsync(string id)
+        public async Task<Base_RoleInfoDTO> GetTheDataAsync(string id)
         {
             return (await GetDataListAsync(new PageInput<RolesInputDTO> { Search = new RolesInputDTO { roleId = id } })).Data.FirstOrDefault();
         }
 
         [DataAddLog(UserLogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
-        public async Task AddDataAsync(RoleEditInputDTO input)
+        public async Task AddDataAsync(Base_RoleInfoDTO input)
         {
             await InsertAsync(_mapper.Map<Base_Role>(input));
-            await SetRoleActionAsync(input.Id, input.actions);
+            await SetRoleActionAsync(input.Id, input.Actions);
         }
 
         [DataEditLog(UserLogType.系统角色管理, "RoleName", "角色")]
         [DataRepeatValidate(new string[] { "RoleName" }, new string[] { "角色名" })]
         [Transactional]
-        public async Task UpdateDataAsync(RoleEditInputDTO input)
+        public async Task UpdateDataAsync(Base_RoleInfoDTO input)
         {
             await UpdateAsync(_mapper.Map<Base_Role>(input));
-            await SetRoleActionAsync(input.Id, input.actions);
+            await SetRoleActionAsync(input.Id, input.Actions);
         }
 
         [DataDeleteLog(UserLogType.系统角色管理, "RoleName", "角色")]
