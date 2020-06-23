@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Util;
+﻿using Coldairarrow.Entity;
 
 namespace Coldairarrow.Business.Cache
 {

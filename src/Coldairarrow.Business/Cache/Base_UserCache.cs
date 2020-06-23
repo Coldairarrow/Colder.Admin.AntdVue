@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Entity;
 using Coldairarrow.Util;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;

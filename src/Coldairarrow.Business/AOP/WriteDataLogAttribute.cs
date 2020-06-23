@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Coldairarrow.Util;
+using System;
 
-namespace Coldairarrow.Util
+namespace Coldairarrow.Business
 {
     public abstract class WriteDataLogAttribute : BaseAOPAttribute
     {

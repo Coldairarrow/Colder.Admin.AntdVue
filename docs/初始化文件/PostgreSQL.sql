@@ -44,7 +44,6 @@ INSERT INTO "Base_Action" VALUES ('1178957553778823168', '2019-10-01 16:59:19', 
 INSERT INTO "Base_Action" VALUES ('1179018395304071168', '2019-10-01 21:01:05', NULL, 'f', '1178957405992521728', 1, '密钥管理', '/Base_Manage/Base_AppSecret/List', NULL, 't', NULL, 15);
 INSERT INTO "Base_Action" VALUES ('1182652367447789568', '2019-10-11 21:41:11', NULL, 'f', '1178957405992521728', 1, '角色管理', '/Base_Manage/Base_Role/List', NULL, 't', NULL, 5);
 INSERT INTO "Base_Action" VALUES ('1182652433302556672', '2019-10-11 21:41:27', NULL, 'f', '1178957405992521728', 1, '部门管理', '/Base_Manage/Base_Department/List', NULL, 't', NULL, 10);
-INSERT INTO "Base_Action" VALUES ('1182652599069839360', '2019-10-11 21:42:06', NULL, 'f', '1178957405992521728', 1, '系统日志', '/Base_Manage/Base_Log/List', NULL, 't', NULL, 25);
 INSERT INTO "Base_Action" VALUES ('1188801057778569216', '2019-10-28 20:53:53.687', NULL, 'f', '1182652367447789568', 2, '增', NULL, 'Base_Role.Add', 't', NULL, 0);
 INSERT INTO "Base_Action" VALUES ('1188801057778569217', '2019-10-28 20:53:53.687', NULL, 'f', '1182652367447789568', 2, '改', NULL, 'Base_Role.Edit', 't', NULL, 0);
 INSERT INTO "Base_Action" VALUES ('1188801057778569218', '2019-10-28 20:53:53.687', NULL, 'f', '1182652367447789568', 2, '删', NULL, 'Base_Role.Delete', 't', NULL, 0);
@@ -152,24 +151,6 @@ BEGIN;
 INSERT INTO "Base_Department" VALUES ('1181175685528424448', '2019-10-07 19:53:23', NULL, 'f', '宁波分公司', NULL);
 INSERT INTO "Base_Department" VALUES ('1181175803631636480', '2019-10-07 19:53:51.427', NULL, 'f', '鄞州事业部', '1181175685528424448');
 INSERT INTO "Base_Department" VALUES ('1181175865409540096', '2019-10-07 19:54:06', NULL, 'f', '海曙事业部', '1181175685528424448');
-COMMIT;
-
--- ----------------------------
--- Table structure for Base_Log
--- ----------------------------
-CREATE TABLE "Base_Log" (
-  "Id" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "CreateTime" timestamp(6) NOT NULL,
-  "LogContent" text COLLATE "pg_catalog"."default",
-  "Level" int4 NOT NULL DEFAULT 0
-)
-;
-COMMENT ON COLUMN "Base_Log"."Level" IS '级别';
-
--- ----------------------------
--- Records of Base_Log
--- ----------------------------
-BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -323,11 +304,6 @@ ALTER TABLE "Base_DbLink" ADD CONSTRAINT "Base_DbLink_pkey" PRIMARY KEY ("Id");
 -- Primary Key structure for table Base_Department
 -- ----------------------------
 ALTER TABLE "Base_Department" ADD CONSTRAINT "Base_Department_pkey" PRIMARY KEY ("Id");
-
--- ----------------------------
--- Primary Key structure for table Base_Log
--- ----------------------------
-ALTER TABLE "Base_Log" ADD CONSTRAINT "Base_Log_pkey" PRIMARY KEY ("Id");
 
 -- ----------------------------
 -- Primary Key structure for table Base_Role

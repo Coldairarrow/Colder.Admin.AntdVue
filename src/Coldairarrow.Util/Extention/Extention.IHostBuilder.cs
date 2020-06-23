@@ -1,21 +1,16 @@
-﻿using Coldairarrow.Entity.Base_Manage;
-using CSRedis;
-using EFCore.Sharding;
+﻿using CSRedis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Configuration;
-using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Coldairarrow.Util
 {
@@ -63,13 +58,6 @@ namespace Coldairarrow.Util
                         fileSizeLimitBytes: 10 * 1024 * 1024,
                         rollOnFileSizeLimit: true
                         );
-                }
-                if (logConfig.database.enabled)
-                {
-                    DatabaseType dbType = envConfig["DatabaseType"].ToEnum<DatabaseType>();
-                    string conName = envConfig["ConnectionName"];
-                    string conString = envConfig.GetConnectionString(conName);
-                    serilogConfig.WriteTo.Database(dbType, conString);
                 }
                 if (logConfig.elasticsearch.enabled)
                 {
@@ -144,7 +132,6 @@ namespace Coldairarrow.Util
             public Option console { get; set; } = new Option();
             public Option debug { get; set; } = new Option();
             public Option file { get; set; } = new Option();
-            public Option database { get; set; } = new Option();
             public Option elasticsearch { get; set; } = new Option();
             public List<OverrideConfig> overrides { get; set; } = new List<OverrideConfig>();
         }
@@ -160,58 +147,6 @@ namespace Coldairarrow.Util
         {
             public string source { get; set; }
             public string minlevel { get; set; }
-        }
-    }
-
-    public class DatabaseSink : ILogEventSink
-    {
-        private readonly IFormatProvider _formatProvider;
-        private readonly DatabaseType _databaseType;
-        private readonly string _conString;
-        public DatabaseSink(DatabaseType databaseType, string conString, IFormatProvider formatProvider)
-        {
-            _formatProvider = formatProvider;
-            _databaseType = databaseType;
-            _conString = conString;
-        }
-
-        public void Emit(LogEvent logEvent)
-        {
-            string id = string.Empty;
-            try
-            {
-                id = IdHelper.GetId();
-            }
-            catch
-            {
-                id = Guid.NewGuid().ToString();
-            }
-            Base_Log base_Log = new Base_Log
-            {
-                Id = id,
-                CreateTime = DateTime.Now,
-                Level = (int)logEvent.Level,
-                LogContent = logEvent.RenderMessage(_formatProvider) + logEvent.Exception
-            };
-            Task.Factory.StartNew(async () =>
-            {
-                using (var db = DbFactory.GetRepository(_conString, _databaseType))
-                {
-                    await db.InsertAsync(base_Log);
-                }
-            }, TaskCreationOptions.LongRunning);
-        }
-    }
-
-    public static class DatabaseSinkExtensions
-    {
-        public static LoggerConfiguration Database(
-            this LoggerSinkConfiguration loggerConfiguration,
-            DatabaseType databaseType,
-            string conString,
-            IFormatProvider formatProvider = null)
-        {
-            return loggerConfiguration.Sink(new DatabaseSink(databaseType, conString, formatProvider));
         }
     }
 }

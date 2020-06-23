@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Coldairarrow.IBusiness;
+using Coldairarrow.Util;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
-namespace Coldairarrow.Util
+namespace Coldairarrow.Business
 {
     public class DataDeleteLogAttribute : WriteDataLogAttribute
     {

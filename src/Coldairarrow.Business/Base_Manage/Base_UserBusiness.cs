@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Coldairarrow.Business.Cache;
+using Coldairarrow.Entity;
 using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.IBusiness;
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using LinqKit;
@@ -48,10 +50,7 @@ namespace Coldairarrow.Business.Base_Manage
                     from b in ab.DefaultIfEmpty()
                     select @select.Invoke(a, b);
 
-            var where = LinqHelper.True<Base_UserDTO>();
-
-            if (!search.userId.IsNullOrEmpty())
-                where = where.And(x => x.Id == search.userId);
+            q = q.WhereIf(!search.userId.IsNullOrEmpty(), x => x.Id == search.userId);
             if (!search.keyword.IsNullOrEmpty())
             {
                 var keyword = $"%{search.keyword}%";
@@ -60,7 +59,7 @@ namespace Coldairarrow.Business.Base_Manage
                       || EF.Functions.Like(x.RealName, keyword));
             }
 
-            var list = await q.Where(where).GetPageResultAsync(input);
+            var list = await q.GetPageResultAsync(input);
 
             await SetProperty(list.Data);
 

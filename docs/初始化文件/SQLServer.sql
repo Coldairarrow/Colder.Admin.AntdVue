@@ -221,7 +221,7 @@ GO
 -- ----------------------------
 BEGIN TRANSACTION
 GO
-INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), (N'1182652599069839360', N'2019-10-11 21:42:06.000', null, N'0', N'1178957405992521728', N'1', N'系统日志', N'/Base_Manage/Base_Log/List', null, N'1', null, N'25'), (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1248570020770877440', N'2020-04-10 19:14:24.000', N'Admin', N'0', N'1178957405992521728', N'1', N'操作日志', N'/Base_Manage/Base_UserLog/List', null, N'0', null, N'22')
+INSERT INTO [Base_Action] ([Id], [CreateTime], [CreatorId], [Deleted], [ParentId], [Type], [Name], [Url], [Value], [NeedAction], [Icon], [Sort]) VALUES (N'1178957405992521728', N'2019-10-01 16:58:44.000', null, N'0', null, N'0', N'系统管理', N'', null, N'1', N'setting', N'1'), (N'1178957553778823168', N'2019-10-01 16:59:19.000', null, N'0', N'1178957405992521728', N'1', N'权限管理', N'/Base_Manage/Base_Action/List', null, N'1', null, N'20'), (N'1179018395304071168', N'2019-10-01 21:01:05.000', null, N'0', N'1178957405992521728', N'1', N'密钥管理', N'/Base_Manage/Base_AppSecret/List', null, N'1', null, N'15'), (N'1182652266117599232', N'2019-10-11 21:40:47.000', null, N'0', N'1178957405992521728', N'1', N'用户管理', N'/Base_Manage/Base_User/List', null, N'1', null, N'0'), (N'1182652367447789568', N'2019-10-11 21:41:11.000', null, N'0', N'1178957405992521728', N'1', N'角色管理', N'/Base_Manage/Base_Role/List', null, N'1', null, N'5'), (N'1182652433302556672', N'2019-10-11 21:41:27.000', null, N'0', N'1178957405992521728', N'1', N'部门管理', N'/Base_Manage/Base_Department/List', null, N'1', null, N'10'), , (N'1188801057778569216', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'增', null, N'Base_Role.Add', N'1', null, N'0'), (N'1188801057778569217', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'改', null, N'Base_Role.Edit', N'1', null, N'0'), (N'1188801057778569218', N'2019-10-28 20:53:53.687', null, N'0', N'1182652367447789568', N'2', N'删', null, N'Base_Role.Delete', N'1', null, N'0'), (N'1188801109783744512', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'增', null, N'Base_Department.Add', N'1', null, N'0'), (N'1188801109783744513', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'改', null, N'Base_Department.Edit', N'1', null, N'0'), (N'1188801109783744514', N'2019-10-28 20:54:06.087', null, N'0', N'1182652433302556672', N'2', N'删', null, N'Base_Department.Delete', N'1', null, N'0'), (N'1188801273885888512', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'增', null, N'Base_AppSecret.Add', N'1', null, N'0'), (N'1188801273885888513', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'改', null, N'Base_AppSecret.Edit', N'1', null, N'0'), (N'1188801273885888514', N'2019-10-28 20:54:45.213', null, N'0', N'1179018395304071168', N'2', N'删', null, N'Base_AppSecret.Delete', N'1', null, N'0'), (N'1188801341661646848', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'增', null, N'Base_Action.Add', N'1', null, N'0'), (N'1188801341661646849', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'改', null, N'Base_Action.Edit', N'1', null, N'0'), (N'1188801341661646850', N'2019-10-28 20:55:01.370', null, N'0', N'1178957553778823168', N'2', N'删', null, N'Base_Action.Delete', N'1', null, N'0'), (N'1193158266167758848', N'2019-11-09 21:27:53.000', N'Admin', N'0', null, N'0', N'首页', null, null, N'1', N'home', N'0'), (N'1193158630615027712', N'2019-11-09 21:29:20.013', N'Admin', N'0', N'1193158266167758848', N'1', N'框架介绍', N'/Home/Introduce', null, N'0', null, N'0'), (N'1193158780011941888', N'2019-11-09 21:29:55.630', N'Admin', N'0', N'1193158266167758848', N'1', N'运营统计', N'/Home/Statis', null, N'0', null, N'0'), (N'1193527101521661952', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'增', null, N'Base_User.Add', N'1', null, N'0'), (N'1193527101521661953', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'改', null, N'Base_User.Edit', N'1', null, N'0'), (N'1193527101521661954', N'2019-11-10 21:53:30.320', null, N'0', N'1182652266117599232', N'2', N'删', null, N'Base_User.Delete', N'1', null, N'0'), (N'1248570020770877440', N'2020-04-10 19:14:24.000', N'Admin', N'0', N'1178957405992521728', N'1', N'操作日志', N'/Base_Manage/Base_UserLog/List', null, N'0', null, N'22')
 GO
 GO
 COMMIT TRANSACTION
@@ -786,95 +786,6 @@ BEGIN TRANSACTION
 GO
 INSERT INTO [Base_Department] ([Id], [CreateTime], [CreatorId], [Deleted], [Name], [ParentId]) VALUES (N'1181175685528424448', N'2019-10-07 19:53:23.000', null, N'0', N'宁波分公司', null), (N'1181175803631636480', N'2019-10-07 19:53:51.427', null, N'0', N'鄞州事业部', N'1181175685528424448'), (N'1181175865409540096', N'2019-10-07 19:54:06.000', null, N'0', N'海曙事业部', N'1181175685528424448')
 GO
-GO
-COMMIT TRANSACTION
-GO
-
--- ----------------------------
--- Table structure for Base_Log
--- ----------------------------
-CREATE TABLE [Base_Log] (
-[Id] varchar(50) NOT NULL ,
-[CreateTime] datetime NOT NULL ,
-[Level] int NOT NULL DEFAULT ((0)) ,
-[LogContent] varchar(MAX) NULL 
-)
-
-
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-NULL, NULL)) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'系统日志表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'系统日志表'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'Id')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Id'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'自然主键'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Id'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'CreateTime')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'创建时间'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreateTime'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'创建时间'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'CreateTime'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'Level')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志级别'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Level'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志级别'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'Level'
-GO
-IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
-'SCHEMA', N'dbo', 
-'TABLE', N'Base_Log', 
-'COLUMN', N'LogContent')) > 0) 
-EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'日志内容'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'LogContent'
-ELSE
-EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'日志内容'
-, @level0type = 'SCHEMA', @level0name = N'dbo'
-, @level1type = 'TABLE', @level1name = N'Base_Log'
-, @level2type = 'COLUMN', @level2name = N'LogContent'
-GO
-
--- ----------------------------
--- Records of Base_Log
--- ----------------------------
-BEGIN TRANSACTION
 GO
 COMMIT TRANSACTION
 GO
@@ -1579,16 +1490,6 @@ GO
 -- Primary Key structure for table Base_Department
 -- ----------------------------
 ALTER TABLE [Base_Department] ADD PRIMARY KEY ([Id])
-GO
-
--- ----------------------------
--- Indexes structure for table Base_Log
--- ----------------------------
-
--- ----------------------------
--- Primary Key structure for table Base_Log
--- ----------------------------
-ALTER TABLE [Base_Log] ADD PRIMARY KEY ([Id])
 GO
 
 -- ----------------------------

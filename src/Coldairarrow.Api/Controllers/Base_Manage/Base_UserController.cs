@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Entity;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
-    /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
     public class Base_UserController : BaseApiController
     {

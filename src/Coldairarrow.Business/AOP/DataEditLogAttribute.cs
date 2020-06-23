@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Coldairarrow.IBusiness;
+using Coldairarrow.Util;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace Coldairarrow.Util
+namespace Coldairarrow.Business
 {
     public class DataEditLogAttribute : WriteDataLogAttribute
     {

@@ -31,7 +31,7 @@ namespace Coldairarrow.Api
                 if (Configuration["LogicDelete"].ToBool())
                     config.UseLogicDelete();
                 config.UseDatabase(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
-                config.SetEntityAssembly(GlobalData.FXASSEMBLY);
+                config.SetEntityAssembly(GlobalData.FXASSEMBLY_PATTERN);
             });
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
             services.AddControllers(options =>

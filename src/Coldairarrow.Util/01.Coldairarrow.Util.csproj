@@ -61,10 +61,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Aspose.Cells">
       <HintPath>Dll\Aspose.Cells.dll</HintPath>
     </Reference>

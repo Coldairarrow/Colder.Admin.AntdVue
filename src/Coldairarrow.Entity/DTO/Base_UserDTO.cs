@@ -1,7 +1,8 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.Util;
 using System.Collections.Generic;
 
-namespace Coldairarrow.Util
+namespace Coldairarrow.Entity
 {
     [Map(typeof(Base_User))]
     public class Base_UserDTO : Base_User

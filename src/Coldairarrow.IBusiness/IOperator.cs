@@ -1,4 +1,7 @@
-﻿namespace Coldairarrow.Util
+﻿using Coldairarrow.Entity;
+using Coldairarrow.Util;
+
+namespace Coldairarrow.IBusiness
 {
     /// <summary>
     /// 操作者

@@ -60,7 +60,6 @@ INSERT INTO "Base_Action" VALUES ('1179018395304071168', TO_DATE('2019-10-01 21:
 INSERT INTO "Base_Action" VALUES ('1182652266117599232', TO_DATE('2019-10-11 21:40:47', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1178957405992521728', '1', '用户管理', '/Base_Manage/Base_User/List', null, '1', null, '0');
 INSERT INTO "Base_Action" VALUES ('1182652367447789568', TO_DATE('2019-10-11 21:41:11', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1178957405992521728', '1', '角色管理', '/Base_Manage/Base_Role/List', null, '1', null, '5');
 INSERT INTO "Base_Action" VALUES ('1182652433302556672', TO_DATE('2019-10-11 21:41:27', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1178957405992521728', '1', '部门管理', '/Base_Manage/Base_Department/List', null, '1', null, '10');
-INSERT INTO "Base_Action" VALUES ('1182652599069839360', TO_DATE('2019-10-11 21:42:06', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1178957405992521728', '1', '系统日志', '/Base_Manage/Base_Log/List', null, '1', null, '25');
 INSERT INTO "Base_Action" VALUES ('1188801057778569216', TO_DATE('2019-10-28 20:53:53', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1182652367447789568', '2', '增', null, 'Base_Role.Add', '1', null, '0');
 INSERT INTO "Base_Action" VALUES ('1188801057778569217', TO_DATE('2019-10-28 20:53:53', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1182652367447789568', '2', '改', null, 'Base_Role.Edit', '1', null, '0');
 INSERT INTO "Base_Action" VALUES ('1188801057778569218', TO_DATE('2019-10-28 20:53:53', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '1182652367447789568', '2', '删', null, 'Base_Role.Delete', '1', null, '0');
@@ -208,30 +207,6 @@ COMMENT ON COLUMN "Base_Department"."ParentId" IS '上级部门Id';
 INSERT INTO "Base_Department" VALUES ('1181175685528424448', TO_DATE('2019-10-07 19:53:23', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '宁波分公司', null);
 INSERT INTO "Base_Department" VALUES ('1181175803631636480', TO_DATE('2019-10-07 19:53:51', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '鄞州事业部', '1181175685528424448');
 INSERT INTO "Base_Department" VALUES ('1181175865409540096', TO_DATE('2019-10-07 19:54:06', 'YYYY-MM-DD HH24:MI:SS'), null, '0', '海曙事业部', '1181175685528424448');
-
--- ----------------------------
--- Table structure for Base_Log
--- ----------------------------
-CREATE TABLE "Base_Log" (
-"Id" VARCHAR2(50 CHAR) NOT NULL ,
-"CreateTime" DATE NOT NULL ,
-"Level" NUMBER DEFAULT 0  NOT NULL ,
-"LogContent" CLOB NULL 
-)
-LOGGING
-NOCOMPRESS
-NOCACHE
-
-;
-COMMENT ON TABLE "Base_Log" IS '系统日志表';
-COMMENT ON COLUMN "Base_Log"."Id" IS '自然主键';
-COMMENT ON COLUMN "Base_Log"."CreateTime" IS '创建时间';
-COMMENT ON COLUMN "Base_Log"."Level" IS '日志级别';
-COMMENT ON COLUMN "Base_Log"."LogContent" IS '日志内容';
-
--- ----------------------------
--- Records of Base_Log
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for Base_Role
@@ -594,28 +569,6 @@ ALTER TABLE "Base_Department" ADD CHECK ("Deleted" IS NOT NULL);
 -- Primary Key structure for table Base_Department
 -- ----------------------------
 ALTER TABLE "Base_Department" ADD PRIMARY KEY ("Id");
-
--- ----------------------------
--- Indexes structure for table Base_Log
--- ----------------------------
-
--- ----------------------------
--- Checks structure for table Base_Log
--- ----------------------------
-ALTER TABLE "Base_Log" ADD CHECK ("Id" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("CreateTime" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("Id" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("CreateTime" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("Id" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("CreateTime" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("Id" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("CreateTime" IS NOT NULL);
-ALTER TABLE "Base_Log" ADD CHECK ("Level" IS NOT NULL);
-
--- ----------------------------
--- Primary Key structure for table Base_Log
--- ----------------------------
-ALTER TABLE "Base_Log" ADD PRIMARY KEY ("Id");
 
 -- ----------------------------
 -- Indexes structure for table Base_Role
