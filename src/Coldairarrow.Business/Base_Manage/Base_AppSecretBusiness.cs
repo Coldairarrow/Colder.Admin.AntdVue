@@ -11,8 +11,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_AppSecretBusiness : BaseBusiness<Base_AppSecret>, IBase_AppSecretBusiness, ITransientDependency
     {
-        public Base_AppSecretBusiness(IRepository repository)
-            : base(repository)
+        public Base_AppSecretBusiness(IDbAccessor db)
+            : base(db)
         {
         }
 

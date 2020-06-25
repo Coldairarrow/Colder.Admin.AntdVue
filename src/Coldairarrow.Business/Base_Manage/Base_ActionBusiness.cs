@@ -2,7 +2,6 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,8 +13,8 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_ActionBusiness : BaseBusiness<Base_Action>, IBase_ActionBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_ActionBusiness(IRepository repository, IMapper mapper)
-            : base(repository)
+        public Base_ActionBusiness(IDbAccessor db, IMapper mapper)
+            : base(db)
         {
             _mapper = mapper;
         }
@@ -24,26 +23,19 @@ namespace Coldairarrow.Business.Base_Manage
 
         public async Task<List<Base_Action>> GetDataListAsync(Base_ActionsInputDTO input)
         {
-            var q = input.q ?? GetIQueryable();
-            var where = LinqHelper.True<Base_Action>();
-            if (!input.keyword.IsNullOrEmpty())
-            {
-                where = where.And(x => EF.Functions.Like(x.Name, $"%{input.keyword}%"));
-            }
-            if (!input.parentId.IsNullOrEmpty())
-                where = where.And(x => x.ParentId == input.parentId);
-            if (input.types?.Count > 0)
-                where = where.And(x => input.types.Contains((int)x.Type));
+            var q = GetIQueryable();
+            q = q
+                .WhereIf(!input.parentId.IsNullOrEmpty(), x => x.ParentId == input.parentId)
+                .WhereIf(input.types?.Length > 0, x => input.types.Contains(x.Type))
+                .WhereIf(input.ActionIds?.Length > 0, x => input.ActionIds.Contains(x.Id))
+                ;
 
-            return await q.Where(where).OrderBy(x => x.Sort).ToListAsync();
+            return await q.OrderBy(x => x.Sort).ToListAsync();
         }
 
-        public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsTreeInputDTO input)
+        public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsInputDTO input)
         {
-            var where = LinqHelper.True<Base_Action>();
-            if (!input.types.IsNullOrEmpty())
-                where = where.And(x => input.types.Contains((int)x.Type));
-            var qList = await (input.q ?? GetIQueryable()).Where(where).OrderBy(x => x.Sort).ToListAsync();
+            var qList = await GetDataListAsync(input);
 
             var treeList = qList.Select(x => new Base_ActionDTO
             {
@@ -51,7 +43,7 @@ namespace Coldairarrow.Business.Base_Manage
                 NeedAction = x.NeedAction,
                 Text = x.Name,
                 ParentId = x.ParentId,
-                Type = (int)x.Type,
+                Type = x.Type,
                 Url = x.Url,
                 Value = x.Id,
                 Icon = x.Icon,

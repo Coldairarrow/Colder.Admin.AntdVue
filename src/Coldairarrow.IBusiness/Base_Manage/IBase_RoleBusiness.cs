@@ -1,4 +1,5 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using Coldairarrow.Entity;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;

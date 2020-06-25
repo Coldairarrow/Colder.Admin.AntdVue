@@ -39,7 +39,7 @@ namespace Coldairarrow.Business
             IQueryable q = null;
             if (_allData)
             {
-                var repository = context.Proxy.GetPropertyValue("Service") as IRepository;
+                var repository = context.Proxy.GetPropertyValue("Service") as IDbAccessor;
                 q = repository.GetIQueryable(entityType);
             }
             else

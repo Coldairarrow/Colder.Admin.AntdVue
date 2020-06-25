@@ -22,10 +22,10 @@ namespace Coldairarrow.Business
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="repository">注入通用仓储</param>
-        public BaseBusiness(IRepository repository)
+        /// <param name="db">注入数据库</param>
+        public BaseBusiness(IDbAccessor db)
         {
-            Service = repository;
+            Db = db;
         }
 
         #endregion
@@ -41,10 +41,10 @@ namespace Coldairarrow.Business
 
         /// <summary>
         /// 业务仓储接口(支持软删除),支持联表操作
-        /// 注：若需要访问逻辑删除的数据,请使用IRepository.FullRepository
+        /// 注：若需要访问逻辑删除的数据,请使用IDbAccessor.FullRepository
         /// 注：仅支持单线程操作
         /// </summary>
-        public IRepository Service { get; }
+        public IDbAccessor Db { get; }
 
         #endregion
 
@@ -52,11 +52,11 @@ namespace Coldairarrow.Business
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            return Service.RunTransaction(action, isolationLevel);
+            return Db.RunTransaction(action, isolationLevel);
         }
         public async Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            return await Service.RunTransactionAsync(action, isolationLevel);
+            return await Db.RunTransactionAsync(action, isolationLevel);
         }
 
         #endregion
@@ -69,7 +69,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public int Insert(T entity)
         {
-            return Service.Insert(entity);
+            return Db.Insert(entity);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public async Task<int> InsertAsync(T entity)
         {
-            return await Service.InsertAsync(entity);
+            return await Db.InsertAsync(entity);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">实体对象集合</param>
         public int Insert(List<T> entities)
         {
-            return Service.Insert(entities);
+            return Db.Insert(entities);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">实体对象集合</param>
         public async Task<int> InsertAsync(List<T> entities)
         {
-            return await Service.InsertAsync(entities);
+            return await Db.InsertAsync(entities);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Coldairarrow.Business
         /// <param name="entities"></param>
         public void BulkInsert(List<T> entities)
         {
-            Service.BulkInsert(entities);
+            Db.BulkInsert(entities);
         }
 
         #endregion
@@ -117,7 +117,7 @@ namespace Coldairarrow.Business
         /// </summary>
         public int DeleteAll()
         {
-            return Service.DeleteAll<T>();
+            return Db.DeleteAll<T>();
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Coldairarrow.Business
         /// </summary>
         public async Task<int> DeleteAllAsync()
         {
-            return await Service.DeleteAllAsync<T>();
+            return await Db.DeleteAllAsync<T>();
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Coldairarrow.Business
         /// <param name="key"></param>
         public int Delete(string key)
         {
-            return Service.Delete<T>(key);
+            return Db.Delete<T>(key);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Coldairarrow.Business
         /// <param name="key"></param>
         public async Task<int> DeleteAsync(string key)
         {
-            return await Service.DeleteAsync<T>(key);
+            return await Db.DeleteAsync<T>(key);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Coldairarrow.Business
         /// <param name="keys"></param>
         public int Delete(List<string> keys)
         {
-            return Service.Delete<T>(keys);
+            return Db.Delete<T>(keys);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Coldairarrow.Business
         /// <param name="keys"></param>
         public async Task<int> DeleteAsync(List<string> keys)
         {
-            return await Service.DeleteAsync<T>(keys);
+            return await Db.DeleteAsync<T>(keys);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public int Delete(T entity)
         {
-            return Service.Delete<T>(entity);
+            return Db.Delete<T>(entity);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public async Task<int> DeleteAsync(T entity)
         {
-            return await Service.DeleteAsync(entity);
+            return await Db.DeleteAsync(entity);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">实体对象集合</param>
         public int Delete(List<T> entities)
         {
-            return Service.Delete<T>(entities);
+            return Db.Delete<T>(entities);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">实体对象集合</param>
         public async Task<int> DeleteAsync(List<T> entities)
         {
-            return await Service.DeleteAsync<T>(entities);
+            return await Db.DeleteAsync<T>(entities);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Coldairarrow.Business
         /// <param name="condition">筛选条件</param>
         public int Delete(Expression<Func<T, bool>> condition)
         {
-            return Service.Delete(condition);
+            return Db.Delete(condition);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Coldairarrow.Business
         /// <param name="condition">筛选条件</param>
         public async Task<int> DeleteAsync(Expression<Func<T, bool>> condition)
         {
-            return await Service.DeleteAsync(condition);
+            return await Db.DeleteAsync(condition);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Coldairarrow.Business
         /// </returns>
         public int Delete_Sql(Expression<Func<T, bool>> where)
         {
-            return Service.Delete_Sql(where);
+            return Db.Delete_Sql(where);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Coldairarrow.Business
         /// </returns>
         public async Task<int> Delete_SqlAsync(Expression<Func<T, bool>> where)
         {
-            return await Service.Delete_SqlAsync(where);
+            return await Db.Delete_SqlAsync(where);
         }
 
         #endregion
@@ -256,7 +256,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public int Update(T entity)
         {
-            return Service.Update(entity);
+            return Db.Update(entity);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Coldairarrow.Business
         /// <param name="entity">实体对象</param>
         public async Task<int> UpdateAsync(T entity)
         {
-            return await Service.UpdateAsync(entity);
+            return await Db.UpdateAsync(entity);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">数据列表</param>
         public int Update(List<T> entities)
         {
-            return Service.Update(entities);
+            return Db.Update(entities);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Coldairarrow.Business
         /// <param name="entities">数据列表</param>
         public async Task<int> UpdateAsync(List<T> entities)
         {
-            return await Service.UpdateAsync(entities);
+            return await Db.UpdateAsync(entities);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace Coldairarrow.Business
         /// <param name="set">更改属性回调</param>
         public int UpdateWhere(Expression<Func<T, bool>> whereExpre, Action<T> set)
         {
-            return Service.UpdateWhere(whereExpre, set);
+            return Db.UpdateWhere(whereExpre, set);
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Coldairarrow.Business
         /// <param name="set">更改属性回调</param>
         public async Task<int> UpdateWhereAsync(Expression<Func<T, bool>> whereExpre, Action<T> set)
         {
-            return await Service.UpdateWhereAsync(whereExpre, set);
+            return await Db.UpdateWhereAsync(whereExpre, set);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Coldairarrow.Business
         /// <returns>影响条数</returns>
         public int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
         {
-            return Service.UpdateWhere_Sql(where, values);
+            return Db.UpdateWhere_Sql(where, values);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace Coldairarrow.Business
         /// <returns>影响条数</returns>
         public async Task<int> UpdateWhere_SqlAsync(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
         {
-            return await Service.UpdateWhere_SqlAsync(where, values);
+            return await Db.UpdateWhere_SqlAsync(where, values);
         }
 
         #endregion
@@ -343,7 +343,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public T GetEntity(params object[] keyValue)
         {
-            return Service.GetEntity<T>(keyValue);
+            return Db.GetEntity<T>(keyValue);
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public async Task<T> GetEntityAsync(params object[] keyValue)
         {
-            return await Service.GetEntityAsync<T>(keyValue);
+            return await Db.GetEntityAsync<T>(keyValue);
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public List<T> GetList()
         {
-            return Service.GetList<T>();
+            return Db.GetList<T>();
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public async Task<List<T>> GetListAsync()
         {
-            return await Service.GetListAsync<T>();
+            return await Db.GetListAsync<T>();
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public virtual IQueryable<T> GetIQueryable()
         {
-            return Service.GetIQueryable<T>();
+            return Db.GetIQueryable<T>();
         }
 
         #endregion

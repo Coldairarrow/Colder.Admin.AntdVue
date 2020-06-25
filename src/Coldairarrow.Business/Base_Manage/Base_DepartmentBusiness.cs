@@ -11,8 +11,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DepartmentBusiness : BaseBusiness<Base_Department>, IBase_DepartmentBusiness, ITransientDependency
     {
-        public Base_DepartmentBusiness(IRepository repository)
-            : base(repository)
+        public Base_DepartmentBusiness(IDbAccessor db)
+            : base(db)
         {
         }
 

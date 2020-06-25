@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Entity;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         [HttpPost]
         public async Task<List<Base_Action>> GetPermissionList(Base_ActionsInputDTO input)
         {
-            input.types = new List<int> { 2 };
+            input.types = new ActionType[] { Entity.ActionType.权限 };
 
             return await _actionBus.GetDataListAsync(input);
         }
@@ -46,21 +47,21 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         {
             return await _actionBus.GetDataListAsync(new Base_ActionsInputDTO
             {
-                types = new List<int> { 0, 1, 2 }
+                types = new ActionType[] { ActionType.菜单, ActionType.页面, ActionType.权限 }
             });
         }
 
         [HttpPost]
-        public async Task<List<Base_ActionDTO>> GetMenuTreeList(Base_ActionsTreeInputDTO input)
+        public async Task<List<Base_ActionDTO>> GetMenuTreeList(Base_ActionsInputDTO input)
         {
             input.selectable = true;
-            input.types = new List<int> { 0, 1 };
+            input.types = new ActionType[] { ActionType.菜单, ActionType.页面 };
 
             return await _actionBus.GetTreeDataListAsync(input);
         }
 
         [HttpPost]
-        public async Task<List<Base_ActionDTO>> GetActionTreeList(Base_ActionsTreeInputDTO input)
+        public async Task<List<Base_ActionDTO>> GetActionTreeList(Base_ActionsInputDTO input)
         {
             input.selectable = false;
 

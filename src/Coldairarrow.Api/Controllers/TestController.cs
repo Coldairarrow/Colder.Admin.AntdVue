@@ -12,8 +12,8 @@ namespace Coldairarrow.Api.Controllers
     [Route("/[controller]/[action]")]
     public class TestController : BaseController
     {
-        readonly IRepository _repository;
-        public TestController(IRepository repository)
+        readonly IDbAccessor _repository;
+        public TestController(IDbAccessor repository)
         {
             _repository = repository;
         }

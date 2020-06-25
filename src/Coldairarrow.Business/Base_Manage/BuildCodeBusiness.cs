@@ -11,8 +11,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, ITransientDependency
     {
-        public BuildCodeBusiness(IRepository repository, IHostingEnvironment evn)
-            : base(repository)
+        public BuildCodeBusiness(IDbAccessor db, IHostingEnvironment evn)
+            : base(db)
         {
             var projectPath = evn.ContentRootPath;
             _solutionPath = Directory.GetParent(projectPath).ToString();

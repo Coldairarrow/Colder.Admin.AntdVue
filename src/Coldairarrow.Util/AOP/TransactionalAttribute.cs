@@ -61,17 +61,17 @@ namespace Coldairarrow.Util
             _distributedTransaction = DistributedTransactionFactory.GetDistributedTransaction();
 
             var allRepositoryInterfaces = GlobalData.AllFxTypes.Where(x =>
-                    typeof(IRepository).IsAssignableFrom(x)
+                    typeof(IDbAccessor).IsAssignableFrom(x)
                     && x.IsInterface
-                    && x != typeof(IRepository)
+                    && x != typeof(IDbAccessor)
                 ).ToList();
-            allRepositoryInterfaces.Add(typeof(IRepository));
+            allRepositoryInterfaces.Add(typeof(IDbAccessor));
 
             var repositories = allRepositoryInterfaces
-                .Select(x => serviceProvider.GetService(x) as IRepository)
+                .Select(x => serviceProvider.GetService(x) as IDbAccessor)
                 .ToArray();
 
-            _distributedTransaction.AddRepository(repositories);
+            _distributedTransaction.AddDbAccessor(repositories);
         }
         private readonly IDistributedTransaction _distributedTransaction;
         public bool TransactionOpened { get; set; }
@@ -84,11 +84,6 @@ namespace Coldairarrow.Util
         public Task<(bool Success, Exception ex)> RunTransactionAsync(Func<Task> action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             return _distributedTransaction.RunTransactionAsync(action, isolationLevel);
-        }
-
-        public void AddRepository(params IRepository[] repositories)
-        {
-            _distributedTransaction.AddRepository(repositories);
         }
 
         public (bool Success, Exception ex) RunTransaction(Action action, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
@@ -119,6 +114,11 @@ namespace Coldairarrow.Util
         public void DisposeTransaction()
         {
             _distributedTransaction.DisposeTransaction();
+        }
+
+        public void AddDbAccessor(params IDbAccessor[] repositories)
+        {
+            _distributedTransaction.AddDbAccessor(repositories);
         }
     }
 }

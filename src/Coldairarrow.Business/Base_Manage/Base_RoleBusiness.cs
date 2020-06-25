@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Coldairarrow.Entity;
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
@@ -15,8 +16,8 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_RoleBusiness : BaseBusiness<Base_Role>, IBase_RoleBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_RoleBusiness(IRepository repository, IMapper mapper)
-            : base(repository)
+        public Base_RoleBusiness(IDbAccessor db, IMapper mapper)
+            : base(db)
         {
             _mapper = mapper;
         }
@@ -43,10 +44,10 @@ namespace Coldairarrow.Business.Base_Manage
 
             async Task SetProperty(List<Base_RoleInfoDTO> _list)
             {
-                var allActionIds = await Service.GetIQueryable<Base_Action>().Select(x => x.Id).ToListAsync();
+                var allActionIds = await Db.GetIQueryable<Base_Action>().Select(x => x.Id).ToListAsync();
 
                 var ids = _list.Select(x => x.Id).ToList();
-                var roleActions = await Service.GetIQueryable<Base_RoleAction>()
+                var roleActions = await Db.GetIQueryable<Base_RoleAction>()
                     .Where(x => ids.Contains(x.RoleId))
                     .ToListAsync();
                 _list.ForEach(aData =>
@@ -86,7 +87,7 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
-            await Service.DeleteAsync<Base_RoleAction>(x => ids.Contains(x.RoleId));
+            await Db.DeleteAsync<Base_RoleAction>(x => ids.Contains(x.RoleId));
         }
 
         #endregion
@@ -103,8 +104,8 @@ namespace Coldairarrow.Business.Base_Manage
                     CreateTime = DateTime.Now,
                     RoleId = roleId
                 }).ToList();
-            await Service.DeleteAsync<Base_RoleAction>(x => x.RoleId == roleId);
-            await Service.InsertAsync(roleActions);
+            await Db.DeleteAsync<Base_RoleAction>(x => x.RoleId == roleId);
+            await Db.InsertAsync(roleActions);
         }
 
         #endregion

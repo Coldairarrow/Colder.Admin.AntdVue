@@ -8,7 +8,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_DbLinkBusiness : BaseBusiness<Base_DbLink>, IBase_DbLinkBusiness, ITransientDependency
     {
-        public Base_DbLinkBusiness(IRepository repository) : base(repository)
+        public Base_DbLinkBusiness(IDbAccessor db)
+            : base(db)
         {
         }
 

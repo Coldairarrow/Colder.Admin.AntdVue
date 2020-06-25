@@ -9,8 +9,8 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class Base_UserLogBusiness : BaseBusiness<Base_UserLog>, IBase_UserLogBusiness, ITransientDependency
     {
-        public Base_UserLogBusiness(IRepository repository)
-            : base(repository)
+        public Base_UserLogBusiness(IDbAccessor db)
+            : base(db)
         {
         }
 

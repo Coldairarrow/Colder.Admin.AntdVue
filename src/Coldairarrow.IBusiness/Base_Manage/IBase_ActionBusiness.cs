@@ -1,9 +1,9 @@
-﻿using Coldairarrow.Entity.Base_Manage;
+﻿using Coldairarrow.Entity;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Base_Manage
@@ -11,7 +11,7 @@ namespace Coldairarrow.Business.Base_Manage
     public interface IBase_ActionBusiness
     {
         Task<List<Base_Action>> GetDataListAsync(Base_ActionsInputDTO input);
-        Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsTreeInputDTO input);
+        Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsInputDTO input);
         Task<Base_Action> GetTheDataAsync(string id);
         Task AddDataAsync(ActionEditInputDTO input);
         Task UpdateDataAsync(ActionEditInputDTO input);
@@ -26,27 +26,16 @@ namespace Coldairarrow.Business.Base_Manage
 
     public class Base_ActionsInputDTO
     {
-        public string keyword { get; set; }
+        public string[] ActionIds { get; set; }
         public string parentId { get; set; }
-        public List<int> types { get; set; }
-        public IQueryable<Base_Action> q { get; set; }
-    }
-
-    public class Base_ActionsTreeInputDTO
-    {
-        public string keyword { get; set; }
-        public List<int> types { get; set; }
+        public ActionType[] types { get; set; }
         public bool selectable { get; set; }
-        public IQueryable<Base_Action> q { get; set; }
         public bool checkEmptyChildren { get; set; }
     }
 
     public class Base_ActionDTO : TreeModel
     {
-        /// <summary>
-        /// 类型,菜单=0,页面=1,权限=2
-        /// </summary>
-        public Int32 Type { get; set; }
+        public ActionType Type { get; set; }
         public String Url { get; set; }
         public string path { get => Url; }
         public bool NeedAction { get; set; }

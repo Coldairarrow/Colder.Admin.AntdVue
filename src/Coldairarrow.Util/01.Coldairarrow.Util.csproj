@@ -31,16 +31,16 @@
     <PackageReference Include="Caching.CSRedis" Version="3.6.3" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
     <PackageReference Include="CSRedisCore" Version="3.6.3" />
-    <PackageReference Include="EFCore.Sharding" Version="3.1.4.21" />
-    <PackageReference Include="EFCore.Sharding.SqlServer" Version="3.1.4.21" />
+    <PackageReference Include="EFCore.Sharding" Version="3.1.4.24" />
+    <PackageReference Include="EFCore.Sharding.SqlServer" Version="3.1.4.24" />
     <PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.1.5" />
     <PackageReference Include="MySqlConnector" Version="0.66.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NodaTime" Version="2.4.8" />
@@ -54,7 +54,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.1.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.1.5" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

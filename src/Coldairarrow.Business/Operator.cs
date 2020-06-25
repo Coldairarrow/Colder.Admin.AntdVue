@@ -87,7 +87,7 @@ namespace Coldairarrow.Business
             {
                 using (var scop = _serviceProvider.CreateScope())
                 {
-                    var db = scop.ServiceProvider.GetService<IRepository>();
+                    var db = scop.ServiceProvider.GetService<IDbAccessor>();
                     await db.InsertAsync(log);
                 }
             }, TaskCreationOptions.LongRunning);
