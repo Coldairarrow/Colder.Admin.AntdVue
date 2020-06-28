@@ -12,8 +12,8 @@ namespace Coldairarrow.Business.%areaName%
 {
     public class %entityName%Business : BaseBusiness<%entityName%>, I%entityName%Business, ITransientDependency
     {
-        public %entityName%Business(IRepository repository)
-            : base(repository)
+        public %entityName%Business(IDbAccessor db)
+            : base(db)
         {
         }
 
