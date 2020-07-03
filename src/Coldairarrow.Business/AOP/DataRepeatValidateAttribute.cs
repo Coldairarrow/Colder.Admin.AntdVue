@@ -10,18 +10,20 @@ namespace Coldairarrow.Business
 {
     public class DataRepeatValidateAttribute : BaseAOPAttribute
     {
-        public DataRepeatValidateAttribute(string[] validateFields, string[] validateFieldNames, bool allData = false)
+        public DataRepeatValidateAttribute(string[] validateFields, string[] validateFieldNames, bool allData = false, bool matchOr = true)
         {
             if (validateFields.Length != validateFieldNames.Length)
                 throw new Exception("校验列与列描述信息不对应!");
 
             _allData = allData;
+            _matchOr = matchOr;
             for (int i = 0; i < validateFields.Length; i++)
             {
                 _validateFields.Add(validateFields[i], validateFieldNames[i]);
             }
         }
         private bool _allData { get; }
+        private bool _matchOr { get; }
         private Dictionary<string, string> _validateFields { get; } = new Dictionary<string, string>();
 
         public override async Task Befor(IAOPContext context)
@@ -46,7 +48,7 @@ namespace Coldairarrow.Business
                 q = context.InvocationTarget.GetType().GetMethod("GetIQueryable").Invoke(context.InvocationTarget, new object[] { }) as IQueryable;
             q = q.Where("Id != @0", data.GetPropertyValue("Id"));
             q = q.Where(
-                string.Join("||", whereList),
+                string.Join(_matchOr ? " || " : " && ", whereList),
                 properties.Select(x => data.GetPropertyValue(x.Key)).ToArray());
             var list = q.CastToList<object>();
             if (list.Count > 0)
@@ -56,7 +58,7 @@ namespace Coldairarrow.Business
                     .Select(x => x.Value)
                     .ToList();
 
-                throw new BusException($"{string.Join(",", repeatList)}已存在!");
+                throw new BusException($"{string.Join(_matchOr ? "或" : "与", repeatList)}已存在!");
             }
 
             await Task.CompletedTask;
