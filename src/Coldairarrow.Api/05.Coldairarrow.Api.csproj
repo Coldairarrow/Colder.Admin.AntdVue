@@ -38,7 +38,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.6.2" />
   </ItemGroup>
 
   <ItemGroup>

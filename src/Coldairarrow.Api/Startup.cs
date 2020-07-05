@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
-using System.IO;
+using NSwag;
+using System.Linq;
 
 namespace Coldairarrow.Api
 {
@@ -39,52 +38,26 @@ namespace Coldairarrow.Api
                 options.Filters.Add<ValidFilterAttribute>();
                 options.Filters.Add<GlobalExceptionFilter>();
             })
-            .AddControllersAsServices()
             .AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
-            services.AddHttpContextAccessor()
-            .AddLogging()
-            .AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                options.SerializerSettings.GetType().GetProperties().ForEach(aProperty =>
                 {
-                    Version = "v1.0.0",
-                    Title = "接口文档"
+                    var value = aProperty.GetValue(JsonExtention.DefaultJsonSetting);
+                    aProperty.SetValue(options.SerializerSettings, value);
                 });
-                // JWT认证                                                 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            });
+            services.AddHttpContextAccessor();
+
+            //swagger
+            services.AddOpenApiDocument(settings =>
+            {
+                settings.AddSecurity("身份认证Token", Enumerable.Empty<string>(), new OpenApiSecurityScheme()
                 {
                     Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    Type = SecuritySchemeType.Http,
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
                     Description = "Authorization:Bearer {your JWT token}<br/><b>授权地址:/Base_Manage/Home/SubmitLogin</b>",
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
-                });
-                // 为 Swagger JSON and UI设置xml文档注释路径
-                //获取应用程序所在目录（绝对，不受工作目录影响，建议采用此方法获取路径）
-                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-
-                var xmls = Directory.GetFiles(basePath, "*.xml");
-                xmls.ForEach(aXml =>
-                {
-                    c.IncludeXmlComments(aXml);
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Type = OpenApiSecuritySchemeType.Http
                 });
             });
         }
@@ -104,31 +77,13 @@ namespace Coldairarrow.Api
                 ServeUnknownFileTypes = true,
                 DefaultContentType = "application/octet-stream"
             })
-            //Swagger配置
-            .UseSwagger()
-            .UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0.0");
-                c.RoutePrefix = string.Empty;
-            })
             .UseRouting()
             .UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            ApiLog();
-        }
-
-        private void ApiLog()
-        {
-            //HttpHelper.HandleLog = log =>
-            //{
-            //    //接口日志
-            //    using (var lifescope = AutofacHelper.Container.BeginLifetimeScope())
-            //    {
-            //        lifescope.Resolve<IMyLogger>().Info(LogType.系统跟踪, log);
-            //    }
-            //};
+            app.UseOpenApi(); //添加swagger生成api文档（默认路由文档 /swagger/v1/swagger.json）
+            app.UseSwaggerUi3();//添加Swagger UI到请求管道中(默认路由: /swagger).
         }
     }
 }
