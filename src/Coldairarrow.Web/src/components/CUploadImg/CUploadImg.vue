@@ -7,6 +7,7 @@
       @preview="handlePreview"
       @change="handleChange"
       accept="image/*"
+      :multiple="this.multiple()"
     >
       <div v-if="fileList.length < maxCount">
         <a-icon type="plus" />
@@ -45,11 +46,16 @@ export default {
       previewVisible: false,
       previewImage: '',
       fileList: [],
-      obj: {}
+      internelValue: {}
     }
   },
   watch: {
     value(val) {
+      //内部触发事件不处理,仅回传数据
+      if (val == this.internelValue) {
+        return
+      }
+
       this.checkType(val)
 
       this.value = val
@@ -57,6 +63,9 @@ export default {
     }
   },
   methods: {
+    multiple() {
+      return this.maxCount > 1
+    },
     checkType(val) {
       if (this.maxCount == 1 && TypeHelper.isArray(val)) {
         throw 'maxCount=1时model不能为Array'
@@ -71,7 +80,6 @@ export default {
       }
       if (this.value) {
         let urls = []
-
         if (TypeHelper.isString(this.value)) {
           urls.push(this.value)
         } else if (TypeHelper.isArray(this.value)) {
@@ -92,12 +100,16 @@ export default {
       this.previewImage = file.url || file.thumbUrl
       this.previewVisible = true
     },
-    handleChange({ fileList }) {
+    handleChange({ file, fileList }) {
       this.fileList = fileList
-      var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
-      var newValue = this.maxCount == 1 ? urls[0] : urls
-      //双向绑定
-      this.$emit('input', newValue)
+
+      if (file.status == 'done' || file.status == 'removed') {
+        var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
+        var newValue = this.maxCount == 1 ? urls[0] : urls
+        this.internelValue = newValue
+        //双向绑定
+        this.$emit('input', newValue)
+      }
     }
   }
 }
