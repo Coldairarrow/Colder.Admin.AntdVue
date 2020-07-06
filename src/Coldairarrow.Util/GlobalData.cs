@@ -10,7 +10,7 @@ namespace Coldairarrow.Util
     {
         static GlobalData()
         {
-            string rootPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string rootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             AllFxAssemblies = Directory.GetFiles(rootPath, "*.dll")
                 .Where(x => new FileInfo(x).Name.Contains(FXASSEMBLY_PATTERN))
                 .Select(x => Assembly.LoadFrom(x))
