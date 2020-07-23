@@ -24,7 +24,7 @@ namespace Coldairarrow.Api
         {
             services.AddFxServices();
             services.AddAutoMapper();
-            services.UseEFCoreSharding(config =>
+            services.AddEFCoreSharding(config =>
             {
                 string conName = Configuration["ConnectionName"];
                 if (Configuration["LogicDelete"].ToBool())

@@ -291,9 +291,9 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <param name="whereExpre">筛选表达式</param>
         /// <param name="set">更改属性回调</param>
-        public int UpdateWhere(Expression<Func<T, bool>> whereExpre, Action<T> set)
+        public int Update(Expression<Func<T, bool>> whereExpre, Action<T> set)
         {
-            return Db.UpdateWhere(whereExpre, set);
+            return Db.Update(whereExpre, set);
         }
 
         /// <summary>
@@ -301,9 +301,9 @@ namespace Coldairarrow.Business
         /// </summary>
         /// <param name="whereExpre">筛选表达式</param>
         /// <param name="set">更改属性回调</param>
-        public async Task<int> UpdateWhereAsync(Expression<Func<T, bool>> whereExpre, Action<T> set)
+        public async Task<int> UpdateAsync(Expression<Func<T, bool>> whereExpre, Action<T> set)
         {
-            return await Db.UpdateWhereAsync(whereExpre, set);
+            return await Db.UpdateAsync(whereExpre, set);
         }
 
         /// <summary>
@@ -314,9 +314,9 @@ namespace Coldairarrow.Business
         /// <param name="where">筛选条件</param>
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
-        public int UpdateWhere_Sql(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
+        public int Update_Sql(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
         {
-            return Db.UpdateWhere_Sql(where, values);
+            return Db.Update_Sql(where, values);
         }
 
         /// <summary>
@@ -327,9 +327,9 @@ namespace Coldairarrow.Business
         /// <param name="where">筛选条件</param>
         /// <param name="values">字段值设置</param>
         /// <returns>影响条数</returns>
-        public async Task<int> UpdateWhere_SqlAsync(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
+        public async Task<int> Update_SqlAsync(Expression<Func<T, bool>> where, params (string field, UpdateType updateType, object value)[] values)
         {
-            return await Db.UpdateWhere_SqlAsync(where, values);
+            return await Db.Update_SqlAsync(where, values);
         }
 
         #endregion
