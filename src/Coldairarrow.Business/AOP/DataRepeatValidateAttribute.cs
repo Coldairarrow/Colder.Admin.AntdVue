@@ -42,7 +42,8 @@ namespace Coldairarrow.Business
             if (_allData)
             {
                 var repository = context.Proxy.GetPropertyValue("Service") as IDbAccessor;
-                q = repository.GetIQueryable(entityType);
+                var method = repository.GetMethod("GetIQueryable");
+                q = method.MakeGenericMethod(entityType).Invoke(repository, new object[] { }) as IQueryable;
             }
             else
                 q = context.InvocationTarget.GetType().GetMethod("GetIQueryable").Invoke(context.InvocationTarget, new object[] { }) as IQueryable;

@@ -362,7 +362,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public List<T> GetList()
         {
-            return Db.GetList<T>();
+            return Db.GetIQueryable<T>().ToList();
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace Coldairarrow.Business
         /// <returns></returns>
         public async Task<List<T>> GetListAsync()
         {
-            return await Db.GetListAsync<T>();
+            return await Db.GetIQueryable<T>().ToListAsync();
         }
 
         /// <summary>
