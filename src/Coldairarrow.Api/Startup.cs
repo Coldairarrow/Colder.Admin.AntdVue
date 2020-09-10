@@ -26,10 +26,9 @@ namespace Coldairarrow.Api
             services.AddAutoMapper();
             services.AddEFCoreSharding(config =>
             {
-                string conName = Configuration["ConnectionName"];
-                if (Configuration["LogicDelete"].ToBool())
-                    config.UseLogicDelete();
-                config.UseDatabase(Configuration.GetConnectionString(conName), Configuration["DatabaseType"].ToEnum<DatabaseType>());
+                var dbOptions = Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
+
+                config.UseDatabase(dbOptions.ConnectionString, dbOptions.DatabaseType);
                 config.SetEntityAssembly(GlobalData.FXASSEMBLY_PATTERN);
             });
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
