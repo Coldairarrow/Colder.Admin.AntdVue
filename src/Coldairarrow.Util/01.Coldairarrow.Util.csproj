@@ -6,26 +6,10 @@
     <AssemblyName>Coldairarrow.Util</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0</DefineConstants>
-    <Optimize>false</Optimize>
-    <CodeAnalysisRuleSet />
-    <DocumentationFile>bin\Release\Coldairarrow.Util.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <CodeAnalysisRuleSet />
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>bin\Debug\Coldairarrow.Util.xml</DocumentationFile>
-    <OutputPath>bin\Debug</OutputPath>
+    <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="lib\LinqKit.dll" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="Caching.CSRedis" Version="3.6.5" />

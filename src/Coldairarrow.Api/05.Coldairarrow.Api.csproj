@@ -9,32 +9,20 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <OutputPath>bin\Debug</OutputPath>
-    <DocumentationFile>bin\Debug\Coldairarrow.Api.xml</DocumentationFile>
+    <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <OutputPath>bin\Release</OutputPath>
-    <DocumentationFile>bin\Release\Coldairarrow.Api.xml</DocumentationFile>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Content Remove="wwwroot\Upload\_.txt" />
-  </ItemGroup>
+  <!--输出依赖包的xml-->
+  <Target Name="CopyReferenceFiles" BeforeTargets="Build">
+    <ItemGroup>
+      <ReferenceFiles Include="%(Reference.RelativeDir)%(Reference.Filename).xml;%(Reference.RelativeDir)%(Reference.Filename).pdb" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\Upload\_.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Upload\_.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <Message Text="Copying reference files to $(OutputPath)" Importance="High" />
+    <Copy SourceFiles="@(ReferenceFiles)" DestinationFolder="$(OutputPath)" Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')" />
+    <Message Text="Copying reference files to $(PublishDir)" Importance="High" />
+    <Copy SourceFiles="@(ReferenceFiles)" DestinationFolder="$(PublishDir)" Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
@@ -45,19 +33,6 @@
     <ProjectReference Include="..\Coldairarrow.Business\04.Coldairarrow.Business.csproj" />
     <ProjectReference Include="..\Coldairarrow.Entity\02.Coldairarrow.Entity.csproj" />
     <ProjectReference Include="..\Coldairarrow.Util\01.Coldairarrow.Util.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -77,8 +52,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/asmdef" /></VisualStudio></ProjectExtensions>
-
-
+  
 </Project>
