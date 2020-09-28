@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Util;
+using Colder.Logging.Serilog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -9,8 +10,8 @@ namespace Coldairarrow.Api
         public static void Main(string[] args)
         {
             Host.CreateDefaultBuilder(args)
+                .ConfigureLoggingDefaults()
                 .UseIdHelper()
-                .UseLog()
                 .UseCache()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

@@ -29,7 +29,6 @@ namespace Coldairarrow.Api
                 var dbOptions = Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
 
                 config.UseDatabase(dbOptions.ConnectionString, dbOptions.DatabaseType);
-                config.SetEntityAssembly(GlobalData.FXASSEMBLY_PATTERN);
             });
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
             services.AddControllers(options =>
@@ -50,6 +49,7 @@ namespace Coldairarrow.Api
             //swagger
             services.AddOpenApiDocument(settings =>
             {
+                settings.AllowReferencesWithProperties = true;
                 settings.AddSecurity("身份认证Token", Enumerable.Empty<string>(), new OpenApiSecurityScheme()
                 {
                     Scheme = "bearer",
