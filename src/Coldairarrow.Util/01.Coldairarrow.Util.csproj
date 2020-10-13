@@ -15,7 +15,7 @@
     <PackageReference Include="Caching.CSRedis" Version="3.6.5" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
     <PackageReference Include="CSRedisCore" Version="3.6.5" />
-    <PackageReference Include="EFCore.Sharding.SqlServer" Version="3.1.8.1" />
+    <PackageReference Include="EFCore.Sharding.SqlServer" Version="3.1.8.4" />
     <PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
