@@ -27,12 +27,6 @@
 
 <script>
 export default {
-  props: {
-    afterSubmit: {
-      type: Function,
-      default: null
-    }
-  },
   data() {
     return {
       layout: {
@@ -74,7 +68,6 @@ export default {
 
           if (resJson.Success) {
             this.$message.success('操作成功!')
-            this.afterSubmit()
             this.visible = false
           } else {
             this.$message.error(resJson.Msg)
