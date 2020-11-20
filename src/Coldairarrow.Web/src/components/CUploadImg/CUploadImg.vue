@@ -3,6 +3,7 @@
     <a-upload
       :action="`${$rootUrl}/Base_Manage/Upload/UploadFileByForm`"
       listType="picture-card"
+      :headers="headers"
       :fileList="fileList"
       @preview="handlePreview"
       @change="handleChange"
@@ -21,6 +22,7 @@
 </template>
 <script>
 import TypeHelper from '@/utils/helper/TypeHelper'
+import TokenCache from '@/utils/cache/TokenCache'
 const uuid = require('uuid')
 
 export default {
@@ -46,7 +48,8 @@ export default {
       previewVisible: false,
       previewImage: '',
       fileList: [],
-      internelValue: {}
+      internelValue: {},
+      headers: { Authorization: 'Bearer ' + TokenCache.getToken() },
     }
   },
   watch: {

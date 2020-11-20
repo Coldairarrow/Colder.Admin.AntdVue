@@ -8,7 +8,7 @@ using System.Linq;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     [Route("/Base_Manage/[controller]/[action]")]
-    public class UploadController : BaseController
+    public class UploadController : BaseApiController
     {
         readonly IConfiguration _configuration;
         public UploadController(IConfiguration configuration)
