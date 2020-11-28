@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Coldairarrow.Api</RootNamespace>
     <AssemblyName>Coldairarrow.Api</AssemblyName>
   </PropertyGroup>
@@ -25,9 +25,11 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Colder.Logging.Serilog" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.7.4" />
+    <PackageReference Include="Colder.Logging.Serilog" Version="1.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.9.4" />
+    <PackageReference Include="Caching.CSRedis" Version="3.6.50" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="0_install.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="0_uninstall.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="BuildCodeTemplate\Business.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -51,6 +59,12 @@
     </None>
     <None Update="BuildCodeTemplate\List.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="nssm.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   

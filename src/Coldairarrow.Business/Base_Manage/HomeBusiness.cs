@@ -4,7 +4,6 @@ using Coldairarrow.IBusiness;
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,15 +30,7 @@ namespace Coldairarrow.Business.Base_Manage
             if (theUser.IsNullOrEmpty())
                 throw new BusException("账号或密码不正确！");
 
-            //生成token,有效期一天
-            JWTPayload jWTPayload = new JWTPayload
-            {
-                UserId = theUser.Id,
-                Expire = DateTime.Now.AddDays(1)
-            };
-            string token = JWTHelper.GetToken(jWTPayload.ToJson(), JWTHelper.JWTSecret);
-
-            return token;
+            return theUser.Id;
         }
 
         public async Task ChangePwdAsync(ChangePwdInputDTO input)

@@ -1,7 +1,14 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.IBusiness;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
@@ -16,17 +23,20 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         readonly IPermissionBusiness _permissionBus;
         readonly IBase_UserBusiness _userBus;
         readonly IOperator _operator;
+        private readonly JwtOptions _jwtOptions;
         public HomeController(
             IHomeBusiness homeBus,
             IPermissionBusiness permissionBus,
             IBase_UserBusiness userBus,
-            IOperator @operator
+            IOperator @operator,
+            IOptions<JwtOptions> jwtOptions
             )
         {
             _homeBus = homeBus;
             _permissionBus = permissionBus;
             _userBus = userBus;
             _operator = @operator;
+            _jwtOptions = jwtOptions.Value;
         }
 
         /// <summary>
@@ -34,10 +44,25 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [NoCheckJWT]
+        [AllowAnonymous]
         public async Task<string> SubmitLogin(LoginInputDTO input)
         {
-            return await _homeBus.SubmitLoginAsync(input);
+            var userId = await _homeBus.SubmitLoginAsync(input);
+
+            var claims = new[]
+            {
+                new Claim("userId",userId)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var jwtToken = new JwtSecurityToken(
+                string.Empty,
+                string.Empty,
+                claims,
+                expires: DateTime.Now.AddHours(_jwtOptions.AccessExpireHours),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
         [HttpPost]

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Coldairarrow.Api
 {
     /// <summary>
-    /// Mvc对外接口基控制器
+    /// 对外接口基控制器
     /// </summary>
-    [CheckJWT]
+    [Authorize]
     [ApiController]
     [ApiLog]
     public class BaseApiController : BaseController

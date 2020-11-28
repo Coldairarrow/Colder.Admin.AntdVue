@@ -1,10 +1,10 @@
 ﻿using EFCore.Sharding;
-using MySql.Data.MySqlClient;
+using Microsoft.Data.SqlClient;
+using MySqlConnector;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 
 namespace Coldairarrow.Util
 {
@@ -26,7 +26,7 @@ namespace Coldairarrow.Util
             switch (dbType)
             {
                 case DatabaseType.SqlServer: factory = SqlClientFactory.Instance; break;
-                case DatabaseType.MySql: factory = MySqlClientFactory.Instance; break;
+                case DatabaseType.MySql: factory = MySqlConnectorFactory.Instance; break;
                 case DatabaseType.PostgreSql: factory = NpgsqlFactory.Instance; break;
                 case DatabaseType.Oracle: factory = OracleClientFactory.Instance; break;
 

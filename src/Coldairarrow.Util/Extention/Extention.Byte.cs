@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Coldairarrow.Util
@@ -154,44 +151,6 @@ namespace Coldairarrow.Util
             }
 
             return num;
-        }
-
-        /// <summary> 
-        /// 将一个序列化后的byte[]数组还原
-        /// </summary>
-        /// <param name="bytes"></param>         
-        /// <returns></returns>
-        public static object ToObject(this byte[] bytes)
-        {
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                IFormatter formatter = new BinaryFormatter();
-                return formatter.Deserialize(ms);
-            }
-        }
-
-        /// <summary>
-        /// 将一个序列化后的byte[]数组还原
-        /// </summary>
-        /// <typeparam name="T">返回类型</typeparam>
-        /// <param name="bytes">字节数组</param>
-        /// <returns></returns>
-        public static T ToObject<T>(this byte[] bytes)
-        {
-            return (T)ToObject(bytes);
-        }
-
-        /// <summary>
-        /// 将字节数组保存为文件
-        /// </summary>
-        /// <param name="bytes">字节数组</param>
-        /// <param name="path">文件完成路径</param>
-        public static void ToFile(this byte[] bytes, string path)
-        {
-            using (var fs = File.OpenWrite(path))
-            {
-                fs.Write(bytes, 0, bytes.Length);
-            }
         }
     }
 }

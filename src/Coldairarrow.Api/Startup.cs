@@ -2,7 +2,6 @@
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,21 +14,13 @@ namespace Coldairarrow.Api
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddFxServices();
-            services.AddAutoMapper();
-            services.AddEFCoreSharding(config =>
-            {
-                var dbOptions = Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
-
-                config.UseDatabase(dbOptions.ConnectionString, dbOptions.DatabaseType);
-            });
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
             services.AddControllers(options =>
             {
@@ -59,17 +50,21 @@ namespace Coldairarrow.Api
                     Type = OpenApiSecuritySchemeType.Http
                 });
             });
+
+            //jwt
+            services.AddJwt(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //允许body重用
-            app.Use(next => context =>
+            //跨域
+            app.UseCors(x =>
             {
-                context.Request.EnableBuffering();
-                return next(context);
+                x.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .DisallowCredentials();
             })
-            .UseMiddleware<CorsMiddleware>()//跨域
             .UseDeveloperExceptionPage()
             .UseStaticFiles(new StaticFileOptions
             {
@@ -77,6 +72,8 @@ namespace Coldairarrow.Api
                 DefaultContentType = "application/octet-stream"
             })
             .UseRouting()
+            .UseAuthentication()
+            .UseAuthorization()
             .UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

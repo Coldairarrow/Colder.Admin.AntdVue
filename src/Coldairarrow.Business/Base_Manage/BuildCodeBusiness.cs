@@ -1,7 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, ITransientDependency
     {
-        public BuildCodeBusiness(IDbAccessor db, IHostingEnvironment evn)
+        public BuildCodeBusiness(IDbAccessor db, IHostEnvironment evn)
             : base(db)
         {
             var projectPath = evn.ContentRootPath;
@@ -198,12 +198,12 @@ $@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name
         private Dictionary<string, DbTableInfo> _dbTableInfoDic { get; set; } = new Dictionary<string, DbTableInfo>();
         private void WriteCode(Dictionary<string, string> paramters, string templateFileName, string savePath)
         {
-            string tmpFileText = File.ReadAllText(Path.Combine(_solutionPath, "Coldairarrow.Api", "BuildCodeTemplate", templateFileName));
+            string content = File.ReadAllText(Path.Combine(_solutionPath, "Coldairarrow.Api", "BuildCodeTemplate", templateFileName));
             paramters.ForEach(aParamter =>
             {
-                tmpFileText = tmpFileText.Replace(aParamter.Key, aParamter.Value);
+                content = content.Replace(aParamter.Key, aParamter.Value);
             });
-            FileHelper.WriteTxt(tmpFileText, savePath, Encoding.UTF8, FileMode.Create);
+            File.WriteAllText(savePath, content, Encoding.UTF8);
         }
 
         #endregion
