@@ -15,6 +15,10 @@ namespace Coldairarrow.Util
         /// <returns></returns>
         public static async Task<string> ReadToStringAsync(this Stream stream, Encoding encoding = null)
         {
+            if (!stream.CanRead)
+            {
+                return string.Empty;
+            }
             if (encoding == null)
                 encoding = Encoding.UTF8;
 

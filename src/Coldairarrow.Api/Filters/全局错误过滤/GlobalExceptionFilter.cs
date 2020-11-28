@@ -26,7 +26,7 @@ namespace Coldairarrow.Api
             else
             {
                 _logger.LogError(ex, "");
-                context.Result = Error(ex.Message);
+                context.Result = Error("系统繁忙");
             }
 
             await Task.CompletedTask;

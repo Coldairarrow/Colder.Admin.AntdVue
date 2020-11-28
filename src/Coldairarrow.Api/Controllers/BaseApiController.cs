@@ -8,7 +8,6 @@ namespace Coldairarrow.Api
     /// </summary>
     [Authorize]
     [ApiController]
-    [ApiLog]
     public class BaseApiController : BaseController
     {
 

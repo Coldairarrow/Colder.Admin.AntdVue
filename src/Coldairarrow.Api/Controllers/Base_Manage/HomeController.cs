@@ -64,7 +64,6 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
-
         [HttpPost]
         public async Task ChangePwd(ChangePwdInputDTO input)
         {

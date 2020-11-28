@@ -59,27 +59,30 @@ namespace Coldairarrow.Api
         {
             //跨域
             app.UseCors(x =>
-            {
-                x.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .DisallowCredentials();
-            })
-            .UseDeveloperExceptionPage()
-            .UseStaticFiles(new StaticFileOptions
-            {
-                ServeUnknownFileTypes = true,
-                DefaultContentType = "application/octet-stream"
-            })
-            .UseRouting()
-            .UseAuthentication()
-            .UseAuthorization()
-            .UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-            app.UseOpenApi(); //添加swagger生成api文档（默认路由文档 /swagger/v1/swagger.json）
-            app.UseSwaggerUi3();//添加Swagger UI到请求管道中(默认路由: /swagger).
+                {
+                    x.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .DisallowCredentials();
+                })
+                .UseMiddleware<RequestBodyMiddleware>()
+                .UseMiddleware<RequestLogMiddleware>()
+                .UseDeveloperExceptionPage()
+                .UseStaticFiles(new StaticFileOptions
+                {
+                    ServeUnknownFileTypes = true,
+                    DefaultContentType = "application/octet-stream"
+                })
+                .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                })
+                .UseOpenApi()//添加swagger生成api文档（默认路由文档 /swagger/v1/swagger.json）
+                .UseSwaggerUi3()//添加Swagger UI到请求管道中(默认路由: /swagger).
+                ;
         }
     }
 }

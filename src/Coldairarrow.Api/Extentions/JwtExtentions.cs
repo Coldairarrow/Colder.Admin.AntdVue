@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace Coldairarrow.Api
@@ -24,6 +25,7 @@ namespace Coldairarrow.Api
                 //Token Validation Parameters
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ClockSkew = TimeSpan.Zero,//到时间立即过期
                     ValidateIssuerSigningKey = true,
                     //获取或设置要使用的Microsoft.IdentityModel.Tokens.SecurityKey用于签名验证。
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.
