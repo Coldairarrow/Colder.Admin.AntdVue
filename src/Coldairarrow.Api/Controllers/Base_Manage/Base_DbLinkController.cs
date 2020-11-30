@@ -2,16 +2,18 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// 应用密钥
+    /// 数据库连接
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("数据库连接")]
     public class Base_DbLinkController : BaseApiController
     {
         #region DI

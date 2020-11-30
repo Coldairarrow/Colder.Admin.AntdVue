@@ -2,6 +2,9 @@ import axios from 'axios'
 import TokenCache from '@/utils/cache/TokenCache'
 import defaultSettings from '@/config/defaultSettings'
 import ProcessHelper from '@/utils/helper/ProcessHelper'
+import moment from 'moment'
+var uuid = require('node-uuid')
+var md5 = require("md5")
 
 const rootUrl = () => {
     if (ProcessHelper.isProduction() || ProcessHelper.isPreview()) {
@@ -25,6 +28,22 @@ Axios.interceptors.request.use(config => {
     //     Object.keys(config.data).forEach(key => formData.append(key, config.data[key]))
     //     config.data = formData
     // }
+
+    //CheckSign签名检验
+    let appId = defaultSettings.appId
+    let appSecret = defaultSettings.appSecret
+    let guid = uuid.v4()
+    let time = moment().format("YYYY-MM-DD HH:mm:ss")
+    let body = ''
+    if (config.data) {
+        body = JSON.stringify(config.data)
+    }
+    let sign = md5(appId + time + guid + body + appSecret)
+
+    config.headers.appId = appId;
+    config.headers.time = time;
+    config.headers.guid = guid;
+    config.headers.sign = sign;
 
     //携带token
     if (TokenCache.getToken()) {

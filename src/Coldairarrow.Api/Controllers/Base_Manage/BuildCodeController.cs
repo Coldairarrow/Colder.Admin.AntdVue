@@ -2,11 +2,13 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("代码生成")]
     public class BuildCodeController : BaseApiController
     {
         #region DI

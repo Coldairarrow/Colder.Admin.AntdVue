@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NSwag.Annotations;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Linq;
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("上传")]
     public class UploadController : BaseApiController
     {
         readonly IConfiguration _configuration;

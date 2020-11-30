@@ -35,5 +35,7 @@ export default {
   publishRootUrl: process.env.VUE_APP_PublishRootUrl,//发布后接口根地址
   localRootUrl: process.env.VUE_APP_LocalRootUrl,//本地调试接口根地址
   apiTimeout: parseInt(process.env.VUE_APP_ApiTimeout),//接口超时时间ms
-  devPort: parseInt(process.env.VUE_APP_DevPort) //本地开发启动端口
+  devPort: parseInt(process.env.VUE_APP_DevPort), //本地开发启动端口
+  appId: process.env.VUE_APP_AppId,
+  appSecret: process.env.VUE_APP_AppSecret
 }

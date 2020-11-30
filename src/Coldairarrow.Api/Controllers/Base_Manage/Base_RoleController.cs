@@ -1,16 +1,18 @@
 ﻿using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     /// <summary>
-    /// 应用密钥
+    /// 系统角色
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("系统角色")]
     public class Base_RoleController : BaseApiController
     {
         #region DI

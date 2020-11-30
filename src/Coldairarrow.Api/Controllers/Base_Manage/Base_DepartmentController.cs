@@ -2,12 +2,17 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
+    /// <summary>
+    /// 部门
+    /// </summary>
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("部门")]
     public class Base_DepartmentController : BaseApiController
     {
         #region DI

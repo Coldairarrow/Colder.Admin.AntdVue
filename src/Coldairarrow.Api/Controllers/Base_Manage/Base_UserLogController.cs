@@ -2,12 +2,14 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("审计日志")]
     public class Base_UserLogController : BaseApiController
     {
         #region DI

@@ -42,8 +42,7 @@ sign=MD5(xxx2017-01-01 23:00:00d0595245-60db-495d-9c0e-fea931b8d69a{"aaa":"aaa"}
 3: 在header中携带上述的appId、time、guid、sign即可
 
 详细使用Demo请看:
-HttpHelper.SafeSignRequest
-/Demo/ApiSignDemo
+src\Coldairarrow.Web\src\utils\plugin\axios-plugin.js
     */
     /// <summary>
     /// 校验签名、十分严格

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,6 +18,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     /// 首页控制器
     /// </summary>
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("主页")]
     public class HomeController : BaseApiController
     {
         readonly IHomeBusiness _homeBus;

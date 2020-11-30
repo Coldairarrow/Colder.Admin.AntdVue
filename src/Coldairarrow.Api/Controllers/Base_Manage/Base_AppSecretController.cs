@@ -2,6 +2,7 @@
 using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
     /// </summary>
     /// <seealso cref="Coldairarrow.Api.BaseApiController" />
     [Route("/Base_Manage/[controller]/[action]")]
+    [OpenApiTag("应用密钥")]
     public class Base_AppSecretController : BaseApiController
     {
         #region DI
