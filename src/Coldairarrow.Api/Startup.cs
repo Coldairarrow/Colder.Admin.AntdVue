@@ -78,7 +78,7 @@ namespace Coldairarrow.Api
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllers();
+                    endpoints.MapControllers().RequireAuthorization();
                 })
                 .UseOpenApi()//添加swagger生成api文档（默认路由文档 /swagger/v1/swagger.json）
                 .UseSwaggerUi3()//添加Swagger UI到请求管道中(默认路由: /swagger).
