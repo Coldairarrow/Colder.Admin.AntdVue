@@ -94,12 +94,16 @@ export default {
 
       window.open(url, 'tab')
     },
-    handleChange({ fileList }) {
+    handleChange({ file, fileList }) {
       this.fileList = fileList
-      var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
-      var newValue = this.maxCount == 1 ? urls[0] : urls
-      //双向绑定
-      this.$emit('input', newValue)
+
+      if (file.status == 'done' || file.status == 'removed') {
+        var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
+        var newValue = this.maxCount == 1 ? urls[0] : urls
+        this.internelValue = newValue
+        //双向绑定
+        this.$emit('input', newValue)
+      }
     },
     getFileName(url) {
       let reg = /^.*\/(.*?)$/

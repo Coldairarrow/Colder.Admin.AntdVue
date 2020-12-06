@@ -3,7 +3,7 @@
     <a-form :form="form">
       <a-form-item label="文件上传" :labelCol="labelCol" :wrapperCol="wrapperCol">
         <!--v-model为图片连接地址(可传单个或数组),maxCount为最大上传数:默认为1-->
-        <c-upload-file v-model="entity.File" :maxCount="1"></c-upload-file>
+        <c-upload-file v-model="entity.File" :maxCount="5"></c-upload-file>
       </a-form-item>
       <a-form-item label="获取图片链接" :labelCol="labelCol" :wrapperCol="wrapperCol">
         <a-button @click="setFile()">设置文件链接</a-button>
@@ -18,14 +18,14 @@ import CUploadFile from '@/components/CUploadFile/CUploadFile'
 
 export default {
   components: {
-    CUploadFile
+    CUploadFile,
   },
   data() {
     return {
       form: this.$form.createForm(this),
       labelCol: { xs: { span: 24 }, sm: { span: 7 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 13 } },
-      entity: { File: require('@/assets/logo.png') }
+      entity: { File: [require('@/assets/logo.png')] },
     }
   },
   methods: {
@@ -34,7 +34,7 @@ export default {
     },
     setFile() {
       this.entity = { File: require('@/assets/logo.png') }
-    }
-  }
+    },
+  },
 }
 </script>
