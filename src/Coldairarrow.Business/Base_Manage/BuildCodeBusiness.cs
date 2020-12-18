@@ -203,6 +203,11 @@ $@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name
             {
                 content = content.Replace(aParamter.Key, aParamter.Value);
             });
+            var dir = Path.GetDirectoryName(savePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             File.WriteAllText(savePath, content, Encoding.UTF8);
         }
 
