@@ -289,6 +289,12 @@ namespace {nameSpace}
 {properties}
     }}
 }}";
+            var dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             File.WriteAllText(filePath, fileStr, Encoding.UTF8);
         }
 
