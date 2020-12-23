@@ -13,10 +13,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
-    <PackageReference Include="EFCore.Sharding.SqlServer" Version="5.0.0.1" />
+    <PackageReference Include="EFCore.Sharding.SqlServer" Version="5.0.0.4" />
     <PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />
-    <PackageReference Include="MySqlConnector" Version="1.2.0" />
-    <PackageReference Include="Npgsql" Version="5.0.0" />
+    <PackageReference Include="MySqlConnector" Version="1.2.1" />
+    <PackageReference Include="Npgsql" Version="5.0.1.1" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.100" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="Quartz" Version="3.2.3" />
