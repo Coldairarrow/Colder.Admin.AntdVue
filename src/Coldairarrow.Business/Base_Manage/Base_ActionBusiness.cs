@@ -103,6 +103,67 @@ namespace Coldairarrow.Business.Base_Manage
             await DeleteAsync(x => ids.Contains(x.ParentId));
         }
 
+        /// <summary>
+        /// 生成菜单
+        /// </summary>
+        /// <param name="desc">表描述</param>
+        /// <param name="areaName">区域名称</param>
+        /// <param name="entityName">实体名称</param>
+        /// <returns></returns>
+        public async Task AddBuildMenu(string desc, string areaName, string entityName)
+        {
+            List<Base_Action> permissionList = new List<Base_Action>();
+            // 生成页面的
+            Base_Action dTOTable = new Base_Action()
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                Name = desc, //拿描述作为菜单
+                NeedAction = true,
+                Type = Entity.ActionType.页面,
+                ParentId = "1178957405992521728",
+                Url = "/" + areaName + "/" + entityName + "/List"
+            };
+            permissionList.Add(dTOTable);
+            // 增
+            Base_Action dTOPermissionAdd = new Base_Action()
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                Name = "增",
+                NeedAction = true,
+                Type = Entity.ActionType.权限,
+                ParentId = dTOTable.Id,
+                Value = entityName + ".Add"
+            };
+            permissionList.Add(dTOPermissionAdd);
+            // 改
+            Base_Action dTOPermissionEdit = new Base_Action()
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                Name = "改",
+                NeedAction = true,
+                Type = Entity.ActionType.权限,
+                ParentId = dTOTable.Id,
+                Value = entityName + ".Edit"
+            };
+            permissionList.Add(dTOPermissionEdit);
+            // 删
+            Base_Action dTOPermissionDelete = new Base_Action()
+            {
+                Id = IdHelper.GetId(),
+                CreateTime = DateTime.Now,
+                Name = "删",
+                NeedAction = true,
+                Type = Entity.ActionType.权限,
+                ParentId = dTOTable.Id,
+                Value = entityName + ".Delete"
+            };
+            permissionList.Add(dTOPermissionDelete);
+            await InsertAsync(permissionList);
+        }
+
         public async Task SavePermissionAsync(string parentId, List<Base_Action> permissionList)
         {
             permissionList.ForEach(aData =>

@@ -11,11 +11,13 @@ namespace Coldairarrow.Business.Base_Manage
 {
     public class BuildCodeBusiness : BaseBusiness<Base_DbLink>, IBuildCodeBusiness, ITransientDependency
     {
-        public BuildCodeBusiness(IDbAccessor db, IHostEnvironment evn)
+        IBase_ActionBusiness _actionBus { get; }
+        public BuildCodeBusiness(IDbAccessor db, IHostEnvironment evn, IBase_ActionBusiness actionBus)
             : base(db)
         {
             var projectPath = evn.ContentRootPath;
             _solutionPath = Directory.GetParent(projectPath).ToString();
+            _actionBus = actionBus;
         }
 
         private static readonly List<string> ignoreProperties =
@@ -161,6 +163,11 @@ $@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name
                             entityName,
                             "EditForm.vue");
                         WriteCode(renderParamters, tmpFileName, savePath);
+                    }
+                    //菜单
+                    if (buildTypes.Contains(4))
+                    {
+                        _actionBus.AddBuildMenu(_dbTableInfoDic[entityName].Description, areaName, entityName);
                     }
                 });
             });

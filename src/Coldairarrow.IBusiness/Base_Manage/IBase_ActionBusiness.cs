@@ -16,6 +16,14 @@ namespace Coldairarrow.Business.Base_Manage
         Task AddDataAsync(ActionEditInputDTO input);
         Task UpdateDataAsync(ActionEditInputDTO input);
         Task DeleteDataAsync(List<string> ids);
+        /// <summary>
+        /// 生成菜单
+        /// </summary>
+        /// <param name="desc">表描述</param>
+        /// <param name="areaName">区域名称</param>
+        /// <param name="entityName">实体名称</param>
+        /// <returns></returns>
+        Task AddBuildMenu(string desc, string areaName, string entityName);
     }
 
     [Map(typeof(Base_Action))]

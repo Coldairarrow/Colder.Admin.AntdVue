@@ -15,6 +15,7 @@
             <a-checkbox value="1" name="buildTypes">业务层</a-checkbox>
             <a-checkbox value="2" name="buildTypes">接口层</a-checkbox>
             <a-checkbox value="3" name="buildTypes">页面层</a-checkbox>
+			<a-checkbox value="4" name="buildTypes">菜单</a-checkbox>
           </a-checkbox-group>
         </a-form-model-item>
         <a-form-model-item label="生成区域" prop="areaName">
@@ -47,7 +48,7 @@ export default {
   methods: {
     init() {
       this.visible = true
-      this.entity = { buildTypes: ['0', '1', '2', '3'] }
+      this.entity = { buildTypes: ['0', '1', '2', '3', '4'] }
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
       })
