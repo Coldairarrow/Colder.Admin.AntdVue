@@ -164,12 +164,12 @@ $@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name
                             "EditForm.vue");
                         WriteCode(renderParamters, tmpFileName, savePath);
                     }
-                    //菜单
-                    if (buildTypes.Contains(4))
-                    {
-                        _actionBus.AddBuildMenu(_dbTableInfoDic[entityName].Description, areaName, entityName);
-                    }
                 });
+                //菜单
+                if (buildTypes.Contains(4))
+                {
+                    _actionBus.AddBuildMenu(_dbTableInfoDic[entityName].Description, areaName, entityName);
+                }
             });
         }
 
