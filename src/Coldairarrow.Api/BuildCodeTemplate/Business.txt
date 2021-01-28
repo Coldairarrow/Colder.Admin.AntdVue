@@ -28,8 +28,13 @@ namespace Coldairarrow.Business.%areaName%
             //筛选
             if (!search.Condition.IsNullOrEmpty() && !search.Keyword.IsNullOrEmpty())
             {
-                var newWhere = DynamicExpressionParser.ParseLambda<%entityName%, bool>(
-                    ParsingConfig.Default, false, $@"{search.Condition}.Contains(@0)", search.Keyword);
+                System.Reflection.PropertyInfo proInfo = typeof(%entityName%).GetProperty(search.Condition);
+                string condition = $@"{search.Condition}.Contains(@0)";
+                if (proInfo.PropertyType == typeof(int) || proInfo.PropertyType == typeof(double) || proInfo.PropertyType == typeof(long))
+                {
+                    condition = $@"{search.Condition} == (@0)";
+                }
+                var newWhere = DynamicExpressionParser.ParseLambda<%entityName%, bool>(ParsingConfig.Default, false, condition, search.Keyword);
                 where = where.And(newWhere);
             }
 
