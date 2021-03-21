@@ -25,11 +25,11 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Colder.Logging.Serilog" Version="1.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.1" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.9.4" />
-    <PackageReference Include="Caching.CSRedis" Version="3.6.50" />
+    <PackageReference Include="Colder.Logging.Serilog" Version="1.2.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.10.8" />
+    <PackageReference Include="Caching.CSRedis" Version="3.6.60" />
   </ItemGroup>
 
   <ItemGroup>

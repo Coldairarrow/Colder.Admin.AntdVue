@@ -4,6 +4,7 @@ using EFCore.Sharding;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace Coldairarrow.Api
 {
@@ -21,6 +22,8 @@ namespace Coldairarrow.Api
                     services.AddAutoMapper();
                     services.AddEFCoreSharding(config =>
                     {
+                        config.SetEntityAssemblies(Assembly.Load("Coldairarrow.Entity"));
+
                         var dbOptions = hostContext.Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
 
                         config.UseDatabase(dbOptions.ConnectionString, dbOptions.DatabaseType);
