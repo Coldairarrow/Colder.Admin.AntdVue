@@ -29,7 +29,7 @@ namespace Coldairarrow.Business.Base_Manage
             //不需要权限的菜单
             where = where.Or(x => x.NeedAction == false);
 
-            if (userId == GlobalData.ADMINID || theUser.RoleType.HasFlag(RoleTypes.超级管理员))
+            if (userId == GlobalAssemblies.ADMINID || theUser.RoleType.HasFlag(RoleTypes.超级管理员))
                 where = where.Or(x => true);
             else
             {

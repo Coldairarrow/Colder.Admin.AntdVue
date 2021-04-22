@@ -123,7 +123,7 @@ namespace Coldairarrow.Business.Base_Manage
         [Transactional]
         public async Task UpdateDataAsync(UserEditInputDTO input)
         {
-            if (input.Id == GlobalData.ADMINID && _operator?.UserId != input.Id)
+            if (input.Id == GlobalAssemblies.ADMINID && _operator?.UserId != input.Id)
                 throw new BusException("禁止更改超级管理员！");
 
             await UpdateAsync(_mapper.Map<Base_User>(input));
@@ -135,7 +135,7 @@ namespace Coldairarrow.Business.Base_Manage
         [Transactional]
         public async Task DeleteDataAsync(List<string> ids)
         {
-            if (ids.Contains(GlobalData.ADMINID))
+            if (ids.Contains(GlobalAssemblies.ADMINID))
                 throw new BusException("超级管理员是内置账号,禁止删除！");
 
             await DeleteAsync(ids);

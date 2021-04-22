@@ -67,7 +67,7 @@ namespace Coldairarrow.Api
         public bool IsAdmin()
         {
             var role = Property.RoleType;
-            if (UserId == GlobalData.ADMINID || role.HasFlag(RoleTypes.超级管理员))
+            if (UserId == GlobalAssemblies.ADMINID || role.HasFlag(RoleTypes.超级管理员))
                 return true;
             else
                 return false;

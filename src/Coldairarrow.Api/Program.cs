@@ -3,8 +3,8 @@ using Colder.Logging.Serilog;
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 namespace Coldairarrow.Api
 {
@@ -22,7 +22,10 @@ namespace Coldairarrow.Api
                     services.AddAutoMapper();
                     services.AddEFCoreSharding(config =>
                     {
-                        config.SetEntityAssemblies(Assembly.Load("Coldairarrow.Entity"));
+                        services.Configure<EFCoreShardingOptions>(shardingOption =>
+                        {
+                            shardingOption.EntityAssemblies = GlobalAssemblies.AllAssemblies;
+                        });
 
                         var dbOptions = hostContext.Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
 

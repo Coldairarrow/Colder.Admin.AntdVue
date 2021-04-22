@@ -60,7 +60,7 @@ namespace Coldairarrow.Util
         {
             _distributedTransaction = DistributedTransactionFactory.GetDistributedTransaction();
 
-            var allRepositoryInterfaces = GlobalData.AllFxTypes.Where(x =>
+            var allRepositoryInterfaces = GlobalAssemblies.AllTypes.Where(x =>
                     typeof(IDbAccessor).IsAssignableFrom(x)
                     && x.IsInterface
                     && x != typeof(IDbAccessor)

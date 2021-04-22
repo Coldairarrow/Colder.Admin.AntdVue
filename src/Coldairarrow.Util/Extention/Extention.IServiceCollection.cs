@@ -24,7 +24,7 @@ namespace Coldairarrow.Util
         {
             List<(Type from, Type[] targets)> maps = new List<(Type from, Type[] targets)>();
 
-            maps.AddRange(GlobalData.AllFxTypes.Where(x => x.GetCustomAttribute<MapAttribute>() != null)
+            maps.AddRange(GlobalAssemblies.AllTypes.Where(x => x.GetCustomAttribute<MapAttribute>() != null)
                 .Select(x => (x, x.GetCustomAttribute<MapAttribute>().TargetTypes)));
 
             var configuration = new MapperConfiguration(cfg =>
@@ -37,7 +37,7 @@ namespace Coldairarrow.Util
                     });
                 });
 
-                cfg.AddMaps(GlobalData.AllFxAssemblies);
+                cfg.AddMaps(GlobalAssemblies.AllAssemblies);
 
                 //自定义映射
                 configure?.Invoke(cfg);
@@ -66,7 +66,7 @@ namespace Coldairarrow.Util
                 { typeof(ISingletonDependency),ServiceLifetime.Singleton}
             };
 
-            GlobalData.AllFxTypes.ForEach(aType =>
+            GlobalAssemblies.AllTypes.ForEach(aType =>
             {
                 lifeTimeMap.ToList().ForEach(aMap =>
                 {
@@ -76,7 +76,7 @@ namespace Coldairarrow.Util
                         //注入实现
                         services.Add(new ServiceDescriptor(aType, aType, aMap.Value));
 
-                        var interfaces = GlobalData.AllFxTypes.Where(x => x.IsAssignableFrom(aType) && x.IsInterface && x != theDependency).ToList();
+                        var interfaces = GlobalAssemblies.AllTypes.Where(x => x.IsAssignableFrom(aType) && x.IsInterface && x != theDependency).ToList();
                         //有接口则注入接口
                         if (interfaces.Count > 0)
                         {
