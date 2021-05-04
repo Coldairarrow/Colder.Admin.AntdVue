@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
-    <PackageReference Include="EFCore.Sharding.SqlServer" Version="5.0.8" />
+    <PackageReference Include="EFCore.Sharding.SqlServer" Version="5.0.10" />
     <PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />
     <PackageReference Include="MySqlConnector" Version="1.3.8" />
     <PackageReference Include="Npgsql" Version="5.0.4" />

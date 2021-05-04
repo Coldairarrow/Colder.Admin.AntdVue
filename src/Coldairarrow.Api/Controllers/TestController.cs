@@ -1,6 +1,7 @@
 ﻿using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Util;
 using EFCore.Sharding;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Coldairarrow.Api.Controllers
 {
     [Route("/[controller]/[action]")]
+    [AllowAnonymous]
     public class TestController : BaseController
     {
         readonly IDbAccessor _repository;
