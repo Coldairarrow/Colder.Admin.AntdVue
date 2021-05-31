@@ -1,10 +1,10 @@
 ﻿using Coldairarrow.Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NSwag.Annotations;
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Coldairarrow.Api.Controllers.Base_Manage
 {
@@ -19,9 +19,10 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         }
 
         [HttpPost]
-        public IActionResult UploadFileByForm()
+        //[AllowAnonymous]
+        public IActionResult UploadFileByForm(IFormFile formFile)
         {
-            var file = Request.Form.Files.FirstOrDefault();
+            var file = formFile;
             if (file == null)
                 return JsonContent(new { status = "error" }.ToJson());
 

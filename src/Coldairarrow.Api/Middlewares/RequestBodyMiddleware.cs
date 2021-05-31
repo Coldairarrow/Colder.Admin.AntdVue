@@ -17,9 +17,12 @@ namespace Coldairarrow.Api
 
         public async Task Invoke(HttpContext context)
         {
-            context.Request.EnableBuffering();
-            string body = await context.Request.Body?.ReadToStringAsync(Encoding.UTF8);
-            context.RequestServices.GetService<RequestBody>().Body = body;
+            if ((context.Request.ContentType ?? string.Empty).Contains("application/json"))
+            {
+                context.Request.EnableBuffering();
+                string body = await context.Request.Body?.ReadToStringAsync(Encoding.UTF8);
+                context.RequestServices.GetService<RequestBody>().Body = body;
+            }
 
             await _next(context);
         }
