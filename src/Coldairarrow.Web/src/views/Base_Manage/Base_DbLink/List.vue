@@ -137,7 +137,7 @@ export default {
       })
     },
     submitDelete(ids, resolve, reject) {
-      this.$http.post('/Base_Manage/Base_DbLink/DeleteData', { ids: JSON.stringify(ids) }).then(resJson => {
+      this.$http.post('/Base_Manage/Base_DbLink/DeleteData', ids).then(resJson => {
         resolve()
 
         if (resJson.Success) {
