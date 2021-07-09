@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Coldairarrow.Api.Controllers.%areaName%
 {
     [Route("/%areaName%/[controller]/[action]")]
+    [OpenApiTag("%tableDesc%")]
     public class %entityName%Controller : BaseApiController
     {
         #region DI
