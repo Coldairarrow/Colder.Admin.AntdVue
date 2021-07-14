@@ -18,35 +18,35 @@ export default {
   props: {
     value: null,
     url: {
-      //远程获取选项接口地址,接口返回数据结构:[{value:'',text:''}]
+      // 远程获取选项接口地址,接口返回数据结构:[{value:'',text:''}]
       type: String,
-      default: null,
+      default: null
     },
     allowClear: {
-      //允许清空
+      // 允许清空
       type: Boolean,
-      default: true,
+      default: true
     },
     searchMode: {
-      //搜索模式,'':关闭搜索,'local':本地搜索,'server':服务端搜索
+      // 搜索模式,'':关闭搜索,'local':本地搜索,'server':服务端搜索
       type: String,
-      default: '',
+      default: ''
     },
     options: {
-      //下拉项配置,若无url则必选,结构:[{value:'',text:''}]
+      // 下拉项配置,若无url则必选,结构:[{value:'',text:''}]
       type: Array,
-      default: () => [],
+      default: () => []
     },
     multiple: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  mounted() {
+  mounted () {
     this.mode = this.multiple ? 'multiple' : 'default'
     if (this.searchMode) {
       this.showSearch = true
-      if (this.searchMode == 'local') {
+      if (this.searchMode === 'local') {
         this.filterOption = (input, option) => {
           return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
@@ -60,25 +60,25 @@ export default {
     this.thisValue = this.value
     this.reload()
   },
-  data() {
+  data () {
     return {
-      filterOption: false, //本地搜索,非远程搜索
+      filterOption: false, // 本地搜索,非远程搜索
       thisOptions: [],
       mode: '',
       showSearch: false,
       isInnerchange: false,
       thisValue: '',
       timeout: null,
-      qGlobal: '',
+      qGlobal: ''
     }
   },
   watch: {
-    value(value) {
+    value (value) {
       this.thisValue = value
-    },
+    }
   },
   methods: {
-    reload(q) {
+    reload (q) {
       if (!this.url) {
         return
       }
@@ -92,21 +92,21 @@ export default {
         this.$http
           .post(this.url, {
             q: q || '',
-            selectedValues: selected || [],
+            selectedValues: selected || []
           })
           .then((resJson) => {
-            if (resJson.Success && q == this.qGlobal) {
+            if (resJson.Success && q === this.qGlobal) {
               this.thisOptions = resJson.Data
             }
           })
       }, 300)
     },
-    handleSearch(value) {
+    handleSearch (value) {
       this.reload(value)
     },
-    handleChange(value) {
+    handleChange (value) {
       this.$emit('input', value)
-    },
-  },
+    }
+  }
 }
 </script>

@@ -4,6 +4,7 @@ using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NSwag.Annotations;
 
 namespace Coldairarrow.Api.Controllers.%areaName%
 {
