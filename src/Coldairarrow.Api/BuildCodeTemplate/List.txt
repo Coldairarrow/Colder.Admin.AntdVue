@@ -65,7 +65,7 @@ import EditForm from './EditForm'
 
 const columns = [
 %listColumns%
-  { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
+  { title: '操作', dataIndex: 'action', align: 'center', scopedSlots: { customRender: 'action' } }
 ]
 
 export default {
