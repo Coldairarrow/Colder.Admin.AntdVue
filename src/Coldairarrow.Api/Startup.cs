@@ -2,6 +2,7 @@
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +65,10 @@ namespace Coldairarrow.Api
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .DisallowCredentials();
+                })
+                .UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 })
                 .UseMiddleware<RequestBodyMiddleware>()
                 .UseMiddleware<RequestLogMiddleware>()
