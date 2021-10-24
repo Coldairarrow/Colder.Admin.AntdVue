@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 <template>
   <div class="clearfix">
     <a-upload
@@ -9,6 +10,7 @@
       @change="handleChange"
       accept="image/*"
       :multiple="this.multiple()"
+      :before-upload="beforeUpload"
     >
       <div v-if="fileList.length < maxCount">
         <a-icon type="plus" />
@@ -23,94 +25,140 @@
 <script>
 import TypeHelper from '@/utils/helper/TypeHelper'
 import TokenCache from '@/utils/cache/TokenCache'
+
+import defaultSettings from '@/config/defaultSettings'
 const uuid = require('uuid')
 
 export default {
   props: {
-    value: '', //字符串或字符串数组
     maxCount: {
       type: Number,
       default: 1
-    }
+    },
+    value: undefined // 字符串或字符串数组
   },
-  mounted() {
-    if (this.maxCount == 1) {
-      this.value = this.value || ''
-    } else {
-      this.value = this.value || []
-    }
+  mounted () {
+    // cbc:修改前端错误
+    // if (this.maxCount == 1) {
+    //   this.value = this.value || ''
+    // } else {
+    //   this.value = this.value || []
+    // }
+
+    // console.log('  mounted  this.value:', this.value)
+
+    this.value = this.value
+
     this.checkType(this.value)
 
     this.refresh()
   },
-  data() {
+  data () {
     return {
       previewVisible: false,
       previewImage: '',
       fileList: [],
       internelValue: {},
-      headers: { Authorization: 'Bearer ' + TokenCache.getToken() },
+      headers: { Authorization: 'Bearer ' + TokenCache.getToken() }
     }
   },
   watch: {
-    value(val) {
-      //内部触发事件不处理,仅回传数据
+    value (val) {
+      // console.log('  watch  val:', val)
+
+      if (!this.value) {
+        this.previewImage = ''
+        this.fileList = []
+        this.previewVisible = false
+        this.internelValue = {}
+      }
+
+      // 内部触发事件不处理,仅回传数据
+      // eslint-disable-next-line eqeqeq
       if (val == this.internelValue) {
         return
       }
 
-      this.checkType(val)
+      // console.log('  watch  this.value:', this.value)
 
+      this.checkType(val)
       this.value = val
       this.refresh()
     }
   },
   methods: {
-    multiple() {
+    multiple () {
       return this.maxCount > 1
     },
-    checkType(val) {
+    checkType (val) {
+      // eslint-disable-next-line eqeqeq
       if (this.maxCount == 1 && TypeHelper.isArray(val)) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount=1时model不能为Array'
       }
       if (this.maxCount > 1 && !TypeHelper.isArray(val)) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount>1时model必须为Array<String>'
       }
     },
-    refresh() {
+
+    beforeUpload (file) {
+      // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      // if (!isJpgOrPng) {
+      //   this.$message.error('You can only upload JPG file!')
+      // }
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // 限制200KB
+      const isLt2M = file.size / 1024 < 300
+      if (!isLt2M) {
+        this.$message.error('图片大小不能超过300KB!')
+      }
+      // return isJpgOrPng && isLt2M
+      return isLt2M
+    },
+
+    refresh () {
       if (this.maxCount < 1) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount必须>=1'
       }
       if (this.value) {
-        let urls = []
+        // console.log('  refresh  this.value:', this.value)
+
+        const urls = []
         if (TypeHelper.isString(this.value)) {
-          urls.push(this.value)
+          // 拼接图片全路径，框架中没有
+          urls.push(defaultSettings.publishRootUrl + this.value)
         } else if (TypeHelper.isArray(this.value)) {
           urls.push(...this.value)
         } else {
+          // eslint-disable-next-line no-throw-literal
           throw 'value必须为字符串或数组'
         }
 
-        this.fileList = urls.map(x => {
+        this.fileList = urls.map((x) => {
           return { name: x, uid: uuid.v4(), status: 'done', url: x }
         })
       }
     },
-    handleCancel() {
+    handleCancel () {
       this.previewVisible = false
     },
-    handlePreview(file) {
+    handlePreview (file) {
       this.previewImage = file.url || file.thumbUrl
       this.previewVisible = true
     },
-    handleChange({ file, fileList }) {
+    handleChange ({ file, fileList }) {
       this.fileList = fileList
 
+      // eslint-disable-next-line eqeqeq
       if (file.status == 'done' || file.status == 'removed') {
-        var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
+        // eslint-disable-next-line eqeqeq
+        var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
+        // eslint-disable-next-line eqeqeq
         var newValue = this.maxCount == 1 ? urls[0] : urls
         this.internelValue = newValue
-        //双向绑定
+        // 双向绑定
         this.$emit('input', newValue)
       }
     }

@@ -24,60 +24,67 @@ const uuid = require('uuid')
 
 export default {
   props: {
-    value: '', //字符串或字符串数组
+    value: undefined, // 字符串或字符串数组
     maxCount: {
       type: Number,
-      default: 1,
-    },
-  },
-  mounted() {
-    if (this.maxCount == 1) {
-      this.value = this.value || ''
-    } else {
-      this.value = this.value || []
+      default: 1
     }
+  },
+  mounted () {
+    // if (this.maxCount == 1) {
+    //   this.value = this.value || ''
+    // } else {
+    //   this.value = this.value || []
+    // }
+    this.value = this.value
+
     this.checkType(this.value)
 
     this.refresh()
   },
-  data() {
+  data () {
     return {
       previewVisible: false,
       previewImage: '',
       fileList: [],
       obj: {},
-      headers: { Authorization: 'Bearer ' + TokenCache.getToken() },
+      headers: { Authorization: 'Bearer ' + TokenCache.getToken() }
     }
   },
   watch: {
-    value(val) {
+    value (val) {
       this.checkType(val)
 
       this.value = val
       this.refresh()
-    },
+    }
   },
   methods: {
-    checkType(val) {
+    checkType (val) {
+      // eslint-disable-next-line eqeqeq
       if (this.maxCount == 1 && TypeHelper.isArray(val)) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount=1时model不能为Array'
       }
       if (this.maxCount > 1 && !TypeHelper.isArray(val)) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount>1时model必须为Array<String>'
       }
     },
-    refresh() {
+    refresh () {
       if (this.maxCount < 1) {
+        // eslint-disable-next-line no-throw-literal
         throw 'maxCount必须>=1'
       }
       if (this.value) {
-        let urls = []
+        const urls = []
 
         if (TypeHelper.isString(this.value)) {
           urls.push(this.value)
         } else if (TypeHelper.isArray(this.value)) {
           urls.push(...this.value)
         } else {
+          // eslint-disable-next-line no-throw-literal
           throw 'value必须为字符串或数组'
         }
 
@@ -86,34 +93,32 @@ export default {
         })
       }
     },
-    handleCancel() {
+    handleCancel () {
       this.previewVisible = false
     },
-    handlePreview(file) {
+    handlePreview (file) {
       var url = file.url || file.response.url
 
       window.open(url, 'tab')
     },
-    handleChange({ file, fileList }) {
+    handleChange ({ fileList }) {
       this.fileList = fileList
-
-      if (file.status == 'done' || file.status == 'removed') {
-        var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
-        var newValue = this.maxCount == 1 ? urls[0] : urls
-        this.internelValue = newValue
-        //双向绑定
-        this.$emit('input', newValue)
-      }
+      // eslint-disable-next-line eqeqeq
+      var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
+      // eslint-disable-next-line eqeqeq
+      var newValue = this.maxCount == 1 ? urls[0] : urls
+      // 双向绑定
+      this.$emit('input', newValue)
     },
-    getFileName(url) {
-      let reg = /^.*\/(.*?)$/
-      let match = reg.test(url)
+    getFileName (url) {
+      const reg = /^.*\/(.*?)$/
+      const match = reg.test(url)
       if (match) {
         return RegExp.$1
       } else {
         return ''
       }
-    },
-  },
+    }
+  }
 }
 </script>

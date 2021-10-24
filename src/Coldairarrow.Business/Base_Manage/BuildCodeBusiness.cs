@@ -63,6 +63,8 @@ namespace Coldairarrow.Business.Base_Manage
             {
                 var tableFieldInfo = _dbHelper.GetDbTableInfo(aTable);
 
+                var tableDesc = _dbTableInfoDic[aTable].Description;
+
                 //实体名
                 string entityName = aTable;
                 //业务逻辑参数名
@@ -78,13 +80,14 @@ namespace Coldairarrow.Business.Base_Manage
                         selectOptionsList.Add(
 $"                <a-select-option key=\"{aField.Name}\">{aField.Description}</a-select-option>");
                     listColumnsList.Add(
-$"  {{ title: '{aField.Description}', dataIndex: '{aField.Name}', width: '10%' }},");
+$"  {{ title: '{aField.Description}', dataIndex: '{aField.Name}', align: 'center' }},");
                     formColumnsList.Add(
 $@"        <a-form-model-item label=""{aField.Description}"" prop=""{aField.Name}"">
           <a-input v-model=""entity.{aField.Name}"" autocomplete=""off"" />
         </a-form-model-item>");
                     Dictionary<string, string> renderParamters = new Dictionary<string, string>
                     {
+                        {$"%{nameof(tableDesc)}%",tableDesc },
                         {$"%{nameof(areaName)}%",areaName },
                         {$"%{nameof(entityName)}%",entityName },
                         {$"%{nameof(busName)}%",busName },

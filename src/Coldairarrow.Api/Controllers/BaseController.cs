@@ -15,6 +15,10 @@ namespace Coldairarrow.Api
     [FormatResponse]
     public class BaseController : ControllerBase
     {
+        /// <summary>
+        /// 初始化要创建的实体
+        /// </summary>
+        /// <param name="obj"></param>
         protected void InitEntity(object obj)
         {
             var op = HttpContext.RequestServices.GetService<IOperator>();
