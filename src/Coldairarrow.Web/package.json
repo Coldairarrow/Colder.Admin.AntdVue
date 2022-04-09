@@ -20,7 +20,7 @@
     "lodash.get": "^4.4.2",
     "lodash.pick": "^4.4.0",
     "md5": "^2.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.28",
     "node-uuid": "^1.4.8",
     "nprogress": "^0.2.0",
