@@ -21,7 +21,7 @@
     "lodash.pick": "^4.4.0",
     "md5": "^2.2.1",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "node-uuid": "^1.4.8",
     "nprogress": "^0.2.0",
     "vue": "^2.5.22",
